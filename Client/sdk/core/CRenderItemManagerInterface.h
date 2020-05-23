@@ -45,16 +45,16 @@ class CEffectTemplate;
 enum ERenderFormat
 {
     RFORMAT_UNKNOWN,
-    RFORMAT_ARGB = 21,            // D3DFMT_A8R8G8B8
-    RFORMAT_DXT1 = '1TXD',
-    RFORMAT_DXT2 = '2TXD',
-    RFORMAT_DXT3 = '3TXD',
-    RFORMAT_DXT4 = '4TXD',
-    RFORMAT_DXT5 = '5TXD',
-    RFORMAT_INTZ = 'ZTNI',
-    RFORMAT_DF24 = '42FD',
-    RFORMAT_DF16 = '61FD',
-    RFORMAT_RAWZ = 'ZWAR',
+    RFORMAT_ARGB = 21,      // D3DFMT_A8R8G8B8
+    RFORMAT_DXT1 = '1TXD',  // D3DFMT_DXT1
+    RFORMAT_DXT2 = '2TXD',  // D3DFMT_DXT2
+    RFORMAT_DXT3 = '3TXD',  // D3DFMT_DXT3
+    RFORMAT_DXT4 = '4TXD',  // D3DFMT_DXT4
+    RFORMAT_DXT5 = '5TXD',  // D3DFMT_DXT5
+    RFORMAT_INTZ = 'ZTNI',  // no d3dformat
+    RFORMAT_DF24 = '42FD',  // no d3dformat
+    RFORMAT_DF16 = '61FD',  // no d3dformat
+    RFORMAT_RAWZ = 'ZWAR',  // no d3dformat
 };
 
 enum ETextureType
