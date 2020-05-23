@@ -8,16 +8,42 @@
  *****************************************************************************/
 
 #include "StdInc.h"
+#include "DirectXTex/DirectXTex.h"
+#include "DirectXTex/DirectXTex.inl"
 
-////////////////////////////////////////////////////////////////
-//
-// CFileTextureItem::PostConstruct
-//
-//
-//
-////////////////////////////////////////////////////////////////
+
+
+static DXGI_FORMAT ConvertRenderFormatToDXGI(const ERenderFormat format)
+{
+    switch (format)
+    {
+    case RFORMAT_ARGB:
+        return DXGI_FORMAT_B8G8R8A8_UNORM;
+    case RFORMAT_DXT1:
+        return DXGI_FORMAT_BC1_UNORM;
+    case RFORMAT_DXT2:
+        return DXGI_FORMAT_BC2_UNORM;
+    case RFORMAT_DXT3:
+        return DXGI_FORMAT_BC3_UNORM;
+    case RFORMAT_DXT4:
+        return DXGI_FORMAT_BC4_UNORM;
+    case RFORMAT_DXT5:
+        return DXGI_FORMAT_BC5_UNORM;
+    default:
+        return DXGI_FORMAT_UNKNOWN;
+    }
+}
+
+
+ ////////////////////////////////////////////////////////////////
+ //
+ // CFileTextureItem::PostConstruct
+ //
+ //
+ //
+ ////////////////////////////////////////////////////////////////
 void CFileTextureItem::PostConstruct(CRenderItemManager* pManager, const SString& strFilename, const CPixels* pPixels, bool bMipMaps, uint uiSizeX,
-                                     uint uiSizeY, ERenderFormat format, ETextureAddress textureAddress, ETextureType textureType, uint uiVolumeDepth)
+    uint uiSizeY, ERenderFormat format, ETextureAddress textureAddress, ETextureType textureType, uint uiVolumeDepth)
 {
     Super::PostConstruct(pManager);
 
@@ -114,14 +140,14 @@ void CFileTextureItem::CreateUnderlyingData(const SString& strFilename, bool bMi
     {
         // It's a volume texture!
         if (FAILED(D3DXCreateVolumeTextureFromFileEx(m_pDevice, strFilename, uiSizeX, uiSizeY, D3DX_DEFAULT, iMipMaps, 0, D3DFormat, D3DPOOL_MANAGED,
-                                                     D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, (IDirect3DVolumeTexture9**)&m_pD3DTexture)))
+            D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, (IDirect3DVolumeTexture9**)&m_pD3DTexture)))
             return;
     }
     else if (imageInfo.ResourceType == D3DRTYPE_CUBETEXTURE)
     {
         // It's a cubemap texture!
         if (FAILED(D3DXCreateCubeTextureFromFileEx(m_pDevice, strFilename, uiSizeX, iMipMaps, 0, D3DFormat, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0,
-                                                   NULL, NULL, (IDirect3DCubeTexture9**)&m_pD3DTexture)))
+            NULL, NULL, (IDirect3DCubeTexture9**)&m_pD3DTexture)))
             return;
     }
     else
@@ -135,7 +161,7 @@ void CFileTextureItem::CreateUnderlyingData(const SString& strFilename, bool bMi
             uiSizeY = D3DX_DEFAULT_NONPOW2;
 
         if (FAILED(D3DXCreateTextureFromFileEx(m_pDevice, strFilename, uiSizeX, uiSizeY, iMipMaps, 0, D3DFormat, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0,
-                                               NULL, NULL, (IDirect3DTexture9**)&m_pD3DTexture)))
+            NULL, NULL, (IDirect3DTexture9**)&m_pD3DTexture)))
             return;
 
         // Update surface size if it's a normal texture
@@ -164,33 +190,80 @@ void CFileTextureItem::CreateUnderlyingData(const CPixels* pInPixels, bool bMipM
 
     // Copy from plain
     const CPixels* pPixels = pInPixels;
-    CPixels        pixelsTemp;
-    if (pPixelsManager->GetPixelsFormat(*pPixels) == EPixelsFormat::PLAIN)
-    {
-        pPixelsManager->ChangePixelsFormat(*pPixels, pixelsTemp, EPixelsFormat::PNG);
-        pPixels = &pixelsTemp;
-    }
+    const auto inPixelsFormat = pPixelsManager->GetPixelsFormat(*pInPixels);
+
 
     D3DXIMAGE_INFO imageInfo;
     D3DFORMAT      D3DFormat = (D3DFORMAT)format;
     int            iMipMaps = bMipMaps ? D3DX_DEFAULT : 1;
 
-    if (FAILED(D3DXCreateTextureFromFileInMemoryEx(m_pDevice,                     //__in     LPDIRECT3DDEVICE9 pDevice,
-                                                   pPixels->GetData(),            //__in     LPCVOID pSrcData,
-                                                   pPixels->GetSize(),            //__in     UINT SrcDataSize,
-                                                   D3DX_DEFAULT,                  //__in     UINT Width,
-                                                   D3DX_DEFAULT,                  //__in     UINT Height,
-                                                   iMipMaps,                      //__in     UINT MipLevels,
-                                                   0,                             //__in     DWORD Usage,
-                                                   D3DFormat,                     //__in     D3DFORMAT Format,
-                                                   D3DPOOL_MANAGED,               //__in     D3DPOOL Pool,
-                                                   D3DX_DEFAULT,                  //__in     DWORD Filter,
-                                                   D3DX_DEFAULT,                  //__in     DWORD MipFilter,
-                                                   0,                             //__in     D3DCOLOR ColorKey,
-                                                   &imageInfo,                    //__inout  D3DXIMAGE_INFO *pSrcInfo,
-                                                   NULL,                          //__out    PALETTEENTRY *pPalette,
-                                                   (IDirect3DTexture9**)&m_pD3DTexture)))
-        return;
+    if (inPixelsFormat == EPixelsFormat::PLAIN)
+    {
+        CPixels temp;
+        pPixelsManager->ChangePixelsFormat(*pPixels, temp, EPixelsFormat::PNG, 0);
+        pPixels = &temp;
+
+        if (FAILED(D3DXCreateTextureFromFileInMemoryEx(m_pDevice,                     //__in     LPDIRECT3DDEVICE9 pDevice,
+            pPixels->GetData(),            //__in     LPCVOID pSrcData,
+            pPixels->GetSize(),            //__in     UINT SrcDataSize,
+            D3DX_DEFAULT,                  //__in     UINT Width,
+            D3DX_DEFAULT,                  //__in     UINT Height,
+            iMipMaps,                      //__in     UINT MipLevels,
+            0,                             //__in     DWORD Usage,
+            D3DFormat,                     //__in     D3DFORMAT Format,
+            D3DPOOL_MANAGED,               //__in     D3DPOOL Pool,
+            D3DX_DEFAULT,                  //__in     DWORD Filter,
+            D3DX_DEFAULT,                  //__in     DWORD MipFilter,
+            0,                             //__in     D3DCOLOR ColorKey,
+            &imageInfo,                    //__inout  D3DXIMAGE_INFO *pSrcInfo,
+            NULL,                          //__out    PALETTEENTRY *pPalette,
+            (IDirect3DTexture9**)&m_pD3DTexture)))
+            return;
+    }
+    else
+    {
+        namespace dx = DirectX;
+
+        // convert our format to dxgi
+        const DXGI_FORMAT dxgiFormat = ConvertRenderFormatToDXGI(format);
+        assert(dxgiFormat != DXGI_FORMAT_UNKNOWN);
+
+        dx::ScratchImage img;
+        assert(SUCCEEDED(dx::LoadFromDDSMemory((void*)pInPixels->GetData(), pInPixels->GetSize(), dx::TEX_FILTER_DEFAULT, nullptr, img)));
+
+        dx::ScratchImage outImg;
+        dx::Convert(img.GetImages(), img.GetImageCount(), img.GetMetadata(), DXGI_FORMAT_B8G8R8A8_UNORM, dx::TEX_FILTER_DEFAULT, dx::TEX_THRESHOLD_DEFAULT, outImg);
+
+        //dx::SaveToDDSMemory(outImg.GetImages(), dx::DEFAULT_FLA)
+
+        if (FAILED(D3DXCreateTextureFromFileInMemoryEx(m_pDevice,   //__in     LPDIRECT3DDEVICE9 pDevice,
+            reinterpret_cast<void*>(outImg.GetImages()->pixels),    //__in     LPCVOID pSrcData,
+            outImg.GetImages()->slicePitch,                         //__in     UINT SrcDataSize,
+            D3DX_DEFAULT,                                           //__in     UINT Width,
+            D3DX_DEFAULT,                                           //__in     UINT Height,
+            iMipMaps,                                               //__in     UINT MipLevels,
+            0,                                                      //__in     DWORD Usage,
+            D3DFormat,                                              //__in     D3DFORMAT Format,
+            D3DPOOL_MANAGED,                                        //__in     D3DPOOL Pool,
+            D3DX_DEFAULT,                                           //__in     DWORD Filter,
+            D3DX_DEFAULT,                                           //__in     DWORD MipFilter,
+            0,                                                      //__in     D3DCOLOR ColorKey,
+            &imageInfo,                                             //__inout  D3DXIMAGE_INFO *pSrcInfo,
+            NULL,                                                   //__out    PALETTEENTRY *pPalette,
+            (IDirect3DTexture9**)&m_pD3DTexture))
+        )
+            return;
+    }
+
+
+
+
+
+
+
+
+
+
 
     m_uiSizeX = imageInfo.Width;
     m_uiSizeY = imageInfo.Height;
@@ -221,6 +294,7 @@ void CFileTextureItem::CreateUnderlyingData(bool bMipMaps, uint uiSizeX, uint ui
     D3DFORMAT D3DFormat = (D3DFORMAT)format;
     int       iMipMaps = bMipMaps ? D3DX_DEFAULT : 1;
 
+
     m_uiSizeX = uiSizeX;
     m_uiSizeY = uiSizeY;
     m_uiSurfaceSizeX = uiSizeX;
@@ -229,37 +303,37 @@ void CFileTextureItem::CreateUnderlyingData(bool bMipMaps, uint uiSizeX, uint ui
     if (textureType == D3DRTYPE_VOLUMETEXTURE)
     {
         if (FAILED(D3DXCreateVolumeTexture(m_pDevice,                  //__in   LPDIRECT3DDEVICE9 pDevice,
-                                           uiSizeX,                    //__in   UINT Width,
-                                           uiSizeY,                    //__in   UINT Height,
-                                           uiVolumeDepth,              //__in   UINT Depth,
-                                           iMipMaps,                   //__in   UINT MipLevels,
-                                           0,                          //__in   DWORD Usage,
-                                           D3DFormat,                  //__in   D3DFORMAT Format,
-                                           D3DPOOL_MANAGED,            //__in   D3DPOOL Pool,
-                                           (IDirect3DVolumeTexture9**)&m_pD3DTexture)))
+            uiSizeX,                    //__in   UINT Width,
+            uiSizeY,                    //__in   UINT Height,
+            uiVolumeDepth,              //__in   UINT Depth,
+            iMipMaps,                   //__in   UINT MipLevels,
+            0,                          //__in   DWORD Usage,
+            D3DFormat,                  //__in   D3DFORMAT Format,
+            D3DPOOL_MANAGED,            //__in   D3DPOOL Pool,
+            (IDirect3DVolumeTexture9**)&m_pD3DTexture)))
             return;
     }
     else if (textureType == D3DRTYPE_CUBETEXTURE)
     {
         if (FAILED(D3DXCreateCubeTexture(m_pDevice,                  //__in   LPDIRECT3DDEVICE9 pDevice,
-                                         uiSizeX,                    //__in   UINT Width,
-                                         iMipMaps,                   //__in   UINT MipLevels,
-                                         0,                          //__in   DWORD Usage,
-                                         D3DFormat,                  //__in   D3DFORMAT Format,
-                                         D3DPOOL_MANAGED,            //__in   D3DPOOL Pool,
-                                         (IDirect3DCubeTexture9**)&m_pD3DTexture)))
+            uiSizeX,                    //__in   UINT Width,
+            iMipMaps,                   //__in   UINT MipLevels,
+            0,                          //__in   DWORD Usage,
+            D3DFormat,                  //__in   D3DFORMAT Format,
+            D3DPOOL_MANAGED,            //__in   D3DPOOL Pool,
+            (IDirect3DCubeTexture9**)&m_pD3DTexture)))
             return;
     }
     else
     {
         if (FAILED(D3DXCreateTexture(m_pDevice,                  //__in   LPDIRECT3DDEVICE9 pDevice,
-                                     uiSizeX,                    //__in   UINT Width,
-                                     uiSizeY,                    //__in   UINT Height,
-                                     iMipMaps,                   //__in   UINT MipLevels,
-                                     0,                          //__in   DWORD Usage,
-                                     D3DFormat,                  //__in   D3DFORMAT Format,
-                                     D3DPOOL_MANAGED,            //__in   D3DPOOL Pool,
-                                     (IDirect3DTexture9**)&m_pD3DTexture)))
+            uiSizeX,                    //__in   UINT Width,
+            uiSizeY,                    //__in   UINT Height,
+            iMipMaps,                   //__in   UINT MipLevels,
+            0,                          //__in   DWORD Usage,
+            D3DFormat,                  //__in   D3DFORMAT Format,
+            D3DPOOL_MANAGED,            //__in   D3DPOOL Pool,
+            (IDirect3DTexture9**)&m_pD3DTexture)))
             return;
 
         // Update surface size if it's a normal texture
