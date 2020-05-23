@@ -90,11 +90,16 @@ void CRenderItemManager::OnDeviceCreate(IDirect3DDevice9* pDevice, float fViewpo
 //
 // Release device stuff
 //
+// locks m_CreatedItemListMutex
+//
 ////////////////////////////////////////////////////////////////
 void CRenderItemManager::OnLostDevice()
 {
-    for (std::set<CRenderItem*>::iterator iter = m_CreatedItemList.begin(); iter != m_CreatedItemList.end(); iter++)
-        (*iter)->OnLostDevice();
+    {
+        std::lock_guard guard(m_CreatedItemListMutex);
+        for (std::set<CRenderItem*>::iterator iter = m_CreatedItemList.begin(); iter != m_CreatedItemList.end(); iter++)
+            (*iter)->OnLostDevice();
+    }
 
     SAFE_RELEASE(m_pSavedSceneDepthSurface);
     SAFE_RELEASE(m_pSavedSceneRenderTargetAA);
@@ -110,11 +115,16 @@ void CRenderItemManager::OnLostDevice()
 //
 // Recreate device stuff
 //
+// locks m_CreatedItemListMutex
+//
 ////////////////////////////////////////////////////////////////
 void CRenderItemManager::OnResetDevice()
 {
-    for (std::set<CRenderItem*>::iterator iter = m_CreatedItemList.begin(); iter != m_CreatedItemList.end(); iter++)
-        (*iter)->OnResetDevice();
+    {
+        std::lock_guard guard(m_CreatedItemListMutex);
+        for (std::set<CRenderItem*>::iterator iter = m_CreatedItemList.begin(); iter != m_CreatedItemList.end(); iter++)
+            (*iter)->OnResetDevice();
+    }
 
     UpdateMemoryUsage();
 }
@@ -309,11 +319,17 @@ CGuiFontItem* CRenderItemManager::CreateGuiFont(const SString& strFullFilePath, 
 //
 // Add to managers list
 //
+// ACHTUNG:
+// might be called from another thread
+// locks m_CreatedItemListMutex
+//
 ////////////////////////////////////////////////////////////////
 void CRenderItemManager::NotifyContructRenderItem(CRenderItem* pItem)
 {
-    assert(!MapContains(m_CreatedItemList, pItem));
-    MapInsert(m_CreatedItemList, pItem);
+    {
+        const std::lock_guard<std::mutex> guard(m_CreatedItemListMutex);
+        assert(!m_CreatedItemList.insert(pItem).second); // assert if the item was already in the set.
+    }
 
     if (CScreenSourceItem* pScreenSourceItem = DynamicCast<CScreenSourceItem>(pItem))
         m_bBackBufferCopyMaybeNeedsResize = true;
@@ -325,16 +341,26 @@ void CRenderItemManager::NotifyContructRenderItem(CRenderItem* pItem)
 //
 // Remove from managers list
 //
+// ACHTUNG:
+// might be called from another thread
+// locks m_CreatedItemListMutex, and m_TextureItemMutex
+//
 ////////////////////////////////////////////////////////////////
 void CRenderItemManager::NotifyDestructRenderItem(CRenderItem* pItem)
 {
-    assert(MapContains(m_CreatedItemList, pItem));
-    MapRemove(m_CreatedItemList, pItem);
+    {
+        const std::lock_guard guard(m_CreatedItemListMutex);
+        assert(MapRemove(m_CreatedItemList, pItem)); // assert if element wasnt in the set
+    }
 
     if (CScreenSourceItem* pScreenSourceItem = DynamicCast<CScreenSourceItem>(pItem))
         m_bBackBufferCopyMaybeNeedsResize = true;
+
     else if (CShaderItem* pShaderItem = DynamicCast<CShaderItem>(pItem))
+    {
+        const std::lock_guard guard(m_TextureItemMutex);
         RemoveShaderItemFromWatchLists(pShaderItem);
+    }
 
     UpdateMemoryUsage();
 }
@@ -453,12 +479,16 @@ void CRenderItemManager::UpdateBackBufferCopySize()
     // Set what the max size requirement is for the back buffer copy
     uint uiSizeX = 0;
     uint uiSizeY = 0;
-    for (std::set<CRenderItem*>::iterator iter = m_CreatedItemList.begin(); iter != m_CreatedItemList.end(); iter++)
     {
-        if (CScreenSourceItem* pScreenSourceItem = DynamicCast<CScreenSourceItem>(*iter))
+        std::lock_guard guard(m_CreatedItemListMutex);
+
+        for (std::set<CRenderItem*>::iterator iter = m_CreatedItemList.begin(); iter != m_CreatedItemList.end(); iter++)
         {
-            uiSizeX = std::max(uiSizeX, pScreenSourceItem->m_uiSizeX);
-            uiSizeY = std::max(uiSizeY, pScreenSourceItem->m_uiSizeY);
+            if (CScreenSourceItem* pScreenSourceItem = DynamicCast<CScreenSourceItem>(*iter))
+            {
+                uiSizeX = std::max(uiSizeX, pScreenSourceItem->m_uiSizeX);
+                uiSizeY = std::max(uiSizeY, pScreenSourceItem->m_uiSizeY);
+            }
         }
     }
 
@@ -681,27 +711,32 @@ void CRenderItemManager::SetTestMode(eDxTestMode testMode)
 //
 // Should be called when a render item is created/destroyed or changes
 //
+// locks m_CreatedItemListMutex
+//
 ////////////////////////////////////////////////////////////////
 void CRenderItemManager::UpdateMemoryUsage()
 {
     m_iTextureMemoryKBUsed = 0;
     m_iRenderTargetMemoryKBUsed = 0;
     m_iFontMemoryKBUsed = 0;
-    for (std::set<CRenderItem*>::iterator iter = m_CreatedItemList.begin(); iter != m_CreatedItemList.end(); iter++)
     {
-        CRenderItem* pRenderItem = *iter;
-        if (!pRenderItem->GetIncludeInMemoryStats())
-            continue;
-        int iMemoryKBUsed = pRenderItem->GetVideoMemoryKBUsed();
+        std::lock_guard guard(m_CreatedItemListMutex);
 
-        if (pRenderItem->IsA(CFileTextureItem::GetClassId()))
-            m_iTextureMemoryKBUsed += iMemoryKBUsed;
-        else if (pRenderItem->IsA(CRenderTargetItem::GetClassId()) || pRenderItem->IsA(CScreenSourceItem::GetClassId()))
-            m_iRenderTargetMemoryKBUsed += iMemoryKBUsed;
-        else if (pRenderItem->IsA(CGuiFontItem::GetClassId()) || pRenderItem->IsA(CDxFontItem::GetClassId()))
-            m_iFontMemoryKBUsed += iMemoryKBUsed;
+        for (std::set<CRenderItem*>::iterator iter = m_CreatedItemList.begin(); iter != m_CreatedItemList.end(); iter++)
+        {
+            CRenderItem* pRenderItem = *iter;
+            if (!pRenderItem->GetIncludeInMemoryStats())
+                continue;
+            int iMemoryKBUsed = pRenderItem->GetVideoMemoryKBUsed();
+
+            if (pRenderItem->IsA(CFileTextureItem::GetClassId()))
+                m_iTextureMemoryKBUsed += iMemoryKBUsed;
+            else if (pRenderItem->IsA(CRenderTargetItem::GetClassId()) || pRenderItem->IsA(CScreenSourceItem::GetClassId()))
+                m_iRenderTargetMemoryKBUsed += iMemoryKBUsed;
+            else if (pRenderItem->IsA(CGuiFontItem::GetClassId()) || pRenderItem->IsA(CDxFontItem::GetClassId()))
+                m_iFontMemoryKBUsed += iMemoryKBUsed;
+        }
     }
-
     m_iMemoryKBFreeForMTA = m_iVideoCardMemoryKBForMTATotal;
     m_iMemoryKBFreeForMTA -= m_iFontMemoryKBUsed / 2;
     m_iMemoryKBFreeForMTA -= m_iTextureMemoryKBUsed / 4;

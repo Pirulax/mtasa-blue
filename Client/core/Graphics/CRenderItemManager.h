@@ -84,13 +84,16 @@ public:
     IDirect3DDevice9* m_pDevice;
 
 protected:
+    std::mutex               m_TextureItemMutex;
+    std::mutex               m_CreatedItemListMutex;
+
     std::set<CRenderItem*>   m_CreatedItemList;
     IDirect3DSurface9*       m_pDefaultD3DRenderTarget;
     IDirect3DSurface9*       m_pDefaultD3DZStencilSurface;
     uint                     m_uiDefaultViewportSizeX;
     uint                     m_uiDefaultViewportSizeY;
     CRenderTargetItem*       m_pBackBufferCopy;
-    bool                     m_bBackBufferCopyMaybeNeedsResize;
+    std::atomic<bool>        m_bBackBufferCopyMaybeNeedsResize;
     uint                     m_uiBackBufferCopyRevision;
     CFastHashSet<CD3DDUMMY*> m_FrameTextureUsage;
     CFastHashSet<CD3DDUMMY*> m_PrevFrameTextureUsage;

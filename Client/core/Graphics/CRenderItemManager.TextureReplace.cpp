@@ -123,5 +123,8 @@ bool CRenderItemManager::RemoveShaderItemFromWorldTexture(CShaderItem* pShaderIt
 ////////////////////////////////////////////////////////////////
 void CRenderItemManager::RemoveShaderItemFromWatchLists(CShaderItem* pShaderItem)
 {
+    static  std::mutex mutex;
+
+    const std::lock_guard guard(mutex);
     m_pRenderWare->RemoveShaderRefs((CSHADERDUMMY*)pShaderItem);
 }
