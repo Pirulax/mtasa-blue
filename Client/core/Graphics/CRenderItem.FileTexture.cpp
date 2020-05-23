@@ -9,10 +9,18 @@
 
 #include "StdInc.h"
 
+//
+// VERY IMPORTANT:
+//
+// This class might be constructed on a thread other than the main one.
+// Please make sure all calls called functions (to the main thread)
+// Are thread safe!!
+//
+//
+
 ////////////////////////////////////////////////////////////////
 //
 // CFileTextureItem::PostConstruct
-//
 //
 //
 ////////////////////////////////////////////////////////////////
