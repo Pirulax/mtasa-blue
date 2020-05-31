@@ -8,6 +8,7 @@
  *  Multi Theft Auto is available from http://www.multitheftauto.com/
  *
  *****************************************************************************/
+#include <utility>
 
 #include "StdInc.h"
 #include "CTileBatcher.h"
@@ -18,6 +19,8 @@
 #include "CPrimitive3DBatcher.h"
 #include "CMaterialPrimitive3DBatcher.h"
 #include "CAspectRatioConverter.h"
+
+
 extern CCore* g_pCore;
 extern bool   g_bInGTAScene;
 extern bool   g_bInMTAScene;
@@ -884,35 +887,64 @@ void CGraphics::DrawRectQueued(float fX, float fY, float fWidth, float fHeight, 
     AddQueueItem(Item, bPostGUI);
 }
 
+static SString timings = "";
+static unsigned long long totalCount = 0;
 void CGraphics::DrawCircleQueued(float fX, float fY, float fRadius, float fStartAngle, float fStopAngle, unsigned long ulColor, unsigned long ulColorCenter,
-                                 short siSegments, float fRatio, bool bPostGUI)
+                                 unsigned int uiSegments, float fRatio, bool bPostGUI)
 {
     // Check if window is minimized so we don't calculate vertices for no reason.
     if (g_pCore->IsWindowMinimized())
         return;
 
-    auto pVecVertices = new std::vector<PrimitiveVertice>();
-    fStartAngle = D3DXToRadian(fStartAngle);
-    fStopAngle = D3DXToRadian(fStopAngle);
-    // Calculate each segment angle
-    const float kfSegmentAngle = (fStopAngle - fStartAngle) / siSegments;
+    m_AsyncSchd.PushTask(
+        [=]() mutable {
+            assert(uiSegments == 1024);
 
-    // Add center point
-    pVecVertices->push_back({fX, fY, 0.0f, ulColorCenter});
+            auto const pVertices = new std::vector<PrimitiveVertice>();
+            pVertices->reserve(uiSegments + 1);
 
-    // And calculate all other vertices
-    for (short siSeg = 0; siSeg <= siSegments; siSeg++)
-    {
-        PrimitiveVertice vert;
-        float            curAngle = fStartAngle + siSeg * kfSegmentAngle;
-        vert.fX = fX + fRadius * cos(curAngle) * fRatio;
-        vert.fY = fY + fRadius * sin(curAngle);
-        vert.fZ = 0.0f;
-        vert.Color = ulColor;
-        pVecVertices->push_back(vert);
-    }
+            fStartAngle = D3DXToRadian(fStartAngle);
+            fStopAngle = D3DXToRadian(fStopAngle);
 
-    DrawPrimitiveQueued(pVecVertices, D3DPT_TRIANGLEFAN, bPostGUI);
+            // Calculate segment angle
+            const float fSegmentAngle = (fStopAngle - fStartAngle) / uiSegments;
+
+            // Add center point
+            pVertices->push_back({ fX, m_pAspectRatioConverter->ConvertPositionForAspectRatio(fY), 0.0f, ulColorCenter });
+
+            // And calculate all other vertices
+            for (uint i = 0; i < uiSegments; i++)
+            {
+                const auto fCurAngle = fStartAngle + i * fSegmentAngle;
+                const auto fVertX = fX + fRadius * cos(fCurAngle) * fRatio;
+                auto fVertY = fY + fRadius * sin(fCurAngle);
+                fVertY = m_pAspectRatioConverter->ConvertPositionForAspectRatio(fVertY);
+
+                pVertices->push_back({fVertX, fVertY, 0.0f, ulColor});
+            }
+
+            sDrawQueueItem Item;
+
+            Item.eType = QUEUE_PRIMITIVE;
+            Item.blendMode = m_ActiveBlendMode;
+            Item.Primitive.eType = D3DPT_TRIANGLEFAN;
+            Item.Primitive.pVecVertices = pVertices;
+
+            const bool expr = pVertices->size() == 1025;
+            if (!expr)
+                throw std::exception("i shit my pants");
+
+            return Item;
+        },
+        [&](sDrawQueueItem& Item) mutable
+        {
+            const bool expr = Item.Primitive.pVecVertices->size() == 1025;
+            if (!expr)
+                throw std::exception("i shit my pants");
+
+            m_PreGUIQueue.emplace_back(std::move(Item));
+        }
+    );
 }
 
 void CGraphics::DrawPrimitiveQueued(std::vector<PrimitiveVertice>* pVecVertices, D3DPRIMITIVETYPE eType, bool bPostGUI)
@@ -925,18 +957,16 @@ void CGraphics::DrawPrimitiveQueued(std::vector<PrimitiveVertice>* pVecVertices,
         return;
     }
 
-    for (auto& vert : *pVecVertices)
-    {
-        vert.fY = m_pAspectRatioConverter->ConvertPositionForAspectRatio(vert.fY);
-    }
+    sDrawQueueItem& Item = m_PreGUIQueue.emplace_back();
 
     // Set up a queue item
-    sDrawQueueItem Item;
+    //sDrawQueueItem Item;
     Item.eType = QUEUE_PRIMITIVE;
     Item.blendMode = m_ActiveBlendMode;
     Item.Primitive.eType = eType;
     Item.Primitive.pVecVertices = pVecVertices;
-    AddQueueItem(Item, bPostGUI);
+
+    //AddQueueItem(Item, bPostGUI);
 }
 
 void CGraphics::DrawPrimitive3DQueued(std::vector<PrimitiveVertice>* pVecVertices, D3DPRIMITIVETYPE eType, bool bPostGUI)
@@ -1588,6 +1618,14 @@ void CGraphics::OnZBufferModified()
 
 void CGraphics::DrawPreGUIQueue()
 {
+    auto timepoint = std::chrono::steady_clock::now();
+    m_AsyncSchd.CollectResults(true); // await results
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - timepoint);
+
+    const auto str = SString("Awaited tasks for %llu ms\n", duration.count()) + SString("%d ms for vector mutex locking", totalCount);
+    DrawStringQueued(100, 400, 0, 0, 0xFFFFFFFF, str.c_str(), 1, 1, DT_NOCLIP, GetFont());
+    totalCount = 0;
+
     DrawQueue(m_PreGUIQueue);
 }
 

@@ -168,7 +168,7 @@ public:
                                              bool bPostGUI) = 0;
 
     virtual void DrawCircleQueued(float fX, float fY, float fRadius, float fStartAngle, float fStopAngle, unsigned long ulColor, unsigned long ulColorCenter,
-                                  short siSegments, float fRatio, bool bPostGUI) = 0;
+                                  unsigned int uiSegments, float fRatio, bool bPostGUI) = 0;
 
     virtual void DrawWiredSphere(CVector vecPosition, float fRadius, SColorARGB color, float fLineWidth, int iterations) = 0;
 

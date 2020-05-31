@@ -157,7 +157,7 @@ public:
     void DrawMaterialPrimitive3DQueued(std::vector<PrimitiveMaterialVertice>* pVecVertices, D3DPRIMITIVETYPE eType, CMaterialItem* pMaterial, bool bPostGUI);
 
     void DrawCircleQueued(float fX, float fY, float fRadius, float fStartAngle, float fStopAngle, unsigned long ulColor, unsigned long ulColorCenter,
-                          short siSegments, float fRatio, bool bPostGUI);
+                          unsigned int uiSegments, float fRatio, bool bPostGUI);
 
     void DrawWiredSphere(CVector vecPosition, float radius, SColorARGB color, float fLineWidth, int iterations);
 
@@ -345,7 +345,11 @@ private:
 
     // Drawing queues
     std::vector<sDrawQueueItem> m_PreGUIQueue;
+    std::mutex m_PostGUIQueueMutex;
+
     std::vector<sDrawQueueItem> m_PostGUIQueue;
+    std::mutex m_PreGUIQueueMutex;
+
 
     void AddQueueItem(const sDrawQueueItem& Item, bool bPostGUI);
     void DrawQueueItem(const sDrawQueueItem& Item);
@@ -355,6 +359,8 @@ private:
     void RemoveQueueRef(CRenderItem* pRenderItem);
     void AddQueueRef(IUnknown* pUnknown);
     void RemoveQueueRef(IUnknown* pUnknown);
+
+    CAsyncTaskScheduler m_AsyncSchd = CAsyncTaskScheduler(4);
 
     // Drawing types
     struct ID3DXLine* m_pLineInterface = nullptr;

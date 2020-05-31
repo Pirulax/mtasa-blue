@@ -1,9 +1,16 @@
 #pragma once
-#include <queue>
+
 #include <functional>
 #include <memory>
 #include <thread>
 #include <mutex>
+#include <chrono>
+#include <atomic>
+#include <condition_variable>
+#include <algorithm>
+#include <queue>
+#include <list>
+#include <type_traits>
 
 namespace SharedUtil
 {
@@ -22,23 +29,43 @@ namespace SharedUtil
             virtual ~SBaseTask() {}
             virtual void Execute() = 0;
             virtual void ProcessResult() = 0;
+            virtual bool HasResult() = 0;
         };
 
-        template <typename ResultType>
+        template <class TaskFunc_t, class ReadyFunc_t>
         struct STask : public SBaseTask
         {
-            using TaskFunction_t = std::function<ResultType()>;
-            using ReadyFunction_t = std::function<void(const ResultType&)>;
+            using Result_t           = std::invoke_result_t<TaskFunc_t>;
 
-            TaskFunction_t  m_TaskFunction;
-            ReadyFunction_t m_ReadyFunction;
-            ResultType      m_Result;
+            using WrappedTaskFunc_t  = std::function<Result_t(void)>;
+            using WrappedReadyFunc_t = std::function<void(Result_t&&)>;
 
-            STask(const TaskFunction_t& taskFunc, const ReadyFunction_t& readyFunc) : m_TaskFunction(taskFunc), m_ReadyFunction(readyFunc) {}
+            WrappedTaskFunc_t  m_TaskFunc;
+            WrappedReadyFunc_t m_ReadyFunc;
+            Result_t           m_Result;
 
-            void Execute() override { m_Result = std::move(m_TaskFunction()); }
+            STask(TaskFunc_t&& taskFunc, ReadyFunc_t&& readyFunc) : m_TaskFunc(taskFunc), m_ReadyFunc(readyFunc) {}
 
-            void ProcessResult() override { m_ReadyFunction(m_Result); }
+            void Execute() override { m_Result = m_TaskFunc(); }
+            void ProcessResult() override { m_ReadyFunc(std::forward<Result_t>(m_Result)); }
+            bool HasResult() override { return true; }
+        };
+
+        template <class TaskFunc_t>
+        struct STaskNoResult : public SBaseTask
+        {
+            using Result_t = std::invoke_result_t<TaskFunc_t>;
+
+            using WrappedTaskFunc_t = std::function<Result_t(void)>;
+
+            WrappedTaskFunc_t  m_TaskFunc;
+            Result_t           m_Result;
+
+            STaskNoResult(TaskFunc_t&& taskFunc) : m_TaskFunc(taskFunc) {}
+
+            void Execute() override { m_TaskFunc(); }
+            void ProcessResult() override {}
+            bool HasResult() override { return false; }
         };
 
     public:
@@ -60,13 +87,22 @@ namespace SharedUtil
         // taskFunc: Time-consuming function that is executed on the secondary thread (be aware of thread safety!)
         // readyFunc: Function that is called once the result is ready (called on the main thread)
         //
-        template <typename ResultType>
-        void PushTask(const std::function<ResultType()>& taskFunc, const std::function<void(const ResultType&)>& readyFunc)
+        template <class TaskFunc_t, class ReadyFunc_t>
+        void PushTask(TaskFunc_t&& taskFunc, ReadyFunc_t&& readyFunc)
         {
-            std::unique_ptr<SBaseTask> pTask{new STask<ResultType>{taskFunc, readyFunc}};
+            // create task
+            auto pTask = std::make_unique<STask<TaskFunc_t, ReadyFunc_t>>(std::forward<TaskFunc_t>(taskFunc), std::forward<ReadyFunc_t>(readyFunc));
 
-            std::lock_guard<std::mutex> lock{m_TasksMutex};
-            m_Tasks.push(std::move(pTask));
+            PushTaskToWorker(std::move(pTask));
+        }
+
+        template <class TaskFunc_t>
+        void PushTask(TaskFunc_t&& taskFunc)
+        {
+            // create task
+            auto pTask = std::make_unique<STaskNoResult<TaskFunc_t>>(std::forward<TaskFunc_t>(taskFunc));
+
+            PushTaskToWorker(std::move(pTask));
         }
 
         //
@@ -74,19 +110,80 @@ namespace SharedUtil
         // and invokes its ready-functions on the main thread
         // THIS FUNCTION MUST BE CALLED ON THE MAIN THREAD
         //
-        void CollectResults();
-
-    protected:
-        void DoWork();
+        // Specifying awaitResults to true will results in the
+        // calling thread to be frozen(using std::this_thread::sleep_for)
+        //
+        void CollectResults(const bool awaitResults = false);
 
     private:
-        std::vector<std::thread> m_Workers;
-        bool                     m_Running = true;
+        void PushTaskToWorker(std::unique_ptr<SBaseTask>&& task)
+        {
+            // incerement last uset worker, make sure its correct
+            if (++m_LastUsedWorker == m_Workers.end())
+                m_LastUsedWorker = m_Workers.begin();
 
-        std::queue<std::unique_ptr<SBaseTask>> m_Tasks;
-        std::mutex                             m_TasksMutex;
+            (*m_LastUsedWorker).AddTask(std::move(task));
+        }
 
-        std::vector<std::unique_ptr<SBaseTask>> m_TaskResults;
-        std::mutex                              m_TaskResultsMutex;
+    private:
+        class Worker
+        {
+        public:
+            Worker() : m_Thread(&Worker::DoWork, this) {}
+
+            ~Worker()
+            {
+                m_Running = false;
+                if (m_Thread.joinable())
+                    m_Thread.join();
+            }
+
+            void DoWork();
+
+            void AddTask(std::unique_ptr<SBaseTask>&& task)
+            {
+                std::lock_guard<std::mutex> guard(m_TasksMutex);
+                m_Tasks.emplace(std::move(task));
+            }
+
+            void Await()
+            {
+                while (!m_Tasks.empty())
+                    std::this_thread::sleep_for(std::chrono::microseconds(100));
+            }
+
+            void ProcessResults()
+            {
+                if (!m_NeedsResultCollection)
+                    return;
+
+                m_NeedsResultCollection = false;
+
+                std::lock_guard<std::mutex> guard(m_ResultsMutex);
+
+                for (auto& task : m_Results)
+                    task->ProcessResult();
+                m_Results.clear();
+            }
+
+
+            typedef std::queue<std::unique_ptr<SBaseTask>>  Tasks;
+            typedef std::vector<std::unique_ptr<SBaseTask>> Results;
+
+            std::thread m_Thread;
+
+            Tasks       m_Tasks;
+            std::mutex  m_TasksMutex;
+
+            Results     m_Results;
+            std::mutex  m_ResultsMutex;
+            bool        m_NeedsResultCollection = false;
+
+            bool        m_Running = true;
+        };
+
+        typedef std::vector<Worker> WorkersList;
+        WorkersList           m_Workers;
+        WorkersList::iterator m_LastUsedWorker = m_Workers.begin();
     };
 }            // namespace SharedUtil
