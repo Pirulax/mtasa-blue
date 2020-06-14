@@ -35,15 +35,12 @@ void CClientPrimitiveBuffer::Unlink()
 
 CClientPrimitiveBuffer::~CClientPrimitiveBuffer()
 {
-    delete m_pIndexBuffer;
-    for (int i = 0; i < 8; i++)
-        if (m_arrayVertexBuffer[i] != nullptr)
-        {
-            m_arrayVertexBuffer[i]->Release();
-            delete m_arrayVertexBuffer[i];
-        }
+    // Free index and vertex buffers
 
-    delete[] m_iStrideSize;
+    SAFE_RELEASE(m_pIndexBuffer);
+
+    for (auto pVertexBuf : m_arrayVertexBuffer)
+        SAFE_RELEASE(pVertexBuf);
 }
 
 void CClientPrimitiveBuffer::Finalize()
