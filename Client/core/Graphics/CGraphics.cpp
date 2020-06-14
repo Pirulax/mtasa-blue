@@ -1035,29 +1035,17 @@ bool CGraphics::IsValidPrimitiveSize(int iNumVertives, D3DPRIMITIVETYPE eType)
     switch (eType)
     {
         case D3DPT_LINESTRIP:
-            if (iNumVertives < 2)
-            {
-                return false;
-            }
-            break;
+            return iNumVertives >= 2;
+
         case D3DPT_LINELIST:
-            if (iNumVertives % 2 != 0)
-            {
-                return false;
-            }
-            break;
+            return iNumVertives % 2 == 0;
+
         case D3DPT_TRIANGLELIST:
-            if (iNumVertives % 3 != 0)
-            {
-                return false;
-            }
+            return iNumVertives % 3 == 0;
+
         case D3DPT_TRIANGLEFAN:
         case D3DPT_TRIANGLESTRIP:
-            if (iNumVertives < 3)
-            {
-                return false;
-            }
-            break;
+            return iNumVertives >= 3;
     }
 
     return true;
@@ -1585,25 +1573,28 @@ void CGraphics::OnDeviceCreate(IDirect3DDevice9* pDevice)
     // Create drawing devices
     D3DXCreateLine(pDevice, &m_pLineInterface);
 
-    m_pTileBatcher->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pLine3DBatcherPreGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pLine3DBatcherPostGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pMaterialLine3DBatcherPreGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pMaterialLine3DBatcherPostGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pPrimitiveBatcher->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pPrimitive3DBatcherPreGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pPrimitive3DBatcherPostGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pMaterialPrimitive3DBatcherPreGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pMaterialPrimitive3DBatcherPostGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pPrimitive3DBatcherPreGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pPrimitive3DBatcherPostGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pRenderItemManager->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pScreenGrabber->OnDeviceCreate(pDevice);
+    const CVector2D vecViewportSize(GetViewportWidth(), GetViewportHeight());
+
     m_pPixelsManager->OnDeviceCreate(pDevice);
-    m_pPrimitiveBufferBatcherPreGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pPrimitiveBufferBatcherPostGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pPrimitiveBuffer3DBatcherPreGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
-    m_pPrimitiveBuffer3DBatcherPostGUI->OnDeviceCreate(pDevice, GetViewportWidth(), GetViewportHeight());
+    m_pScreenGrabber->OnDeviceCreate(pDevice);
+    m_pTileBatcher->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pPrimitiveBatcher->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pRenderItemManager->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pLine3DBatcherPreGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pLine3DBatcherPostGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pPrimitive3DBatcherPreGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pPrimitive3DBatcherPreGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pPrimitive3DBatcherPostGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pPrimitive3DBatcherPostGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pMaterialLine3DBatcherPreGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pMaterialLine3DBatcherPostGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pPrimitiveBufferBatcherPreGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pPrimitiveBufferBatcherPostGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pPrimitiveBuffer3DBatcherPreGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pPrimitiveBuffer3DBatcherPostGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pMaterialPrimitive3DBatcherPreGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+    m_pMaterialPrimitive3DBatcherPostGUI->OnDeviceCreate(pDevice, vecViewportSize.fX, vecViewportSize.fY);
+
     m_ProgressSpinnerTexture =
         GetRenderItemManager()->CreateTexture(CalcMTASAPath("MTA\\cgui\\images\\busy_spinner.png"), NULL, false, -1, -1, RFORMAT_DXT3, TADDRESS_CLAMP);
     CPixels rectEdge = {CBuffer(g_rectEdgePixelsData, sizeof(g_rectEdgePixelsData))};

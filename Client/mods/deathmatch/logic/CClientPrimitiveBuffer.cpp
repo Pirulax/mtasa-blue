@@ -10,22 +10,15 @@
 
 #include <StdInc.h>
 
-enum ePrimitiveData;
+enum ePrimitiveFlag;
 
-CClientPrimitiveBuffer::CClientPrimitiveBuffer(class CClientManager* pManager, ElementID ID) : ClassInit(this), CClientEntity(ID)
+CClientPrimitiveBuffer::CClientPrimitiveBuffer(class CClientManager* pManager, ElementID ID) : 
+    ClassInit(this), 
+    CClientEntity(ID),
+    m_pDevice(g_pCore->GetGraphics()->GetDevice())
 {
     m_pManager = pManager;
     SetTypeName("primitivebuffer");
-    m_pDevice = g_pCore->GetGraphics()->GetDevice();
-    m_iIndicesCount = 0;
-    m_szMemoryUsageInBytes = 0;
-    m_iFaceCount = 0;
-    m_iVertexCount = 0;
-    m_bUseIndexedPrimitives = false;
-    m_pIndexBuffer = nullptr;
-    m_bRequireMaterial = false;
-    m_FVF = 0;
-    m_ePrimitiveType = D3DPT_TRIANGLELIST;
 }
 
 void CClientPrimitiveBuffer::Unlink()
@@ -35,15 +28,10 @@ void CClientPrimitiveBuffer::Unlink()
 
 CClientPrimitiveBuffer::~CClientPrimitiveBuffer()
 {
-    delete m_pIndexBuffer;
-    for (int i = 0; i < 8; i++)
-        if (m_arrayVertexBuffer[i] != nullptr)
-        {
-            m_arrayVertexBuffer[i]->Release();
-            delete m_arrayVertexBuffer[i];
-        }
+    SAFE_RELEASE(m_pIndexBuffer);
 
-    delete[] m_iStrideSize;
+    for (auto pVBuffer : m_arrayVertexBuffer)
+        SAFE_RELEASE(pVBuffer)
 }
 
 void CClientPrimitiveBuffer::Finalize()
@@ -56,7 +44,8 @@ void CClientPrimitiveBuffer::PreDraw()
 {
     m_pDevice->SetFVF(m_FVF);
     m_pDevice->SetVertexDeclaration(m_pVertexDeclaration);
-    if (m_bUseIndexedPrimitives)
+
+    if (m_pIndexBuffer)
         m_pDevice->SetIndices(m_pIndexBuffer);
 
     for (int i = 0; i < 8; i++)
@@ -66,10 +55,13 @@ void CClientPrimitiveBuffer::PreDraw()
 
 void CClientPrimitiveBuffer::Draw(PrimitiveBufferSettings& settings)
 {
-    settings.matrix.GetBuffer(m_fBuffer);
-    m_pDevice->SetTransform(D3DTS_WORLD, (const D3DMATRIX*)m_fBuffer);
-    if (m_bUseIndexedPrimitives)
-        m_pDevice->DrawIndexedPrimitive(m_ePrimitiveType, 0, 0, m_iFaceCount, 0, m_iIndicesCount);
+    // Set d3d9 transform
+    float fMatrixBuffer[16];
+    settings.matrix.GetBuffer(fMatrixBuffer);
+    m_pDevice->SetTransform(D3DTS_WORLD, (const D3DMATRIX*)fMatrixBuffer);
+
+    if (m_pIndexBuffer)
+        m_pDevice->DrawIndexedPrimitive(m_ePrimitiveType, 0, 0, m_uiFaceCount, 0, m_uiIndicesCount);
     else
-        m_pDevice->DrawPrimitive(m_ePrimitiveType, 0, m_iFaceCount);
+        m_pDevice->DrawPrimitive(m_ePrimitiveType, 0, m_uiFaceCount);
 }

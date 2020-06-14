@@ -17,25 +17,6 @@ class CClientPrimitiveBufferManager;
 
 class CClientPrimitiveBuffer;
 
-enum ePrimitiveData
-{
-    PRIMITIVE_DATA_XYZ = 1 << 0,
-    PRIMITIVE_DATA_XY = 1 << 1,
-    PRIMITIVE_DATA_UV = 1 << 2,
-    PRIMITIVE_DATA_DIFFUSE = 1 << 3,
-    PRIMITIVE_DATA_INDICES16 = 1 << 29,
-    PRIMITIVE_DATA_INDICES32 = 1 << 30,
-};
-DECLARE_ENUM(ePrimitiveData);
-
-static std::map<ePrimitiveData, size_t> primitiveDataSizeMap =
-{
-    {ePrimitiveData::PRIMITIVE_DATA_XYZ, 3},
-    {ePrimitiveData::PRIMITIVE_DATA_XY, 2},
-    {ePrimitiveData::PRIMITIVE_DATA_UV, 2},
-    {ePrimitiveData::PRIMITIVE_DATA_DIFFUSE, 1},
-};
-
 class CClientPrimitiveBufferManager
 {
     friend class CClientPrimitiveBuffer;

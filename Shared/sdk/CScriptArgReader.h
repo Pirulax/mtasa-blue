@@ -1027,12 +1027,14 @@ public:
     }
 
     //
-    // Reads a table of floating point numbers
+    // Reads a table of T type integrals
     // Taken from CrosRoad95 dxDrawPrimitive pull request
     //
     template <typename T>
     void ReadNumberTable(std::vector<T>& outList)
     {
+        static_assert(std::is_integral_v<T>, "T expected to be an integral");
+
         outList.clear();
         int iArgument = lua_type(m_luaVM, m_iIndex);
         if (iArgument == LUA_TTABLE)
@@ -1050,6 +1052,74 @@ public:
         }
         SetTypeError("table");
         m_iIndex++;
+    }
+
+    //
+    // Calls func for each value in the table
+    //
+    template<class Function_t>
+    bool ForEachTable(Function_t&& func)
+    {
+        // Check if this index is a table
+        if (lua_type(m_luaVM, m_iIndex) == LUA_TTABLE)
+        {
+            for (lua_pushnil(m_luaVM); lua_next(m_luaVM, m_iIndex) != 0; lua_pop(m_luaVM, 1))
+            {
+                if (!func(lua_type(m_luaVM, -1)))
+                {
+                    lua_pop(m_luaVM, m_iIndex); // Pop leftover
+                    break;
+                }
+            }
+        }
+
+        SetTypeError("table");
+        m_iIndex++;
+        return false;
+    }
+
+    //
+    // Reads a table of T type into array
+    //
+    template <typename T>
+    int ReadTable(T outArray[], size_t size)
+    {
+        int iArgument = lua_type(m_luaVM, m_iIndex);
+        if (iArgument == LUA_TTABLE)
+        {
+            size_t arrayIndex = 0;
+            for (lua_pushnil(m_luaVM); lua_next(m_luaVM, m_iIndex) != 0; lua_pop(m_luaVM, 1))
+            {
+                if (lua_type(m_luaVM, -1) != LUA_TNUMBER)
+                {
+                    SetTypeError("number in table");
+                    return 0;
+                }
+
+                if (arrayIndex >= size)
+                {
+                    lua_pop(m_luaVM, m_iIndex); // Pop leftover
+                    break;
+                }
+
+                outArray[arrayIndex++] = static_cast<T>(lua_tonumber(m_luaVM, -1));
+            }
+
+            if (arrayIndex != size)
+            {
+                SetTypeError("number in table");
+                m_iIndex++;
+
+                return arrayIndex;
+            }
+
+            m_iIndex++;
+            return arrayIndex;
+        }
+        SetTypeError("table");
+        m_iIndex++;
+
+        return 0;
     }
 
 protected:

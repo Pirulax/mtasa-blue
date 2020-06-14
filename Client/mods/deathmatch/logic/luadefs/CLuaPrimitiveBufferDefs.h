@@ -18,10 +18,14 @@ public:
     static void LoadFunctions();
     static void AddClass(lua_State* luaVM);
 
-    LUA_DECLARE(PrimitiveBufferCreate);
-    LUA_DECLARE(PrimitiveBufferDraw);
-    LUA_DECLARE(PrimitiveBufferDraw3D);
+    LUA_DECLARE(DxCreatePrimitiveBuffer);
 
-private:
-    //static void AddPrimitiveBufferClass(lua_State* luaVM);
+    LUA_DECLARE(DxCreatePrimitiveBufferAddVertices);
+    LUA_DECLARE(DxCreatePrimitiveBufferAddIndices);
+
+    LUA_DECLARE(DxCreatePrimitiveBufferSetVertices);    
+    LUA_DECLARE(DxCreatePrimitiveBufferSetIndices);        
+
+    LUA_DECLARE(DxDrawPrimitiveBuffer);
+    LUA_DECLARE(DxDrawPrimitiveBuffer3D);
 };
