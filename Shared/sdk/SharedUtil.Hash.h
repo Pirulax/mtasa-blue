@@ -89,7 +89,7 @@ namespace SharedUtil
     // Append 0 padding to the end, to be a multiple of 4
     bool TeaEncode(const std::string_view str, const std::string_view key, SString* out);
 
-    void TeaDecode(const SString& str, const SString& key, SString* out);
+    void TeaDecode(const std::string_view toDecode, const std::string_view key, SString* out, const bool trimPaddingAtEnd = false);
 
     unsigned int HashString(const char* szString);
     unsigned int HashString(const char* szString, unsigned int length);

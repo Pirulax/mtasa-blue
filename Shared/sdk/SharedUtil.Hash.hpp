@@ -782,22 +782,18 @@ namespace SharedUtil
         w[1] = v1;
     }
 
-    void TeaDecode(const SString& str, const SString& key, SString* out)
+    void TeaDecode(const std::string_view toDecode, const std::string_view key, SString* out, const bool trimPaddingAtEnd)
     {
-        unsigned int v[2];
-        unsigned int w[2];
-        unsigned int k[4];
-        unsigned int keybuffer[4];
+        unsigned int v[2] = { 0 };
+        unsigned int w[2] = { 0 };
+        unsigned int k[4] = { 0 };
+        unsigned int keybuffer[4] = { 0 };
 
         // Clear buffers
-        memset(v, 0, sizeof(v));
-        memset(w, 0, sizeof(w));
-        memset(k, 0, sizeof(k));
-        memset(keybuffer, 0, sizeof(keybuffer));
         out->clear();
 
         // Count the number of passes that we need
-        int numBlocks = str.length() / 4;
+        int numBlocks = toDecode.length() / 4;
         int numPasses = numBlocks - 1;
 
         if (numPasses <= 0)
@@ -807,7 +803,7 @@ namespace SharedUtil
         int len = key.length();
         if (len > 16)
             len = 16;
-        memcpy(keybuffer, key.c_str(), len);
+        memcpy(keybuffer, key.data(), len);
         for (int i = 0; i < 4; ++i)
             k[i] = keybuffer[i];
 
@@ -816,7 +812,7 @@ namespace SharedUtil
         memset(buffer, 0, numPasses * 4 + 4);
 
         // Decode it!
-        const char* p = str.c_str();
+        const char* p = toDecode.data();
         v[1] = *(unsigned int*)&p[numPasses * 4];
         for (int i = 0; i < numPasses; ++i)
         {
@@ -828,5 +824,22 @@ namespace SharedUtil
 
         out->assign((char*)buffer, numPasses * 4);
         delete[] buffer;
+
+        if (trimPaddingAtEnd)
+        {
+            // Check last block for 0 padding, and delete
+
+            auto iter = out->end() - 1;
+            if (*iter-- != 0) // Early out, otherwise we'd delete a non-null character
+                return;
+
+            for (; iter != out->end() - 1 - 4; iter--) // Only check end() - 1 - 4, so the last block
+            {
+                if (*iter == 0)
+                    break;
+            }
+
+            out->erase(iter, out->end()); // At this point its 100% theres a 0 padding, so we can delete that
+        }
     }
 }            // namespace SharedUtil

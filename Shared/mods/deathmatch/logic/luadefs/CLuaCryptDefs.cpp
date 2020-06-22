@@ -59,11 +59,11 @@ std::string CLuaCryptDefs::TeaEncode(std::string_view str, std::string_view key)
     return SharedUtil::Base64encode(result);
 }
 
-std::string CLuaCryptDefs::TeaDecode(std::string str, std::string key)
+std::string CLuaCryptDefs::TeaDecode(std::string_view str, std::string_view key)
 {
-    SString result = SharedUtil::Base64decode(str);
+    SString result = SharedUtil::Base64decode(SString(str.data(), str.length())); // Construct temporary string from str_view
     SString strOutResult;
-    SharedUtil::TeaDecode(result, key, &strOutResult);
+    SharedUtil::TeaDecode(result, key, &strOutResult, trimEnd.value_or(false));
     return strOutResult;
 }
 
