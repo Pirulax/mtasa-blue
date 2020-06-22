@@ -52,7 +52,7 @@ std::string CLuaCryptDefs::Hash(EHashFunctionType hashFunction, std::string strS
     return GenerateHashHexString(hashFunction, strSourceData).ToLower();
 }
 
-std::string CLuaCryptDefs::TeaEncode(std::string str, std::string key)
+std::string CLuaCryptDefs::TeaEncode(std::string_view str, std::string_view key)
 {
     SString result;
     SharedUtil::TeaEncode(str, key, &result);

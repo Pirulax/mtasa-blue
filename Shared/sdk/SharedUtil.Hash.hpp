@@ -13,6 +13,7 @@
 #include "sha2.hpp"
 #include <random>
 #include <algorithm>
+#include <string_view>
 
 namespace bcrypt
 {
@@ -710,57 +711,52 @@ namespace SharedUtil
         w[1] = v1;
     }
 
-    void decodeXtea(unsigned int* v, unsigned int* w, unsigned int* k)
+    bool TeaEncode(const std::string_view toEncode, const std::string_view key, SString* out)
     {
-        unsigned int v0 = v[0], v1 = v[1], i, sum = 0xC6EF3720;
-        unsigned int delta = 0x9E3779B9;
-        for (i = 0; i < 32; i++)
-        {
-            v1 -= (((v0 << 4) ^ (v0 >> 5)) + v0) ^ (sum + k[(sum >> 11) & 3]);
-            sum -= delta;
-            v0 -= (((v1 << 4) ^ (v1 >> 5)) + v1) ^ (sum + k[sum & 3]);
-        }
-        w[0] = v0;
-        w[1] = v1;
-    }
+        // Zero-initalize our buffers
+        unsigned int v[2] = { 0 };
+        unsigned int w[2] = { 0 };
+        unsigned int k[4] = { 0 };
 
-    void TeaEncode(const SString& str, const SString& key, SString* out)
-    {
-        unsigned int v[2];
-        unsigned int w[2];
-        unsigned int k[4];
-        unsigned int keybuffer[4];
-
-        // Clear buffers
-        memset(v, 0, sizeof(v));
-        memset(w, 0, sizeof(w));
-        memset(k, 0, sizeof(k));
-        memset(keybuffer, 0, sizeof(keybuffer));
+        // Make sure out buffer is clear
         out->clear();
 
-        // Process the key
-        int len = key.length();
-        if (len > 16)
-            len = 16;
-        memcpy(keybuffer, key.c_str(), len);
-        for (int i = 0; i < 4; ++i)
-            k[i] = keybuffer[i];
+        // Copy input key into our buffer(thus casting it to unsigned ints)
+        // And trim key to max 16 chars
+        {
+            const size_t lenToCopy = std::min<size_t>(16, key.length()); // Max 16 chars
+            memcpy(k, key.data(), lenToCopy);
+        }
 
-        // Copy the input string to a buffer of size multiple of 4
-        int strbuflen = str.length();
-        if (strbuflen == 0)
-            return;
-        if ((strbuflen % 4) > 0)
-            strbuflen += 4 - (strbuflen % 4);
-        unsigned char* strbuf = new unsigned char[strbuflen];
-        memset(strbuf, 0, strbuflen);
-        memcpy(strbuf, str.c_str(), str.length());
+        const size_t toEncodeSize = toEncode.length();
+        const size_t leftoverAfterMultipleOf4 = toEncodeSize % 4;                 // Count of chars that out of the 'multiple of 4' block (at the end)
+        const size_t multipleOf4Size = toEncodeSize - leftoverAfterMultipleOf4;   // Round down to a multiple of 4 size
+
+        if (!toEncodeSize) // If empty
+            return false;
+
+        // Make sure the output has space for all the fresh data
+        out->reserve(toEncodeSize);
 
         // Encode it!
         v[1] = 0;
-        for (int i = 0; i < strbuflen; i += 4)
+        for (size_t i = 0; i < multipleOf4Size; i += 4)
         {
-            v[0] = *(unsigned int*)&strbuf[i];
+            v[0] = *(unsigned int*)&toEncode[i];
+
+            encodeXtea(&v[0], &w[0], &k[0]);
+            out->append((char*)&w[0], 4);
+
+            v[1] = w[1];
+        }
+
+        // Process data left that isn't a multiple of 4 at the end
+        if (multipleOf4Size != toEncodeSize)
+        {
+            v[0] = 0; // Clear it, becuase we may not set all bytes
+
+            // Copy leftover in the buffer into v[0]
+            memcpy(&v[0], &toEncode[multipleOf4Size], leftoverAfterMultipleOf4);
 
             encodeXtea(&v[0], &w[0], &k[0]);
             out->append((char*)&w[0], 4);
@@ -769,7 +765,8 @@ namespace SharedUtil
         }
         out->append((char*)&v[1], 4);
 
-        delete[] strbuf;
+        return true;
+    }
     }
 
     void TeaDecode(const SString& str, const SString& key, SString* out)

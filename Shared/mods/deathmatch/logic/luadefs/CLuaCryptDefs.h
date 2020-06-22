@@ -22,7 +22,7 @@ public:
 
     static std::string Hash(EHashFunctionType hashFunction, std::string strSourceData);
 
-    static std::string TeaEncode(std::string str, std::string key);
+    static std::string TeaEncode(std::string_view str, std::string_view key);
     static std::string TeaDecode(std::string str, std::string key);
     static std::string Base64encode(std::string str);
     static std::string Base64decode(std::string str);

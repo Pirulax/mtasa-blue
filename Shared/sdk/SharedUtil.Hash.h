@@ -9,6 +9,8 @@
  *
  *****************************************************************************/
 
+#include <string_view>
+
 namespace EHashFunction
 {
     enum EHashFunctionType
@@ -83,7 +85,10 @@ namespace SharedUtil
     void encodeXtea(unsigned int* v, unsigned int* w, unsigned int* k);
     void decodeXTea(unsigned int* v, unsigned int* w, unsigned int* k);
 
-    void TeaEncode(const SString& str, const SString& key, SString* out);
+    // Use shrinkToOriginalSize if you want str().size == out.size(), otherwise this function may
+    // Append 0 padding to the end, to be a multiple of 4
+    bool TeaEncode(const std::string_view str, const std::string_view key, SString* out);
+
     void TeaDecode(const SString& str, const SString& key, SString* out);
 
     unsigned int HashString(const char* szString);
