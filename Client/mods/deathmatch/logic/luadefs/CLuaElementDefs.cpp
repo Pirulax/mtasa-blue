@@ -23,6 +23,7 @@ void CLuaElementDefs::LoadFunctions()
         {"getElementByID", GetElementByID},
         {"getElementByIndex", GetElementByIndex},
         {"getElementData", GetElementData},
+        {"getAllElementData", ArgumentParser<GetAllElementData>},
         {"getElementMatrix", GetElementMatrix},
         {"getElementPosition", GetElementPosition},
         {"getElementRotation", GetElementRotation},
@@ -222,6 +223,14 @@ void CLuaElementDefs::AddClass(lua_State* luaVM)
     // TODO: Support element data: player.data["age"] = 1337; <=> setElementData(player, "age", 1337)
 
     lua_registerclass(luaVM, "Element");
+}
+
+std::unordered_map<std::string_view, CLuaArgument*> CLuaElementDefs::GetAllElementData(CClientEntity* const element)
+{
+    std::unordered_map<std::string_view, CLuaArgument*> datas;
+    for (const auto& [name, data] : element->GetCustomDataPointer()->GetAll())
+        datas.emplace(name, &data);
+    return datas;
 }
 
 int CLuaElementDefs::GetRootElement(lua_State* luaVM)

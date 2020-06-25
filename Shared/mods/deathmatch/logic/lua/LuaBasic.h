@@ -68,6 +68,11 @@ namespace lua
         return 1;
     }
 
+    inline int Push(lua_State* L, const std::string_view& strview)
+    {
+        lua_pushlstring(L, strview.data(), strview.length());
+    }
+
     inline int Push(lua_State* L, const CLuaArgument& arg)
     {
         if (arg.GetType() == LUA_TNONE)
@@ -91,6 +96,12 @@ namespace lua
         else
             return Push(L, nullptr);
      }
+
+    template<typename T>
+    int Push(lua_State* L, T* ptr)
+    {
+        return Push(L, *ptr);
+    }
 
     template <typename T>
     int Push(lua_State* L, const std::vector<T>&& val)

@@ -4,7 +4,6 @@
 ** See Copyright Notice in lua.h
 */
 
-
 #ifndef lauxlib_h
 #define lauxlib_h
 
@@ -13,7 +12,6 @@
 #include <stdio.h>
 
 #include "lua.h"
-
 
 #if defined(LUA_COMPAT_GETN)
 LUALIB_API int (luaL_getn) (lua_State *L, int t);

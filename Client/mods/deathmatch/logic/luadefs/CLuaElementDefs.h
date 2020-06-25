@@ -27,6 +27,7 @@ public:
     LUA_DECLARE(GetElementByID);
     LUA_DECLARE(GetElementByIndex);
     LUA_DECLARE(GetElementData);
+    static std::unordered_map<std::string_view, CLuaArgument*> GetAllElementData(CClientEntity* const element);
     LUA_DECLARE(HasElementData);
     LUA_DECLARE(GetElementParent);
     LUA_DECLARE_OOP(GetElementMatrix);

@@ -32,6 +32,7 @@ public:
 
     std::map<std::string, SCustomData>::const_iterator IterBegin() { return m_Data.begin(); }
     std::map<std::string, SCustomData>::const_iterator IterEnd() { return m_Data.end(); }
+    const auto& GetAll() const { return m_Data; }
 
 private:
     std::map<std::string, SCustomData> m_Data;
