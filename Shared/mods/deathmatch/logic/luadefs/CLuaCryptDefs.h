@@ -20,7 +20,7 @@ public:
 
     static std::string Md5(std::string strMd5);
 
-    static std::string Hash(EHashFunctionType hashFunction, std::string strSourceData);
+    LUA_DECLARE(Hash);
 
     static std::string TeaEncode(std::string str, std::string key);
     static std::string TeaDecode(std::string str, std::string key);

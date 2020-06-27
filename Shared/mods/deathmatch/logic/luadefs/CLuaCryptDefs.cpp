@@ -47,9 +47,54 @@ std::string CLuaCryptDefs::Sha256(std::string strSourceData)
     return GenerateSha256HexString(strSourceData);
 }
 
-std::string CLuaCryptDefs::Hash(EHashFunctionType hashFunction, std::string strSourceData)
+int CLuaCryptDefs::Hash(lua_State* luaVM)
 {
-    return GenerateHashHexString(hashFunction, strSourceData).ToLower();
+    //  bool / string hash(string functype, string data, [, function callback(hashInHex)])
+    SString             toHashData;
+    EHashFunctionType   hashFuncType;
+    CLuaFunctionRef     callbackLuaFuncRef;
+
+    CScriptArgReader argStream(luaVM);
+    argStream.ReadEnumString(hashFuncType);
+    argStream.ReadString(toHashData);
+
+    if (!argStream.HasErrors())
+    {
+        if (argStream.NextIsFunction()) // Async
+        {
+            argStream.ReadFunction(callbackLuaFuncRef);
+            argStream.ReadFunctionComplete();
+
+            CLuaShared::GetAsyncTaskScheduler()->PushTask<SString>(
+                [hashFuncType, toHashData = std::move(toHashData)]{
+                    return GenerateHashHexString(hashFuncType, toHashData).ToLower();
+                },
+                [callbackLuaFuncRef](const SString& hashedDataAsHex)
+                {
+                    if (CLuaMain* pLuaMain = callbackLuaFuncRef.GetLuaMain())
+                    {
+                        CLuaArguments args;
+                        args.PushString(hashedDataAsHex);
+                        args.Call(pLuaMain, callbackLuaFuncRef);
+                    }
+                }
+            );
+
+            lua_pushboolean(luaVM, true);
+            return 1;
+        }
+        else // Sync
+        {
+            const auto hashedHex = GenerateHashHexString(hashFuncType, toHashData).ToLower();
+            lua_pushlstring(luaVM, hashedHex.data(), hashedHex.length());
+            return 1;
+        }
+    }
+    else
+        m_pScriptDebugging->LogCustom(luaVM, argStream.GetFullErrorMessage());
+
+    lua_pushboolean(luaVM, false);
+    return 1;
 }
 
 std::string CLuaCryptDefs::TeaEncode(std::string str, std::string key)
