@@ -139,6 +139,12 @@ lua_State* CLuaFunctionRef::GetLuaVM() const
     return m_luaVM;
 }
 
+// Returns 0 if VM has closed
+CLuaMain* CLuaFunctionRef::GetLuaMain() const
+{
+    return g_pClientGame->GetLuaManager()->GetVirtualMachine(GetLuaVM());
+}
+
 bool CLuaFunctionRef::operator==(const CLuaFunctionRef& other) const
 {
     return m_luaVM == other.m_luaVM && m_iFunction == other.m_iFunction;
