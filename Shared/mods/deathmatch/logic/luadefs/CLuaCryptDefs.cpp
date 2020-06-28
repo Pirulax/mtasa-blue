@@ -50,9 +50,9 @@ std::string CLuaCryptDefs::Sha256(std::string strSourceData)
 int CLuaCryptDefs::Hash(lua_State* luaVM)
 {
     //  bool / string hash(string functype, string data, [, function callback(hashInHex)])
-    SString             toHashData;
-    EHashFunctionType   hashFuncType;
-    CLuaFunctionRef     callbackLuaFuncRef;
+    std::string_view  toHashData;
+    EHashFunctionType hashFuncType;
+    CLuaFunctionRef   callbackLuaFuncRef;
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadEnumString(hashFuncType);
@@ -66,7 +66,7 @@ int CLuaCryptDefs::Hash(lua_State* luaVM)
             argStream.ReadFunctionComplete();
 
             CLuaShared::GetAsyncTaskScheduler()->PushTask<SString>(
-                [hashFuncType, toHashData = std::move(toHashData)]{
+                [hashFuncType, toHashData = std::string(toHashData)]{
                     return GenerateHashHexString(hashFuncType, toHashData).ToLower();
                 },
                 [callbackLuaFuncRef](const SString& hashedDataAsHex)
