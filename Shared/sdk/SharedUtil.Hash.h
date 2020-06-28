@@ -102,6 +102,7 @@ namespace SharedUtil
     SString GenerateSha256HexStringFromFile(const SString& strFilename);
     SString GenerateHashHexString(EHashFunctionType hashFunction, const void* pData, uint uiLength);
     SString GenerateHashHexString(EHashFunctionType hashFunction, const SString& strData);
+    SString GenerateHashHexString(EHashFunctionType hashFunction, const std::string& strData);
     SString GenerateHashHexStringFromFile(EHashFunctionType hashFunction, const SString& strFilename, int iMaxSize = INT_MAX, int iOffset = 0);
 #ifdef __cpp_lib_string_view
     SString GenerateHashHexString(EHashFunctionType hashFunction, std::string_view toHashData);

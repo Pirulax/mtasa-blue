@@ -615,6 +615,11 @@ namespace SharedUtil
         return GenerateHashHexString(hashFunction, *strData, strData.length());
     }
 
+    SString GenerateHashHexString(EHashFunctionType hashFunction, const std::string& strData)
+    {
+        return GenerateHashHexString(hashFunction, strData.c_str(), strData.length());
+    }
+
     SString GenerateHashHexStringFromFile(EHashFunctionType hashFunction, FILE* fh, uint uiMaxSize, int iOffset)
     {
         unsigned char buf[32768];
