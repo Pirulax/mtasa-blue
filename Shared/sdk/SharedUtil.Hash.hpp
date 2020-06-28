@@ -13,6 +13,7 @@
 #include "sha2.hpp"
 #include <random>
 #include <algorithm>
+#include <string_view>
 
 namespace bcrypt
 {
@@ -601,6 +602,13 @@ namespace SharedUtil
         };
         return "";
     }
+
+#ifdef __cpp_lib_string_view
+    SString GenerateHashHexString(EHashFunctionType hashFunction, std::string_view toHashData)
+    {
+        return GenerateHashHexString(hashFunction, toHashData.data(), toHashData.length());
+    }
+#endif
 
     SString GenerateHashHexString(EHashFunctionType hashFunction, const SString& strData)
     {
