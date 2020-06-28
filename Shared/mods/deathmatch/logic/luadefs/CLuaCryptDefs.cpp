@@ -16,7 +16,7 @@ void CLuaCryptDefs::LoadFunctions()
     constexpr static const std::pair<const char*, lua_CFunction> functions[]{
         {"md5", ArgumentParserWarn<false, Md5>},
         {"sha256", ArgumentParserWarn<false, Sha256>},
-        {"hash", ArgumentParserWarn<false, Hash>},
+        {"hash", Hash},
         {"teaEncode", ArgumentParserWarn<false, TeaEncode>},
         {"teaDecode", ArgumentParserWarn<false, TeaDecode>},
         {"base64Encode", ArgumentParserWarn<false, Base64encode>},
