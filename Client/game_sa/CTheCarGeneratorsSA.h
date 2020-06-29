@@ -9,15 +9,20 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CTheCarGenerators.h>
 #include "Common.h"
 
+#dummy
 #include "CCarGeneratorSA.h"
 
+#dummy
 #define MAX_CAR_GENERATORS      500
 
+#dummy
 #define ARRAY_CarGenerators     0xC27AD0
 
 class CTheCarGeneratorsSA : public CTheCarGenerators

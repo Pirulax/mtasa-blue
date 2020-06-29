@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <core/CExceptionInformation.h>
 #include <windows.h>
 

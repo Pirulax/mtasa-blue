@@ -8,13 +8,16 @@
  *  Multi Theft Auto is available from http://www.multitheftauto.com/
  *
  *****************************************************************************/
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUIWebBrowser.h>
 #include "CGUITexture_Impl.h"
 #include <renderers/directx9GUIRenderer/d3d9texture.h>
 
 // Use StaticImage here as we'd have to add the same definition twice to the Falagard definition file otherwise
+#dummy
 #define CGUIWEBBROWSER_NAME "CGUI/StaticImage"
 
 class CGUITexture;
@@ -59,6 +62,7 @@ private:
 
     CWebViewInterface* m_pWebView;
 
+#dummy
     #define EXCLUDE_SET_SIZE // WTF? TODO: Refactor this
     #include "CGUIElement_Inc.h"
     #undef EXCLUDE_SET_SIZE

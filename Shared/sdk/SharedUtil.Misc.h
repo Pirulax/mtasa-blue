@@ -459,7 +459,8 @@ namespace SharedUtil
         void operator<<=(int);
 
     public:
-        union {
+        union
+        {
             struct
             {
                 unsigned char B, G, R, A;

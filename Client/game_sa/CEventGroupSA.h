@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CEventGroup.h>
 
+#dummy
 #define FUNC_CEventGroup_Add          0x4ab420
 
 class CEventGroupSAInterface

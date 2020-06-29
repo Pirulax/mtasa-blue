@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 bool CCarEnterExitSA::GetNearestCarDoor(CPed* pPed, CVehicle* pVehicle, CVector* pVector, int* pDoor)

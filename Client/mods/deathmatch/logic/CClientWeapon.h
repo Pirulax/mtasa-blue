@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CWeaponInfo.h>
 #include "CClientObject.h"
 
@@ -66,10 +68,13 @@ public:
 
     void Fire(bool bServerFire = false);
 
+#dummy
 #ifdef SHOTGUN_TEST
     void FireInstantHit(CVector& vecOrigin, CVector& vecTarget, CVector& vecRotation, bool bRemote = false);
+#dummy
 #else
     void FireInstantHit(CVector vecOrigin, CVector vecTarget, bool bServerFire = false, bool bRemote = false);
+#dummy
 #endif
     void FireShotgun(CEntity* pFiringEntity, const CVector& vecOrigin, const CVector& vecTarget, CVector& vecRotation);
 

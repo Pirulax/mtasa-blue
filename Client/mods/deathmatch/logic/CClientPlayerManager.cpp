@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define REMOTE_PLAYER_CONNECTION_TROUBLE_TIME 6000
 
 using std::list;

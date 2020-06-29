@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CFire.h>
 #include "Common.h"
 #include "CEntitySA.h"
 
+#dummy
 #define FUNC_Extinguish                 0x5393F0        //  ##SA##
 #define FUNC_CreateFxSysForStrength     0x539360        //  ##SA##
 

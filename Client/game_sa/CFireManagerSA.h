@@ -9,23 +9,31 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CFireManager.h>
 #include "Common.h"
 #include "CFireSA.h"
 
+#dummy
 #define FUNC_ExtinguishPoint            0x539450
 
+#dummy
 #define FUNC_StartFire                  0x48EC30
 #define FUNC_StartFire_Vec              0x539F00 // ##SA##
 
+#dummy
 #define ARRAY_CFire             (VAR_CFireCount + 4)
 
+#dummy
 #define CLASS_CFireManager      0xB71F80 //##SA##
 
+#dummy
 #define DEFAULT_FIRE_PARTICLE_SIZE      1.8
 
+#dummy
 #define MAX_FIRES               60 //##SA##
 
 class CFireManagerSA : public CFireManager

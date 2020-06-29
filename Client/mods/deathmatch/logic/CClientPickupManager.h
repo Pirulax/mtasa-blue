@@ -10,8 +10,10 @@
 
 class CClientPickupManager;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientManager.h"
 #include "CClientPickup.h"
 #include <list>

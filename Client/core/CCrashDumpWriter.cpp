@@ -9,10 +9,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include <game/CGame.h>
 #include <multiplayer/CMultiplayer.h>
 
+#dummy
 #define LOG_EVENT_SIZE 200
 
 struct SLogEventInfo
@@ -42,12 +44,12 @@ static std::list<SLogEventInfo>            ms_LogEventList;
 static CDuplicateLineFilter<SLogEventLine> ms_LogEventFilter;
 static std::map<int, SCrashAvertedInfo>    ms_CrashAvertedMap;
 // Hardware Breakpoint Addresses
-static std::set<DWORD>                     ms_setOfHWBPAddresses;
-static uint                                ms_uiTickCountBase = 0;
-static void*                               ms_pReservedMemory = NULL;
-static uint                                ms_uiInCrashZone = 0;
-static uint                                ms_uiInvalidParameterCount = 0;
-static uint                                ms_uiInvalidParameterCountLogged = 0;
+static std::set<DWORD> ms_setOfHWBPAddresses;
+static uint            ms_uiTickCountBase = 0;
+static void*           ms_pReservedMemory = NULL;
+static uint            ms_uiInCrashZone = 0;
+static uint            ms_uiInvalidParameterCount = 0;
+static uint            ms_uiInvalidParameterCountLogged = 0;
 
 typedef BOOL(WINAPI* MINIDUMPWRITEDUMP)(HANDLE hProcess, DWORD dwPid, HANDLE hFile, MINIDUMP_TYPE DumpType,
                                         CONST PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam, CONST PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
@@ -120,11 +122,13 @@ void CCrashDumpWriter::LogEvent(const char* szType, const char* szContext, const
 ///////////////////////////////////////////////////////////////
 void CCrashDumpWriter::SetHandlers()
 {
+#dummy
 #ifndef MTA_DEBUG
     _set_invalid_parameter_handler(CCrashDumpWriter::HandleInvalidParameter);
     SetCrashHandlerFilter(CCrashDumpWriter::HandleExceptionGlobal);
     AddVectoredExceptionHandler(TRUE, CCrashDumpWriter::HandleExceptionHardWareBreakPoint);
     CCrashDumpWriter::ReserveMemoryKBForCrashDumpProcessing(500);
+#dummy
 #endif
 }
 
@@ -235,8 +239,10 @@ long WINAPI CCrashDumpWriter::HandleExceptionGlobal(_EXCEPTION_POINTERS* pExcept
         else
         {
             // Continue if we're in debug mode, if not terminate
+#dummy
             #ifdef MTA_DEBUG
             return EXCEPTION_CONTINUE_SEARCH;
+#dummy
             #endif
         }
     }
@@ -252,18 +258,18 @@ long WINAPI CCrashDumpWriter::HandleExceptionGlobal(_EXCEPTION_POINTERS* pExcept
 LONG WINAPI CCrashDumpWriter::HandleExceptionHardWareBreakPoint(PEXCEPTION_POINTERS ExceptionInfo)
 {
     PEXCEPTION_RECORD ExceptionRecord = ExceptionInfo->ExceptionRecord;
-    PCONTEXT ContextRecord = ExceptionInfo->ContextRecord;
+    PCONTEXT          ContextRecord = ExceptionInfo->ContextRecord;
     if (ExceptionRecord->ExceptionCode == EXCEPTION_SINGLE_STEP || ExceptionRecord->ExceptionCode == EXCEPTION_BREAKPOINT)
     {
         DWORD dwBreakPointAddress = 0;
         if (GetHardWareBreakPointAddress(ContextRecord, dwBreakPointAddress))
         {
-            for (auto & address : ms_setOfHWBPAddresses)
+            for (auto& address : ms_setOfHWBPAddresses)
             {
                 if (address == dwBreakPointAddress)
                 {
-                    LogEvent( "\n\nHandleExceptionHardWareBreakPoint", "Hardware Breakpoint HIT",
-                    SString("Exception Address: %p | Breakpoint Address: %p\n\n", ExceptionRecord->ExceptionAddress, dwBreakPointAddress));
+                    LogEvent("\n\nHandleExceptionHardWareBreakPoint", "Hardware Breakpoint HIT",
+                             SString("Exception Address: %p | Breakpoint Address: %p\n\n", ExceptionRecord->ExceptionAddress, dwBreakPointAddress));
                     return EXCEPTION_CONTINUE_EXECUTION;
                 }
             }
@@ -589,6 +595,7 @@ void CCrashDumpWriter::RunErrorTool(CExceptionInformation* pExceptionInformation
     SetCurrentDirectory(strMTASAPath);
     SetDllDirectory(strMTASAPath);
 
+#dummy
 #ifdef MTA_DEBUG
     #define MTA_EXE_NAME            "Multi Theft Auto_d.exe"
 #else
@@ -627,6 +634,7 @@ void CCrashDumpWriter::AppendToDumpFile(const SString& strPathFilename, const CB
 //
 namespace
 {
+#dummy
     #define CLASS_CBuildingPool                 0xb74498
     #define CLASS_CPedPool                      0xb74490
     #define CLASS_CObjectPool                   0xb7449c
@@ -645,6 +653,7 @@ namespace
     #define CLASS_CPtrNodeDoubleLinkPool        0xB74488
     #define CLASS_CPtrNodeSingleLinkPool        0xB74484
 
+#dummy
     #define FUNC_CBuildingPool_GetNoOfUsedSpaces                0x550620
     #define FUNC_CPedPool_GetNoOfUsedSpaces                     0x5504A0
     #define FUNC_CObjectPool_GetNoOfUsedSpaces                  0x54F6B0

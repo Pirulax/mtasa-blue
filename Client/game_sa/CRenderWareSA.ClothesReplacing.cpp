@@ -6,6 +6,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "gamesa_renderware.h"
 
@@ -149,6 +150,7 @@ __declspec(noinline) bool _cdecl OnCStreaming_RequestModel_Mid(int flags, SImgGT
         return false;
 
         // If bLoadingBigModel is set, try to get it unset
+#dummy
     #define VAR_CStreaming_bLoadingBigModel     0x08E4A58
     BYTE& bLoadingBigModel = *(BYTE*)VAR_CStreaming_bLoadingBigModel;
     if (bLoadingBigModel)
@@ -173,6 +175,7 @@ __declspec(noinline) bool _cdecl OnCStreaming_RequestModel_Mid(int flags, SImgGT
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CStreaming_RequestModel_Mid             0x040895A
 #define HOOKSIZE_CStreaming_RequestModel_Mid            5
 DWORD RETURN_CStreaming_RequestModel_MidA = 0x0408960;

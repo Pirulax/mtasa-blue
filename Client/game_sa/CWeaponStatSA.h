@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 #include "CWeaponInfoSA.h"
 class CWeaponStatSA : public CWeaponStat

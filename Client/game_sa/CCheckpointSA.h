@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CCheckpoint.h>
 #include <CMatrix_Pad.h>
 #include "Common.h"

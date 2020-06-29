@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CConsoleInterface.h"
 #include "CCommandsInterface.h"
 #include "CRenderItemManagerInterface.h"
@@ -42,10 +44,12 @@ enum eCoreVersion
     MTACORE_20 = 1,
 };
 
+#dummy
 #ifndef WITH_TIMING_CHECKPOINTS
     #define WITH_TIMING_CHECKPOINTS 1     // Comment this line to remove timing checkpoint code
 #endif
 
+#dummy
 #if WITH_TIMING_CHECKPOINTS
     #define IS_TIMING_CHECKPOINTS()     g_pCore->IsTimingCheckpoints ()
     #define TIMING_CHECKPOINT(x)        g_pCore->OnTimingCheckpoint ( x )

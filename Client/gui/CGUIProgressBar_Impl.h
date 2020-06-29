@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUIProgressBar.h>
 #include "CGUIElement_Impl.h"
 
@@ -25,6 +27,7 @@ public:
 
     eCGUIType GetType() { return CGUI_PROGRESSBAR; };
 
+#dummy
     #include "CGUIElement_Inc.h"
 
 private:

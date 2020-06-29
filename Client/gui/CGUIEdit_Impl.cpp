@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define CGUIEDIT_NAME "CGUI/Editbox"
 
 CGUIEdit_Impl::CGUIEdit_Impl(CGUI_Impl* pGUI, CGUIElement* pParent, const char* szEdit)

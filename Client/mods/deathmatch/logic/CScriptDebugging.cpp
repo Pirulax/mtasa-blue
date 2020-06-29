@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 FILE* CScriptDebugging::m_pLogFile;
@@ -127,9 +128,11 @@ void CScriptDebugging::UpdateLogOutput()
         {
             PrintLog(line.strText);
         }
+#dummy
     #ifdef MTA_DEBUG
         if (!g_pCore->IsDebugVisible())
             return;
+#dummy
     #endif
         g_pCore->DebugEchoColor(line.strText, line.ucRed, line.ucGreen, line.ucBlue);
     }

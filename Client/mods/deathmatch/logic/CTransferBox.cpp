@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
+#dummy
 #define TRANSFERBOX_HEIGHT      58
 #define TRANSFERBOX_ICONSIZE    20
 #define TRANSFERBOX_PROGRESSHEIGHT  28

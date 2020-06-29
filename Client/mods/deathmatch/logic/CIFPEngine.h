@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "game/CAnimBlendHierarchy.h"
 class CAnimBlendHierarchy;
 
@@ -28,6 +30,7 @@ public:
                                                               const SString& strCustomBlockName, const SString& strCustomAnimName);
     static bool                        EngineRestoreAnimation(CClientEntity* pEntity, const SString& strInternalBlockName, const SString& strInternalAnimName,
                                                               const eRestoreAnimation& eRestoreType);
-    static bool                        EngineApplyAnimation(CClientPed& Ped, CAnimBlendHierarchySAInterface* pOriginalHierarchyInterface, CAnimBlendHierarchySAInterface* pAnimHierarchyInterface);
+    static bool                        EngineApplyAnimation(CClientPed& Ped, CAnimBlendHierarchySAInterface* pOriginalHierarchyInterface,
+                                                            CAnimBlendHierarchySAInterface* pAnimHierarchyInterface);
     static bool                        IsIFPData(const SString& strData);
 };

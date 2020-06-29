@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CVehicle.h"
 
 class CQuadBike : public virtual CVehicle

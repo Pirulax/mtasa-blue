@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 template <>
@@ -260,6 +261,7 @@ void CClientVariables::ValidateValues()
 
 void CClientVariables::LoadDefaults()
 {
+#dummy
     #define DEFAULT(__x,__y)    if(!Exists(__x)) \
                                 Set(__x,__y)
     #define _S(__x)             std::string(__x)
@@ -351,7 +353,7 @@ void CClientVariables::LoadDefaults()
     DEFAULT("browser_remote_javascript", true);                                       // Execute javascript on remote websites?
     DEFAULT("filter_duplicate_log_lines", true);                                      // Filter duplicate log lines for debug view and clientscript.log
     DEFAULT("discord_rich_presence", true);                                           // Enable Discord Game SDK
-    DEFAULT("_beta_qc_rightclick_command", _S("reconnect"));                          // Command to run when right clicking quick connect (beta - can be removed at any time)
+    DEFAULT("_beta_qc_rightclick_command", _S("reconnect"));            // Command to run when right clicking quick connect (beta - can be removed at any time)
 
     if (!Exists("locale"))
     {
@@ -368,7 +370,9 @@ void CClientVariables::LoadDefaults()
     }
 
     // We will default this one during CProxyDirect3DDevice9 constructor, because we need a valid direct3d device to give a proper default value.
+#dummy
 #if 0
     DEFAULT ( "streaming_memory",           50 );                           // Streaming memory
+#dummy
 #endif
 }

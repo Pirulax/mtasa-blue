@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define CGUITABPANEL_NAME "CGUI/TabControl"
 
 CGUITabPanel_Impl::CGUITabPanel_Impl(CGUI_Impl* pGUI, CGUIElement* pParent)

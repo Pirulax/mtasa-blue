@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/TaskPhysicalResponse.h>
 #include "TaskSA.h"
 
+#dummy
 #define FUNC_CTaskSimpleChoking__Constructor                0x6202C0
 #define FUNC_CTaskSimpleChoking__UpdateChoke                0x620660
 

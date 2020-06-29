@@ -8,9 +8,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CLanguageSelector.h"
 
+#dummy
 #define FLAG_SIZE_X             26
 #define FLAG_SIZE_Y             16
 #define FLAG_LABEL_GAP_X        10    // Gap between flag and label
@@ -20,14 +22,17 @@
 #define LABEL_OFFSET_Y          ((FLAG_SIZE_Y - LABEL_SIZE_Y) / 2)
 
 // Flag 'n' label combo
+#dummy
 #define ITEM_SIZE_X             145
 #define ITEM_SIZE_Y             30
 
 // Current language button
+#dummy
 #define BUTTON_MARGIN_X         20
 #define BUTTON_MARGIN_Y         5
 
 // All languages list
+#dummy
 #define LIST_MARGIN_X           22
 #define LIST_MARGIN_Y           13
 #define LIST_ITEM_SPACING_X     12

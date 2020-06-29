@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CFxSystem.h>
 
+#dummy
 #define FUNC_FxSystem_c__AddParticle            0x004AA440
 #define FUNC_FxSystem_c__AttachToBone           0x004AA400
 #define FUNC_FxSystem_c__CopyParentMatrix       0x004AA890

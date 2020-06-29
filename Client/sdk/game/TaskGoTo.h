@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Task.h"
 #include "CPathFind.h"
 
@@ -26,6 +28,7 @@ enum
     WANDER_TYPE_PROSTITUTE
 };
 
+#dummy
 #define NO_WANDER_TYPE      9999
 
 class CTaskComplexWander : public virtual CTaskComplex

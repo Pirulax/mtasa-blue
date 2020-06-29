@@ -7,6 +7,7 @@
  *  PURPOSE:     Web view class
  *
  *****************************************************************************/
+#dummy
 #include "StdInc.h"
 #include "CWebView.h"
 #include "CAjaxResourceHandler.h"
@@ -450,7 +451,8 @@ bool CWebView::GetFullPathFromLocal(SString& strPath)
                 return;
 
             result = m_pEventsInterface->Events_OnResourcePathCheck(strPath);
-    }, this);
+        },
+        this);
 
     return result;
 }
@@ -496,7 +498,8 @@ bool CWebView::VerifyFile(const SString& strPath, CBuffer& outFileData)
                 return;
 
             result = m_pEventsInterface->Events_OnResourceFileCheck(strPath, outFileData);
-    }, this);
+        },
+        this);
 
     return result;
 }
@@ -832,7 +835,7 @@ bool CWebView::OnBeforeBrowse(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame>
 //                                                                //
 ////////////////////////////////////////////////////////////////////
 CefResourceRequestHandler::ReturnValue CWebView::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request,
-                                                              CefRefPtr<CefRequestCallback> callback)
+                                                                      CefRefPtr<CefRequestCallback> callback)
 {
     // Mostly the same as CWebView::OnBeforeBrowse
     CefURLParts urlParts;

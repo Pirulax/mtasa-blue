@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CServerCache.h"
 
@@ -19,6 +20,7 @@ extern CCore* g_pCore;
 template <>
 CServerBrowser* CSingleton<CServerBrowser>::m_pSingleton = NULL;
 
+#dummy
 #define SB_SPAN 0.85f                  // How much % of the screen the server browser should fill
 #define SB_NAVBAR_SIZE_Y 40            // Navbar button size
 #define SB_BUTTON_SIZE_X 26
@@ -32,6 +34,7 @@ CServerBrowser* CSingleton<CServerBrowser>::m_pSingleton = NULL;
 #define COMBOBOX_ARROW_SIZE_X 23            // Fixed CEGUI size of the 'combobox' arrow
 #define TAB_SIZE_Y 25                       // Fixed CEGUI size of the Tab in a tab panel
 
+#dummy
 #define CONNECT_HISTORY_LIMIT 20
 
 //
@@ -495,10 +498,13 @@ void CServerBrowser::CreateTab(ServerBrowserType type, const char* szName)
     m_pIncludeLocked[type]->AutoSize(m_pIncludeLocked[type]->GetText().c_str(), 20.0f);
     m_pIncludeLocked[type]->SetClickHandler(GUI_CALLBACK(&CServerBrowser::OnFilterChanged, this));
 
+#dummy
 #if MTA_DEBUG
     if (type != ServerBrowserTypes::LAN)
+#dummy
 #else
     if (type != ServerBrowserTypes::INTERNET && type != ServerBrowserTypes::LAN)
+#dummy
 #endif
     {
         fX = fX + 20.0f + pManager->GetTextExtent(m_pIncludeLocked[type]->GetText().c_str()) + SB_SPACER;
@@ -790,6 +796,7 @@ void CServerBrowser::UpdateServerList(ServerBrowserType Type, bool bClearServerL
 {
     GetVersionUpdater()->GetBrowseVersionMaps(m_blockedVersionMap, m_allowedVersionMap);
 
+#dummy
 #if MTA_DEBUG
     // Selecting 'Nightly update' in debug build will show other versions
     SString strUpdateBuildType;
@@ -799,6 +806,7 @@ void CServerBrowser::UpdateServerList(ServerBrowserType Type, bool bClearServerL
         m_blockedVersionMap.clear();
         m_allowedVersionMap.clear();
     }
+#dummy
 #endif
 
     // Setting this in coreconfig will show other versions
@@ -1066,6 +1074,7 @@ void CServerBrowser::AddServerToList(const CServerListItem* pServer, const Serve
         // Colours
         SColor color = SColorRGBA(255, 255, 255, 255);
 
+#dummy
 #if MTA_DEBUG
         if (pServer->uiCacheNoReplyCount)
             color.R /= 2;
@@ -1073,6 +1082,7 @@ void CServerBrowser::AddServerToList(const CServerListItem* pServer, const Serve
             color.G /= 2;
         if (pServer->uiMasterServerSaysRestrictions)
             color.B /= 4;
+#dummy
 #endif
         if (bIsOtherVersion)
             color.B /= 2;

@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 ////////////////////////////////////////////////////////////////
@@ -135,8 +136,8 @@ CClientTexture* CClientRenderElementManager::CreateTexture(const SString& strFul
 //
 //
 ////////////////////////////////////////////////////////////////
-CClientShader* CClientRenderElementManager::CreateShader(const SString& strFile, const SString& strRootPath, bool bIsRawData, SString& strOutStatus, float fPriority,
-                                                         float fMaxDistance, bool bLayered, bool bDebug, int iTypeMask)
+CClientShader* CClientRenderElementManager::CreateShader(const SString& strFile, const SString& strRootPath, bool bIsRawData, SString& strOutStatus,
+                                                         float fPriority, float fMaxDistance, bool bLayered, bool bDebug, int iTypeMask)
 {
     // Create the item
     CShaderItem* pShaderItem =

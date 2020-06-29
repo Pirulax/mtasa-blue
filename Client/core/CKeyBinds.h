@@ -11,12 +11,15 @@
 
 class CKeyBinds;
 
+#dummy
 #pragma once
 
+#dummy
 #include <windows.h>
 #include <string.h>
 #include <list>
 
+#dummy
 #include <core/CCoreInterface.h>
 #include <core/CCommandsInterface.h>
 

@@ -9,14 +9,18 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CMenuManager.h>
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#dummy
 #define CLASS_CMenuManager          0xBA6748
 
+#dummy
 #define FUNC_SwitchToNewScreen      0x573680
 #define FUNC_DisplayHelperText      0x57E240
 

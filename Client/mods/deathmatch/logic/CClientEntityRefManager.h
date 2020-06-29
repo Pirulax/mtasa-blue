@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #ifdef MTA_DEBUG
     #define ENTITY_REF_DEBUG( ptr, desc ) \
         SString ( "%08x %s", (int)ptr, desc )

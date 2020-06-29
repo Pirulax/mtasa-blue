@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <string>
 #include <list>
 #include <vector>

@@ -9,14 +9,18 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CModelInfoSA.h"
 #include "CObjectGroupPhysicalPropertiesSA.h"
 #include "CFxManagerSA.h"
 
+#dummy
 #define     MAX_MEMORY_OFFSET_1_0           0xCAF008
 
+#dummy
 #define     CLASS_CPlayerInfo               0xB7CD98    // ##SA##
 #define     CLASS_CCamera                   0xB6F028    // ##SA##
 #define     CLASS_CPad                      0xB73458    // ##SA##
@@ -25,22 +29,28 @@
 #define     CLASS_CFxManager                0xA9AE80    // ##SA##
 #define     CLASS_CMenuManager              0xBA6748    // ##SA##
 
+#dummy
 #define     CLASS_RwCamera                  0xB6F97C
 
+#dummy
 #define     ARRAY_WeaponInfo                0xC8AAB8    // ##SA##
 #define     CLASSSIZE_WeaponInfo            112         // ##SA##
 #define     NUM_WeaponInfosStdSkill         WEAPONTYPE_LAST_WEAPONTYPE
 #define     NUM_WeaponInfosOtherSkill       11
 #define     NUM_WeaponInfosTotal            (NUM_WeaponInfosStdSkill + (3*NUM_WeaponInfosOtherSkill)) // std, (poor, pro, special)
 
+#dummy
 #define     MODELINFO_MAX                   26000       // Actual max is 25755
 #define     OBJECTDYNAMICINFO_MAX           160
 
+#dummy
 #define     FUNC_GetLevelFromPosition       0x4DD300
 
+#dummy
 #define     FUNC_CDebug_DebugDisplayTextBuffer      0x532260
 #define     FUNC_JPegCompressScreenToFile   0x5D0820
 
+#dummy
 #define     VAR_FlyingCarsEnabled           0x969160 // ##SA##
 #define     VAR_ExtraBunnyhopEnabled        0x969161 // ##SA##
 #define     VAR_HoveringCarsEnabled         0x969152 // ##SA##
@@ -61,6 +71,7 @@
 #define     VAR_HealthArmorMoney            0x969133 // ##SA##
 #define     VAR_WalkUnderwater              0x6C2759
 
+#dummy
 #define CHEAT_HOVERINGCARS          "hovercars"
 #define CHEAT_FLYINGCARS            "aircars"
 #define CHEAT_EXTRABUNNYHOP         "extrabunny"
@@ -81,6 +92,7 @@
 #define CHEAT_NEVERWANTED           "neverwanted"
 #define CHEAT_HEALTARMORMONEY       "healtharmormoney"
 
+#dummy
 #define PROP_RANDOM_FOLIAGE         "randomfoliage"
 #define PROP_SNIPER_MOON            "snipermoon"
 #define PROP_EXTRA_AIR_RESISTANCE   "extraairresistance"
@@ -103,9 +115,10 @@ class CGameSA : public CGame
     typedef std::unique_ptr<CAnimBlendAssocGroup> AssocGroup_type;
 
 private:
-    CWeaponInfo* WeaponInfos[NUM_WeaponInfosTotal];
-    CModelInfoSA ModelInfo[MODELINFO_MAX];
+    CWeaponInfo*                     WeaponInfos[NUM_WeaponInfosTotal];
+    CModelInfoSA                     ModelInfo[MODELINFO_MAX];
     CObjectGroupPhysicalPropertiesSA ObjectGroupsInfo[OBJECTDYNAMICINFO_MAX];
+
 public:
     ZERO_ON_NEW
 

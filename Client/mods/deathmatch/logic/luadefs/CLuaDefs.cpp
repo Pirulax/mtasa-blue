@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 CLuaManager*               CLuaDefs::m_pLuaManager = NULL;

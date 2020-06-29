@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUIRadioButton.h>
 #include "CGUIElement_Impl.h"
 
@@ -25,6 +27,7 @@ public:
 
     eCGUIType GetType() { return CGUI_RADIOBUTTON; };
 
+#dummy
     #include "CGUIElement_Inc.h"
 
 private:

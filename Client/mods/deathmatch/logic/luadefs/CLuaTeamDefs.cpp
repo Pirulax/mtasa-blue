@@ -9,18 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 using std::list;
 
 void CLuaTeamDefs::LoadFunctions()
 {
     constexpr static const std::pair<const char*, lua_CFunction> functions[]{
-        {"getTeamFromName", GetTeamFromName},
-        {"getTeamName", GetTeamName},
-        {"getTeamColor", GetTeamColor},
-        {"getTeamFriendlyFire", GetTeamFriendlyFire},
-        {"getPlayersInTeam", GetPlayersInTeam},
-        {"countPlayersInTeam", CountPlayersInTeam},
+        {"getTeamFromName", GetTeamFromName},         {"getTeamName", GetTeamName},           {"getTeamColor", GetTeamColor},
+        {"getTeamFriendlyFire", GetTeamFriendlyFire}, {"getPlayersInTeam", GetPlayersInTeam}, {"countPlayersInTeam", CountPlayersInTeam},
     };
 
     // Add functions

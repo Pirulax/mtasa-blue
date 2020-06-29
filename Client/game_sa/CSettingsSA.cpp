@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 static const float MOUSE_SENSITIVITY_MIN = 0.000312f;
@@ -24,13 +25,16 @@ unsigned long CSettingsSA::FUNC_GetNumSubSystems;
 unsigned long CSettingsSA::FUNC_GetCurrentSubSystem;
 unsigned long CSettingsSA::FUNC_SetSubSystem;
 
+#dummy
 #define VAR_CurVideoMode (*((uint*)(0x08D6220)))
 #define VAR_SavedVideoMode (*((uint*)(0x0BA6820)))
 #define VAR_CurAdapter (*((uint*)(0x0C920F4)))
 
+#dummy
 #define HOOKPOS_GetFxQuality 0x49EA50
 void HOOK_GetFxQuality();
 
+#dummy
 #define HOOKPOS_StoreShadowForVehicle 0x70BDA0
 DWORD RETURN_StoreShadowForVehicle = 0x70BDA9;
 void  HOOK_StoreShadowForVehicle();
@@ -944,6 +948,7 @@ __declspec(noinline) int OnMY_SelectDevice()
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_SelectDevice 0x0746219
 #define HOOKSIZE_SelectDevice 6
 DWORD RETURN_SelectDeviceSingle = 0x0746273;

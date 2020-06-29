@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define CGUISCROLLPANE_NAME "CGUI/ScrollablePane"
 
 CGUIScrollPane_Impl::CGUIScrollPane_Impl(CGUI_Impl* pGUI, CGUIElement* pParent)

@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUILabel.h>
 #include "CGUIElement_Impl.h"
 
@@ -43,6 +45,7 @@ public:
 
     eCGUIType GetType() { return CGUI_LABEL; };
 
+#dummy
     #define EXCLUDE_SET_TEXT
     #include "CGUIElement_Inc.h"
     #undef EXCLUDE_SET_TEXT

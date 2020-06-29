@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 extern CClientGame* g_pClientGame;
@@ -49,7 +50,8 @@ bool CClientExplosionManager::Hook_ExplosionCreation(CEntity* pGameExplodingEnti
     if (!pResponsibleGameEntity)
         return false;
 
-    CClientEntity* const pResponsible = pPools->GetClientEntity(reinterpret_cast<DWORD*>(pResponsibleGameEntity->GetInterface()));;
+    CClientEntity* const pResponsible = pPools->GetClientEntity(reinterpret_cast<DWORD*>(pResponsibleGameEntity->GetInterface()));
+    ;
 
     if (!pResponsible)
         return false;
@@ -59,28 +61,28 @@ bool CClientExplosionManager::Hook_ExplosionCreation(CEntity* pGameExplodingEnti
 
     switch (explosionType)
     {
-    case EXP_TYPE_GRENADE:
-    {
-        // Grenade type explosions from vehicles should only be freefall bombs
-        // TODO: need a way to check if its a freefall bomb if creator is a ped
-        if (pGameCreator && pGameCreator->GetEntityType() == ENTITY_TYPE_VEHICLE)
-            explosionWeaponType = WEAPONTYPE_FREEFALL_BOMB;
-        else
-            explosionWeaponType = WEAPONTYPE_GRENADE;
-        break;
-    }
-    case EXP_TYPE_MOLOTOV:
-        explosionWeaponType = WEAPONTYPE_MOLOTOV;
-        break;
-    case EXP_TYPE_ROCKET:
-    case EXP_TYPE_ROCKET_WEAK:
-        explosionWeaponType = WEAPONTYPE_ROCKET;
-        break;
-    case EXP_TYPE_TANK_GRENADE:
-        explosionWeaponType = WEAPONTYPE_TANK_GRENADE;
-        break;
-    default:
-        break;
+        case EXP_TYPE_GRENADE:
+        {
+            // Grenade type explosions from vehicles should only be freefall bombs
+            // TODO: need a way to check if its a freefall bomb if creator is a ped
+            if (pGameCreator && pGameCreator->GetEntityType() == ENTITY_TYPE_VEHICLE)
+                explosionWeaponType = WEAPONTYPE_FREEFALL_BOMB;
+            else
+                explosionWeaponType = WEAPONTYPE_GRENADE;
+            break;
+        }
+        case EXP_TYPE_MOLOTOV:
+            explosionWeaponType = WEAPONTYPE_MOLOTOV;
+            break;
+        case EXP_TYPE_ROCKET:
+        case EXP_TYPE_ROCKET_WEAK:
+            explosionWeaponType = WEAPONTYPE_ROCKET;
+            break;
+        case EXP_TYPE_TANK_GRENADE:
+            explosionWeaponType = WEAPONTYPE_TANK_GRENADE;
+            break;
+        default:
+            break;
     }
 
     // Handle this explosion client side only if entity is local or breakable (i.e. barrel)

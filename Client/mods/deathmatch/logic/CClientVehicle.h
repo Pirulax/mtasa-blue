@@ -11,11 +11,14 @@
 struct CClientVehicleProperties;
 class CClientVehicle;
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPlane.h>
 #include <game/CVehicle.h>
 
+#dummy
 #include "CClientCommon.h"
 #include "CClientCamera.h"
 #include "CClientModelRequestManager.h"
@@ -24,6 +27,7 @@ class CClientVehicle;
 #include "CClientVehicleManager.h"
 #include "CVehicleUpgrades.h"
 
+#dummy
 #define INVALID_PASSENGER_SEAT 0xFF
 #define DEFAULT_VEHICLE_HEALTH 1000
 #define MAX_VEHICLE_HEALTH 10000
@@ -623,8 +627,10 @@ protected:
     {
         struct
         {
+#dummy
 #ifdef MTA_DEBUG
             CVector vecStart;
+#dummy
 #endif
             CVector       vecTarget;
             CVector       vecError;
@@ -635,8 +641,10 @@ protected:
 
         struct
         {
+#dummy
 #ifdef MTA_DEBUG
             CVector vecStart;
+#dummy
 #endif
             CVector       vecTarget;
             CVector       vecError;
@@ -675,10 +683,12 @@ protected:
     SFixedArray<bool, MAX_WINDOWS> m_bWindowOpen;
 
 public:
+#dummy
 #ifdef MTA_DEBUG
     CClientPlayer* m_pLastSyncer;
     unsigned long  m_ulLastSyncTime;
     const char*    m_szLastSyncType;
+#dummy
 #endif
     SLastSyncedVehData*                      m_LastSyncedData;
     SSirenInfo                               m_tSirenBeaconInfo;

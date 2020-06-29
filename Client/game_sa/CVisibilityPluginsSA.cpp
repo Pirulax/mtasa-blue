@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 void CVisibilityPluginsSA::SetClumpAlpha(RpClump* pClump, int iAlpha)

@@ -8,11 +8,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
+#dummy
 #define MTA_BUILDINGS
 #define CCLIENTOBJECT_MAX 250
 
+#dummy
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -109,8 +112,10 @@ void CClientObject::SetPosition(const CVector& vecPosition)
         CVector vecRot;
         GetRotationRadians(vecRot);
         m_pObject->Teleport(vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+#dummy
 #ifndef MTA_BUILDINGS
         m_pObject->ProcessCollision();
+#dummy
 #endif
         m_pObject->SetupLighting();
         SetRotationRadians(vecRot);
@@ -164,8 +169,10 @@ void CClientObject::SetRotationRadians(const CVector& vecRotation)
     if (m_pObject)
     {
         m_pObject->SetOrientation(vecRotation.fX, vecRotation.fY, vecRotation.fZ);
+#dummy
 #ifndef MTA_BUILDINGS
         m_pObject->ProcessCollision();
+#dummy
 #endif
         m_pObject->SetupLighting();
     }
@@ -211,8 +218,10 @@ void CClientObject::SetOrientation(const CVector& vecPosition, const CVector& ve
     {
         m_pObject->Teleport(vecPosition.fX, vecPosition.fY, vecPosition.fZ);
         m_pObject->SetOrientation(vecRotationRadians.fX, vecRotationRadians.fY, vecRotationRadians.fZ);
+#dummy
 #ifndef MTA_BUILDINGS
         m_pObject->ProcessCollision();
+#dummy
 #endif
         m_pObject->SetupLighting();
     }
@@ -509,8 +518,10 @@ void CClientObject::Create()
                 // Apply our data to the object
                 m_pObject->Teleport(m_vecPosition.fX, m_vecPosition.fY, m_vecPosition.fZ);
                 m_pObject->SetOrientation(m_vecRotation.fX, m_vecRotation.fY, m_vecRotation.fZ);
+#dummy
                 #ifndef MTA_BUILDINGS
                 m_pObject->ProcessCollision();
+#dummy
                 #endif
                 m_pObject->SetupLighting();
                 m_pObject->SetFrozen(m_bIsFrozen);

@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUIStaticImage.h>
 #include "CGUITexture_Impl.h"
 
@@ -45,5 +47,6 @@ private:
     CEGUI::Imageset*        m_pImageset;
     const CEGUI::Image*     m_pImage;
 
+#dummy
     #include "CGUIElement_Inc.h"
 };

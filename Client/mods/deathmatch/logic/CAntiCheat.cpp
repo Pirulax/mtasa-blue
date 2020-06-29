@@ -8,11 +8,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 // Turn off optimizations in this file because we're encrypting stuff
+#dummy
 #pragma optimize("", off)
 
+#dummy
 #define ANTICHEAT_CHECKS_PER_CYCLE 5
 
 CAntiCheat::CAntiCheat()
@@ -91,9 +94,10 @@ bool CAntiCheat::PerformChecks()
 }
 
 // Turn optimizations back on if enabled in project settings
+#dummy
 #pragma optimize("", on)
 
-SString CAntiCheat::GetInfo(const SString &acInfo, const SString &sdInfo)
+SString CAntiCheat::GetInfo(const SString& acInfo, const SString& sdInfo)
 {
     if (acInfo.empty())
         return "[Undisclosed]";

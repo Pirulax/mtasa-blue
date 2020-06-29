@@ -7,6 +7,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include <game/CGame.h>
 #include "CRenderItem.EffectCloner.h"

@@ -11,10 +11,12 @@
 
 using namespace tinygettext;
 
+#dummy
 #include <core/CLocalizationInterface.h>
 #include "CLanguage.h"
 #define MTA_LOCALE_DIR  "MTA/locale/"
 
+#dummy
 #pragma once
 
 class CLocalization : public CLocalizationInterface

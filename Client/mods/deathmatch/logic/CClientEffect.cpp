@@ -7,6 +7,7 @@
  *  PURPOSE:     Effect entity class
  *
  *****************************************************************************/
+#dummy
 #include "StdInc.h"
 
 CClientEffect::CClientEffect(CClientManager* pManager, CFxSystem* pFx, SString strEffectName, ElementID ID) : ClassInit(this), CClientEntity(ID)

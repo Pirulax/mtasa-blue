@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #define DECLARE_PROFILER_SECTION_CLuaMain
 #include "profiler/SharedUtil.Profiler.h"
@@ -20,9 +21,11 @@ extern CClientGame* g_pClientGame;
 static CLuaManager* m_pLuaManager;
 SString             CLuaMain::ms_strExpectedUndumpHash;
 
+#dummy
 #define HOOK_INSTRUCTION_COUNT 1000000
 #define HOOK_MAXIMUM_TIME 5000
 
+#dummy
 #include "luascripts/coroutine_debug.lua.h"
 #include "luascripts/exports.lua.h"
 #include "luascripts/inspect.lua.h"
@@ -75,17 +78,10 @@ void CLuaMain::ResetInstructionCount()
 void CLuaMain::InitSecurity()
 {
     // Disable dangerous Lua Os library functions
-    static const luaL_reg osfuncs[] =
-    {
-        { "execute", CLuaUtilDefs::DisabledFunction },
-        { "rename", CLuaUtilDefs::DisabledFunction },
-        { "remove", CLuaUtilDefs::DisabledFunction },
-        { "exit", CLuaUtilDefs::DisabledFunction },
-        { "getenv", CLuaUtilDefs::DisabledFunction },
-        { "tmpname", CLuaUtilDefs::DisabledFunction },
-        { "setlocale", CLuaUtilDefs::DisabledFunction },
-        { NULL, NULL }
-    };
+    static const luaL_reg osfuncs[] = {{"execute", CLuaUtilDefs::DisabledFunction},   {"rename", CLuaUtilDefs::DisabledFunction},
+                                       {"remove", CLuaUtilDefs::DisabledFunction},    {"exit", CLuaUtilDefs::DisabledFunction},
+                                       {"getenv", CLuaUtilDefs::DisabledFunction},    {"tmpname", CLuaUtilDefs::DisabledFunction},
+                                       {"setlocale", CLuaUtilDefs::DisabledFunction}, {NULL, NULL}};
     luaL_register(m_luaVM, "os", osfuncs);
 
     lua_register(m_luaVM, "dofile", CLuaUtilDefs::DisabledFunction);
@@ -446,8 +442,10 @@ const SString& CLuaMain::GetFunctionTag(int iLuaFunction)
 {
     // Find existing
     SString* pTag = MapFind(m_FunctionTagMap, iLuaFunction);
+#dummy
 #ifndef CHECK_FUNCTION_TAG
     if (!pTag)
+#dummy
 #endif
     {
         // Create if required
@@ -479,6 +477,7 @@ const SString& CLuaMain::GetFunctionTag(int iLuaFunction)
             strText = SString("@func_%d NULL", iLuaFunction);
         }
 
+#dummy
     #ifdef CHECK_FUNCTION_TAG
         if (pTag)
         {
@@ -486,6 +485,7 @@ const SString& CLuaMain::GetFunctionTag(int iLuaFunction)
             assert(strText == *pTag);
             return *pTag;
         }
+#dummy
     #endif
 
         MapSet(m_FunctionTagMap, iLuaFunction, strText);

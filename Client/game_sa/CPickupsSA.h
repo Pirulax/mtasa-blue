@@ -9,16 +9,21 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPickups.h>
 #include "CPickupSA.h"
 
+#dummy
 #define MAX_PICKUPS                 620 //##SA##
 #define MAX_PICKUPS_ALWAYS_UPDATED  16
 
+#dummy
 #define ARRAY_PICKUPS               0x9788C0 // ##SA##
 
+#dummy
 #define FUNC_CPickups__Update       0x458DE0
 
 class CPickupSA;

@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CTaskManager.h>
 #include "Common.h"
 
@@ -21,10 +23,12 @@ class CTaskSAInterface;
 //#define TASK_SECONDARY_MAX        6
 
 // functions
+#dummy
 #define FUNC_SetTask                    0x681AF0
 #define FUNC_GetActiveTask              0x681720
 #define FUNC_GetSimplestActiveTask      0x6819D0
 //#define FUNC_GetSimplestTask          0x681970 // static
+#dummy
 #define FUNC_GetSimplestTask            0x681A00
 #define FUNC_FindActiveTaskByType       0x681740
 #define FUNC_FindTaskByType             0x6817D0
@@ -32,9 +36,11 @@ class CTaskSAInterface;
 #define FUNC_ClearTaskEventResponse     0x681BD0
 #define FUNC_HasTaskSecondary           0x681820
 
+#dummy
 #include "CTaskManagementSystemSA.h"
 
 // task headers
+#dummy
 #include "TaskCarAccessoriesSA.h"
 #include "TaskGoToSA.h"
 #include "TaskCarSA.h"

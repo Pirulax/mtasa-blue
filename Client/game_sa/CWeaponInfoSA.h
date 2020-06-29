@@ -9,13 +9,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CWeaponInfo.h>
 #include <CVector.h>
 #include "Common.h"
 
 // Flame shot array for flamethrower flames and maybe molotovs
+#dummy
 #define ARRAY_CFlameShotInfo                0xC89690
 #define MAX_FLAME_SHOT_INFOS                100
 

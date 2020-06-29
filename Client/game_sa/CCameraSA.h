@@ -9,16 +9,20 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CCamera.h>
 #include "CCamSA.h"
 #include "CGarageSA.h"
 #include "CEntitySA.h"
 #include "COffsets.h"
 
+#dummy
 #include <CMatrix_Pad.h>
 
+#dummy
 #define FUNC_TakeControl                    0x50C7C0 // ##SA##
 #define FUNC_TakeControlNoEntity            0x50C8B0
 #define FUNC_TakeControlAttachToEntity      0x50C910
@@ -26,6 +30,7 @@
 #define FUNC_SetCamPositionForFixedMode     0x50BEC0
 #define FUNC_ConeCastCollisionResolve       0x51A5D0
 
+#dummy
 #define FUNC_Find3rdPersonCamTargetVector   0x514970 //##SA##
 #define FUNC_Find3rdPersonQuickAimPitch     0x50AD40
 #define FUNC_TryToStartNewCamMode           0x467AAD
@@ -35,15 +40,19 @@
 #define FUNC_Fade                           0x50AC20
 #define FUNC_SetFadeColour                  0x50BF00
 
+#dummy
 #define VAR_ActiveCam                       0x7E46FE
 #define VAR_CameraRotation                  0xB6F178 // used for controling where the player faces
 #define VAR_VehicleCameraView               0xB6F0DC
 
+#dummy
 #define MAX_CAMS                            3
 
+#dummy
 #define MAX_NUM_OF_NODES                    800 // for trains
 
 /*** R* Defines ***/
+#dummy
 #define NUMBER_OF_VECTORS_FOR_AVERAGE 2
 #define MAX_NUM_OF_SPLINETYPES (4)
 /*** END R* Defines ***/
@@ -138,14 +147,18 @@ public:
     bool          m_bAllowShootingWith2PlayersInCar;
     bool          m_bDisableFirstPersonInCar;
     static bool   m_bUseMouse3rdPerson;
+#dummy
 #ifndef FINALBUILD
     bool bStaticFrustum;
+#dummy
 #endif
 
     // for debug keyboard stuff
+#dummy
 #ifndef MASTER
     unsigned char display_kbd_debug;
     float         kbd_fov_value;
+#dummy
 #endif // MASTER
 
     // The following fields allow the level designers to specify the camera for 2 player games.
@@ -328,6 +341,7 @@ public:
     bool m_bResetOldMatrix;
 
 //  protected:
+#dummy
 #if 0
     // Original
     CMatrix_Padded m_cameraMatrix;
@@ -336,6 +350,7 @@ public:
     CMatrix_Padded m_matInverse;
     CMatrix_Padded m_matMirrorInverse;
     CMatrix_Padded m_matMirror;
+#dummy
 #else
     // Looks more likely to be this
     CMatrix_Padded m_cameraMatrix;
@@ -346,6 +361,7 @@ public:
     int            unk3[2];
     CMatrix_Padded m_matInverse;
     int            unk4[26];
+#dummy
 #endif
 
     CVector m_vecFrustumNormals[4];

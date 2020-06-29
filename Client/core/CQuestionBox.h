@@ -12,8 +12,10 @@
 
 class CQuestionBox;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CMainMenu.h"
 
 typedef void (*pfnQuestionCallback)(void*, unsigned int);

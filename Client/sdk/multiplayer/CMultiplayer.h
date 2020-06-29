@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <CMatrix.h>
 #include <CVector.h>
 
+#dummy
 #include <game/CExplosion.h>
 #include <game/CStats.h>
 #include "CPopulationMP.h"
@@ -382,6 +385,6 @@ public:
     virtual void SetTyreSmokeEnabled(bool bEnabled) = 0;
 
     virtual eAnimGroup GetLastStaticAnimationGroupID() = 0;
-    virtual eAnimID GetLastStaticAnimationID() = 0;
-    virtual DWORD GetLastAnimArrayAddress() = 0;
+    virtual eAnimID    GetLastStaticAnimationID() = 0;
+    virtual DWORD      GetLastAnimArrayAddress() = 0;
 };

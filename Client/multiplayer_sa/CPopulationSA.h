@@ -9,19 +9,25 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <multiplayer/CPopulationMP.h>
 
 // These includes need to be fixed!
+#dummy
 #include "../game_sa/CPedSA.h"
 #include "../game_sa/CCivilianPedSA.h"
 
+#dummy
 #include <list>
 
+#dummy
 #pragma once
 
+#dummy
 #define HOOKPOS_EndOf_CPopulation__Add      0x612C76
 #define HOOKPOS_CPopulation__RemovePed      0x610F20
 
+#dummy
 #define VTBL_CPlayerPed                     0x86D168
 
 class CPopulationSA : public CPopulationMP

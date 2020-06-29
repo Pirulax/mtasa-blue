@@ -9,10 +9,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 class CGUI;
 
+#dummy
 #include "CGUIEnumDefs.h"
 #include "CGUIElement.h"
 #include "CGUIButton.h"
@@ -38,6 +40,7 @@ class CGUI;
 #include "CGUITypes.h"
 
 // Path defines for CGUI
+#dummy
 #define CGUI_ICON_MESSAGEBOX_INFO       "cgui\\images\\info.png"
 #define CGUI_ICON_MESSAGEBOX_QUESTION   "cgui\\images\\question.png"
 #define CGUI_ICON_MESSAGEBOX_WARNING    "cgui\\images\\warning.png"
@@ -45,6 +48,7 @@ class CGUI;
 #define CGUI_ICON_SERVER_PASSWORD       "cgui\\images\\locked.png"
 #define CGUI_GetMaxTextExtent(...) GetMaxTextExtent(__VA_ARGS__, SString())
 
+#dummy
 #define CHECK_CHANNEL(channel) assert ( (channel) >= 0 && (channel) < INPUT_CHANNEL_COUNT )
 
 class CGUI

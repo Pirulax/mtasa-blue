@@ -7,19 +7,24 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "../../../core/CModelCacheManager.h"
 
+#dummy
 #define PED_STREAM_IN_DISTANCE              (250)
 #define VEHICLE_STREAM_IN_DISTANCE          (250)
 #define STREAMER_STREAM_OUT_EXTRA_DISTANCE  (50)
 
+#dummy
 #define PED_MAX_STREAM_DISTANCE             ( PED_STREAM_IN_DISTANCE + STREAMER_STREAM_OUT_EXTRA_DISTANCE )
 #define PED_MAX_STREAM_DISTANCE_SQ          ( PED_MAX_STREAM_DISTANCE * PED_MAX_STREAM_DISTANCE )
 
+#dummy
 #define VEHICLE_MAX_STREAM_DISTANCE         ( VEHICLE_STREAM_IN_DISTANCE + STREAMER_STREAM_OUT_EXTRA_DISTANCE )
 #define VEHICLE_MAX_STREAM_DISTANCE_SQ      ( VEHICLE_MAX_STREAM_DISTANCE * VEHICLE_MAX_STREAM_DISTANCE )
 
+#dummy
 #define PED_MAX_VELOCITY                    (10)
 #define VEHICLE_MAX_VELOCITY                (10)
 
@@ -495,6 +500,7 @@ void CClientModelCacheManagerImpl::ClearStats()
 void CClientModelCacheManagerImpl::AddProcessStat(const char* szTag, bool bCache, ePuresyncType syncType, ushort usModelId, const CVector& vecStartPos,
                                                   const CVector& vecEndPos)
 {
+#dummy
 #ifdef WITH_MODEL_CACHE_STATS
     SModelCacheStatItem item;
     item.strTag = szTag;
@@ -504,6 +510,7 @@ void CClientModelCacheManagerImpl::AddProcessStat(const char* szTag, bool bCache
     item.vecStart = vecStartPos;
     item.vecEnd = vecEndPos;
     m_StatsList.push_back(item);
+#dummy
 #endif
 }
 

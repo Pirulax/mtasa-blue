@@ -7,6 +7,7 @@
  *  PURPOSE:     Web dev tools class
  *
  *****************************************************************************/
+#dummy
 #include "StdInc.h"
 #include "CWebDevTools.h"
 

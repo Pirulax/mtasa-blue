@@ -7,6 +7,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 #include "CBassAudio.h"
 
@@ -127,12 +128,14 @@ bool CClientSound::Create()
     m_dLength = m_pAudio->GetLength();
 
     // Save the length in the resource incase we need it another time
+#dummy
 #if 0
     // TODO
     //   Storing the length of previouly loaded files in the resource will help the client avoid
     //   loading far away sounds, just to get the length.
     //   (The length is required to simulate the finish time of streamed out sounds)
     this->GetResource ()->SetAudioFileLength ( m_strPath, m_dLength );
+#dummy
 #endif
 
     // Transfer dynamic state
@@ -340,6 +343,7 @@ double CClientSound::GetLength(bool bAvoidLoad)
     {
         // Not loaded by this entity yet
 
+#dummy
 #if 0       // TODO
         if ( bAvoidLoad )
         {
@@ -347,6 +351,7 @@ double CClientSound::GetLength(bool bAvoidLoad)
             // so see if resouce has already loaded the file
             m_dLength == this->GetResource ()->GetAudioFileLength ( m_strPath );
         }
+#dummy
 #endif
         // If needed, do a create and destroy to get the length
         if (m_dLength == 0)

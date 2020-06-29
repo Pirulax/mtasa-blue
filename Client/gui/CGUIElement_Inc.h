@@ -37,6 +37,7 @@ std::string GetFont()
     return CGUIElement_Impl::GetFont();
 };
 
+#dummy
 #ifndef SETVISIBLE_HACK
 void SetVisible(bool bVisible)
 {
@@ -46,8 +47,10 @@ bool IsVisible()
 {
     return CGUIElement_Impl::IsVisible();
 };
+#dummy
 #endif
 
+#dummy
 #ifndef SETENABLED_HACK
 void SetEnabled(bool bEnabled)
 {
@@ -57,6 +60,7 @@ bool IsEnabled()
 {
     return CGUIElement_Impl::IsEnabled();
 };
+#dummy
 #endif
 void SetZOrderingEnabled(bool bZOrderingEnabled)
 {
@@ -98,11 +102,13 @@ void SetHeight(float fY, bool bRelative = false)
     CGUIElement_Impl::SetHeight(fY, bRelative);
 };
 
+#dummy
 #ifndef EXCLUDE_SET_SIZE // WTF? TODO: Refactor this
 void SetSize(const CVector2D& vecSize, bool bRelative = false)
 {
     CGUIElement_Impl::SetSize(vecSize, bRelative);
 };
+#dummy
 #endif
 CVector2D GetSize(bool bRelative = false)
 {
@@ -144,11 +150,13 @@ void GetMaximumSize(CVector2D& vecSize)
     CGUIElement_Impl::GetMaximumSize(vecSize);
 };
 
+#dummy
 #ifndef EXCLUDE_SET_TEXT
 void SetText(const char* Text)
 {
     CGUIElement_Impl::SetText(Text);
 };
+#dummy
 #endif
 
 std::string GetText()

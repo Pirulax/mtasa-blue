@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 void CPhysicalSA::RestoreLastGoodPhysicsState()
@@ -165,13 +166,12 @@ void CPhysicalSA::SetBuoyancyConstant(float fBuoyancyConstant)
     ((CPhysicalSAInterface*)this->GetInterface())->m_fBuoyancyConstant = fBuoyancyConstant;
 }
 
-void CPhysicalSA::GetCenterOfMass(CVector & vecCenterOfMass)
+void CPhysicalSA::GetCenterOfMass(CVector& vecCenterOfMass)
 {
     vecCenterOfMass = ((CPhysicalSAInterface*)this->GetInterface())->m_vecCenterOfMass;
 }
 
-
-void CPhysicalSA::SetCenterOfMass(CVector & vecCenterOfMass)
+void CPhysicalSA::SetCenterOfMass(CVector& vecCenterOfMass)
 {
     ((CPhysicalSAInterface*)this->GetInterface())->m_vecCenterOfMass = vecCenterOfMass;
 }

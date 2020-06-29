@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 CClientColRectangle::CClientColRectangle(CClientManager* pManager, ElementID ID, const CVector2D& vecPosition, const CVector2D& vecSize)

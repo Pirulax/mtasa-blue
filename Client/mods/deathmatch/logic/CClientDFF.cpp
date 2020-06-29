@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CClientDFF::CClientDFF(CClientManager* pManager, ElementID ID) : ClassInit(this), CClientEntity(ID)

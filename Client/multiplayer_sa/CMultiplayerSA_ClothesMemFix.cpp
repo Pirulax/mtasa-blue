@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define     FUNC_CPedModelInfo_DeleteRwObject               0x04C6C50
 #define     FUNC_CPedModelInfo_SetClump                     0x04C7340
 
@@ -58,6 +60,7 @@ void      OnMy_CClothesDeleteRwObject()
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CClothesDeleteRwObject                          0x5A8243
 #define HOOKSIZE_CClothesDeleteRwObject                         5
 DWORD RETURN_CClothesDeleteRwObject = 0x5A8248;
@@ -95,6 +98,7 @@ void OnMy_PostCPedDress()
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_PostCPedDress                           0x5A835C
 #define HOOKSIZE_PostCPedDress                          5
 DWORD RETURN_PostCPedDress = 0x5A8361;

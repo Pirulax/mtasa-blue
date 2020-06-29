@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CClientColModelManager.h"
 #include "CClientObjectManager.h"

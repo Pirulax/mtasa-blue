@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Common.h"
 #include <CVector.h>
 
+#dummy
 #include <windows.h>
 #include "RenderWare.h"
 

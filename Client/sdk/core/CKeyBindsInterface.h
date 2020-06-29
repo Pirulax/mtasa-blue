@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 // Beware: this class is poorly written and depends on game while it shouldn't
+#dummy
 #include <game/CControllerConfigManager.h>
 
+#dummy
 #include <list>
 #include <ksignals/ksignals.h>
 

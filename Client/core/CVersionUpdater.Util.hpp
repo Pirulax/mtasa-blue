@@ -12,6 +12,7 @@
 class CVersionUpdater;
 
 // Update master info
+#dummy
 #define UPDATER_MASTER_URL1 "http://updatesa.mtasa.com/sa/master/?v=%VERSION%&id=%ID%"
 #define UPDATER_MASTER_URL2 "http://updatesa.multitheftauto.com/sa/master/?v=%VERSION%&id=%ID%"
 
@@ -883,10 +884,12 @@ namespace
             CStringPair pair;
             pair.strValue1 = strValue1.ToLower();
             pair.strValue2 = strValue2.ToLower();
+#dummy
     #if MTA_DEBUG
             CStringPair* pPair = MapFind(*this, strType.ToLower());
             if (!pPair || pPair->strValue1 != pair.strValue1 || pPair->strValue2 != pair.strValue2)
                 OutputDebugLine(SString("[Updater] SetCondition %s %s %s", strType.c_str(), strValue1.c_str(), strValue2.c_str()));
+#dummy
     #endif
             MapSet(*this, strType.ToLower(), pair);
         }

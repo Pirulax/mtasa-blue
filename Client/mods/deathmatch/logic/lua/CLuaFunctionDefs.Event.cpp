@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 int CLuaFunctionDefs::AddEvent(lua_State* luaVM)
@@ -244,8 +245,8 @@ int CLuaFunctionDefs::TriggerServerEvent(lua_State* luaVM)
                     // Extra arguments begin at argument 3
                     if (pEntity)
                     {
-                        m_pScriptDebugging->LogError(luaVM, "clientside element '%s' at argument %u @ 'triggerServerEvent'", 
-                                                     pEntity->GetTypeName().c_str(), i + 3);
+                        m_pScriptDebugging->LogError(luaVM, "clientside element '%s' at argument %u @ 'triggerServerEvent'", pEntity->GetTypeName().c_str(),
+                                                     i + 3);
                     }
                     else
                     {
@@ -259,7 +260,7 @@ int CLuaFunctionDefs::TriggerServerEvent(lua_State* luaVM)
 
         argStream.SetCustomError("element is clientside", "Bad source element");
     }
-    
+
     if (argStream.HasErrors())
         m_pScriptDebugging->LogCustom(luaVM, argStream.GetFullErrorMessage());
 

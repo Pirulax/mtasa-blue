@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CTasks.h>
 #include "Common.h"
 
@@ -18,6 +20,7 @@ class CTaskManagementSystemSA;
 class CVehicle;
 
 // task headers
+#dummy
 #include "TaskBasicSA.h"
 #include "TaskCarAccessoriesSA.h"
 #include "TaskGoToSA.h"

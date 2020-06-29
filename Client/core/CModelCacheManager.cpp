@@ -7,6 +7,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CModelCacheManager.h"
 
@@ -133,12 +134,14 @@ void CModelCacheManagerImpl::PreLoad()
     m_bDonePreLoad = true;
 
     CTickCount startTicks = CTickCount::Now();
+#dummy
 #if 0
     for ( uint i = 321 ; i <= 372 ; i++ )
     {
         if ( CClientPedManager::IsValidWeaponModel ( i ) )
             AddModelRefCount ( i );
     }
+#dummy
 #endif
     m_pGame->GetStreaming()->LoadAllRequestedModels(false);
 

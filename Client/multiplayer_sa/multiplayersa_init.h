@@ -9,27 +9,34 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include "Common.h"
 
+#dummy
 #include <game/CGame.h>
 #include "../game_sa/CGameSA.h"
 
+#dummy
 #include "multiplayer_keysync.h"
 #include "multiplayer_shotsync.h"
 
+#dummy
 #include "CMultiplayerSA.h"
 
 extern CGame* pGameInterface;
 // extern CMultiplayerSA* pMultiplayer;
 
 /** Buffer overrun trace - attach debugger and watch out for EXCEPTION_GUARD_PAGE (0x80000001) **/
+#dummy
 #ifdef IJSIFY
     #pragma message(__LOC__ "YOU HAVE ENABLED THE BOUNDS CHECKER. This may cause performance and/or stability issues!")
 
+#dummy
     #include <windows.h>
     #include <math.h>
 
@@ -74,6 +81,7 @@ inline void __cdecl operator delete[](LPVOID pPointer)
 {
     VirtualFree(pPointer, NULL, MEM_RELEASE);
 };
+#dummy
 #endif
 
 //

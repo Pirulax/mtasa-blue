@@ -9,9 +9,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "lua/CLuaFunctionParser.h"
 
+#dummy
 #define MIN_CLIENT_REQ_REMOVEPEDFROMVEHICLE_CLIENTSIDE "1.3.0-9.04482"
 #define MIN_CLIENT_REQ_WARPPEDINTOVEHICLE_CLIENTSIDE "1.3.0-9.04482"
 

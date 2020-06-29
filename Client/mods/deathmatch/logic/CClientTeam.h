@@ -10,8 +10,10 @@
 
 class CClientTeam;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientEntity.h"
 #include "CClientPlayer.h"
 #include "CClientTeamManager.h"

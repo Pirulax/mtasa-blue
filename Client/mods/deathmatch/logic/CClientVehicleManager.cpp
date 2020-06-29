@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 using std::list;
@@ -30,6 +31,7 @@ const SFixedArray<unsigned char, 212> g_ucMaxPassengers = {3, 1,   1,   1,   3, 
                                                            3, 1,   255, 255, 255, 3, 255, 255};                                    // 605->611
 
 // List over all vehicles with their special attributes
+#dummy
 #define VEHICLE_HAS_TURRENT             0x001UL //1
 #define VEHICLE_HAS_SIRENS              0x002UL //2
 #define VEHICLE_HAS_LANDING_GEARS       0x004UL //4

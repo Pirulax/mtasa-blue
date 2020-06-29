@@ -2,10 +2,12 @@
 // Microsoft Visual C++ generated include file.
 // Used by launch.rc
 //
+#dummy
 #define IDI_ICON1                       110
 
 // Next default values for new objects
 //
+#dummy
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        115

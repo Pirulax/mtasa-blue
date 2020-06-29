@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include <game/CPad.h>
 #include "XInput.h"
@@ -23,10 +24,12 @@ extern IDirectInput8* g_pDirectInput8;
 // Helper stuff
 //
 
+#dummy
 #ifndef NUMELMS     // in DShow.h
     #define NUMELMS(aa) (sizeof(aa)/sizeof((aa)[0]))
 #endif
 
+#dummy
 #define VALID_INDEX_FOR( array, index ) \
             ( index >= 0 && index < NUMELMS(array) )
 
@@ -399,6 +402,7 @@ BOOL CJoystickManager::DoEnumObjectsCallback(const DIDEVICEOBJECTINSTANCE* pdido
         }
         WriteDebugEvent("                    " + strStatus);
 
+#dummy
 #ifdef MTA_DEBUG
 #if 0
         if ( CCore::GetSingleton ().GetConsole () )
@@ -413,6 +417,7 @@ BOOL CJoystickManager::DoEnumObjectsCallback(const DIDEVICEOBJECTINSTANCE* pdido
                             ,range.lMax
                             );
 
+#dummy
 #endif
 #endif
     }
@@ -1080,6 +1085,7 @@ void CJoystickManager::ApplyAxes(CControllerState& cs, bool bInVehicle)
     cs.ButtonSquare = Clamp<const short>(0, cs.ButtonSquare, 255);
 
     // Debug output
+#dummy
 #ifdef MTA_DEBUG
 #if 0
 
@@ -1153,6 +1159,7 @@ void CJoystickManager::ApplyAxes(CControllerState& cs, bool bInVehicle)
 
     CCore::GetSingleton ().GetGraphics ()->DrawString ( 20, 550, 0xFFFFFFFF, 1, strBuffer );
 
+#dummy
 #endif
 #endif
 }

@@ -10,8 +10,10 @@
 
 class CClientObject;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientStreamElement.h"
 
 struct SLastSyncedObjectData

@@ -9,14 +9,17 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CModelInfoSA.h"
 #include <game/CPedModelInfo.h>
 
 class ePedStats;
 typedef long AssocGroupID;
 
+#dummy
 #define     FUNC_SetMotionAnimGroup                         0x5b3580
 #define     FUNC_CPedModelInfo_Constructor                  0x4c57a0
 #define     VAR_CPedModelInfo_VTBL                          0x85bdc0

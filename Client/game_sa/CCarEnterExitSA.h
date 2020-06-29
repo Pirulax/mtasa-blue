@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CCarEnterExit.h>
 #include "CPedSA.h"
 #include "CVehicleSA.h"
 
+#dummy
 #define FUNC_GetNearestCarDoor                  0x6528F0
 #define FUNC_GetNearestCarPassengerDoor         0x650BB0
 #define FUNC_ComputeTargetDoorToExit            0x64F110

@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CDynamicLibrary.h"
 #include <list>
 #include <string>

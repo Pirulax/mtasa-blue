@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 class CClientWater : public CClientEntity

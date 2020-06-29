@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 int CLuaFunctionDefs::OutputConsole(lua_State* luaVM)

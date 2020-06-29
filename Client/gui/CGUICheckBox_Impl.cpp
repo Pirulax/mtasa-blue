@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define CGUICHECKBOX_NAME "CGUI/Checkbox"
 
 CGUICheckBox_Impl::CGUICheckBox_Impl(CGUI_Impl* pGUI, CGUIElement* pParent, const char* szCaption, bool bChecked)

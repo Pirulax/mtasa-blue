@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include "Common.h"
@@ -19,6 +21,7 @@
 
 class CPedSAInterface;
 
+#dummy
 #define FUNC_SetMaximumWantedLevel      0x561E70
 #define FUNC_SetWantedLevel             0x562470
 #define FUNC_SetWantedLevelNoDrop       0x562570
@@ -26,6 +29,7 @@ class CPedSAInterface;
 /**
  * \todo Fill with accessor functions and a constructor
  */
+#dummy
 #define MAX_CRIMES_QD       16
 #define MAX_COPS_PURSUIT    10
 

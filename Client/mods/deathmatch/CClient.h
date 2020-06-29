@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <core/CClientBase.h>
 
 class CClient : public CClientBase

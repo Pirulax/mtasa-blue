@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CFont.h>
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#dummy
 #define FUNC_PrintString            0x71A700
 
 class CFontSA : public CFont

@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 int CLuaFunctionDefs::GetValidPedModels(lua_State* luaVM)
@@ -203,6 +204,7 @@ int CLuaFunctionDefs::GetKeyboardLayout(lua_State* luaVM)
 {
     const char* readingLayout = "ltr";
 
+#dummy
 #if _WIN32_WINNT >= _WIN32_WINNT_WIN7
     DWORD readingLayoutValue = 0;
 
@@ -211,16 +213,16 @@ int CLuaFunctionDefs::GetKeyboardLayout(lua_State* luaVM)
     {
         switch (readingLayoutValue)
         {
-            case 0: // Left to right (English)
+            case 0:            // Left to right (English)
                 readingLayout = "ltr";
                 break;
-            case 1: // Right to left (Arabic, Hebrew)
+            case 1:            // Right to left (Arabic, Hebrew)
                 readingLayout = "rtl";
                 break;
-            case 2: // Vertical top to bottom with columns to the left and also left to right (Japanese)
+            case 2:            // Vertical top to bottom with columns to the left and also left to right (Japanese)
                 readingLayout = "ttb-rtl-ltr";
                 break;
-            case 3: // Vertical top to bottom with columns proceeding to the right (Mongolian)
+            case 3:            // Vertical top to bottom with columns proceeding to the right (Mongolian)
                 readingLayout = "ttb-ltr";
                 break;
             default:
@@ -228,6 +230,7 @@ int CLuaFunctionDefs::GetKeyboardLayout(lua_State* luaVM)
         }
     }
 
+#dummy
 #else
     HKL             keyboardLayout = ::GetKeyboardLayout(0 /* current thread*/);
     LCID            locale = MAKELCID(LOWORD(keyboardLayout), SORT_DEFAULT);
@@ -240,13 +243,14 @@ int CLuaFunctionDefs::GetKeyboardLayout(lua_State* luaVM)
             readingLayout = "rtl";
         }
     }
+#dummy
 #endif
 
     lua_createtable(luaVM, 0, 1);
     lua_pushstring(luaVM, "readingLayout");
     lua_pushstring(luaVM, readingLayout);
     lua_settable(luaVM, -3);
-    
+
     return 1;
 }
 
@@ -356,7 +360,7 @@ int CLuaFunctionDefs::DownloadFile(lua_State* luaVM)
             CResource* pThisResource = pLuaMain->GetResource();
             CResource* pOtherResource = pThisResource;
 
-            SString    strMetaPath;
+            SString strMetaPath;
 
             // Resolve other resource from name
             if (CResourceManager::ParseResourcePathInput(strFileInput, pOtherResource, NULL, &strMetaPath))

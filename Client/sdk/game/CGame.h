@@ -9,15 +9,19 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 // use this to check if you're using SA or VC headers
+#dummy
 #define GTA_SA
 
 typedef void(InRenderer)();
 
+#dummy
 #include "Common.h"
 
+#dummy
 #include "C3DMarkers.h"
 #include "CAERadioTrackManager.h"
 #include "CAnimBlendAssociation.h"
@@ -81,6 +85,7 @@ typedef void(InRenderer)();
 #include "TaskCarAccessories.h"
 #include "CObjectGroupPhysicalProperties.h"
 
+#dummy
 #include <windows.h>
 
 enum eEntityType;

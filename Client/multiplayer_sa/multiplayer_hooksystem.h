@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "multiplayersa_init.h"
 
+#dummy
 #pragma once
 
 VOID  HookInstallMethod(DWORD dwInstallAddress, DWORD dwHookFunction);
@@ -20,6 +22,7 @@ BYTE* CreateJump(DWORD dwFrom, DWORD dwTo, BYTE* ByteArray);
 VOID  HookCheckOriginalByte(DWORD dwInstallAddress, uchar ucExpectedValue);
 
 // Auto detect requirement of US/EU hook installation
+#dummy
 #define EZHookInstall(type) \
         __if_not_exists( RETURN_##type##_US ) \
         { \
@@ -39,6 +42,7 @@ VOID  HookCheckOriginalByte(DWORD dwInstallAddress, uchar ucExpectedValue);
 
 // US/EU hook installation
 // Includes additional return pointer copies if required
+#dummy
 #define EZHookInstall_HERE(type,CO) \
         __if_exists( RESTORE_Bytes_##type ) \
         { \
@@ -59,6 +63,7 @@ VOID  HookCheckOriginalByte(DWORD dwInstallAddress, uchar ucExpectedValue);
         }
 
 // Check original byte before hooking
+#dummy
 #define EZHookInstallChecked(type) \
         __if_not_exists( RETURN_##type##_US ) \
         { \
@@ -89,6 +94,7 @@ struct SHookInfo
     uint  uiSize;
 };
 
+#dummy
 #define MAKE_HOOK_INFO(type)  SHookInfo ( HOOKPOS_##type, HOOK_##type, HOOKSIZE_##type )
 
 // Structure for holding poke info

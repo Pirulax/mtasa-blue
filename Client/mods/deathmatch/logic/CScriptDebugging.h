@@ -8,12 +8,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <cstdio>
 #include <list>
 #include <stdio.h>
 
+#dummy
 #include "lua/LuaCommon.h"
 
 class CLuaManager;

@@ -9,39 +9,49 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include <game/CGame.h>
 #include "CNewsBrowser.h"
 #include "CLanguageSelector.h"
 
+#dummy
 #define NATIVE_RES_X    1280.0f
 #define NATIVE_RES_Y    1024.0f
 
+#dummy
 #define NATIVE_BG_X     1280.0f
 #define NATIVE_BG_Y     649.0f
 
+#dummy
 #define NATIVE_LOGO_X     1058.0f
 #define NATIVE_LOGO_Y     540.0f
 
+#dummy
 #define CORE_MTA_MENUITEMS_START_X  0.168
 
+#dummy
 #define CORE_MTA_BG_MAX_ALPHA       1.00f   //ACHTUNG: Set to 1 for now due to GTA main menu showing through (no delay inserted between Entering game... and loading screen)
 #define CORE_MTA_BG_INGAME_ALPHA    0.90f
 #define CORE_MTA_FADER              0.05f // 1/20
 #define CORE_MTA_FADER_CREDITS      0.01f
 
+#dummy
 #define CORE_MTA_HOVER_SCALE        1.0f
 #define CORE_MTA_NORMAL_SCALE       0.6f
 #define CORE_MTA_HOVER_ALPHA        1.0f
 #define CORE_MTA_NORMAL_ALPHA       0.6f
 
+#dummy
 #define CORE_MTA_HIDDEN_ALPHA       0.0f
 #define CORE_MTA_DISABLED_ALPHA     0.4f
 #define CORE_MTA_ENABLED_ALPHA      1.0f
 
+#dummy
 #define CORE_MTA_ANIMATION_TIME     200
 #define CORE_MTA_MOVE_ANIM_TIME     600
 
+#dummy
 #define CORE_MTA_STATIC_BG          "cgui\\images\\background.png"
 #define CORE_MTA_LOGO               "cgui\\images\\background_logo.png"
 #define CORE_MTA_FILLER             "cgui\\images\\mta_filler.png"
@@ -299,6 +309,7 @@ CMainMenu::CMainMenu(CGUI* pManager)
     if (CXMLNode* pOldNode = pConfig->FindSubNode(CONFIG_NODE_SERVER_INT))
         pConfig->DeleteSubNode(pOldNode);
 
+#dummy
 #ifdef CI_BUILD
     // Add feature branch alert
     m_pFeatureBranchAlertTexture.reset(reinterpret_cast<CGUITexture*>(m_pManager->CreateTexture()));
@@ -318,24 +329,28 @@ CMainMenu::CMainMenu(CGUI* pManager)
     m_pFeatureBranchAlertLabel->SetFont("clear-normal");
     m_pFeatureBranchAlertLabel->SetHorizontalAlign(CGUI_ALIGN_HORIZONTALCENTER);
     m_pFeatureBranchAlertLabel->SetVerticalAlign(CGUI_ALIGN_VERTICALCENTER);
+#dummy
 #endif
 
+#dummy
 #if _WIN32_WINNT <= _WIN32_WINNT_WINXP
     // Add annonying alert
     m_pAlertTexture.reset(reinterpret_cast<CGUITexture*>(m_pManager->CreateTexture()));
     std::int32_t buffer = 0xFFFF0000;
-    m_pAlertTexture->LoadFromMemory(&buffer, 1, 1); // HACK: Load red dot
+    m_pAlertTexture->LoadFromMemory(&buffer, 1, 1);            // HACK: Load red dot
 
     m_pAlertImage.reset(reinterpret_cast<CGUIStaticImage*>(m_pManager->CreateStaticImage(m_pBackground)));
     m_pAlertImage->LoadFromTexture(m_pAlertTexture.get());
-    m_pAlertImage->SetPosition({ 0.0f, 0.0f }, false);
-    m_pAlertImage->SetSize({ ScreenSize.fX, 20.0f });
+    m_pAlertImage->SetPosition({0.0f, 0.0f}, false);
+    m_pAlertImage->SetSize({ScreenSize.fX, 20.0f});
 
+#dummy
     #define XP_VISTA_WARNING _("MTA will not receive updates on XP/Vista after July 2019.\n\nUpgrade Windows to play on the latest servers.")
     m_pAlertLabel.reset(reinterpret_cast<CGUILabel*>(m_pManager->CreateLabel(m_pAlertImage.get(), XP_VISTA_WARNING)));
-    m_pAlertLabel->SetPosition({ 0.0f, 2.0f }, false);
-    m_pAlertLabel->SetSize({ ScreenSize.fX, 20.0f });
+    m_pAlertLabel->SetPosition({0.0f, 2.0f}, false);
+    m_pAlertLabel->SetSize({ScreenSize.fX, 20.0f});
     m_pAlertLabel->SetHorizontalAlign(CGUI_ALIGN_HORIZONTALCENTER);
+#dummy
 #endif
 }
 
@@ -641,11 +656,13 @@ void CMainMenu::Update()
         if (WaitForMenu == 275)
             GetVersionUpdater()->EnableChecking(true);
 
+#dummy
 #if _WIN32_WINNT <= _WIN32_WINNT_WINXP
         if (WaitForMenu == 275)
         {
             CCore::GetSingletonPtr()->ShowErrorMessageBox("", XP_VISTA_WARNING, "au-revoir-xp-vista");
         }
+#dummy
 #endif
 
         if (WaitForMenu < 300)

@@ -7,8 +7,10 @@
  *  PURPOSE:     Website requests GUI class
  *
  *****************************************************************************/
+#dummy
 #pragma once
 
+#dummy
 #define WEBSITEREQUESTS_WINDOW_DEFAULTWIDTH 476
 #define WEBSITEREQUESTS_WINDOW_DEFAULTHEIGHT 297
 class CGUIWindow;

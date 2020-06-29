@@ -151,7 +151,7 @@ public:
         matResult.vFront = vFront.Clone();
         matResult.vUp = vUp.Clone();
         matResult.vPos = vPos.Clone();
-        
+
         return matResult;
     }
 
@@ -275,12 +275,9 @@ public:
     // Set matrix translational part
     void SetPosition(const CVector& vecPosition) { vPos = vecPosition; }
 
-    CVector GetScale() const
-    {
-        return CVector(vRight.Length(), vFront.Length(), vUp.Length());
-    }
+    CVector GetScale() const { return CVector(vRight.Length(), vFront.Length(), vUp.Length()); }
 
-    void SetScale(const CVector& vecScale) 
+    void SetScale(const CVector& vecScale)
     {
         CMatrix matRot = GetRotationMatrix();
         vRight = matRot.vRight * vecScale.fX;

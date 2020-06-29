@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define CGUIWINDOW_NAME "CGUI/FrameWindow"
 
 CGUIWindow_Impl::CGUIWindow_Impl(CGUI_Impl* pGUI, CGUIElement* pParent, const char* szCaption, const SString& strLayoutFile)

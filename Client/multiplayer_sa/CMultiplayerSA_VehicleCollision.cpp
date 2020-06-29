@@ -1,12 +1,13 @@
 /*****************************************************************************
-*
-*  PROJECT:     Multi Theft Auto
-*  LICENSE:     See LICENSE in the top level directory
-*  FILE:        multiplayer_sa/CMultiplayerSA_VehicleCollision.cpp
-*
-*  Multi Theft Auto is available from https://www.multitheftauto.com/
-*
-*****************************************************************************/
+ *
+ *  PROJECT:     Multi Theft Auto
+ *  LICENSE:     See LICENSE in the top level directory
+ *  FILE:        multiplayer_sa/CMultiplayerSA_VehicleCollision.cpp
+ *
+ *  Multi Theft Auto is available from https://www.multitheftauto.com/
+ *
+ *****************************************************************************/
+#dummy
 #include "StdInc.h"
 
 extern CCoreInterface* g_pCore;
@@ -35,14 +36,13 @@ void TriggerVehicleCollisionEvent()
         auto pInterface = static_cast<CVehicleSAInterface*>(pEntity);
 
         pVehicleCollisionHandler(pCollisionVehicle, pEntity, pEntity->m_nModelIndex, pCollisionVehicle->m_fDamageImpulseMagnitude,
-            pInterface->m_fDamageImpulseMagnitude, pCollisionVehicle->m_usPieceType,
-            pCollisionVehicle->m_vecCollisionPosition, pCollisionVehicle->m_vecCollisionImpactVelocity);
+                                 pInterface->m_fDamageImpulseMagnitude, pCollisionVehicle->m_usPieceType, pCollisionVehicle->m_vecCollisionPosition,
+                                 pCollisionVehicle->m_vecCollisionImpactVelocity);
     }
     else
     {
         pVehicleCollisionHandler(pCollisionVehicle, pEntity, pEntity->m_nModelIndex, pCollisionVehicle->m_fDamageImpulseMagnitude, 0.0f,
-            pCollisionVehicle->m_usPieceType, pCollisionVehicle->m_vecCollisionPosition,
-            pCollisionVehicle->m_vecCollisionImpactVelocity);
+                                 pCollisionVehicle->m_usPieceType, pCollisionVehicle->m_vecCollisionPosition, pCollisionVehicle->m_vecCollisionImpactVelocity);
     }
     TIMING_CHECKPOINT("-TriggerVehColEvent");
 }
@@ -55,6 +55,7 @@ void TriggerVehicleCollisionEvent()
 //      CAutomobile, CPlane, CHeli, CMonsterTruck, CQuadBike, CTrailer
 //
 //////////////////////////////////////////////////////////////////////////////////////////
+#dummy
 #define HOOKPOS_CAutomobile_ProcessControl_VehicleDamage               0x6B1F3B
 #define HOOKSIZE_CAutomobile_ProcessControl_VehicleDamage              6
 static const DWORD CONTINUE_CAutomobile_ProcessControl_VehicleDamage = 0x6B1F41;
@@ -88,6 +89,7 @@ static void _declspec(naked) HOOK_CAutomobile_ProcessControl_VehicleDamage()
 //      CBike, CBmx
 //
 //////////////////////////////////////////////////////////////////////////////////////////
+#dummy
 #define HOOKPOS_CBike_ProcessControl_VehicleDamage               0x6B9AA5
 #define HOOKSIZE_CBike_ProcessControl_VehicleDamage              6
 static const DWORD CONTINUE_CBike_ProcessControl_VehicleDamage = 0x6B9AAB;
@@ -121,6 +123,7 @@ static void _declspec(naked) HOOK_CBike_ProcessControl_VehicleDamage()
 //      CBoat
 //
 //////////////////////////////////////////////////////////////////////////////////////////
+#dummy
 #define HOOKPOS_CBoat_ProcessControl_VehicleDamage               0x6F1864
 #define HOOKSIZE_CBoat_ProcessControl_VehicleDamage              5
 static const DWORD CONTINUE_CBoat_ProcessControl_VehicleDamage = 0x6F1869;
@@ -154,6 +157,7 @@ static void _declspec(naked) HOOK_CBoat_ProcessControl_VehicleDamage()
 //      CTrain
 //
 //////////////////////////////////////////////////////////////////////////////////////////
+#dummy
 #define HOOKPOS_CTrain_ProcessControl_VehicleDamage               0x6F86BB
 #define HOOKSIZE_CTrain_ProcessControl_VehicleDamage              5
 static const DWORD CONTINUE_CTrain_ProcessControl_VehicleDamage = 0x6F86C0;

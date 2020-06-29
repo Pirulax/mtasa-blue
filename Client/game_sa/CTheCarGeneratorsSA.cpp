@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CTheCarGeneratorsSA::CTheCarGeneratorsSA()

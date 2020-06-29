@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 using namespace std;
@@ -28,8 +29,10 @@ CClientEntity* CElementIDs::GetElement(ElementID ID)
     }
 
     /*
+#dummy
     #ifdef MTA_DEBUG
         assert ( 0 );
+#dummy
     #endif
     */
     return NULL;
@@ -39,9 +42,11 @@ void CElementIDs::SetElement(ElementID ID, CClientEntity* pEntity)
 {
     if (ID < MAX_SERVER_ELEMENTS + MAX_CLIENT_ELEMENTS)
         m_Elements[ID.Value()] = pEntity;
+#dummy
 #ifdef MTA_DEBUG
     else
         assert(0);
+#dummy
 #endif
 }
 

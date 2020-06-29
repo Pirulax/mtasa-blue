@@ -9,13 +9,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "net/SyncStructures.h"
 
+#dummy
 #ifdef WITH_OBJECT_SYNC
 
 using std::list;
 
+#dummy
 #define OBJECT_SYNC_RATE   ( g_TickRateSettings.iObjectSync )
 
 CObjectSync::CObjectSync(CClientObjectManager* pObjectManager)
@@ -98,8 +101,10 @@ void CObjectSync::Packet_ObjectStartSync(NetBitStreamInterface& BitStream)
             if (BitStream.Read(&position) && BitStream.Read(&rotation))
             {
                 // Disabled due to problem when attached in the editor - issue #5886
+#dummy
                 #if 0
                 pObject->SetOrientation ( position.data.vecPosition, rotation.data.vecRotation );
+#dummy
                 #endif
             }
             // No velocity due to issue #3522

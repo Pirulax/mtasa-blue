@@ -12,8 +12,10 @@
 // This class manages all the CLuaMain instances (Virtual Machines)
 class CLuaManager;
 
+#dummy
 #pragma once
 
+#dummy
 #include <list>
 #include "../CClientGUIManager.h"
 #include "../CEvents.h"

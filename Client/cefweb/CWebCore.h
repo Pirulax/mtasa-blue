@@ -7,8 +7,10 @@
  *  PURPOSE:     Webbrowser class
  *
  *****************************************************************************/
+#dummy
 #pragma once
 
+#dummy
 #undef GetNextSibling
 #undef GetFirstChild
 #include <functional>
@@ -33,16 +35,17 @@ class CWebCore : public CWebCoreInterface
     {
         std::function<void()> callback;
         CWebView*             pWebView;
+#dummy
     #ifdef MTA_DEBUG
         SString name;
+#dummy
     #endif
 
         EventEntry(const std::function<void()>& callback_, CWebView* pWebView_) : callback(callback_), pWebView(pWebView_) {}
+#dummy
 #ifdef MTA_DEBUG
-        EventEntry(const std::function<void()>& callback_, CWebView* pWebView_, const SString& name_)
-            : callback(callback_), pWebView(pWebView_), name(name_)
-        {
-        }
+        EventEntry(const std::function<void()>& callback_, CWebView* pWebView_, const SString& name_) : callback(callback_), pWebView(pWebView_), name(name_) {}
+#dummy
 #endif
     };
 

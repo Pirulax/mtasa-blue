@@ -9,19 +9,25 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPathFind.h>
 
+#dummy
 #define FUNC_FindNthNodeClosestToCoors          0x44F8C0
 #define FUNC_FindNodePointer                    0x420AC0
 #define FUNC_SwitchRoadsOffInArea               0x452C80
 #define FUNC_SwitchPedRoadsOffInArea            0x452F00
 
+#dummy
 #define FUNC_CPathNode_GetCoors                 0x420A10
 
+#dummy
 #define CLASS_CPathFind                         0x96F050
 
+#dummy
 #define VAR_PedDensityMultiplier                0x8D2530
 #define VAR_m_AllRandomPedsThisType             0x8D2534
 #define VAR_MaxNumberOfPedsInUse                0x8D2538

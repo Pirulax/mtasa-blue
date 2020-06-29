@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CWeaponStatSA::CWeaponStatSA(eWeaponType weaponType, eWeaponSkill skillLevel)

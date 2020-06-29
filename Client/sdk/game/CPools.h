@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Common.h"
 
+#dummy
 #include "CAutomobile.h"
 #include "CBoat.h"
 #include "CBike.h"

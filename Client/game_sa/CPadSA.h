@@ -9,16 +9,20 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPad.h>
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include "Common.h"
 
+#dummy
 #define MAX_HORN_HISTORY        5
 #define STEERINGBUFFERLENGTH    10
 
+#dummy
 #define FUNC_CPad_UpdatePads                0x541DD0
 
 class CPadSAInterface

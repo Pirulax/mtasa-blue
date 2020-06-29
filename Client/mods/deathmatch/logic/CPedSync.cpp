@@ -9,12 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 using std::list;
 
 extern CClientGame* g_pClientGame;
 
+#dummy
 #define PED_SYNC_RATE   ( g_TickRateSettings.iPedSync )
 
 CPedSync::CPedSync(CClientPedManager* pPedManager)

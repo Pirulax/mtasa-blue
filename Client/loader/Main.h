@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define MTA_GTAEXE_NAME "gta_sa.exe"
 #define MTA_HTAEXE_NAME "proxy_sa.exe"
 #define MTA_GTASTEAMEXE_NAME "gta-sa.exe"
@@ -18,6 +20,7 @@
 #define URI_CONNECT 1
 #define MTA_EXE_NAME_RELEASE "Multi Theft Auto.exe"
 
+#dummy
 #ifdef MTA_DEBUG
     #define MTA_EXE_NAME            "Multi Theft Auto_d.exe"
     #define MTA_DLL_NAME            "core_d.dll"

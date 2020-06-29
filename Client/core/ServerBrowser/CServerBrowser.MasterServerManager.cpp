@@ -2,6 +2,7 @@
 // CMasterServerManager.cpp
 //
 
+#dummy
 #include "StdInc.h"
 #include "CServerBrowser.MasterServerManager.h"
 #include "CServerBrowser.RemoteMasterServer.h"

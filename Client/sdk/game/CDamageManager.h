@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <windows.h>
 
 // Not sure if R* used these
+#dummy
 #define DT_ENGINE_OK                    (0)
 #define DT_ENGINE_RADIATOR_BURST        (100)
 #define DT_ENGINE_ENGINE_OVERHEAT       (150)

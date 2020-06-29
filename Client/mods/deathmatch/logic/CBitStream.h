@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "..\CClient.h"
 extern CNet* g_pNet;
 

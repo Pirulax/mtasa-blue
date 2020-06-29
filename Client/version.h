@@ -11,15 +11,18 @@
 //
 
 // New version info
+#dummy
 #define MTASA_VERSION_MAJOR         1
 #define MTASA_VERSION_MINOR         5
 #define MTASA_VERSION_MAINTENANCE   7
 #define MTASA_VERSION_TYPE          VERSION_TYPE_CUSTOM
 #define MTASA_VERSION_BUILD         0
 
+#dummy
 #include "build_overrides_c.h"
 
 // Old version info
+#dummy
 #define MTA_DM_VERSION              ( ( ( MTASA_VERSION_MAJOR ) << 8 ) | ( ( MTASA_VERSION_MINOR ) << 4 ) | ( ( MTASA_VERSION_MAINTENANCE ) << 0 ) )
 #if MTASA_VERSION_MAINTENANCE == 0
     #define MTA_DM_VERSIONSTRING        QUOTE_DEFINE ( MTASA_VERSION_MAJOR ) "." QUOTE_DEFINE ( MTASA_VERSION_MINOR )
@@ -29,47 +32,59 @@
 #define MTA_DM_FULL_STRING          "MTA:SA Client"
 
 // Compile types
+#dummy
 #define VERSION_TYPE_CUSTOM         0x01
 #define VERSION_TYPE_EXPERIMENTAL   0x03
 #define VERSION_TYPE_UNSTABLE       0x05
 #define VERSION_TYPE_UNTESTED       0x07
 #define VERSION_TYPE_RELEASE        0x09
 
+#dummy
 #define QUOTE_DEFINE2(c) #c
 #define QUOTE_DEFINE(x) QUOTE_DEFINE2(x)
 
 // Implement compile types
+#dummy
 #if MTASA_VERSION_TYPE == VERSION_TYPE_CUSTOM
 
+#dummy
     #define MTA_DM_BUILDTYPE        "custom"
     #define MTA_DM_BUILDTAG_SHORT   MTA_DM_VERSIONSTRING "-" MTA_DM_BUILDTYPE
     #define MTA_DM_BUILDTAG_LONG    MTA_DM_VERSIONSTRING "-" MTA_DM_BUILDTYPE
 
+#dummy
 #elif MTASA_VERSION_TYPE == VERSION_TYPE_UNSTABLE
 
+#dummy
     #define MTA_DM_BUILDTYPE        "unstable"
     #define MTA_DM_BUILDTAG_SHORT   MTA_DM_VERSIONSTRING "-" MTA_DM_BUILDTYPE "-" QUOTE_DEFINE ( MTASA_VERSION_BUILD )
     #define MTA_DM_BUILDTAG_LONG    MTA_DM_VERSIONSTRING "-" MTA_DM_BUILDTYPE "-" QUOTE_DEFINE ( MTASA_VERSION_BUILD )
 
+#dummy
 #elif MTASA_VERSION_TYPE == VERSION_TYPE_UNTESTED
 
+#dummy
     #define MTA_DM_BUILDTYPE        "untested"
     #define MTA_DM_BUILDTAG_SHORT   MTA_DM_VERSIONSTRING "-" MTA_DM_BUILDTYPE "-" QUOTE_DEFINE ( MTASA_VERSION_BUILD )
     #define MTA_DM_BUILDTAG_LONG    MTA_DM_VERSIONSTRING "-" MTA_DM_BUILDTYPE "-" QUOTE_DEFINE ( MTASA_VERSION_BUILD )
     #define MTA_DM_CONNECT_TO_PUBLIC
     #define MTA_DM_EXPIRE_DAYS      60
 
+#dummy
 #elif MTASA_VERSION_TYPE == VERSION_TYPE_RELEASE
 
+#dummy
     #define MTA_DM_BUILDTYPE        "release"
     #define MTA_DM_BUILDTAG_SHORT   MTA_DM_VERSIONSTRING
     #define MTA_DM_BUILDTAG_LONG    MTA_DM_VERSIONSTRING "-" MTA_DM_BUILDTYPE "-" QUOTE_DEFINE ( MTASA_VERSION_BUILD )
     #define MTA_DM_CONNECT_TO_PUBLIC
 
+#dummy
 #else
     #error "Incorrect MTASA_VERSION_TYPE"
 #endif
 
+#dummy
 #define _ASE_VERSION QUOTE_DEFINE(MTASA_VERSION_MAJOR) "." QUOTE_DEFINE(MTASA_VERSION_MINOR)
 #define _NETCODE_VERSION_BRANCH_ID      0x4         // Use 0x1 - 0xF to indicate an incompatible branch is being used (0x0 is reserved, 0x4 is trunk)
 #define _CLIENT_NET_MODULE_VERSION      0x0AB       // (0x000 - 0xfff) Lvl9 wizards only
@@ -77,6 +92,7 @@
 #define MTA_DM_BITSTREAM_VERSION        0x06F       // (0x000 - 0xfff) Increment when net messages change (post-release). (Changing will also require additional backward compatibility code).
 
 // To avoid user confusion, make sure the ASE version matches only if communication is possible
+#dummy
 #if defined(MTA_DM_CONNECT_TO_PUBLIC)
     #define MTA_DM_ASE_VERSION                  _ASE_VERSION
     #define MTA_DM_NETCODE_VERSION              _NETCODE_VERSION

@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define FUNC_Add                                            0x563220 // ##SA##
 #define FUNC_Remove                                         0x563280 // ##SA##
 #define FUNC_ProcessLineOfSight                             0x56BA00 // ##SA##
@@ -30,9 +32,11 @@
 #define FUNC_CWorld_FindPositionForTrackPosition            0x6F59E0
 
 // CCol...
+#dummy
 #define FUNC_CColLine_Constructor                           0x40EF50 // ##SA##
 #define FUNC_CColSphere_Set                                 0x40FD10 // ##SA##
 
+#dummy
 #define VAR_IgnoredEntity                                   0xB7CD68 // ##SA##
 #define VAR_currArea                                        0xB72914 // ##SA##
 #define ARRAY_StreamSectors                                 0xB7D0B8
@@ -46,6 +50,7 @@
 #define VTBL_CBUILDING                                      0x8585C8
 #define VAR_CWorld_bIncludeCarTires                         0xB7CD70
 
+#dummy
 #include <game/CWorld.h>
 #include "CEntitySA.h"
 #include "CBuildingSA.h"
@@ -118,9 +123,10 @@ public:
     bool              IsEntityRemoved(CEntitySAInterface* pInterface);
     bool              CalculateImpactPosition(const CVector& vecInputStart, CVector& vecInputEnd);
 
-    CSurfaceType*     GetSurfaceInfo() override;
-    void              ResetAllSurfaceInfo() override;
-    bool              ResetSurfaceInfo(short sSurfaceID) override;
+    CSurfaceType* GetSurfaceInfo() override;
+    void          ResetAllSurfaceInfo() override;
+    bool          ResetSurfaceInfo(short sSurfaceID) override;
+
 private:
     std::multimap<unsigned short, SBuildingRemoval*>*         m_pBuildingRemovals;
     std::multimap<unsigned short, sDataBuildingRemovalItem*>* m_pDataBuildings;

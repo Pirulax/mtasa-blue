@@ -9,13 +9,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Common.h"
 #include <CMatrix.h>
 #include <CVector.h>
 #include "RenderWare.h"
 
+#dummy
 #include <windows.h>
 
 enum eEntityType

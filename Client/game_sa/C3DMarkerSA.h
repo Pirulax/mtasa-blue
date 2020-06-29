@@ -9,20 +9,27 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/C3DMarker.h>
 #include <CMatrix_Pad.h>
 #include "Common.h"
 
+#dummy
 #ifdef GTASA_30
 
+#dummy
 #define FUNC_DeleteMarkerObject         0x753CD0
 
+#dummy
 #else
 
+#dummy
 #define FUNC_DeleteMarkerObject         0x722390
 
+#dummy
 #endif
 
 class C3DMarkerSAInterface

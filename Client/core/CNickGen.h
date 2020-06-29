@@ -7,8 +7,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define NICKGEN_NUM_ADJECTIVES      1048
 #define NICKGEN_NUM_NOUNS           934
 

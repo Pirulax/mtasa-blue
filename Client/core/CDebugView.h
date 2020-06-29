@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CGUI.h"
 #include <gui/CGUI.h>
 #include "CChat.h"
 
+#dummy
 #define DEBUGVIEW_WIDTH         576                             // Debugview default width
 #define DEBUGVIEW_TEXT_COLOR    CColor( 235, 221, 178, 255 )    // Debugview default text color
 
@@ -28,5 +31,5 @@ public:
 
 protected:
     // Debug view doesn't support position changes unlike chat box
-    void UpdatePosition() override {};
+    void UpdatePosition() override{};
 };

@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUIGridList.h>
 #include "CGUIElement_Impl.h"
 
@@ -84,6 +86,7 @@ public:
     void      SetIgnoreTextSpacer(bool bIgnoreTextSpacer) { m_bIgnoreTextSpacer = bIgnoreTextSpacer; };
     eCGUIType GetType() { return CGUI_GRIDLIST; };
 
+#dummy
     #include "CGUIElement_Inc.h"
 
 private:

@@ -9,17 +9,21 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPlayerInfo.h>
 #include "Common.h"
 #include "CPlayerPedSA.h"
 
+#dummy
 #define FUNC_MakePlayerSafe                         0x56e870
 #define FUNC_CancelPlayerEnteringCars               0x56e860
 #define FUNC_ArrestPlayer                           0x56e5d0
 #define FUNC_KillPlayer                             0x56e580
 
+#dummy
 #define FUNC_TakeRemoteControlledCarFromPlayer      0x45ae80
 #define FUNC_GivePlayerRemoteControlledCar          0x442020
 #define FUNC_TakeRemoteControlOfCar                 0x45ad40
@@ -30,10 +34,12 @@
  * \todo Implement FUNC_TakeRemoteControlOfCar, FUNC_StreamParachuteWeapon and FUNC_StreamParachuteWeapon
  */
 
+#dummy
 #define VAR_PlayerPed                               0x94AD28
 #define VAR_PlayerRCCar                             0x94AD2C
 #define VAR_PlayerMoney                             0x94ADC8
 
+#dummy
 #define NUM_CHARS_IN_NAME                           34
 
 /**
@@ -51,6 +57,7 @@ public:
 };
 
 // Note: Information below may be incorrect. Please check before using.
+#dummy
 #pragma pack(push)
 #pragma pack(1)
 class CPlayerPedDataSAInterface
@@ -148,6 +155,7 @@ public:
     CPedSAInterface* m_pLastProstituteShagged;
 };
 static_assert(sizeof(CPlayerPedDataSAInterface) == 172, "Invalid size for CPlayerPedDataSAInterface");
+#dummy
 #pragma pack(pop)
 
 class CPlayerInfoSAInterface

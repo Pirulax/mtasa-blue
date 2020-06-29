@@ -10,8 +10,10 @@
 
 class CClientSoundManager;
 
+#dummy
 #pragma once
 
+#dummy
 #include <list>
 #include <bass.h>
 #include "CClientSound.h"

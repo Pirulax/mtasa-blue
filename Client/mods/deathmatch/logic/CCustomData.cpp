@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #define DECLARE_PROFILER_SECTION_CCustomData
 #include "profiler/SharedUtil.Profiler.h"

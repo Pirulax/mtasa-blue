@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 unsigned char* CWeatherSA::VAR_CurrentWeather;

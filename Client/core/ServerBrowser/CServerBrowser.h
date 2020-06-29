@@ -11,17 +11,22 @@
 
 class CServerBrowser;
 
+#dummy
 #pragma once
 
 // Amount of server lists/tabs (ServerBrowserType)
+#dummy
 #define SERVER_BROWSER_TYPE_COUNT           4
 
 // Amount of search types
+#dummy
 #define SERVER_BROWSER_SEARCH_TYPE_COUNT    2
 
 // Server browser list update interval (in ms)
+#dummy
 #define SERVER_BROWSER_UPDATE_INTERVAL      1000
 
+#dummy
 #include "CMainMenu.h"
 #include "CServerList.h"
 #include "CSingleton.h"

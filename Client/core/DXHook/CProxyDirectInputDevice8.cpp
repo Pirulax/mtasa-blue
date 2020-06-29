@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CProxyDirectInputDevice8::CProxyDirectInputDevice8(IDirectInputDevice8A* pDevice)

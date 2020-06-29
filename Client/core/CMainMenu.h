@@ -11,8 +11,10 @@
 
 class CMainMenu;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CCore.h"
 #include "CQuestionBox.h"
 #include <ServerBrowser/CServerBrowser.h>
@@ -23,6 +25,7 @@ class CMainMenu;
 class CNewsBrowser;
 class CLanguageSelector;
 
+#dummy
 #define CORE_MTA_NEWS_ITEMS         3
 
 struct sMenuItem
@@ -162,16 +165,20 @@ private:
     CGUILabel* m_pNewsItemDateLabels[CORE_MTA_NEWS_ITEMS];
     CGUILabel* m_pNewsItemNEWLabels[CORE_MTA_NEWS_ITEMS];
 
+#dummy
 #ifdef CI_BUILD
     std::unique_ptr<CGUITexture>     m_pFeatureBranchAlertTexture;
     std::unique_ptr<CGUIStaticImage> m_pFeatureBranchAlertImage;
     std::unique_ptr<CGUILabel>       m_pFeatureBranchAlertLabel;
+#dummy
 #endif
 
+#dummy
 #if _WIN32_WINNT <= _WIN32_WINNT_WINXP
-    std::unique_ptr<CGUITexture> m_pAlertTexture;
+    std::unique_ptr<CGUITexture>     m_pAlertTexture;
     std::unique_ptr<CGUIStaticImage> m_pAlertImage;
-    std::unique_ptr<CGUILabel> m_pAlertLabel;
+    std::unique_ptr<CGUILabel>       m_pAlertLabel;
+#dummy
 #endif
 
     // Fade states

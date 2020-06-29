@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <detours.h>
@@ -16,6 +17,7 @@
 
 using namespace std;
 
+#dummy
 #define MESSAGE_MONITOR_START       0x8500
 #define MESSAGE_MONITOR_END         0x8501
 #define MESSAGE_MONITOR_RPM         0x8502

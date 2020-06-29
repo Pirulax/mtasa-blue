@@ -11,11 +11,13 @@
 
 /* This class is purely for debugging things. This will avoid usage of CClientGame. */
 
+#dummy
 #pragma once
 
 class CFoo
 {
 public:
+#dummy
     #ifdef MTA_DEBUG
     void Init(class CClientGame* pClientGame) { g_pClientGame = pClientGame; };
 
@@ -23,9 +25,11 @@ public:
     void Test(const char* szString);
 
     class CClientGame* g_pClientGame;
+#dummy
     #else
     void Init(CClientGame* pClientGame){};
     void DoPulse(){};
     void Test(const char* szString){};
+#dummy
     #endif
 };

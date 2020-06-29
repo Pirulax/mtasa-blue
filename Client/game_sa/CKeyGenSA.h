@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CKeyGen.h>
 
+#dummy
 #define FUNC_CKeyGen_GetKey_len         0x53ced0
 #define FUNC_CKeyGen_GetKey             0x53cf00
 #define FUNC_CKeyGen_GetUppercaseKey    0x53cf30

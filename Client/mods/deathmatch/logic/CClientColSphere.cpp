@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 CClientColSphere::CClientColSphere(CClientManager* pManager, ElementID ID, const CVector& vecPosition, float fRadius)

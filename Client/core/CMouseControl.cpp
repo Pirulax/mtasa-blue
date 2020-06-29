@@ -9,11 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CMouseControl.h"
 #include <windowsx.h>
 #include <game/CGame.h>
 
+#dummy
 #define MOUSE_CONTROL_MULTIPLIER    35
 
 extern CCore* g_pCore;

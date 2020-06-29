@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 void AddTrack(void* pAddress, size_t size, const char* szFile, int iLine);

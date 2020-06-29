@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 void CLuaTimerManager::DoPulse(CLuaMain* pLuaMain)

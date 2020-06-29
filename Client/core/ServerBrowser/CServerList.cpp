@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CServerBrowser.MasterServerManager.h"
 #include "CServerCache.h"
@@ -35,12 +36,15 @@ CServerList::~CServerList()
 
 void CServerList::Clear()
 {
+#dummy
 #if 1
     // Clear all entries
     m_Servers.DeleteAll();
+#dummy
 #else
     for (std::list<CServerListItem*>::iterator i = m_Servers.begin(); i != m_Servers.end(); i++)
         (*i)->ResetForRefresh();
+#dummy
 #endif
     m_nScanned = 0;
     m_nSkipped = 0;

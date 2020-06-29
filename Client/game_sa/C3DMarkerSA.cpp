@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 void C3DMarkerSA::GetMatrix(CMatrix* pMatrix)

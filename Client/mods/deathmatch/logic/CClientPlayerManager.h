@@ -10,8 +10,10 @@
 
 // ## TODO ## : Make it possible to delete the local player without crashin ( m_pLocalPlayer not NULL-ed )
 
+#dummy
 #pragma once
 
+#dummy
 #include <list>
 
 class CClientManager;

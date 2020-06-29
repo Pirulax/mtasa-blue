@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #define ALLOC_STATS_MODULE_NAME "game_sa"
 #include "SharedUtil.hpp"
@@ -480,8 +481,10 @@ void CGameSA::Terminate()
     delete this;
 
     // Dump any memory leaks if DETECT_LEAK is defined
+#dummy
     #ifdef DETECT_LEAKS
     DumpUnfreed();
+#dummy
     #endif
 }
 

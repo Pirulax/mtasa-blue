@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CGarage.h"
 #include "Common.h"
 
+#dummy
 #define MAX_GARAGES 50
 
 class CGarages

@@ -8,10 +8,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientEffect.h"
 
+#dummy
 #include <game/CFxSystem.h>
 #include <game/CFxManager.h>
 

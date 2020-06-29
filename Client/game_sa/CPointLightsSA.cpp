@@ -8,6 +8,7 @@
  *  Multi Theft Auto is available from http://www.multitheftauto.com/
  *
  *****************************************************************************/
+#dummy
 #include "StdInc.h"
 
 using CHeli_SearchLightCone_t = void(__cdecl*)(int handleId, CVector startPos, CVector endPos, float radius1, float unknownConstant, int unkown1,

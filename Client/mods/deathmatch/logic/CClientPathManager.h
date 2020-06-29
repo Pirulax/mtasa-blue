@@ -10,8 +10,10 @@
 
 class CClientPathManager;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientPathNode.h"
 #include "CClientManager.h"
 #include <list>

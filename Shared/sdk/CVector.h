@@ -129,17 +129,18 @@ public:
         }
 
         *fOutDist = 0.0f;
-        return fabs(vecNormal.DotProduct(this) - vecPosition.Length()) < 1e-3f;;
+        return fabs(vecNormal.DotProduct(this) - vecPosition.Length()) < 1e-3f;
+        ;
     }
 
     bool IntersectsSegmentPlane(const CVector& vecSegment, const CVector& vecNormal, const CVector& vecPosition, CVector* outVec) const
     {
-        float fDist;
+        float   fDist;
         CVector vecRay = vecSegment;
         vecRay.Normalize();
-        bool bIntersects = IntesectsLinePlane(vecRay, vecNormal, vecPosition, &fDist);
+        bool        bIntersects = IntesectsLinePlane(vecRay, vecNormal, vecPosition, &fDist);
         const float fSegLength = vecSegment.Length();
-        
+
         *outVec = *this + vecRay * fDist;
         return bIntersects && fDist >= 0 && (fDist <= fSegLength);
     }
@@ -150,7 +151,7 @@ public:
         const float fEpsilon = 1e-6f;
 
         CVector vecEdge1, vecEdge2, h, s;
-        float a, f, u, v;
+        float   a, f, u, v;
 
         CVector vecRay = vecSegment;
         vecRay.Normalize();

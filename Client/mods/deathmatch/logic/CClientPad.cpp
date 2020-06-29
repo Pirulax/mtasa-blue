@@ -11,8 +11,10 @@
 /* This class is used for setting controller states on script-created peds,
    through scripting functions.
 */
+#dummy
 #include <StdInc.h>
 
+#dummy
 #define CS_NAN -32768
 
 SFixedArray<short, MAX_GTA_CONTROLS>       CClientPad::m_sScriptedStates;

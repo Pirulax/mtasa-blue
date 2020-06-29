@@ -16,6 +16,7 @@
 // only one CElementGroup at a time (though this will probably not
 // be enforced at this level).
 
+#dummy
 #include "StdInc.h"
 
 using std::list;

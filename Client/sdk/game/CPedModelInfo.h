@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CModelInfo.h"
 
 typedef unsigned long AssocGroupId;

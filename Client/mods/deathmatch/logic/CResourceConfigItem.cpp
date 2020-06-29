@@ -14,6 +14,7 @@
 // configure them. They are always XML files, and access
 // is provided by giving out the root xml node.
 
+#dummy
 #include <StdInc.h>
 
 CResourceConfigItem::CResourceConfigItem(CResource* resource, const char* szShortName, const char* szResourceFileName, uint uiDownloadSize,

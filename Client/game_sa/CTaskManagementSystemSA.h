@@ -11,14 +11,17 @@
 
 class CTaskManagementSystemSA;
 
+#dummy
 #pragma once
 
+#dummy
 #include "TaskSA.h"
 #include "TaskCarAccessoriesSA.h"
 #include "TaskCarSA.h"
 #include <game/CTaskManagementSystem.h>
 #include <list>
 
+#dummy
 #define FUNC_CTask_Operator_Delete          0x61A5B0
 
 class CTaskManagementSystemSA : public CTaskManagementSystem

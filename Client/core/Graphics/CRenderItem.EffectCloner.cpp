@@ -7,6 +7,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CRenderItem.EffectCloner.h"
 #include "CRenderItem.EffectTemplate.h"
@@ -152,8 +153,10 @@ void CEffectCloner::MaybeTidyUp(bool bForceDrasticMeasures)
     float fTicksAlpha = UnlerpClamped(0, m_ValidMap.size(), 300);
     int   iTicks = static_cast<int>((1 - fTicksAlpha * fTicksAlpha) * 30 * 60 * 1000) + 1000;
 
+#dummy
 #ifdef MTA_DEBUG
     iTicks /= 60;            // Mins to seconds for debug
+#dummy
 #endif
 
     // Valid Effect not used for a little while can go

@@ -811,19 +811,20 @@ int CLuaFunctionDefs::GetRemoteRequestInfo(lua_State* luaVM)
         CResource* pResource = nullptr;
         if (pRemoteCall->GetVM())
             pResource = pRemoteCall->GetVM()->GetResource();
-        
+
         bool bExtendedInfo = false;
-        
+
         // only extend informations when the called resource is the same OR has "general.fullRemoteRequestInfo" acl right
         if (pThisResource == pResource ||
-            m_pACLManager->CanObjectUseRight(pThisResource->GetName().c_str(), CAccessControlListGroupObject::OBJECT_TYPE_RESOURCE, "fullRemoteRequestInfo", CAccessControlListRight::RIGHT_TYPE_GENERAL, false))
+            m_pACLManager->CanObjectUseRight(pThisResource->GetName().c_str(), CAccessControlListGroupObject::OBJECT_TYPE_RESOURCE, "fullRemoteRequestInfo",
+                                             CAccessControlListRight::RIGHT_TYPE_GENERAL, false))
         {
             bExtendedInfo = true;
         }
 
         info.PushString("type");
         info.PushString((pRemoteCall->IsFetch() ? "fetch" : "call"));
-        
+
         // remove query_string from url when bExtendedInfo isn't set
         SString sURL = pRemoteCall->GetURL();
 
@@ -897,7 +898,7 @@ int CLuaFunctionDefs::GetRemoteRequestInfo(lua_State* luaVM)
         info.PushAsTable(luaVM);
         return 1;
     }
-    
+
     lua_pushboolean(luaVM, false);
     return 1;
 }

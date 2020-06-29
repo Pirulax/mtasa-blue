@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CHandlingEntry.h>
 #include "Common.h"
 #define FUNC_HandlingDataMgr_ConvertBikeDataToGameUnits 0x6F5290

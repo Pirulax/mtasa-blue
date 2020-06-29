@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 using std::list;
@@ -50,7 +51,6 @@ void CClientPedManager::DoPulse(bool bDoStandardPulses)
         pPed->StreamedInPulse(bDoStandardPulses);
     }
 }
-
 
 CClientPed* CClientPedManager::Get(ElementID ID, bool bCheckPlayers)
 {

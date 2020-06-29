@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <CClientCommon.h>
 #include "CDeathmatchObject.h"
 
+#dummy
 #ifdef WITH_OBJECT_SYNC
 
 class CObjectSync
@@ -46,4 +49,5 @@ private:
     unsigned long                   m_ulLastSyncTime;
 };
 
+#dummy
 #endif

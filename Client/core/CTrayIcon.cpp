@@ -9,10 +9,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include <strsafe.h>
 #include "resource.h"
 
+#dummy
 #define TRAY_DUMMY_WINDOW_NAME  L"NotificationsDummy"
 #define TRAY_BALLOON_TITLE      L"Notification from MTA:SA server"
 #define TRAY_ICON_TOOLTIP_TEXT  L"Multi Theft Auto: San Andreas"

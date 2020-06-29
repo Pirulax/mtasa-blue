@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUIButton.h>
 #include "CGUIElement_Impl.h"
 
@@ -22,5 +24,6 @@ public:
 
     eCGUIType GetType() { return CGUI_BUTTON; };
 
+#dummy
     #include "CGUIElement_Inc.h"
 };

@@ -9,22 +9,28 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CRadar.h>
 #include "CMarkerSA.h"
 
 /**
  * \todo GAME RELEASE: Update CMarker array see 0x585fe0 for example
  */
+#dummy
 #define ARRAY_CMarker                       0xBA86F0 // ##SA##
 #define MAX_MARKERS                         175 // ##SA##
 
 // 005853d0      public: static void __cdecl CRadar::DrawAreaOnRadar(class CRect const &,class CRGBA const &,bool)
+#dummy
 #define FUNC_DrawAreaOnRadar                0x5853d0
 // 00583820        public: static int __cdecl CRadar::SetCoordBlip(enum eBlipType,class CVector,unsigned int,enum eBlipDisplay,char *)
+#dummy
 #define FUNC_SetCoordBlip                   0x583820
 
+#dummy
 #define VAR_3DMarkerColorMission            0x68F958
 #define VAR_3DMarkerColorNormal             0x68F95C
 

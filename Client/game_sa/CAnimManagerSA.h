@@ -9,18 +9,22 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CAnimManager.h>
 #include <game/CAnimBlendAssociation.h>
 #include <game/CAnimBlendHierarchy.h>
 #include <game/CAnimBlock.h>
 #include <game/CAnimBlendAssocGroup.h>
 
+#dummy
 #include "Common.h"
 #include <list>
 #include <map>
 
+#dummy
 #define FUNC_CAnimManager_Initialize                        0x5bf6b0
 #define FUNC_CAnimManager_Shutdown                          0x4d4130
 #define FUNC_CAnimManager_GetAnimationBlock_int             0x406f90
@@ -65,6 +69,7 @@
 #define VAR_CAnimManager_NumAnimations                      0xb4ea2c
 #define VAR_CAnimManager_NumAnimBlocks                      0xb4ea30
 // Non members
+#dummy
 #define FUNC_HasAnimGroupLoaded                             0x45b130
 #define FUNC_RpAnimBlendClumpGetFirstAssociation            0x4d15e0
 #define FUNC_RpAnimBlendClumpGetAssociation_str             0x4d6870

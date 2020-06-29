@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define MAX_MODULE_PATH 512
 
 CExceptionInformation_Impl::CExceptionInformation_Impl()

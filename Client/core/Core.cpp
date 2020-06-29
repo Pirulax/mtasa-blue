@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #define DECLARE_PROFILER_SECTION_Core
 #include "profiler/SharedUtil.Profiler.h"

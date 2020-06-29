@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #undef GetNextSibling
 #undef GetFirstChild
 #include <core/CWebViewInterface.h>
@@ -28,6 +30,7 @@
 #define GetNextSibling(hwnd) GetWindow(hwnd, GW_HWNDNEXT) // Re-define the conflicting macro
 #define GetFirstChild(hwnd) GetTopWindow(hwnd)
 
+#dummy
 #define MTA_CEF_USERAGENT "Multi Theft Auto: San Andreas Client " MTA_DM_BUILDTAG_LONG
 
 class CWebView : public CWebViewInterface,
@@ -131,7 +134,8 @@ public:
                              const CefString& failedURL) override;
 
     // CefRequestHandler methods
-    virtual bool OnBeforeBrowse(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, bool userGesture, bool isRedirect) override;
+    virtual bool OnBeforeBrowse(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, bool userGesture,
+                                bool isRedirect) override;
     virtual CefRefPtr<CefResourceRequestHandler> GetResourceRequestHandler(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
                                                                            CefRefPtr<CefRequest> request, bool is_navigation, bool is_download,
                                                                            const CefString& request_initiator, bool& disable_default_handling) override
@@ -141,7 +145,7 @@ public:
 
     // CefResourceRequestHandler
     virtual CefResourceRequestHandler::ReturnValue OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request,
-                                                                CefRefPtr<CefRequestCallback> callback) override;
+                                                                        CefRefPtr<CefRequestCallback> callback) override;
 
     // CefLifeSpawnHandler methods
     virtual void OnBeforeClose(CefRefPtr<CefBrowser> browser) override;

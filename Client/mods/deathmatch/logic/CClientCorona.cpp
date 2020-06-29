@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 CClientCorona::CClientCorona(CClientMarker* pThis)

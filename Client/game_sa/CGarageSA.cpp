@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CGarageSA::CGarageSA(CGarageSAInterface* pInterface)

@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 #include "CWeaponRPCs.h"
 #include "net/SyncStructures.h"

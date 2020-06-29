@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CClientEffectManager::CClientEffectManager(class CClientManager* pManager) : m_pManager(pManager), m_bCanRemoveFromList(true)

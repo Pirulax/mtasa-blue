@@ -9,13 +9,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #ifdef MTA_DEBUG
-// Comment out the lines below for your desired debug options
-//#define SHADER_DEBUG_CHECKS         // Do lots of validation which can slow a debug build
-//#define SHADER_DEBUG_OUTPUT         // Output lots of debug strings
+    // Comment out the lines below for your desired debug options
+    //#define SHADER_DEBUG_CHECKS         // Do lots of validation which can slow a debug build
+    //#define SHADER_DEBUG_OUTPUT         // Output lots of debug strings
+#dummy
 #endif
 
 // Various dodgy pointer values
+#dummy
 #define FAKE_D3DTEXTURE_EMPTY_KEY   ( (CD3DDUMMY*)-1 )
 #define FAKE_D3DTEXTURE_DELETED_KEY ( (CD3DDUMMY*)-2 )
 #define FAKE_D3DTEXTURE_NO_TEXTURE  ( (CD3DDUMMY*)-9 )
@@ -103,11 +106,13 @@ struct SShaderInfoInstance
     SShaderInfo* pShaderInfo;
     bool         bMixEntityAndNonEntity;
 
+#dummy
 #ifdef SHADER_DEBUG_CHECKS
     bool operator==(const SShaderInfoInstance& other) const
     {
         return pShaderInfo == other.pShaderInfo && bMixEntityAndNonEntity == other.bMixEntityAndNonEntity;
     }
+#dummy
 #endif
 
     bool operator<(const SShaderInfoInstance& other) const { return pShaderInfo->orderValue < other.pShaderInfo->orderValue; }
@@ -119,12 +124,14 @@ struct SShaderInfoLayers
     std::vector<SShaderInfoInstance> layerList;
     SShaderItemLayers                output;            // For renderer
 
+#dummy
 #ifdef SHADER_DEBUG_CHECKS
     bool operator==(const SShaderInfoLayers& other) const
     {
         return pBase.pShaderInfo == other.pBase.pShaderInfo && pBase.bMixEntityAndNonEntity == other.pBase.bMixEntityAndNonEntity &&
                layerList == other.layerList;
     }
+#dummy
 #endif
 };
 
@@ -145,9 +152,11 @@ struct STexNameInfo
 {
     STexNameInfo(const SString& strTextureName) : strTextureName(strTextureName.ToLower())
     {
+#dummy
 #ifdef SHADER_DEBUG_CHECKS
         iDebugCounter1 = 0;
         iDebugCounter2 = 0;
+#dummy
 #endif
     }
 
@@ -173,8 +182,10 @@ struct STexNameInfo
     STexShaderReplacement                                   texNoEntityShaders[5];            // 0 - world  1-ped  2-vehicle  3-object  4-other
     CFastHashMap<CClientEntityBase*, STexShaderReplacement> texEntityShaderMap;
 
+#dummy
 #ifdef SHADER_DEBUG_CHECKS
     int iDebugCounter1;
     int iDebugCounter2;
+#dummy
 #endif
 };

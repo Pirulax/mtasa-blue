@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 float CStatsSA::GetStatValue(unsigned short usIndex)

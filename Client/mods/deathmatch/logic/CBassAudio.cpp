@@ -11,6 +11,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 #include "CBassAudio.h"
 #include <process.h>
@@ -22,6 +23,7 @@
 void CALLBACK BPMCallback(int handle, float bpm, void* user);
 void CALLBACK BeatCallback(DWORD chan, double beatpos, void* user);
 
+#dummy
 #define INVALID_FX_HANDLE (-1)  // Hope that BASS doesn't use this as a valid Fx handle
 
 namespace
@@ -134,9 +136,11 @@ bool CBassAudio::BeginLoadingMedia()
 
     // Calc the flags
     long lFlags = BASS_STREAM_AUTOFREE | BASS_SAMPLE_SOFTWARE;
+#dummy
 #if 0   // Everything sounds better in ste-reo
     if ( m_b3D )
         lFlags |= BASS_SAMPLE_MONO;
+#dummy
 #endif
     if (m_bLoop)
         lFlags |= BASS_SAMPLE_LOOP;
@@ -770,12 +774,12 @@ float CBassAudio::GetSoundBPM()
 
         // open the same file as played but for bpm decoding detection
         DWORD bpmChan = BASS_StreamCreateFile(false, FromUTF8(m_strPath), 0, 0, BASS_STREAM_DECODE | BASS_UNICODE);
-        
+
         if (!bpmChan)
         {
             bpmChan = BASS_MusicLoad(false, FromUTF8(m_strPath), 0, 0, BASS_MUSIC_DECODE | BASS_MUSIC_PRESCAN | BASS_UNICODE, 0);
         }
-        
+
         if (bpmChan)
         {
             fData = BASS_FX_BPM_DecodeGet(bpmChan, 0, GetLength(), 0, BASS_FX_FREESOURCE, NULL, NULL);

@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include <lua/CLuaFunctionParser.h>
 #define MIN_CLIENT_REQ_DXSETRENDERTARGET_CALL_RESTRICTIONS "1.3.0-9.04431"
@@ -594,7 +595,8 @@ int CLuaDrawingDefs::DxDrawPrimitive3D(lua_State* luaVM)
                 pVecVertices->push_back(PrimitiveVertice{vecTableContent[0], vecTableContent[1], vecTableContent[2], (DWORD)0xFFFFFFFF});
                 break;
             case Primitive3DVerticeSizes::VERT_XYZ_COLOR:
-                pVecVertices->push_back(PrimitiveVertice{vecTableContent[0], vecTableContent[1], vecTableContent[2], static_cast<DWORD>(static_cast<int64_t>(vecTableContent[3]))});
+                pVecVertices->push_back(
+                    PrimitiveVertice{vecTableContent[0], vecTableContent[1], vecTableContent[2], static_cast<DWORD>(static_cast<int64_t>(vecTableContent[3]))});
                 break;
             default:
                 argStream.SetCustomError(SString("Expected table with 3 or 4 numbers, got %i numbers", vecTableContent.size()).c_str());
@@ -646,7 +648,8 @@ int CLuaDrawingDefs::DxDrawMaterialPrimitive3D(lua_State* luaVM)
                 break;
             case Primitive3DVerticeSizes::VERT_XYZ_COLOR_UV:
                 pVecVertices->push_back(PrimitiveMaterialVertice{vecTableContent[0], vecTableContent[1], vecTableContent[2],
-                                                                 static_cast<DWORD>(static_cast<int64_t>(vecTableContent[3])), vecTableContent[4], vecTableContent[5]});
+                                                                 static_cast<DWORD>(static_cast<int64_t>(vecTableContent[3])), vecTableContent[4],
+                                                                 vecTableContent[5]});
                 break;
             default:
                 argStream.SetCustomError(SString("Expected table with 5 or 6 numbers, got %i numbers", vecTableContent.size()).c_str());
@@ -694,7 +697,8 @@ int CLuaDrawingDefs::DxDrawPrimitive(lua_State* luaVM)
                 pVecVertices->push_back(PrimitiveVertice{vecTableContent[0], vecTableContent[1], 0, (DWORD)0xFFFFFFFF});
                 break;
             case PrimitiveVerticeSizes::VERT_XY_COLOR:
-                pVecVertices->push_back(PrimitiveVertice{vecTableContent[0], vecTableContent[1], 0, static_cast<DWORD>(static_cast<int64_t>(vecTableContent[2]))});
+                pVecVertices->push_back(
+                    PrimitiveVertice{vecTableContent[0], vecTableContent[1], 0, static_cast<DWORD>(static_cast<int64_t>(vecTableContent[2]))});
                 break;
             default:
                 argStream.SetCustomError(SString("Expected table with 2 or 3 numbers, got %i numbers", vecTableContent.size()).c_str());
@@ -745,8 +749,9 @@ int CLuaDrawingDefs::DxDrawMaterialPrimitive(lua_State* luaVM)
                     PrimitiveMaterialVertice{vecTableContent[0], vecTableContent[1], 0, (DWORD)0xFFFFFFFF, vecTableContent[2], vecTableContent[3]});
                 break;
             case PrimitiveVerticeSizes::VERT_XY_COLOR_UV:
-                pVecVertices->push_back(PrimitiveMaterialVertice{vecTableContent[0], vecTableContent[1], 0, static_cast<DWORD>(static_cast<int64_t>(vecTableContent[2])),
-                                                                 vecTableContent[3], vecTableContent[4]});
+                pVecVertices->push_back(PrimitiveMaterialVertice{vecTableContent[0], vecTableContent[1], 0,
+                                                                 static_cast<DWORD>(static_cast<int64_t>(vecTableContent[2])), vecTableContent[3],
+                                                                 vecTableContent[4]});
                 break;
             default:
                 argStream.SetCustomError(SString("Expected table with 4 or 5 numbers, got %i numbers", vecTableContent.size()).c_str());
@@ -943,7 +948,7 @@ int CLuaDrawingDefs::OOP_DxGetTextSize(lua_State* luaVM)
     // Get DX font
     ID3DXFont* pD3DXFont = CStaticFunctionDefinitions::ResolveD3DXFont(FONT_DEFAULT, pDxFontElement);
 
-    CVector2D  vecSize;
+    CVector2D vecSize;
     g_pCore->GetGraphics()->GetDXTextSize(vecSize, strText.c_str(), fWidth, fScaleX, fScaleY, pD3DXFont, bWordBreak, bColorCoded);
     lua_pushvector(luaVM, vecSize);
     return 1;

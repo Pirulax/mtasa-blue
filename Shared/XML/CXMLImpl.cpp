@@ -45,7 +45,7 @@ CXMLNode* CXMLImpl::ParseString(const char* strXmlContent)
 {
     TiXmlDocument* xmlDoc = new TiXmlDocument();
     if (xmlDoc)
-    {   
+    {
         xmlDoc->Parse(strXmlContent, 0, TIXML_DEFAULT_ENCODING);
         if (!xmlDoc->Error())
         {

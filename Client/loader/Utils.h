@@ -31,6 +31,7 @@ enum
     CHECK_SERVICE_RESTART_GAME = 8,
 };
 
+#dummy
 #ifndef PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_PREFER_SYSTEM32_ALWAYS_ON
     #define PROCESS_CREATION_MITIGATION_POLICY_EXTENSION_POINT_DISABLE_ALWAYS_ON       (0x00000001ui64 << 32)
     #define PROCESS_CREATION_MITIGATION_POLICY_PROHIBIT_DYNAMIC_CODE_ALWAYS_ON         (0x00000001ui64 << 36)
@@ -199,6 +200,7 @@ public:
 };
 
 // For NtQuerySystemInformation
+#dummy
 #define STATUS_INFO_LENGTH_MISMATCH    ((NTSTATUS)0xC0000004L)
 #define SystemProcessImageNameInformation ((SYSTEM_INFORMATION_CLASS)88)
 typedef struct _SYSTEM_PROCESS_IMAGE_NAME_INFORMATION
@@ -207,11 +209,14 @@ typedef struct _SYSTEM_PROCESS_IMAGE_NAME_INFORMATION
     UNICODE_STRING ImageName;
 } SYSTEM_PROCESS_IMAGE_NAME_INFORMATION, *PSYSTEM_PROCESS_IMAGE_NAME_INFORMATION;
 
+#dummy
 #undef CREATE_SUSPENDED
 #define CREATE_SUSPENDED 5
 
+#dummy
 #ifdef DONT_ASSIST_ANTI_VIRUS
 
+#dummy
     #define _VirtualAllocEx         VirtualAllocEx
     #define _VirtualProtectEx       VirtualProtectEx
     #define _VirtualFreeEx          VirtualFreeEx
@@ -220,10 +225,12 @@ typedef struct _SYSTEM_PROCESS_IMAGE_NAME_INFORMATION
     #define _CreateProcessW         CreateProcessW
     #define _CreateRemoteThread     CreateRemoteThread
 
+#dummy
 #else
 
 void* LoadFunction(const char* szLibName, const char* c, const char* a, const char* b);
 
+#dummy
     #define _DEFFUNCTION( lib, name, a,b,c ) \
         using FUNC_##name = decltype(&name); \
         inline FUNC_##name __##name ( void ) \
@@ -234,8 +241,10 @@ void* LoadFunction(const char* szLibName, const char* c, const char* a, const ch
             return pfn; \
         }
 
+#dummy
     #define DEFFUNCTION( lib, a,b,c )    _DEFFUNCTION( lib, a##b##c, a,b,c )
 
+#dummy
     #define _VirtualAllocEx                 __VirtualAllocEx()
     #define _VirtualProtectEx               __VirtualProtectEx()
     #define _VirtualFreeEx                  __VirtualFreeEx()
@@ -264,4 +273,5 @@ DEFFUNCTION("kernel32", Upda, teProcT, hreadAttribute)
 DEFFUNCTION("kernel32", QueryFullProcessImageNam, e, W)
 DEFFUNCTION("ntdll", NtQuerySystemInformati, o, n)
 
+#dummy
 #endif

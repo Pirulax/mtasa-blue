@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 ////////////////////////////////////////////////
@@ -18,6 +19,7 @@
 ////////////////////////////////////////////////
 namespace
 {
+#dummy
     #define     ARRAY_ModelInfo                 0xA9B0C8
     #define     LOW_LOD_DRAW_DISTANCE_SCALE     5
 
@@ -84,6 +86,7 @@ void OnMY_CRenderer_SetupEntityVisibility_Post(int result, CEntitySAInterface* p
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CRenderer_SetupEntityVisibility         0x554230
 #define HOOKSIZE_CRenderer_SetupEntityVisibility        8
 DWORD RETURN_CRenderer_SetupEntityVisibility = 0x554238;
@@ -143,6 +146,7 @@ void OnMY_CWorldScan_ScanWorld_Pre(CVector2D* pVec, int iValue, void(__cdecl* fu
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CWorldScan_ScanWorld                0x55555E
 #define HOOKSIZE_CWorldScan_ScanWorld               5
 DWORD RETURN_CWorldScan_ScanWorlda = 0x555563;
@@ -185,6 +189,7 @@ int OnMY_CVisibilityPlugins_CalculateFadingAtomicAlpha_Pre(CBaseModelInfoSAInter
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CVisibilityPlugins_CalculateFadingAtomicAlpha       0x732500
 #define HOOKSIZE_CVisibilityPlugins_CalculateFadingAtomicAlpha      5
 DWORD RETURN_CVisibilityPlugins_CalculateFadingAtomicAlpha = 0x732505;

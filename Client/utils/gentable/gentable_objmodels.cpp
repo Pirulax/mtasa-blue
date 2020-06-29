@@ -9,9 +9,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <stdio.h>
 #include <string.h>
 
+#dummy
 #define MAX_OBJECT_ID 20000
 
 static inline void Allow(unsigned int* table, unsigned int pos, bool state)

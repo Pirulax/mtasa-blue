@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 static const SPlayerClothingType g_clothesNames[PLAYER_CLOTHING_SLOTS] = {

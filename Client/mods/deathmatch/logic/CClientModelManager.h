@@ -10,11 +10,14 @@
 
 class CClientModelManager;
 
+#dummy
 #pragma once
 
+#dummy
 #include <list>
 #include "CClientModel.h"
 
+#dummy
 #define MAX_MODEL_ID 20000
 
 class CClientModelManager

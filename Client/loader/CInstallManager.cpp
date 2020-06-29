@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 namespace
@@ -73,6 +74,7 @@ CInstallManager* GetInstallManager()
 //////////////////////////////////////////////////////////
 void CInstallManager::InitSequencer()
 {
+#dummy
     #define CR "\n"
     SString strSource = CR "initial: "                                             // *** Starts here  by default
         CR "            CALL CheckOnRestartCommand "                               //
@@ -579,11 +581,14 @@ SString CInstallManager::_ProcessGtaVersionCheck()
         AddReportLog(5053, SString("_ProcessGtaVersionCheck: Incorrect file '%s'", *strPatchBase));
         SString strMessage(_("MTA:SA cannot continue because the following files are incorrect:"));
         strMessage += "\n\n" + strPatchBase;
+#dummy
 #ifdef TO_DO
         BrowseToSolution("gengta_pakfiles", ASK_GO_ONLINE, strMessage);
         return "quit";
+#dummy
 #else
         return "ok";
+#dummy
 #endif
     }
 
@@ -612,11 +617,14 @@ SString CInstallManager::_ProcessGtaVersionCheck()
             SString strMessage(_("MTA:SA cannot continue because the following files are incorrect:"));
             strMessage += "\n\n" + strGtaExe;
             strMessage += "\n\n" + _("Error") + SString(" %d", result);
+#dummy
 #ifdef TO_DO
             BrowseToSolution(SString("gengta_error&code=%d", result), ASK_GO_ONLINE, strMessage);
             return "quit";
+#dummy
 #else
             return "ok";
+#dummy
 #endif
         }
     }
@@ -659,12 +667,14 @@ SString CInstallManager::_ProcessLayoutChecks()
         RemoveDirectory(ExtractPath(strTestFilePath));
     }
 
+#dummy
 #if MTASA_VERSION_TYPE != VERSION_TYPE_CUSTOM
     // Check reg key exists
     {
         if (GetRegistryValue("", "Last Install Location").empty())
             ShowLayoutError("[Registry key not present]");            // Can't find reg key
     }
+#dummy
 #endif
 
     // Check reg key writable
@@ -983,10 +993,13 @@ SString CInstallManager::_ProcessAppCompatChecks()
     removeList.push_back(L"HIGHDPIAWARE");
 
     // Fix for GitHub issue #983 "crash on join server"
+#dummy
 #ifdef DEBUG
     removeList.push_back(L"IgnoreFreeLibrary<client_d.dll>");
+#dummy
 #else
     removeList.push_back(L"IgnoreFreeLibrary<client.dll>");
+#dummy
 #endif
 
     // Remove potential performance hit

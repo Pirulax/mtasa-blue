@@ -10,8 +10,10 @@
 
 class CClientPathNode;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientManager.h"
 
 class CClientPathNode : public CClientEntity

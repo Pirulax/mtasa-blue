@@ -16,6 +16,7 @@ struct SPDVertex
     DWORD             color;
 };
 
+#dummy
 #define WRITE_PD_VERTEX(buf,fX,fY,fZ,dwColor) \
         buf->x = fX; \
         buf->y = fY; \

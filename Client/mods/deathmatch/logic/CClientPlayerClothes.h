@@ -10,8 +10,10 @@
 
 class CClientPlayerClothes;
 
+#dummy
 #pragma once
 
+#dummy
 #define PLAYER_CLOTHING_SLOTS 18
 #define TORSO_CLOTHING_MAX 68
 #define HAIR_CLOTHING_MAX 33

@@ -10,9 +10,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CServerIdManager.h"
 
+#dummy
 #define MTA_SERVERID_LOOKUP_DIR       "priv"
 #define MTA_SERVERID_LOOKUP_XML       "priv/server-ids.xml"
 

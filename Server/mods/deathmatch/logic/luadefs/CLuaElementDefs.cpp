@@ -1590,7 +1590,7 @@ int CLuaElementDefs::setElementData(lua_State* luaVM)
         {
             // Warn and truncate if key is too long
             m_pScriptDebugging->LogCustom(luaVM, SString("Truncated argument @ '%s' [%s]", lua_tostring(luaVM, lua_upvalueindex(1)),
-                                                            *SString("string length reduced to %d characters at argument 2", MAX_CUSTOMDATA_NAME_LENGTH)));
+                                                         *SString("string length reduced to %d characters at argument 2", MAX_CUSTOMDATA_NAME_LENGTH)));
             strKey = strKey.Left(MAX_CUSTOMDATA_NAME_LENGTH);
         }
 
@@ -1625,7 +1625,7 @@ int CLuaElementDefs::removeElementData(lua_State* luaVM)
         {
             // Warn and truncate if key is too long
             m_pScriptDebugging->LogCustom(luaVM, SString("Truncated argument @ '%s' [%s]", lua_tostring(luaVM, lua_upvalueindex(1)),
-                                                            *SString("string length reduced to %d characters at argument 2", MAX_CUSTOMDATA_NAME_LENGTH)));
+                                                         *SString("string length reduced to %d characters at argument 2", MAX_CUSTOMDATA_NAME_LENGTH)));
             strKey = strKey.Left(MAX_CUSTOMDATA_NAME_LENGTH);
         }
 
@@ -1686,7 +1686,7 @@ int CLuaElementDefs::removeElementDataSubscriber(lua_State* luaVM)
     if (!argStream.HasErrors())
     {
         LogWarningIfPlayerHasNotJoinedYet(luaVM, pElement);
-  
+
         if (CStaticFunctionDefinitions::RemoveElementDataSubscriber(pElement, strKey, pPlayer))
         {
             lua_pushboolean(luaVM, true);
@@ -1705,7 +1705,7 @@ int CLuaElementDefs::hasElementDataSubscriber(lua_State* luaVM)
     //  bool hasElementDataSubscriber ( element theElement, string key, player thePlayer )
     CElement* pElement;
     SString   strKey;
-    CPlayer* pPlayer;
+    CPlayer*  pPlayer;
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadUserData(pElement);

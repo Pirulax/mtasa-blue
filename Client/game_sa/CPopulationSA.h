@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPopulation.h>
 #include "CPedSA.h"
 
+#dummy
 #include <list>
 
 class CPopulationSA : public CPopulation

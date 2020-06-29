@@ -9,14 +9,18 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Common.h"
 #include "CRegisteredCorona.h"
 
+#dummy
 #include <windows.h>
 
 // these are the IDs that are used internally for coronas
+#dummy
 #define CORONA_SUN                  1
 #define CORONA_MOON                 2
 

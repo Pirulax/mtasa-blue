@@ -11,8 +11,10 @@
 
 class CGUIElement;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CGUIEvent.h"
 #include "CGUICallback.h"
 #include <string>

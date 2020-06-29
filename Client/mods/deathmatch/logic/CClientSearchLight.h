@@ -7,6 +7,7 @@
  *  PURPOSE:     HeliLight entity class header
  *
  *****************************************************************************/
+#dummy
 #pragma once
 #include "CClientEntity.h"
 

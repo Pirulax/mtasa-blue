@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 using std::list;
@@ -39,6 +40,7 @@ static CClientProjectileManager* m_pProjectileManager;
 static CClientSoundManager*      m_pSoundManager;
 
 // Used to run a function on all the children of the elements too
+#dummy
 #define RUN_CHILDREN(func) \
     if (Entity.CountChildren() && Entity.IsCallPropagationEnabled()) \
     { \
@@ -799,6 +801,7 @@ bool CStaticFunctionDefinitions::IsElementSyncer(CClientEntity& Entity, bool& bI
                 bIsSyncer = m_pClientGame->GetUnoccupiedVehicleSync()->Exists(Vehicle);
             break;
         }
+#dummy
 #ifdef WITH_OBJECT_SYNC
         case CCLIENTOBJECT:
         {
@@ -807,6 +810,7 @@ bool CStaticFunctionDefinitions::IsElementSyncer(CClientEntity& Entity, bool& bI
                 bIsSyncer = m_pClientGame->GetObjectSync()->Exists(pObject);
             break;
         }
+#dummy
 #endif
         default:
             return false;
@@ -3856,10 +3860,13 @@ CClientObject* CStaticFunctionDefinitions::CreateObject(CResource& Resource, uns
 {
     if (CClientObjectManager::IsValidModel(usModelID))
     {
+#dummy
 #ifdef WITH_OBJECT_SYNC
         CClientObject* pObject = new CDeathmatchObject(m_pManager, m_pMovingObjectsManager, m_pClientGame->GetObjectSync(), INVALID_ELEMENT_ID, usModelID);
+#dummy
 #else
         CClientObject* pObject = new CDeathmatchObject(m_pManager, m_pMovingObjectsManager, INVALID_ELEMENT_ID, usModelID, bLowLod);
+#dummy
 #endif
 
         pObject->SetParent(Resource.GetResourceDynamicEntity());
@@ -6710,6 +6717,7 @@ bool CStaticFunctionDefinitions::SetWeatherBlended(unsigned char ucWeather)
     return false;
 }
 
+#dummy
 #define MAX_GRAVITY 1.0f
 #define MIN_GRAVITY -1.0f
 
@@ -7834,8 +7842,8 @@ CClientSound* CStaticFunctionDefinitions::PlaySound(CResource* pResource, const 
     return pSound;
 }
 
-CClientSound* CStaticFunctionDefinitions::PlaySound3D(CResource* pResource, const SString& strSound, bool bIsURL, bool bIsRawData, const CVector& vecPosition, bool bLoop,
-                                                      bool bThrottle)
+CClientSound* CStaticFunctionDefinitions::PlaySound3D(CResource* pResource, const SString& strSound, bool bIsURL, bool bIsRawData, const CVector& vecPosition,
+                                                      bool bLoop, bool bThrottle)
 {
     CClientSound* pSound = m_pSoundManager->PlaySound3D(strSound, bIsURL, bIsRawData, vecPosition, bLoop, bThrottle);
     if (pSound)

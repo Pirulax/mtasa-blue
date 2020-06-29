@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "../game_sa/CWeaponInfoSA.h"
 extern EDamageReasonType g_GenerateDamageEventReason;
@@ -50,6 +51,7 @@ void OnMY_CWeapon_GenerateDamageEvent(DWORD calledFrom, CPedSAInterface* pPed, C
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CWeapon_GenerateDamageEvent                         0x73A530
 #define HOOKSIZE_CWeapon_GenerateDamageEvent                        7
 DWORD RETURN_CWeapon_GenerateDamageEvent = 0x73A537;
@@ -84,6 +86,7 @@ void _declspec(naked) HOOK_CWeapon_GenerateDamageEvent()
 //////////////////////////////////////////////////////////////////////////////////////////
 
 // Hook info
+#dummy
 #define HOOKPOS_CShotInfo_Update                         0x739E60
 #define HOOKSIZE_CShotInfo_Update                        6
 DWORD RETURN_CShotInfo_Update = 0x739E66;
@@ -99,6 +102,7 @@ void ResetShotInfoArray()
         memcpy(pInfo + i, pInfo, sizeof(CFlameShotInfo));
 }
 
+#dummy
 #pragma warning( push )
 #pragma warning( disable : 4731 )   // warning C4731: 'Call_CShotInfo_Update' : frame pointer register 'ebp' modified by inline assembly code
 
@@ -117,6 +121,7 @@ void Call_CShotInfo_Update()
     }
 }
 
+#dummy
 #pragma warning( pop )
 
 // Our code for when CShotInfo_Update is called
@@ -178,6 +183,7 @@ int OnMY_Fx_AddBulletImpact(int iType)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_Fx_AddBulletImpact                         0x049F3E8
 #define HOOKSIZE_Fx_AddBulletImpact                        5
 DWORD RETURN_Fx_AddBulletImpact = 0x049F3ED;

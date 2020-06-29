@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CClock.h>
 #include "Common.h"
 
+#dummy
 #define VAR_TimeMinutes                 0xB70152
 #define VAR_TimeHours                   0xB70153
 #define VAR_TimeOfLastMinuteChange      0xB70158

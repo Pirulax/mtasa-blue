@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 //#define MTA_USE_BUILDINGS_AS_OBJECTS
@@ -54,6 +55,7 @@ CObjectSA::CObjectSA(DWORD dwModel, bool bBreakingDisabled)
 
     DWORD dwThis = 0;
 
+#dummy
 #ifdef MTA_USE_BUILDINGS_AS_OBJECTS
 
     DWORD               dwFunc = 0x538090;            // CFileLoader__LoadObjectInstance
@@ -125,6 +127,7 @@ CObjectSA::CObjectSA(DWORD dwModel, bool bBreakingDisabled)
         add     esp, 4
     }
 
+#dummy
 #else
 
     DWORD CObjectCreate = FUNC_CObject_Create;
@@ -165,6 +168,7 @@ CObjectSA::CObjectSA(DWORD dwModel, bool bBreakingDisabled)
         // The exception handler doesn't work for some reason, so do this
         this->SetInterface(NULL);
     }
+#dummy
 #endif
 
     this->internalID = pGame->GetPools()->GetObjectRef((DWORD*)this->GetInterface());
@@ -200,6 +204,7 @@ CObjectSA::~CObjectSA()
                     call    dwFunc
                 }
 
+#dummy
 #ifdef MTA_USE_BUILDINGS_AS_OBJECTS
                 DWORD dwModelID = this->internalInterface->m_nModelIndex;
                 // REMOVE ref to colstore thingy

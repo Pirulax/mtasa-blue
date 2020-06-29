@@ -8,10 +8,13 @@
  *  Multi Theft Auto is available from http://www.multitheftauto.com/
  *
  *****************************************************************************/
+#dummy
 #pragma once
 
+#dummy
 #include <game/CFxManager.h>
 
+#dummy
 #define FUNC_FxManager_c__CreateFxSystem    0x4A9BE0
 #define FUNC_FxManager_c__DestroyFxSystem   0x4A9810
 #define FUNC_FxManager_c__GetSystemByName   0x4A9360

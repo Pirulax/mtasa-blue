@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Common.h"
 #include "CAudioEngineSA.h"
 #include <game/CAEVehicleAudioEntity.h>
 
+#dummy
 #define FUNC_CAEVehicleAudioEntity__RequestBankSlot                                    0x4F4D10
 #define FUNC_CAEVehicleAudioEntity__StoppedUsingBankSlot                               0x4F4DF0
 #define FUNC_CAEVehicleAudioEntity__DoesBankSlotContainThisBank                        0x4F4E30
@@ -121,6 +124,7 @@
 #define FUNC_CAEVehicleAudioEntity__ProcessVehicle                                     0x501E10
 #define FUNC_CAEVehicleAudioEntity__Service                                            0x502280
 
+#dummy
 #define VAR_CAEVehicleAudioEntity__s_pPlayerDriver                                     0xB6B990
 
 struct tVehicleAudioSettings

@@ -9,23 +9,30 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPlayerPed.h>
 #include "CPedSA.h"
 #include "CWantedSA.h"
 
+#dummy
 #define FUNC_SetInitialState            0x60CD20
 #define FUNC_ClearWeaponTarget          0x533B30
 
+#dummy
 #define FUNC_CPedOperatorNew            0x5E4720 // ##SA##
 #define FUNC_CPlayerPedConstructor      0x60D5B0 // ##SA##
 
+#dummy
 #define FUNC_CPlayerPedDestructor       0x6093B0 // ##SA##
 #define FUNC_CPlayerPedOperatorDelete   0x5E4760 // ##SA##
 
+#dummy
 #define FUNC_CPlayerPed_ReApplyMoveAnims    0x609650
 
+#dummy
 #define SIZEOF_CPLAYERPED               1956
 
 class CPlayerPedSAInterface : public CPedSAInterface            // CPlayerPed 1956 bytes in SA

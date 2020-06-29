@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CPedRPCs.h"
 #include "net/SyncStructures.h"

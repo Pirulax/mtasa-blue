@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientIFP.h"
 
 class CIFPAnimations

@@ -10,10 +10,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 
+#dummy
 #include <game/RenderWare.h>
 #include <windows.h>
 #include <stdio.h>
@@ -25,6 +28,7 @@ class CColModelSAInterface;
 /*****************************************************************************/
 
 /* RenderWare macros */
+#dummy
 #define RpGetFrame(__c)            ((RwFrame*)(((RwObject *)(__c))->parent))
 #define RpSetFrame(__c,__f)        ((((RwObject *)(__c))->parent) = (void *)(__f))
 
@@ -106,6 +110,7 @@ typedef RpMaterial*(__cdecl* RpMaterialSetTexture_t)(RpMaterial* mat, RwTexture*
 /** Renderware function mappings                                            **/
 /*****************************************************************************/
 
+#dummy
 #ifdef RWFUNC_IMPLEMENT
     #define RWFUNC(a,b) a = b;
 #else

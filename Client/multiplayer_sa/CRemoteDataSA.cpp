@@ -9,9 +9,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 // These includes have to be fixed!
+#dummy
 #include "../game_sa/CPedSA.h"
 #include "../game_sa/CVehicleSA.h"
 

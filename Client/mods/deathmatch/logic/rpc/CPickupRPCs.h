@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CRPCFunctions.h"
 
 class CPickupRPCs : public CRPCFunctions

@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "net/SyncStructures.h"
 #include "CServerInfo.h"
@@ -219,9 +220,11 @@ bool CPacketHandler::ProcessPacket(unsigned char ucPacketID, NetBitStreamInterfa
         return true;
     else if (g_pClientGame->GetPedSync()->ProcessPacket(ucPacketID, bitStream))
         return true;
+#dummy
 #ifdef WITH_OBJECT_SYNC
     else if (g_pClientGame->GetObjectSync()->ProcessPacket(ucPacketID, bitStream))
         return true;
+#dummy
 #endif
     return false;
 }
@@ -1648,6 +1651,7 @@ void CPacketHandler::Packet_Vehicle_InOut(NetBitStreamInterface& bitStream)
                 unsigned char ucAction = 0xFF;
                 bitStream.ReadBits(&ucAction, 4);
 
+#dummy
 #ifdef MTA_DEBUG
                 if (pPlayer->IsLocalPlayer())
                 {
@@ -1656,6 +1660,7 @@ void CPacketHandler::Packet_Vehicle_InOut(NetBitStreamInterface& bitStream)
                                        "notify_jack_return",   "attempt_failed"};
                     g_pCore->GetConsole()->Printf("* Packet_InOut: %s", actions[ucAction]);
                 }
+#dummy
 #endif
 
                 switch (ucAction)
@@ -2031,8 +2036,10 @@ void CPacketHandler::Packet_Vehicle_InOut(NetBitStreamInterface& bitStream)
                                 pVehicle->SetPosition(pos.data.vecPosition);
                             }
                         }
+#dummy
 #if MTA_DEBUG
                         g_pCore->GetConsole()->Printf("Failed to enter/exit vehicle - id: %u", ucReason);
+#dummy
 #endif
                         break;
                     }
@@ -2081,8 +2088,10 @@ void CPacketHandler::Packet_VehicleTrailer(NetBitStreamInterface& bitStream)
                 pTrailer->SetRotationDegrees(rotation.data.vecRotation);
                 pTrailer->SetTurnSpeed(turn.data.vecVelocity);
 
+#dummy
                 #ifdef MTA_DEBUG
                 g_pCore->GetConsole()->Printf("Packet_VehicleTrailer: attaching trailer %d to vehicle %d", TrailerID, ID);
+#dummy
                 #endif
                 pVehicle->SetTowedVehicle(pTrailer);
 
@@ -2093,8 +2102,10 @@ void CPacketHandler::Packet_VehicleTrailer(NetBitStreamInterface& bitStream)
             }
             else
             {
+#dummy
                 #ifdef MTA_DEBUG
                 g_pCore->GetConsole()->Printf("Packet_VehicleTrailer: detaching trailer %d from vehicle %d", TrailerID, ID);
+#dummy
                 #endif
                 pVehicle->SetTowedVehicle(NULL);
 
@@ -2106,11 +2117,13 @@ void CPacketHandler::Packet_VehicleTrailer(NetBitStreamInterface& bitStream)
         }
         else
         {
+#dummy
             #ifdef MTA_DEBUG
             if (!pVehicle)
                 g_pCore->GetConsole()->Printf("Packet_VehicleTrailer: vehicle (id %d) not found", ID);
             if (!pTrailer)
                 g_pCore->GetConsole()->Printf("Packet_VehicleTrailer: trailer (id %d) not found", TrailerID);
+#dummy
             #endif
         }
     }
@@ -2680,8 +2693,10 @@ void CPacketHandler::Packet_EntityAdd(NetBitStreamInterface& bitStream)
         // unsigned char[3]     (3)     - cols
         // unsigned char        (1)     - friendly-fire
 
+#dummy
 #if MTA_DEBUG
 retry:
+#dummy
 #endif
 
     // Heavy variables
@@ -2762,6 +2777,7 @@ retry:
                     }
                     else
                     {
+#dummy
                         #ifdef MTA_DEBUG
                         char buf[256] = {0};
                         bitStream.Read(buf, ucNameLength);
@@ -2770,6 +2786,7 @@ retry:
                         // Replay the problem for debugging
                         bitStream.ResetReadPointer();
                         goto retry;
+#dummy
                         #endif
 
                         delete pCustomData;
@@ -2781,10 +2798,12 @@ retry:
                 }
                 else
                 {
+#dummy
                     #ifdef MTA_DEBUG
                     // Jax: had this with a colshape (ucNameLength=109,us=0,usNumData=4)
                     // Raise a special assert, as we have to try and figure out this error.
                     assert(0);
+#dummy
                     #endif
 
                     delete pCustomData;
@@ -2817,9 +2836,11 @@ retry:
             // If we already have an entity with that ID (and aslong as this isnt just element-data for an already created player)
             if (pEntity && pEntity->GetType() != CCLIENTPLAYER && ucEntityTypeID != CClientGame::PLAYER)
             {
+#dummy
 #ifdef MTA_DEBUG
                 // We shouldn't be replacing elements
                 // assert ( 0 );
+#dummy
 #endif
 
                 // It shouldn't be a system
@@ -2877,11 +2898,14 @@ retry:
                         if (ucEntityTypeID == CClientGame::OBJECT)
                         {
                             // Create the object and put it at its position
+#dummy
 #ifdef WITH_OBJECT_SYNC
                             pObject = new CDeathmatchObject(g_pClientGame->m_pManager, g_pClientGame->m_pMovingObjectsManager, g_pClientGame->m_pObjectSync,
                                                             EntityID, usObjectID);
+#dummy
 #else
                             pObject = new CDeathmatchObject(g_pClientGame->m_pManager, g_pClientGame->m_pMovingObjectsManager, EntityID, usObjectID, bIsLowLod);
+#dummy
 #endif
                         }
                         else if (ucEntityTypeID == CClientGame::WEAPON)
@@ -3979,7 +4003,8 @@ retry:
                     }
                     else
                     {
-                        pWater = new CClientWater(g_pClientGame->GetManager(), EntityID, vecVertices[0], vecVertices[1], vecVertices[2], vecVertices[3], bShallow);
+                        pWater =
+                            new CClientWater(g_pClientGame->GetManager(), EntityID, vecVertices[0], vecVertices[1], vecVertices[2], vecVertices[3], bShallow);
                     }
                     if (!pWater->Exists())
                     {
@@ -5228,7 +5253,7 @@ void CPacketHandler::Packet_PedTask(NetBitStreamInterface& bitStream)
 void CPacketHandler::Packet_ServerInfoSync(NetBitStreamInterface& bitStream)
 {
     uint8 flags;
-    
+
     if (!bitStream.Read(flags))
         return;
 

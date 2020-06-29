@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CRegisteredCorona.h>
 
 class CEntitySAInterface;
 
+#dummy
 #define ARRAY_CORONAS               0xC3E058 // ##SA##
 
 class CRegisteredCoronaSAInterface            // coronas are 104 bytes long, and theres 56 of them

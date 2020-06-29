@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CEntryHistory.h"
 
@@ -30,7 +31,7 @@ void CEntryHistory::Add(SString line)
 {
     if (line.empty())
         return;
-    
+
     // Remove any matching entry
     m_entries.remove(line);
 

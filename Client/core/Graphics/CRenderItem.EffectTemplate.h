@@ -7,6 +7,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "CRenderItem.EffectParameters.h"
 
 ////////////////////////////////////////////////////////////////
@@ -20,7 +21,8 @@ class CEffectTemplate : public CEffectParameters
 {
     DECLARE_CLASS(CEffectTemplate, CEffectParameters)
     CEffectTemplate() : ClassInit(this) {}
-    virtual void PostConstruct(CRenderItemManager* pManager, const SString& strFile, const SString& strRootPath, bool bIsRawData, SString& strOutStatus, bool bDebug);
+    virtual void PostConstruct(CRenderItemManager* pManager, const SString& strFile, const SString& strRootPath, bool bIsRawData, SString& strOutStatus,
+                               bool bDebug);
     virtual void PreDestruct();
     virtual bool IsValid();
     virtual void OnLostDevice();
@@ -41,5 +43,5 @@ class CEffectTemplate : public CEffectParameters
     HRESULT                    m_CreateHResult;
 };
 
-CEffectTemplate* NewEffectTemplate(CRenderItemManager* pManager, const SString& strFile, const SString& strRootPath, bool bIsRawData, SString& strOutStatus, bool bDebug,
-                                   HRESULT& outHResult);
+CEffectTemplate* NewEffectTemplate(CRenderItemManager* pManager, const SString& strFile, const SString& strRootPath, bool bIsRawData, SString& strOutStatus,
+                                   bool bDebug, HRESULT& outHResult);

@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 static std::vector<CLuaCFunction*>             m_sFunctions;

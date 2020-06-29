@@ -9,9 +9,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "lua/CLuaFunctionParser.h"
 
+#dummy
 #define MIN_CLIENT_REQ_GETVEHICLECOMPONENT_OOP      "1.5.5-9.11710"
 
 void CLuaVehicleDefs::LoadFunctions()
@@ -131,7 +133,7 @@ void CLuaVehicleDefs::LoadFunctions()
         {"setVehicleComponentScale", SetVehicleComponentScale},
         {"resetVehicleComponentPosition", ResetVehicleComponentPosition},
         {"resetVehicleComponentRotation", ResetVehicleComponentRotation},
-        {"resetVehicleComponentScale", ResetVehicleComponentScale },
+        {"resetVehicleComponentScale", ResetVehicleComponentScale},
         {"setVehicleComponentVisible", SetVehicleComponentVisible},
         {"setVehicleNitroActivated", SetVehicleNitroActivated},
         {"setVehicleNitroCount", SetVehicleNitroCount},
@@ -140,7 +142,7 @@ void CLuaVehicleDefs::LoadFunctions()
         {"setHeliBladeCollisionsEnabled", SetHeliBladeCollisionsEnabled},
         {"setVehicleWindowOpen", SetVehicleWindowOpen},
         {"setVehicleModelExhaustFumesPosition", SetVehicleModelExhaustFumesPosition},
-        {"setVehicleModelDummyPosition", SetVehicleModelDummyPosition },
+        {"setVehicleModelDummyPosition", SetVehicleModelDummyPosition},
     };
 
     // Add functions
@@ -3371,7 +3373,7 @@ int CLuaVehicleDefs::SetVehicleComponentScale(lua_State* luaVM)
     argStream.ReadVector3D(vecScale);
     argStream.ReadEnumString(inputBase, EComponentBase::PARENT);
 
-    if(!argStream.HasErrors())
+    if (!argStream.HasErrors())
     {
         pVehicle->SetComponentScale(strComponent, vecScale, inputBase);
         lua_pushboolean(luaVM, true);
@@ -3396,10 +3398,10 @@ int CLuaVehicleDefs::GetVehicleComponentScale(lua_State* luaVM)
     argStream.ReadString(strComponent);
     argStream.ReadEnumString(outputBase, EComponentBase::PARENT);
 
-    if(!argStream.HasErrors())
+    if (!argStream.HasErrors())
     {
         CVector vecScale;
-        if(pVehicle->GetComponentScale(strComponent, vecScale, outputBase))
+        if (pVehicle->GetComponentScale(strComponent, vecScale, outputBase))
         {
             lua_pushnumber(luaVM, vecScale.fX);
             lua_pushnumber(luaVM, vecScale.fY);
@@ -3426,10 +3428,10 @@ int CLuaVehicleDefs::OOP_GetVehicleComponentScale(lua_State* luaVM)
     argStream.ReadString(strComponent);
     argStream.ReadEnumString(outputBase, EComponentBase::PARENT);
 
-    if(!argStream.HasErrors())
+    if (!argStream.HasErrors())
     {
         CVector vecScale;
-        if(pVehicle->GetComponentScale(strComponent, vecScale, outputBase))
+        if (pVehicle->GetComponentScale(strComponent, vecScale, outputBase))
         {
             lua_pushvector(luaVM, vecScale);
             return 1;
@@ -3496,9 +3498,9 @@ int CLuaVehicleDefs::ResetVehicleComponentScale(lua_State* luaVM)
     argStream.ReadUserData(pVehicle);
     argStream.ReadString(strComponent);
 
-    if(!argStream.HasErrors())
+    if (!argStream.HasErrors())
     {
-        if(pVehicle->ResetComponentScale(strComponent))
+        if (pVehicle->ResetComponentScale(strComponent))
         {
             lua_pushboolean(luaVM, true);
             return 1;

@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 #define LUA_DECLARE(x) static int x ( lua_State * luaVM );
 #define LUA_DECLARE_OOP(x) LUA_DECLARE(x) LUA_DECLARE(OOP_##x)
@@ -67,7 +68,7 @@ public:
 
 protected:
     // Old style: Only warn on failure. This should
-    // not be used for new functions. ReturnOnError 
+    // not be used for new functions. ReturnOnError
     // must be a value to use as result on invalid argument
     template <auto ReturnOnError, auto T>
     static inline int ArgumentParserWarn(lua_State* L)
@@ -80,7 +81,7 @@ protected:
     template <auto ReturnOnError, auto FunctionA, auto FunctionB, auto... Functions>
     static inline int ArgumentParserWarn(lua_State* L)
     {
-        // Pad functions to have the same number of parameters by 
+        // Pad functions to have the same number of parameters by
         // filling both up to the larger number of parameters with dummy_type arguments
         using PaddedFunctionA = pad_func_with_func<FunctionA, FunctionB>;
         using PaddedFunctionB = pad_func_with_func<FunctionB, FunctionA>;

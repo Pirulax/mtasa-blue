@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 namespace
@@ -48,6 +49,7 @@ void _cdecl OnCWorld_ProcessLineOfSight(CVector* pvecStart, CVector* pvecEnd)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CWorld_ProcessLineOfSight        0x56BA00
 #define HOOKSIZE_CWorld_ProcessLineOfSight       12
 DWORD RETURN_CWorld_ProcessLineOfSight = 0x56BA0C;
@@ -81,6 +83,7 @@ void _cdecl OnCWorld_GetIsLineOfSightClear(CVector* pvecStart, CVector* pvecEnd)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CWorld_GetIsLineOfSightClear        0x56A490
 #define HOOKSIZE_CWorld_GetIsLineOfSightClear       12
 DWORD RETURN_CWorld_GetIsLineOfSightClear = 0x56A49C;

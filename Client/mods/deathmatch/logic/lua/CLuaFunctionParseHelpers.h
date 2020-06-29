@@ -8,9 +8,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 // Forward declare enum reflection stuff
+#dummy
 #include <gui/CGUIEnumDefs.h>
 
 enum eLuaType
@@ -93,6 +95,7 @@ enum eFieldOfViewMode
 };
 DECLARE_ENUM(eFieldOfViewMode);
 
+#dummy
 #include "json.h"
 // Prettify toJSON (see mantis #9210)
 enum eJSONPrettyType
@@ -541,7 +544,7 @@ template <class T>
 CRemoteCall* UserDataCast(CRemoteCall*, void* ptr, lua_State*)
 {
     CRemoteCall* pRemoteCall = (CRemoteCall*)ptr;
-    
+
     if (pRemoteCall && g_pClientGame->GetRemoteCalls()->CallExists(pRemoteCall))
         return pRemoteCall;
 

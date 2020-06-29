@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 CClientDisplay::CClientDisplay(CClientDisplayManager* pDisplayManager, unsigned long ulID)

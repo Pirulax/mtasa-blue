@@ -9,11 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #define RWFUNC_IMPLEMENT
 #include "..\game_sa\gamesa_renderware.h"
 #include "..\game_sa\gamesa_renderware.hpp"
 
+#dummy
 #define CLOTHES_REF_TEST    1       // Debug clothes geometry refs
 
 ////////////////////////////////////////////////
@@ -26,7 +28,8 @@
 class CPedClothesDesc
 {
 public:
-    union {
+    union
+    {
         DWORD things1[10];            // models
         struct
         {
@@ -42,7 +45,8 @@ public:
         };
     };
 
-    union {
+    union
+    {
         DWORD things2[18];            // +0x28 textures?
         struct
         {
@@ -140,6 +144,7 @@ public:
         {
             SSavedClumpInfo& info = *iter;
             RpGeometry*      pGeometry = ((RpAtomic*)((info.pClump->atomics.root.next) - 0x8))->geometry;
+#dummy
 #ifdef CLOTHES_REF_TEST
             if (pGeometry->refs < 21)
             {
@@ -147,8 +152,10 @@ public:
                 pGeometry->refs = 21;
             }
             if (pGeometry->refs == 21)
+#dummy
 #else
             if (pGeometry->refs == 1)
+#dummy
 #endif
             {
                 uiNumCached++;
@@ -186,9 +193,11 @@ public:
 
         SSavedClumpInfo info;
         info.pClump = pClumpCopy;
+#dummy
 #ifdef CLOTHES_REF_TEST
         RpGeometry* pGeometry = ((RpAtomic*)((info.pClump->atomics.root.next) - 0x8))->geometry;
         pGeometry->refs += 20;
+#dummy
 #endif
 
         info.clothedDesc = *pClothesDesc;
@@ -250,9 +259,11 @@ public:
 
         const SSavedClumpInfo& info = *uiBestIndex;
 
+#dummy
 #ifdef CLOTHES_REF_TEST
         RpGeometry* pGeometry = ((RpAtomic*)((info.pClump->atomics.root.next) - 0x8))->geometry;
         pGeometry->refs -= 20;
+#dummy
 #endif
         RpClumpDestroy(info.pClump);
         assert(info.bUnused);
@@ -338,6 +349,7 @@ void _cdecl OnCClothesBuilderCreateSkinnedClumpPost(RpClump* pRpClumpResult, RpC
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CClothesBuilderCreateSkinnedClump        0x5A69D0
 #define HOOKSIZE_CClothesBuilderCreateSkinnedClump       6
 DWORD RETURN_CClothesBuilderCreateSkinnedClump = 0x5A69D6;

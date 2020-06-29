@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 class CClientManager;
@@ -18,6 +19,7 @@ class CSyncDebug
 {
 public:
 // Debugmode only interface
+#dummy
 #ifdef MTA_DEBUG
     CSyncDebug(CClientManager* pManager);
     ~CSyncDebug();
@@ -29,6 +31,7 @@ public:
 
     void OnPulse();
 
+#dummy
 #else
     CSyncDebug(CClientManager* pManager){};
 
@@ -39,10 +42,12 @@ public:
 
     void OnPulse(){};
 
+#dummy
 #endif
 
 private:
 // Debugmode only interface
+#dummy
 #ifdef MTA_DEBUG
 
     void OnDraw();
@@ -65,5 +70,6 @@ private:
     unsigned short m_usFakeLagVariance;
     unsigned short m_usFakeLagPing;
 
+#dummy
 #endif
 };

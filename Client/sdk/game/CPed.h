@@ -9,18 +9,22 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 class CTaskManager;
 
+#dummy
 #include "Common.h"
 #include "CPhysical.h"
 #include "CWeapon.h"
 #include "CPedIntelligence.h"
 #include "CPedSound.h"
 
+#dummy
 #include <CVector2D.h>
 
+#dummy
 #include <windows.h>
 
 // forward declaration, avoid compile error
@@ -268,6 +272,6 @@ public:
     virtual float        GetCurrentWeaponRange() = 0;
     virtual void         AddWeaponAudioEvent(EPedWeaponAudioEventType audioEventType) = 0;
 
-    virtual int GetCustomMoveAnim() = 0;
+    virtual int  GetCustomMoveAnim() = 0;
     virtual bool IsDoingGangDriveby() = 0;
 };

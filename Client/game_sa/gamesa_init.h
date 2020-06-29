@@ -9,10 +9,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "CGameSA.h"
 #include <multiplayer/CMultiplayer.h>
 #include <core/CCoreInterface.h>
 
+#dummy
 #pragma once
 
 extern CGameSA*        pGame;

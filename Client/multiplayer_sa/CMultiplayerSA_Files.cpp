@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -45,6 +46,7 @@ void OnMY_Rtl_fopen_Post(FILE* fh, DWORD calledFrom, const char* szFilename, con
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_Rtl_fopen_US                         0x8232D8
 #define HOOKSIZE_Rtl_fopen_US                        6
 #define HOOKPOS_Rtl_fopen_EU                         0x823318
@@ -93,6 +95,7 @@ void OnMY_Rtl_fclose(DWORD calledFrom, FILE* fh)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_Rtl_fclose_US                         0x82318B
 #define HOOKSIZE_Rtl_fclose_US                        6
 #define HOOKPOS_Rtl_fclose_EU                         0x8231CB

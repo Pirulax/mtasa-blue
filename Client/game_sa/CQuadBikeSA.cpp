@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CQuadBikeSA::CQuadBikeSA(CQuadBikeSAInterface* quadbike) : CAutomobileSA(quadbike)

@@ -31,7 +31,7 @@ void CLuaPedDefs::LoadFunctions()
         {"getPedTotalAmmo", GetPedTotalAmmo},
         {"getPedWeapon", GetPedWeapon},
         {"getPedClothes", GetPedClothes},
-        {"isPedWearingJetpack", DoesPedHaveJetPack}, // introduced in 1.5.5-9.13846
+        {"isPedWearingJetpack", DoesPedHaveJetPack},            // introduced in 1.5.5-9.13846
         {"isPedOnGround", IsPedOnGround},
         {"getPedFightingStyle", GetPedFightingStyle},
         {"getPedWalkingStyle", GetPedMoveAnim},
@@ -53,7 +53,7 @@ void CLuaPedDefs::LoadFunctions()
         {"setPedStat", SetPedStat},
         {"addPedClothes", AddPedClothes},
         {"removePedClothes", RemovePedClothes},
-        {"setPedWearingJetpack", SetPedWearingJetpack}, // introduced in 1.5.5-9.13846
+        {"setPedWearingJetpack", SetPedWearingJetpack},            // introduced in 1.5.5-9.13846
         {"setPedFightingStyle", SetPedFightingStyle},
         {"setPedWalkingStyle", SetPedMoveAnim},
         {"setPedGravity", SetPedGravity},
@@ -101,7 +101,7 @@ void CLuaPedDefs::AddClass(lua_State* luaVM)
     lua_classfunction(luaVM, "removeClothes", "removePedClothes");
     lua_classfunction(luaVM, "removeFromVehicle", "removePedFromVehicle");
     lua_classfunction(luaVM, "removeJetPack", "removePedJetPack");
-    lua_classfunction(luaVM, "doesHaveJetpack", "doesPedHaveJetPack"); // deprecated in 1.5.5-9.13846
+    lua_classfunction(luaVM, "doesHaveJetpack", "doesPedHaveJetPack");            // deprecated in 1.5.5-9.13846
 
     lua_classfunction(luaVM, "isDead", "isPedDead");
     lua_classfunction(luaVM, "isDucked", "isPedDucked");
@@ -441,7 +441,8 @@ int CLuaPedDefs::SetPedAnimation(lua_State* luaVM)
         szBlock = strBlockName.empty() ? NULL : strBlockName.c_str();
         szAnim = strAnimName.empty() ? NULL : strAnimName.c_str();
 
-        if (CStaticFunctionDefinitions::SetPedAnimation(pPed, szBlock, szAnim, iTime, iBlend, bLoop, bUpdatePosition, bInterruptable, bFreezeLastFrame, bTaskToBeRestoredOnAnimEnd))
+        if (CStaticFunctionDefinitions::SetPedAnimation(pPed, szBlock, szAnim, iTime, iBlend, bLoop, bUpdatePosition, bInterruptable, bFreezeLastFrame,
+                                                        bTaskToBeRestoredOnAnimEnd))
         {
             lua_pushboolean(luaVM, true);
             return 1;

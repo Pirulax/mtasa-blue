@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 CClientCheckpoint::CClientCheckpoint(CClientMarker* pThis)

@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CControllerState* CPadSA::GetCurrentControllerState(CControllerState* ControllerState)

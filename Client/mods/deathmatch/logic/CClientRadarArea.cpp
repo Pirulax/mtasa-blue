@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 CClientRadarArea::CClientRadarArea(class CClientManager* pManager, ElementID ID) : ClassInit(this), CClientEntity(ID)
@@ -47,6 +48,7 @@ void CClientRadarArea::DoPulse()
 
 void CClientRadarArea::DoPulse(bool bRender)
 {
+#dummy
     #define RADAR_FLASH_CYCLETIME 1000
 
     // Suppose to show?

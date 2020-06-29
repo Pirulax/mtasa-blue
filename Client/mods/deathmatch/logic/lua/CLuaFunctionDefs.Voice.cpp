@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 int CLuaFunctionDefs::IsVoiceEnabled(lua_State* luaVM)

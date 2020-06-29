@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "gamesa_renderware.h"
 
@@ -569,7 +570,7 @@ bool CModelInfoSA::SetTime(char cHourOn, char cHourOff)
     if (!m_pInterface)
         return false;
 
-    TimeInfo* pTime = ((TimeInfo*(*)(void))m_pInterface->VFTBL->GetTimeInfo)();
+    TimeInfo* pTime = ((TimeInfo * (*)(void)) m_pInterface->VFTBL->GetTimeInfo)();
     if (!pTime)
         return false;
 
@@ -587,7 +588,7 @@ bool CModelInfoSA::GetTime(char& cHourOn, char& cHourOff)
     if (!m_pInterface)
         return false;
 
-    TimeInfo* time = ((TimeInfo*(*)(void))m_pInterface->VFTBL->GetTimeInfo)();
+    TimeInfo* time = ((TimeInfo * (*)(void)) m_pInterface->VFTBL->GetTimeInfo)();
     if (!time)
         return false;
 
@@ -619,6 +620,7 @@ float CModelInfoSA::GetOriginalLODDistance()
 
 void CModelInfoSA::SetLODDistance(float fDistance, bool bOverrideMaxDistance)
 {
+#dummy
 #if 0
     // fLodDistanceUnscaled values:
     //
@@ -645,8 +647,10 @@ void CModelInfoSA::SetLODDistance(float fDistance, bool bOverrideMaxDistance)
         // Ensure fDistance is in range
         fDistance = std::min(fDistance, fMaximumValue);
     }
+#dummy
 #endif
-    if (!bOverrideMaxDistance) {
+    if (!bOverrideMaxDistance)
+    {
         // Limit to 325.f as it goes horrible after that
         fDistance = std::min(fDistance, 325.f);
     }
@@ -707,8 +711,10 @@ void CModelInfoSA::StaticFlushPendingRestreamIPL()
                 OutputDebugString(SString("Entity 0x%08x (with model %d) at ARRAY_StreamSectors[%d,%d] is invalid\n", pEntity, pEntity->m_nModelIndex,
                                           i / 2 % NUM_StreamSectorRows, i / 2 / NUM_StreamSectorCols));
                 // Assert in debug
+#dummy
                 #if MTA_DEBUG
                 assert(pEntity->vtbl->DeleteRwObject == 0x00534030);
+#dummy
                 #endif
                 pSectorEntry = (DWORD*)pSectorEntry[1];
                 continue;
@@ -1032,7 +1038,7 @@ void CModelInfoSA::ResetVehicleDummies()
 
     auto iter = ms_ModelDefaultDummiesPosition.find(m_dwModelID);
     if (iter == ms_ModelDefaultDummiesPosition.end())
-        return; // Early out in case the model doesn't have any dummies modified
+        return;            // Early out in case the model doesn't have any dummies modified
 
     auto pVehicleModel = reinterpret_cast<CVehicleModelInfoSAInterface*>(m_pInterface);
     for (const auto& dummy : ms_ModelDefaultDummiesPosition[m_dwModelID])
@@ -1048,7 +1054,8 @@ void CModelInfoSA::ResetVehicleDummies()
 void CModelInfoSA::ResetAllVehicleDummies()
 {
     CGame* game = g_pCore->GetGame();
-    for (auto& info : ms_ModelDefaultDummiesPosition) {
+    for (auto& info : ms_ModelDefaultDummiesPosition)
+    {
         CModelInfo* modelInfo = game->GetModelInfo(info.first);
         if (modelInfo)
             modelInfo->ResetVehicleDummies();
@@ -1309,6 +1316,7 @@ __declspec(noinline) void OnMY_NodeNameStreamRead(RwStream* stream, char* pDest,
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_NodeNameStreamRead                         0x072FA68
 #define HOOKSIZE_NodeNameStreamRead                        15
 DWORD RETURN_NodeNameStreamRead = 0x072FA77;

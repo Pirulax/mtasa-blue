@@ -9,12 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 using std::list;
 
 extern CClientGame* g_pClientGame;
 
+#dummy
 #ifdef WITH_OBJECT_SYNC
 CDeathmatchObject::CDeathmatchObject(CClientManager* pManager, CMovingObjectsManager* pMovingObjectsManager, CObjectSync* pObjectSync, ElementID ID,
                                      unsigned short usModel)
@@ -35,6 +37,7 @@ CDeathmatchObject::~CDeathmatchObject()
     }
 }
 
+#dummy
 #else
 
 CDeathmatchObject::CDeathmatchObject(CClientManager* pManager, CMovingObjectsManager* pMovingObjectsManager, ElementID ID, unsigned short usModel, bool bLowLod)
@@ -48,6 +51,7 @@ CDeathmatchObject::~CDeathmatchObject()
 {
     _StopMovement(true);
 }
+#dummy
 #endif
 
 void CDeathmatchObject::StartMovement(const CPositionRotationAnimation& a_rMoveAnimation)

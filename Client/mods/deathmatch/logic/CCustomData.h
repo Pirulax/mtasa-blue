@@ -8,10 +8,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "lua/CLuaArgument.h"
 
+#dummy
 #define MAX_CUSTOMDATA_NAME_LENGTH 128
 
 struct SCustomData

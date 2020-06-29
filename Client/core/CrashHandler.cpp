@@ -24,6 +24,7 @@ CONDITIONAL COMPILATION :
                               versions.
 ----------------------------------------------------------------------*/
 
+#dummy
 #include "StdInc.h"
 #include "CrashHandler.h"
 #include "detours/include/detours.h"
@@ -48,6 +49,7 @@ LONG __stdcall CrashHandlerExceptionFilter(EXCEPTION_POINTERS* pExPtrs);
 //////////////////////////////////////////////////////////////////////*/
 // See the note in MEMDUMPVALIDATOR.CPP about automatic classes.
 // Turn off warning : initializers put in library initialization area
+#dummy
 #pragma warning (disable : 4073)
 #pragma init_seg(lib)
 class CleanUpCrashHandler
@@ -113,7 +115,6 @@ BOOL __stdcall SetCrashHandlerFilter(PFNCHFILTFN pFn)
     }
     return (TRUE);
 }
-
 
 LONG __stdcall CrashHandlerExceptionFilter(EXCEPTION_POINTERS* pExPtrs)
 {

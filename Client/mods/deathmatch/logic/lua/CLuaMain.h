@@ -11,20 +11,26 @@
 
 class CLuaMain;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CLuaTimerManager.h"
 #include "lua/CLuaVector2.h"
 #include "lua/CLuaVector3.h"
 #include "lua/CLuaVector4.h"
 #include "lua/CLuaMatrix.h"
 
+#dummy
 #include "CLuaFunctionDefs.h"
 
+#dummy
 #include <xml/CXMLFile.h>
 
+#dummy
 #define MAX_SCRIPTNAME_LENGTH 64
 
+#dummy
 #include <list>
 
 struct CRefInfo

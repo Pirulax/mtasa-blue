@@ -10,15 +10,19 @@
 
 class CClientRadarMarker;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientCommon.h"
 #include "CClientEntity.h"
 #include "CClientRadarMarkerManager.h"
 #include <gui/CGUI.h>
 
+#dummy
 #include <game/CMarker.h>
 
+#dummy
 #define RADAR_MARKER_LIMIT 63
 
 class CClientRadarMarker : public CClientEntity

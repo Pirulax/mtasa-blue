@@ -9,11 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 class CGUIElement;
 
 // Define callbacks
+#dummy
 #define GUI_CALLBACK            CGUICallback < bool, CGUIElement * >
 #define GUI_CALLBACK_KEY        CGUICallback < bool, CGUIKeyEventArgs >
 #define GUI_CALLBACK_MOUSE      CGUICallback < bool, CGUIMouseEventArgs >

@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 namespace
@@ -25,6 +26,7 @@ namespace
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 // Hook info
+#dummy
 #define HOOKPOS_CVehicle_DoTailLightEffect_Mid          0x006E18E5
 #define HOOKSIZE_CVehicle_DoTailLightEffect_Mid         6
 #define HOOKCHECK_CVehicle_DoTailLightEffect_Mid        0x0F
@@ -52,6 +54,7 @@ behind_corona:
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 // Hook info
+#dummy
 #define HOOKPOS_CVehicle_DoTailLightEffect_Mid2         0x006E19E6
 #define HOOKSIZE_CVehicle_DoTailLightEffect_Mid2        10
 #define HOOKCHECK_CVehicle_DoTailLightEffect_Mid2       0x8B

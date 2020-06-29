@@ -9,15 +9,20 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define CGAME_DLL
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#dummy
 #include <game/Common.h>
 
+#dummy
 #undef DEBUG_LOG
 #ifdef DEBUG_LOG
     #include <stdio.h>
@@ -27,13 +32,16 @@ static FILE* fDebugFile;
 
 static void OutputDebugText(char* szDebugText)
 {
+#dummy
         #ifdef MTA_DEBUG
     char szDebug[500];
     sprintf(szDebug, "%s\n", szDebugText);
     OutputDebugString(szDebug);
+#dummy
         #endif
 }
 
+#dummy
     #ifdef MTA_DEBUG
         #define DEBUG_TRACE(szText) \
             OutputDebugString(szText);

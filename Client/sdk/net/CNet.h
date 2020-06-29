@@ -9,13 +9,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <string>
 #include "net_common.h"
 #include "net/bitstream.h"
 #include "net/CNetHTTPDownloadManagerInterface.h"
 
+#dummy
 #define MAX_CALL_REMOTE_QUEUES  100
 
 namespace EDownloadMode

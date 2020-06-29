@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Utils.h"
 
 template <class T, unsigned int uiMaxElements = 64>

@@ -9,12 +9,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CWaterSA.h"
 
+#dummy
 #define DEFAULT_WAVE_LEVEL                 0.0f
 
+#dummy
 #define FUNC_ReadWaterConfiguration        0x6EAE80         // ()
 #define FUNC_CreateWaterVertex             0x6E5A40         // (word x, word y, float z, float unknown, float height, word flow)
 #define FUNC_CreateWaterQuad               0x6E7EF0         // (word x1, word y1, float z1, float unknown1, float height1, word flow1, word x2, ..., word x3, ..., word x4, ..., word flags)
@@ -30,12 +34,14 @@ typedef void(__cdecl* BuildWaterIndex_t)();
 typedef bool(__cdecl* TestLineAgainstWater_t)(float fStartX, float fStartY, float fStartZ, float fEndX, float fEndY, float fEndZ, CVector* pvecCollision);
 typedef bool(__cdecl* GetWaterLevel_t)(float fX, float fY, float fZ, float* pfLevel, bool bCheckWaves, CVector* pvecUnknown);
 
+#dummy
 #define VAR_NumWaterVertices               0xC2288C
 #define VAR_NumWaterQuads                  0xC22888
 #define VAR_NumWaterTriangles              0xC22884
 #define VAR_NumWaterZonePolys              0xC215F0
 #define VAR_WaveLevel                      0xC812E8
 
+#dummy
 #define NUM_DefWaterVertices               0x3FD        // Sizes of pools reserved in gta_sa.exe
 #define NUM_DefWaterQuads                  0x12D
 #define NUM_DefWaterTriangles              0x6
@@ -46,6 +52,7 @@ typedef bool(__cdecl* GetWaterLevel_t)(float fX, float fY, float fZ, float* pfLe
 #define NUM_NewWaterZonePolys              0x400
 #define NUM_WaterZones                     (12 * 12)
 
+#dummy
 #define ARRAY_WaterVertices                0xC22910
 #define ARRAY_WaterQuads                   0xC21C90
 #define ARRAY_WaterTriangles               0xC22854

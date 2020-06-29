@@ -7,6 +7,7 @@
  *  PURPOSE:     CEF launcher entry point
  *
  *****************************************************************************/
+#dummy
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <string>

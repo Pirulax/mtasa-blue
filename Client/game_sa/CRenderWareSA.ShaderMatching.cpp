@@ -6,6 +6,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CRenderWareSA.ShaderMatching.h"
 
@@ -248,6 +249,7 @@ SShaderInfoLayers* CMatchChannelManager::GetShaderForTexAndEntity(STexInfo* pTex
             pTexShaderReplacement = UpdateTexShaderReplacement(pTexNameInfo, pClientEntity, iEntityType);
         }
 
+#dummy
     #ifdef SHADER_DEBUG_CHECKS
         if (pTexNameInfo->iDebugCounter1++ > 400)
         {
@@ -275,6 +277,7 @@ SShaderInfoLayers* CMatchChannelManager::GetShaderForTexAndEntity(STexInfo* pTex
             FinalizeLayers(shaderLayersCheck1);
             assert(pTexShaderReplacement->shaderLayers == shaderLayersCheck1);
         }
+#dummy
     #endif
 
         // Return layers for this entity
@@ -289,6 +292,7 @@ SShaderInfoLayers* CMatchChannelManager::GetShaderForTexAndEntity(STexInfo* pTex
             UpdateTexShaderReplacementNoEntity(pTexNameInfo, texNoEntityShader, iEntityType);
         }
 
+#dummy
     #ifdef SHADER_DEBUG_CHECKS
         if (pTexNameInfo->iDebugCounter2++ > 400)
         {
@@ -299,6 +303,7 @@ SShaderInfoLayers* CMatchChannelManager::GetShaderForTexAndEntity(STexInfo* pTex
             FinalizeLayers(shaderLayersCheck2);
             assert(texNoEntityShader.shaderLayers == shaderLayersCheck2);
         }
+#dummy
     #endif
 
         // Return layers for any entity
@@ -326,10 +331,12 @@ void CMatchChannelManager::CalcShaderForTexAndEntity(SShaderInfoLayers& outShade
         pChannel->GetBestShaderForEntity(pClientEntity, iEntityType, outShaderLayers);
     }
 
+#dummy
 #ifdef SHADER_DEBUG_OUTPUT
     if ((outShaderLayers.pBase.pShaderInfo || !outShaderLayers.layerList.empty()) && !bSilent)
         OutputDebug(SString("    CalcShaderForTexAndEntity - Tex:%s Entity:%s Base:%s NumLayers:%d", GetDebugTag(pTexNameInfo), GetDebugTag(pClientEntity),
                             GetDebugTag(outShaderLayers.pBase.pShaderInfo), outShaderLayers.layerList.size()));
+#dummy
 #endif
 }
 
@@ -385,6 +392,7 @@ void CMatchChannelManager::RemoveClientEntityRefs(CClientEntityBase* pClientEnti
         MapRemove(iter->second->texEntityShaderMap, pClientEntity);
     }
 
+#dummy
 #ifdef SHADER_DEBUG_CHECKS
     for (CFastHashSet<CMatchChannel*>::const_iterator iter = m_CreatedChannelList.begin(); iter != m_CreatedChannelList.end(); ++iter)
     {
@@ -395,6 +403,7 @@ void CMatchChannelManager::RemoveClientEntityRefs(CClientEntityBase* pClientEnti
             assert(pClientEntity != iter->pClientEntity);
         }
     }
+#dummy
 #endif
 }
 
@@ -441,6 +450,7 @@ void CMatchChannelManager::RemoveShaderRefs(CSHADERDUMMY* pShaderData)
         // This could be optimized
     }
 
+#dummy
 #ifdef SHADER_DEBUG_CHECKS
     // Check has been remove from textures
     for (CFastHashMap<SString, STexNameInfo*>::const_iterator iter = m_AllTextureList.begin(); iter != m_AllTextureList.end(); ++iter)
@@ -462,8 +472,10 @@ void CMatchChannelManager::RemoveShaderRefs(CSHADERDUMMY* pShaderData)
                 assert(texNoEntityShader.shaderLayers.layerList[i].pShaderInfo != pShaderInfo);
         }
     }
+#dummy
 #endif
 
+#dummy
 #ifdef SHADER_DEBUG_CHECKS
     for (CFastHashSet<CMatchChannel*>::const_iterator iter = m_CreatedChannelList.begin(); iter != m_CreatedChannelList.end(); ++iter)
     {
@@ -474,6 +486,7 @@ void CMatchChannelManager::RemoveShaderRefs(CSHADERDUMMY* pShaderData)
             assert(pShaderInfo != iter->pShaderInfo);
         }
     }
+#dummy
 #endif
 
     DeleteShaderInfo(pShaderInfo);
@@ -823,9 +836,11 @@ void CMatchChannelManager::DeleteChannel(CMatchChannel* pChannel)
         pTexNameInfo->ResetReplacementResults();
     }
 
+#dummy
 #ifdef SHADER_DEBUG_CHECKS
     for (CFastHashMap<CShaderAndEntityPair, CMatchChannel*>::iterator iter = m_ChannelUsageMap.begin(); iter != m_ChannelUsageMap.end(); ++iter)
         assert(pChannel != iter->second);
+#dummy
 #endif
     MapRemove(m_OptimizeQueue, pChannel);
     MapRemove(m_CreatedChannelList, pChannel);
@@ -919,6 +934,7 @@ void CMatchChannelManager::GetShaderReplacementStats(SShaderReplacementStats& ou
 //
 //
 
+#dummy
 #ifdef SHADER_DEBUG_OUTPUT
 
 CFastHashMap<CClientEntityBase*, int> entityIdMap;
@@ -994,4 +1010,5 @@ SString GetDebugTagStr(CMatchChannel* pChannel)
     return SString("%08x", pChannel->m_uiId);
 }
 
+#dummy
 #endif

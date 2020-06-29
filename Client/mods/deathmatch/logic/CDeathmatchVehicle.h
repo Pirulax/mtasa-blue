@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientVehicle.h"
 
 class CDeathmatchVehicle : public CClientVehicle

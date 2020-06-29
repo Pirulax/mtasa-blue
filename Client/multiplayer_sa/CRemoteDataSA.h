@@ -9,15 +9,19 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "multiplayersa_init.h"
 #include <multiplayer/CMultiplayer.h>
 
+#dummy
 #include <game/CPlayerPed.h>
 #include <game/CPad.h>
 
 // These includes have to be fixed!
+#dummy
 #include "../game_sa/CPadSA.h"
 #include "../game_sa/common.h"
 

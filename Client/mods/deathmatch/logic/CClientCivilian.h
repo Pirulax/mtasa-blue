@@ -10,12 +10,15 @@
 
 class CClientCivilian;
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CCivilianPed.h>
 #include <game/TaskGoTo.h>
 #include <game/TaskCarAccessories.h>
 
+#dummy
 #include "CClientCommon.h"
 #include "CClientEntity.h"
 

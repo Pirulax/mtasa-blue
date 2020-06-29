@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 class CClientColRectangle : public CClientColShape

@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include <game/CGame.h>
 #define DECLARE_PROFILER_SECTION_CModManager

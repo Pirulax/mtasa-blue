@@ -9,14 +9,19 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CRopes.h>
 
+#dummy
 #define ROPES_COUNT    8
 
+#dummy
 #define FUNC_CRopes_CreateRopeForSwatPed    0x558d10
 
+#dummy
 #define ARRAY_CRopes    0xB768B8
 
 class CRopesSAInterface

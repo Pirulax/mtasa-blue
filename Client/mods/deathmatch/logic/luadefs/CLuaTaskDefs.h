@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CLuaDefs.h"
 #include "lua/LuaCommon.h"
 

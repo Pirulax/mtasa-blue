@@ -18,15 +18,19 @@
 Copyright (c) 1997-2000 John Robbins -- All rights reserved.
 ----------------------------------------------------------------------*/
 
+#dummy
 #pragma once
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #define BUGSUTIL_DLLINTERFACE
 
+#dummy
 #ifdef __cplusplus
 extern "C"
 {
+#dummy
 #endif  //__cplusplus
 
     /*//////////////////////////////////////////////////////////////////////
@@ -56,6 +60,8 @@ extern "C"
     ----------------------------------------------------------------------*/
     BOOL BUGSUTIL_DLLINTERFACE __stdcall SetCrashHandlerFilter(PFNCHFILTFN pFn);
 
+#dummy
 #ifdef __cplusplus
 }
+#dummy
 #endif  //__cplusplus

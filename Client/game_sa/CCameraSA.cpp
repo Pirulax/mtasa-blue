@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 /**
  * \todo Need to add other TakeControl functions
@@ -18,10 +19,12 @@ unsigned long CCameraSA::FUNC_RwFrameGetLTM;
 static bool   bCameraClipObjects;
 static bool   bCameraClipVehicles;
 
+#dummy
 #define VAR_CameraClipVehicles              0x8A5B14
 #define VAR_CameraClipDynamicObjects        0x8A5B15
 #define VAR_CameraClipStaticObjects         0x8A5B16
 
+#dummy
 #define HOOKPOS_Camera_CollisionDetection   0x520190
 DWORD RETURN_Camera_CollisionDetection = 0x520195;
 void  HOOK_Camera_CollisionDetection();

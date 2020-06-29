@@ -6,6 +6,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "gamesa_renderware.h"
 
@@ -252,6 +253,7 @@ void CRenderWareSA::ModelInfoTXDRemoveTextures(SReplacementTextures* pReplacemen
         if (pInfo->usedByReplacements.empty())
         {
             // txd should now contain the same textures as 'originalTextures'
+#dummy
         #ifdef MTA_DEBUG
             std::vector<RwTexture*> currentTextures;
             GetTxdTextures(currentTextures, pInfo->pTxd);
@@ -263,6 +265,7 @@ void CRenderWareSA::ModelInfoTXDRemoveTextures(SReplacementTextures* pReplacemen
                 ListRemove(currentTextures, pOriginalTexture);
             }
             assert(currentTextures.empty());
+#dummy
         #endif
 
             // Remove info

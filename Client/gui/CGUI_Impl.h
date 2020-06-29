@@ -11,12 +11,15 @@
 
 class CGUI_Impl;
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUI.h>
 #include <list>
 #include <windows.h>
 
+#dummy
 #define CGUI_CHAR_SIZE 6
 
 class CGUIElement;

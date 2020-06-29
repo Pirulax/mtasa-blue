@@ -8,12 +8,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 extern "C"
 {
+#dummy
     #include "lua.h"
 }
+#dummy
 #include <net/bitstream.h>
 #include <string>
 #include "json.h"
@@ -21,6 +24,7 @@ extern "C"
 class CClientEntity;
 class CLuaArguments;
 
+#dummy
 #define LUA_TTABLEREF 9
 #define LUA_TSTRING_LONG 10
 
@@ -75,9 +79,11 @@ private:
     CLuaArguments* m_pTableData;
     bool           m_bWeakTableRef;
 
+#dummy
 #ifdef MTA_DEBUG
     std::string m_strFilename;
     int         m_iLine;
+#dummy
 #endif
 
     void CopyRecursive(const CLuaArgument& Argument, CFastHashMap<CLuaArguments*, CLuaArguments*>* pKnownTables = NULL);

@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPointLights.h>
 
+#dummy
 #define FUNC_CPointLights_AddLight      0x7000e0
 #define FUNC_CHeli_Pre_SearchLightCone  0x6C4650
 #define FUNC_CHeli_Post_SearchLightCone 0x6C46E0

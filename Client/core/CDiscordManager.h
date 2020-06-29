@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <core/CDiscordManagerInterface.h>
 #include "SharedUtil.Thread.h"
 
@@ -18,7 +20,7 @@ namespace discord
     enum class LogLevel;
     class Core;
     class Activity;
-}
+}            // namespace discord
 
 class CDiscordManager : public CDiscordManagerInterface
 {
@@ -54,7 +56,7 @@ private:
     bool NeedsSuicide() const { return m_Suicide; }
     void SetDead() { m_Suicide = false; }
 
-    discord::Core*    m_DiscordCore = nullptr;
+    discord::Core*     m_DiscordCore = nullptr;
     discord::Activity* m_StoredActivity;
 
     bool m_WaitingForServerName = false;

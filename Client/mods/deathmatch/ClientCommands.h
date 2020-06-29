@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 bool COMMAND_Executed(const char* szCommand, const char* szArguments, bool bHandleRemotely, bool bHandled, bool bIsScriptedBind);
@@ -44,23 +45,32 @@ void COMMAND_VoicePushToTalk(const char* szCmdLine);
 void COMMAND_ServerInfo(const char* szCmdLine);
 
 // DISABLE THESE BEFORE RELEASE
+#dummy
 #ifdef MTA_DEBUG
 void COMMAND_ShowSyncData(const char* szCmdLine);
-// void COMMAND_DumpPlayers            ( const char* szCmdLine );
+    // void COMMAND_DumpPlayers            ( const char* szCmdLine );
+#dummy
 #endif
 
+#dummy
 #if defined(MTA_DEBUG) || defined(MTA_BETA)
 void COMMAND_ShowSyncing(const char* szCmdLine);
+#dummy
 #endif
 
+#dummy
 #ifdef MTA_DEBUG
 void COMMAND_Foo(const char* szCmdLine);
+#dummy
 #endif
 
+#dummy
 #ifdef MTA_WEPSYNCDBG
 void COMMAND_ShowWepdata(const char* szCmdLine);
+#dummy
 #endif
 
+#dummy
 #if defined(MTA_DEBUG) || defined(COMMAND_ShowTasks)
 void COMMAND_ShowWepdata(const char* szCmdLine);
 void COMMAND_ShowTasks(const char* szCmdLine);
@@ -80,6 +90,7 @@ void COMMAND_Debug(const char* szCmdLine);
 void COMMAND_Debug2(const char* szCmdLine);
 void COMMAND_Debug3(const char* szCmdLine);
 void COMMAND_Debug4(const char* szCmdLine);
+#dummy
 #endif
 
 // Commands enabled when development mode in on

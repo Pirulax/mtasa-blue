@@ -7,6 +7,7 @@
  *  PURPOSE:     WebView interface class
  *
  *****************************************************************************/
+#dummy
 #pragma once
 #include "CWebCoreInterface.h"
 

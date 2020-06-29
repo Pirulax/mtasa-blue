@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CDirectInputHook8.h"
 
 class CDirectInputHookManager

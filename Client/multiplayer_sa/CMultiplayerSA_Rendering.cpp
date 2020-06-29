@@ -8,12 +8,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 extern CCoreInterface*   g_pCore;
 GameEntityRenderHandler* pGameEntityRenderHandler = nullptr;
 PreRenderSkyHandler*     pPreRenderSkyHandlerHandler = nullptr;
 RenderHeliLightHandler*  pRenderHeliLightHandler = nullptr;
 
+#dummy
 #define VAR_CCullZones_NumMirrorAttributeZones  0x0C87AC4   // int
 #define VAR_CMirrors_d3dRestored                0x0C7C729   // uchar
 
@@ -43,6 +45,7 @@ void OnMY_CallIdle_Post(RwGeometry* pGeometry, DWORD calledFrom)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CallIdle                         0x53ECBD
 #define HOOKSIZE_CallIdle                        5
 DWORD RETURN_CallIdle = 0x53ECC2;
@@ -110,6 +113,7 @@ void OnMY_CEntity_Render_Post()
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CEntity_Render                         0x534310
 #define HOOKSIZE_CEntity_Render                        6
 DWORD RETURN_CEntity_Render = 0x534317;
@@ -163,6 +167,7 @@ void OnMY_CEntity_RenderOneNonRoad_Post(CEntitySAInterface* pEntity)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CEntity_RenderOneNonRoad                         0x553260
 #define HOOKSIZE_CEntity_RenderOneNonRoad                        5
 DWORD RETURN_CEntity_RenderOneNonRoad = 0x553265;
@@ -210,6 +215,7 @@ void OnMY_CVisibilityPlugins_RenderWeaponPedsForPC_Mid(CPedSAInterface* pEntity)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CVisibilityPlugins_RenderWeaponPedsForPC_Mid                0x733080
 #define HOOKSIZE_CVisibilityPlugins_RenderWeaponPedsForPC_Mid               6
 DWORD RETURN_CVisibilityPlugins_RenderWeaponPedsForPC_Mid = 0x733086;
@@ -242,6 +248,7 @@ void OnMY_CVisibilityPlugins_RenderWeaponPedsForPC_End()
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CVisibilityPlugins_RenderWeaponPedsForPC_End                0x73314D
 #define HOOKSIZE_CVisibilityPlugins_RenderWeaponPedsForPC_End               5
 void _declspec(naked) HOOK_CVisibilityPlugins_RenderWeaponPedsForPC_End()
@@ -267,6 +274,7 @@ void _declspec(naked) HOOK_CVisibilityPlugins_RenderWeaponPedsForPC_End()
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 // Hook info
+#dummy
 #define HOOKPOS_Check_NoOfVisibleLods                         0x5534F9
 #define HOOKSIZE_Check_NoOfVisibleLods                        6
 DWORD RETURN_Check_NoOfVisibleLods = 0x5534FF;
@@ -291,6 +299,7 @@ limit:
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 // Hook info
+#dummy
 #define HOOKPOS_Check_NoOfVisibleEntities                         0x55352D
 #define HOOKSIZE_Check_NoOfVisibleEntities                        6
 DWORD RETURN_Check_NoOfVisibleEntities = 0x553533;
@@ -319,6 +328,7 @@ void OnMY_WinLoop()
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_WinLoop_US                         0x748A93
 #define HOOKPOS_WinLoop_EU                         0x748AE3
 #define HOOKSIZE_WinLoop_US                        5
@@ -346,6 +356,7 @@ void _declspec(naked) HOOK_WinLoop()
 // Just before GTA calculates frame time deltas
 //
 //////////////////////////////////////////////////////////////////////////////////////////
+#dummy
 #define HOOKPOS_CTimer_Update               0x561B10
 #define HOOKSIZE_CTimer_Update              6
 static const DWORD CONTINUE_CTimer_Update = 0x561B16;
@@ -400,6 +411,7 @@ bool OnMY_psGrabScreen_ShouldUseRect()
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_psGrabScreen                        0x7452FC
 #define HOOKSIZE_psGrabScreen                       5
 DWORD RETURN_psGrabScreen_YesChange = 0x745311;
@@ -444,6 +456,7 @@ void OnMY_CClouds_RenderSkyPolys()
 }
 
 // Hook info
+#dummy
 #define HOOKCHECK_CClouds_RenderSkyPolys            0xA1
 #define HOOKPOS_CClouds_RenderSkyPolys              0x714650
 #define HOOKSIZE_CClouds_RenderSkyPolys             5
@@ -499,6 +512,7 @@ float OnMY_RwCameraSetNearClipPlane(DWORD dwCalledFrom, void* pUnknown, float fD
 }
 
 // Hook info
+#dummy
 #define HOOKCHECK_RwCameraSetNearClipPlane_US       0xD9
 #define HOOKCHECK_RwCameraSetNearClipPlane_EU       0xD9
 #define HOOKPOS_RwCameraSetNearClipPlane_US         0x7EE1D0
@@ -536,6 +550,7 @@ void _declspec(naked) HOOK_RwCameraSetNearClipPlane()
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 // Hook info
+#dummy
 #define HOOKPOS_RenderEffects_HeliLight                           0x53E1B9
 #define HOOKSIZE_RenderEffects_HeliLight                          5
 DWORD RETURN_RenderEffects_HeliLight = 0x53E1BE;

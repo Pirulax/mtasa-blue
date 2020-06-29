@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CAnimBlendSequence.h>
 
+#dummy
 #define FUNC_CAnimBlendSequence_SetName      0x4D0C50
 #define FUNC_CAnimBlendSequence_SetBoneTag   0x4D0C70
 #define FUNC_CAnimBlendSequence_SetKeyFrames 0x4D0CD0
@@ -20,7 +23,8 @@
 class CAnimBlendSequenceSAInterface
 {
 public:
-    union {
+    union
+    {
         uint16_t m_boneId;            // m_boneId is set if ( sFlags & 0x10u ) is true
         uint32_t m_hash;              // otherwise m_hash is set
     };

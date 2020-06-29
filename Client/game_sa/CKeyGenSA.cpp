@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 unsigned int CKeyGenSA::GetKey(const char* szString, int iLength)

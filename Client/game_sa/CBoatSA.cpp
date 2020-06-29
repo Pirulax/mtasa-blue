@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CBoatSA::CBoatSA(CBoatSAInterface* boat)

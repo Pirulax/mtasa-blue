@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CDynamicLibrary.h"
 
@@ -219,13 +220,17 @@ void CClientPerfStatLibMemoryImpl::GetLibMemoryStats(CClientPerfStatResult* pRes
                 CLibraryInfo info;
                 bool         bModDir = libs[i].bModDir;
                 info.strName = libs[i].szName;
+#dummy
                 #if MTA_DEBUG
                 info.strName += "_d";
+#dummy
                 #endif
                 #ifdef WIN32
                 info.strName += ".dll";
+#dummy
                 #else
                 info.strName += ".so";
+#dummy
                 #endif
                 info.pLibrary = new CDynamicLibrary();
 

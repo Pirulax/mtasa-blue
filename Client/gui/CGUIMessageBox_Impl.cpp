@@ -9,9 +9,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "../core/CFilePathTranslator.h"
 
+#dummy
 #define MESSAGEBOX_WIDTH        400.0f
 #define MESSAGEBOX_HEIGHT       150.0f
 #define MESSAGEBOX_SPACER       20

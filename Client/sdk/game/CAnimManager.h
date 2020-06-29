@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <memory>
 
 // Get correct values
+#dummy
 #define MAX_ANIM_GROUPS 200
 #define MAX_ANIMATIONS 500
 #define MAX_ANIM_BLOCKS 200
@@ -51,8 +54,8 @@ public:
     typedef std::unique_ptr<CAnimBlendAssociation>       AnimBlendAssoc_type;
     typedef std::unique_ptr<CAnimBlendStaticAssociation> StaticAssocIntface_type;
     typedef std::unique_ptr<CAnimBlendAssocGroup>        AnimAssocGroup_type;
-    virtual void Initialize() = 0;
-    virtual void Shutdown() = 0;
+    virtual void                                         Initialize() = 0;
+    virtual void                                         Shutdown() = 0;
 
     virtual int GetNumAnimations() = 0;
     virtual int GetNumAnimBlocks() = 0;

@@ -9,13 +9,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <windows.h>
 #include <game/CEventDamage.h>
 #include "CEntitySA.h"
 #include "CPedDamageResponseSA.h"
 
+#dummy
 #define FUNC_CEventDamage_Constructor           0x4ad830
 #define FUNC_CEventDamage_Destructor            0x4ad960
 #define FUNC_CEventDamage_HasKilledPed          0x4ABCA0

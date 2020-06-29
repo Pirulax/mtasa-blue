@@ -9,22 +9,29 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPhysical.h>
 #include "CEntitySA.h"
 #include <CVector.h>
 #include <CMatrix_Pad.h>
 
 // CBuoyancy::CBuoyancy(CBuoyancy* pThis)
+#dummy
 #define FUNC_CBuoyancy__constructor                            0x6C2740
 // bool CBuoyancy::ProcessBuoyancy(CBuoyancy* pThis, CEntity* pEntity, float fBuoyancy, CVector* pOutVecMoveForce, CVector* pOutVecTurnForce)
+#dummy
 #define FUNC_CBuoyancy__ProcessBuoyancy                        0x6C3EF0
 // bool CBuoyancy::CalculateForces(CBuoyancy* pThis, CEntity* pEntity, CVector* pOutVecMoveForce, CVector* pOutVecTurnForce)
+#dummy
 #define FUNC_CBuoyancy__CalculateForces                        0x6C2750
 // bool CBuoyancy::PreCalcSetup(CBuoyancy* pThis, CEntity* pEntity, float fBuoyancy)
+#dummy
 #define FUNC_CBuoyancy__PreCalcSetup                           0x6C2B90
 
+#dummy
 #define CLASS_CBuoyancy                                        0xC1C890
 
 class CBuoyancySA

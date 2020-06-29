@@ -9,24 +9,32 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 
+#dummy
 #include <game/TaskJumpFall.h>
 #include <game/CTasks.h>
 
+#dummy
 #include <windows.h>
 
+#dummy
 #include "TaskSA.h"
 
 // temporary
 class CAnimBlendAssociation;
+#dummy
 #ifndef RpClump
 // class RpClump;
 class FxSystem_c;
+#dummy
 #endif
 
+#dummy
 #define FUNC_CTaskSimpleClimb__Constructor                          0x67A110
 #define FUNC_CTaskSimpleJetPack__Constructor                        0x67B4E0
 

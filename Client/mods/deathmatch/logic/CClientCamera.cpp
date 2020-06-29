@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
+#dummy
 #define PI_2 6.283185307179586476925286766559f
 
 CClientCamera::CClientCamera(CClientManager* pManager) : ClassInit(this), CClientEntity(INVALID_ELEMENT_ID)

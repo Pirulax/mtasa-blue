@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define ATOMIC_ID_FLAG_TWO_VERSIONS_UNDAMAGED   1
 #define ATOMIC_ID_FLAG_TWO_VERSIONS_DAMAGED     2
 

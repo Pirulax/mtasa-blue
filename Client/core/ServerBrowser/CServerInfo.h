@@ -11,21 +11,26 @@
 
 class CServerInfo;
 
+#dummy
 #pragma once
 
 // Update interval for the full server (in milliseconds)
+#dummy
 #define SERVER_UPDATE_INTERVAL 2500
 
 // Dimensions for our window
+#dummy
 #define INFO_WINDOW_DEFAULTWIDTH 370.0f
 #define INFO_WINDOW_DEFAULTHEIGHT 400.0f
 
+#dummy
 #define INFO_WINDOW_HSPACING 20
 #define INFO_LABEL_VSPACING 0
 #define INFO_WINDOW_VSPACING 10
 #define INFO_BUTTON_HEIGHT 25
 #define INFO_BUTTON_WIDTH 110
 
+#dummy
 #include "CServerList.h"
 #include "CSingleton.h"
 

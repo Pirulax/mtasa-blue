@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <CVector.h>
 #include "CFire.h"
 #include "CEntity.h"

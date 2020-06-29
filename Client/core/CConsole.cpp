@@ -9,16 +9,20 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 using SharedUtil::CalcMTASAPath;
 using std::string;
 
+#dummy
 #define CONSOLE_INPUT_HISTORY_LENGTH 128
 #define CONSOLE_SIZE 4096
 
+#dummy
 #define MAX_CONSOLE_COMMAND_LENGTH 255
 
+#dummy
 #define NATIVE_RES_X 1152.0f
 #define NATIVE_RES_Y 864.0f
 

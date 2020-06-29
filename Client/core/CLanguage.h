@@ -11,6 +11,7 @@
 
 using namespace tinygettext;
 
+#dummy
 #pragma once
 
 class CLanguage

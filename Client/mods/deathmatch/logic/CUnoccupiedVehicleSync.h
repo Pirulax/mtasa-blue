@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <CClientCommon.h>
 #include "CDeathmatchVehicle.h"
 #define MIN_ROTATION_DIFF   0.1

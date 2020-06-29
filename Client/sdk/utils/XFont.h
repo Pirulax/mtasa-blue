@@ -27,10 +27,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#dummy
 #include <windows.h>
 
+#dummy
 #include <crtdbg.h>
 
+#dummy
 #ifndef XFONT_H
 #define XFONT_H
 
@@ -56,7 +59,8 @@ typedef struct _tagFONT_PROPERTIES_ANSI
 
 typedef struct _tagTT_OFFSET_TABLE
 {
-    union {
+    union
+    {
         struct
         {
             USHORT uMajorVersion;
@@ -95,6 +99,7 @@ typedef struct _tagTT_NAME_RECORD
     USHORT uStringOffset;            // from start of storage area
 } TT_NAME_RECORD;
 
+#dummy
 #define SWAPWORD(x)        MAKEWORD(HIBYTE(x), LOBYTE(x))
 #define SWAPLONG(x)        MAKELONG(SWAPWORD(HIWORD(x)), SWAPWORD(LOWORD(x)))
 
@@ -320,4 +325,5 @@ BOOL GetFontProperties(LPCTSTR lpszFilePath, FONT_PROPERTIES* lpFontPropsX)
     return bRetVal;
 }
 
+#dummy
 #endif //XFONT_H

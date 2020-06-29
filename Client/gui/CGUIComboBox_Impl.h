@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CGUIElement_Impl.h"
 #include "CGUIListItem_Impl.h"
 
@@ -44,6 +46,7 @@ public:
     void ShowDropList();
     void HideDropList();
 
+#dummy
     #include "CGUIElement_Inc.h"
 
 protected:

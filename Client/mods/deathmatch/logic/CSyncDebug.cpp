@@ -9,9 +9,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 // Debug mode only interface
+#dummy
 #ifdef MTA_DEBUG
 
 CSyncDebug::CSyncDebug(CClientManager* pManager)
@@ -159,4 +161,5 @@ void CSyncDebug::OnUpdate()
     m_uiBitsSent = (uint)stats.bytesSent * 8;
 }
 
+#dummy
 #endif

@@ -9,15 +9,20 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CExplosionManager.h>
 #include "CExplosionSA.h"
 
+#dummy
 #define FUNC_CExplosion_AddExplosion    0x736A50 // ##SA##
 
+#dummy
 #define ARRAY_Explosions                0xC88950
 
+#dummy
 #define MAX_EXPLOSIONS                  48
 
 class CExplosionManagerSA : public CExplosionManager

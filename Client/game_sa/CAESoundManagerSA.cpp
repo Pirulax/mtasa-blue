@@ -8,8 +8,10 @@
  *  Multi Theft Auto is available from http://www.multitheftauto.com/
  *
  *****************************************************************************/
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define FUNC_CAESoundManager__CancelSoundsInBankSlot 0x4EFC60
 
 CAESoundManagerSA* g_pAESoundManagerSA = nullptr;

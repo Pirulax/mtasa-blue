@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <string>
 
+#dummy
 #define DECLARE_COMMAND_HANDLER(a) static void a ( const char * szParameters );
 
 class CCommandFuncs

@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 #define ALLOC_STATS_MODULE_NAME "client"
 #include "SharedUtil.hpp"
@@ -28,6 +29,7 @@ int CClient::ClientInitialize(const char* szArguments, CCoreInterface* pCore)
         return 1;
     }
 
+#dummy
 #if defined(MTA_DM_EXPIRE_DAYS)
     // Make public client test builds expire
     if (GetDaysUntilExpire() < -1)
@@ -35,6 +37,7 @@ int CClient::ClientInitialize(const char* szArguments, CCoreInterface* pCore)
         MessageBox(NULL, _("This version has expired."), "MTA: San Andreas " MTA_DM_BUILDTAG_LONG + _E("CD64"), MB_OK | MB_ICONEXCLAMATION | MB_TOPMOST);
         TerminateProcess(GetCurrentProcess(), 1);
     }
+#dummy
 #endif
 
     // Init the global pointers to the interfaces
@@ -91,23 +94,31 @@ int CClient::ClientInitialize(const char* szArguments, CCoreInterface* pCore)
     g_pCore->GetCommands()->Add("showcol", _("(Development mode) shows the colshapes"), COMMAND_ShowCollision);
     g_pCore->GetCommands()->Add("showsound", _("(Development mode) prints world sound ids into the debug window"), COMMAND_ShowSound);
 
+#dummy
 #ifdef MTA_DEBUG
     g_pCore->GetCommands()->Add("showsync", "show sync data", COMMAND_ShowSyncData);
     // g_pCore->GetCommands ()->Add ( "dumpall",           "dump internals (comment)",                           COMMAND_DumpPlayers );
+#dummy
 #endif
 #ifdef MTA_DEBUG
     g_pCore->GetCommands()->Add("foo", "debug command for devs", COMMAND_Foo);
+#dummy
 #endif
 
 // Debug commands
+#dummy
 #if defined(MTA_DEBUG) || defined(MTA_BETA)
     g_pCore->GetCommands()->Add("showsyncing", "shows syncing information", COMMAND_ShowSyncing);
+#dummy
 #endif
 
+#dummy
 #ifdef MTA_WEPSYNCDBG
     pCore->GetCommands()->Add("showwepdata", "shows the given player weapon data (nick)", COMMAND_ShowWepdata);
+#dummy
 #endif
 
+#dummy
 #if defined(MTA_DEBUG) || defined(MTA_DEBUG_COMMANDS)
     pCore->GetCommands()->Add("showwepdata", "shows the given player weapon data (nick)", COMMAND_ShowWepdata);
     pCore->GetCommands()->Add("showtasks", "shows the local player tasks (nick)", COMMAND_ShowTasks);
@@ -127,6 +138,7 @@ int CClient::ClientInitialize(const char* szArguments, CCoreInterface* pCore)
     pCore->GetCommands()->Add("debug2", "debug function 2", COMMAND_Debug2);
     pCore->GetCommands()->Add("debug3", "debug function 3", COMMAND_Debug3);
     pCore->GetCommands()->Add("debug4", "debug function 4", COMMAND_Debug4);
+#dummy
 #endif
 
     // Got any arguments?
@@ -179,8 +191,7 @@ int CClient::ClientInitialize(const char* szArguments, CCoreInterface* pCore)
                     SString secret = g_pCore->GetDiscordManager()->GetJoinSecret();
 
                     // Start the game
-                    g_pClientGame->StartGame(arguments.nickname.c_str(), arguments.password.c_str(), CClientGame::SERVER_TYPE_NORMAL,
-                                             *secret);
+                    g_pClientGame->StartGame(arguments.nickname.c_str(), arguments.password.c_str(), CClientGame::SERVER_TYPE_NORMAL, *secret);
                 }
                 else
                 {
@@ -266,6 +277,7 @@ void CClient::RestreamModel(unsigned short usModel)
 
 bool CClient::HandleException(CExceptionInformation* pExceptionInformation)
 {
+#dummy
 #ifndef MTA_DEBUG
 #ifndef MTA_ALLOW_DEBUG
     // Let the clientgame write its dump, then make the core terminate our process
@@ -275,13 +287,16 @@ bool CClient::HandleException(CExceptionInformation* pExceptionInformation)
     }
 
     return false;
+#dummy
 #else
     // We want to be able to debug using the debugger in debug-mode
     return true;
+#dummy
 #endif
 #else
     // We want to be able to debug using the debugger in debug-mode
     return true;
+#dummy
 #endif
 }
 

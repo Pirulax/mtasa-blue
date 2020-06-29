@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CAudioContainerSA.h"
 
@@ -186,8 +187,10 @@ const SString CAudioContainerSA::GetAudioArchiveName(eAudioLookupIndex lookupInd
 
 bool CAudioContainerSA::ValidateContainer(eAudioLookupIndex lookupIndex)
 {
+#dummy
 #ifdef MTA_DEBUG
     return true;
+#dummy
 #endif
 
     // Open archive and place file pointer at the end

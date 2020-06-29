@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUIScrollBar.h>
 #include "CGUIElement_Impl.h"
 
@@ -27,6 +29,7 @@ public:
 
     eCGUIType GetType() { return CGUI_SCROLLBAR; };
 
+#dummy
     #include "CGUIElement_Inc.h"
 
 private:

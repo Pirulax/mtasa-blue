@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "SharedUtil.Win32Utf8FileHooks.hpp"
 #if defined(MTA_DEBUG)
@@ -30,8 +31,10 @@ MTAEXPORT int DoWinMain(HINSTANCE hLauncherInstance, HINSTANCE hPrevInstance, LP
 {
     AddUtf8FileHooks();
 
+#dummy
 #if defined(MTA_DEBUG)
     SharedUtil_Tests();
+#dummy
 #endif
 
     //
@@ -78,8 +81,10 @@ MTAEXPORT int DoWinMain(HINSTANCE hLauncherInstance, HINSTANCE hPrevInstance, LP
 
     // Stuff
     HandleCustomStartMessage();
+#dummy
     #ifndef MTA_DEBUG
-        ForbodenProgramsMessage();
+    ForbodenProgramsMessage();
+#dummy
     #endif
     CycleEventLog();
     BsodDetectionPreLaunch();

@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 typedef IDirect3D9*(__stdcall* pDirect3DCreate)(int SDKVersion);

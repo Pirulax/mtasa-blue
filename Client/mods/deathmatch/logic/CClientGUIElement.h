@@ -10,14 +10,18 @@
 
 class CClientGUIElement;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientGUIManager.h"
 #include "CClientEntity.h"
 #include <gui/CGUI.h>
 
+#dummy
 #define MAX_EVENT_NAME 256
 
+#dummy
 #define CGUI_GET_CCLIENTGUIELEMENT(x)   static_cast < CClientGUIElement* > ( x->GetUserData () )
 #define CGUI_SET_CCLIENTGUIELEMENT(x,y) x->SetUserData ( reinterpret_cast < void* > ( y ) )
 
@@ -25,6 +29,7 @@ class CClientGUIElement;
 
 // supports 2 events
 
+#dummy
 #define IS_CGUIELEMENT_BUTTON(entity)           ((entity)->GetCGUIType()==CGUI_BUTTON)
 #define IS_CGUIELEMENT_CHECKBOX(entity)         ((entity)->GetCGUIType()==CGUI_CHECKBOX)
 #define IS_CGUIELEMENT_EDIT(entity)             ((entity)->GetCGUIType()==CGUI_EDIT)
@@ -41,6 +46,7 @@ class CClientGUIElement;
 #define IS_CGUIELEMENT_COMBOBOX(entity)         ((entity)->GetCGUIType()==CGUI_COMBOBOX)
 #define IS_CGUIELEMENT_WINDOW(entity)           ((entity)->GetCGUIType()==CGUI_WINDOW)
 
+#dummy
 #define IS_CGUIELEMENT_VALID_PARENT(entity)     (IS_CGUIELEMENT_SCROLLPANE(entity) || IS_CGUIELEMENT_WINDOW(entity) || IS_CGUIELEMENT_TAB(entity) )
 
 class CClientGUIElement : public CClientEntity

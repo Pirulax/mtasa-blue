@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CWeaponInfo.h"
 
+#dummy
 #define STATS_OFFSET        120
 #define STATS_BLANK_OFFSET  320
 
@@ -540,6 +543,7 @@ enum
     MAX_REACTION_STATS
 };
 
+#dummy
 #define MAX_INT_STATS (MAX_INT_FLOAT_STATS - STATS_OFFSET)
 #define MAX_STATS (MAX_INT_STATS + MAX_FLOAT_STATS)
 

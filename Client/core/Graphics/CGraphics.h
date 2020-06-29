@@ -11,14 +11,17 @@
 
 class CGraphics;
 
+#dummy
 #pragma once
 
+#dummy
 #include <core/CGraphicsInterface.h>
 #include <gui/CGUI.h>
 #include "CGUI.h"
 #include "CSingleton.h"
 #include "CRenderItemManager.h"
 
+#dummy
 #define DUMMY_PROGRESS_INITIAL_DELAY        1000    // Game stall time before spinner is displayed
 #define DUMMY_PROGRESS_MIN_DISPLAY_TIME     1000    // Minimum time spinner is drawn (to prevent flicker)
 #define DUMMY_PROGRESS_ANIMATION_INTERVAL   100     // Animation speed
@@ -152,7 +155,7 @@ public:
 
     void DrawPrimitiveQueued(std::vector<PrimitiveVertice>* pVecVertices, D3DPRIMITIVETYPE eType, bool bPostGUI = false);
     void DrawMaterialPrimitiveQueued(std::vector<PrimitiveMaterialVertice>* vertices, D3DPRIMITIVETYPE type, CMaterialItem* pMaterial, bool bPostGUI);
-    
+
     void DrawPrimitive3DQueued(std::vector<PrimitiveVertice>* pVecVertices, D3DPRIMITIVETYPE eType, bool bPostGUI);
     void DrawMaterialPrimitive3DQueued(std::vector<PrimitiveMaterialVertice>* pVecVertices, D3DPRIMITIVETYPE eType, CMaterialItem* pMaterial, bool bPostGUI);
 
@@ -161,8 +164,7 @@ public:
 
     void DrawWiredSphere(CVector vecPosition, float radius, SColor color, float fLineWidth, int iterations);
 
-
-    bool IsValidPrimitiveSize (int iNumVertives, D3DPRIMITIVETYPE eType);
+    bool IsValidPrimitiveSize(int iNumVertives, D3DPRIMITIVETYPE eType);
 
     void OnChangingRenderTarget(uint uiNewViewportSizeX, uint uiNewViewportSizeY);
 
@@ -315,15 +317,15 @@ private:
 
     struct sDrawQueuePrimitive
     {
-        D3DPRIMITIVETYPE                eType;
-        std::vector<PrimitiveVertice>*  pVecVertices;
+        D3DPRIMITIVETYPE               eType;
+        std::vector<PrimitiveVertice>* pVecVertices;
     };
 
     struct sDrawQueuePrimitiveMaterial
     {
-        D3DPRIMITIVETYPE                        eType;
-        CMaterialItem*                          pMaterial;
-        std::vector<PrimitiveMaterialVertice>*  pVecVertices;
+        D3DPRIMITIVETYPE                       eType;
+        CMaterialItem*                         pMaterial;
+        std::vector<PrimitiveMaterialVertice>* pVecVertices;
     };
 
     struct sDrawQueueItem
@@ -333,7 +335,8 @@ private:
         std::wstring   wstrText;
 
         // Queue item data based on the eType.
-        union {
+        union
+        {
             sDrawQueueLine              Line;
             sDrawQueueText              Text;
             sDrawQueueRect              Rect;

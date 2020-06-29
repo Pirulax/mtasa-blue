@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CDirect3DHook9.h"
 class CDirect3DHookManager
 {

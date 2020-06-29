@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define MAX_JUMPCODE_SIZE 50
 
 VOID HookInstallMethod(DWORD dwInstallAddress, DWORD dwHookFunction)

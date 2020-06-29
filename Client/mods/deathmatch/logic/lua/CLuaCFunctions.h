@@ -10,8 +10,10 @@
 
 class CLuaCFunctions;
 
+#dummy
 #pragma once
 
+#dummy
 #include "LuaCommon.h"
 #include <string>
 

@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 using std::list;
 
@@ -107,6 +108,7 @@ void CClientStreamer::ConnectRow(CClientStreamSectorRow* pRow)
         pRow->m_pBottom->m_pTop = pRow;
 }
 
+#dummy
 #include "..\deathmatch\logic\CClientGame.h"
 extern CClientGame* g_pClientGame;
 void                CClientStreamer::DoPulse(CVector& vecPosition)

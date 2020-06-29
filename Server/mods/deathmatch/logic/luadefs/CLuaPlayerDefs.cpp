@@ -236,7 +236,7 @@ int CLuaPlayerDefs::CanPlayerUseFunction(lua_State* luaVM)
 int CLuaPlayerDefs::GetPlayerName(lua_State* luaVM)
 {
     //  string getPlayerName ( player thePlayer )
-    CElement* pElement; // player or console
+    CElement* pElement;            // player or console
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadUserData(pElement);
@@ -265,7 +265,7 @@ int CLuaPlayerDefs::GetPlayerName(lua_State* luaVM)
 int CLuaPlayerDefs::GetPlayerIP(lua_State* luaVM)
 {
     //  string getPlayerIP ( player thePlayer )
-    CElement* pElement; // player or console
+    CElement* pElement;            // player or console
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadUserData(pElement);
@@ -315,7 +315,7 @@ int CLuaPlayerDefs::GetPlayerVersion(lua_State* luaVM)
 int CLuaPlayerDefs::GetPlayerAccount(lua_State* luaVM)
 {
     //  account getPlayerAccount ( player thePlayer )
-    CElement* pElement; // player or console
+    CElement* pElement;            // player or console
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadUserData(pElement);

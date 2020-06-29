@@ -6,6 +6,7 @@
  *  PURPOSE:     Web app class
  *
  *****************************************************************************/
+#dummy
 #pragma once
 #include <cef3/include/cef_app.h>
 #include <cef3/include/cef_scheme.h>

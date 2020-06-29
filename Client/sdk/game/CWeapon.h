@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Common.h"
 
+#dummy
 #include "CWeaponInfo.h"
 class CPed;
 class CColPoint;

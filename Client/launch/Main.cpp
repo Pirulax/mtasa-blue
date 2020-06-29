@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 /*
@@ -38,10 +39,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     }
 
     // Load the loader.dll and continue the load
+#dummy
 #ifdef MTA_DEBUG
     SString strLoaderDllFilename = "loader_d.dll";
+#dummy
 #else
     SString strLoaderDllFilename = "loader.dll";
+#dummy
 #endif
 
     SString strMTASAPath = PathJoin(GetLaunchPath(), "mta");

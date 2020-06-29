@@ -10,8 +10,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 using std::list;
+#dummy
 #define MIN_CLIENT_REQ_GETBOUNDINGBOX_OOP      "1.5.5-9.13999"
 
 void CLuaElementDefs::LoadFunctions()

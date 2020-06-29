@@ -8,12 +8,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #define DECLARE_PROFILER_SECTION_CLuaArguments
 #include "profiler/SharedUtil.Profiler.h"
 
 using namespace std;
 
+#dummy
 #ifndef VERIFY_ENTITY
 #define VERIFY_ENTITY(entity) (CStaticFunctionDefinitions::GetRootElement()->IsMyChild(entity,true)&&!entity->IsBeingDeleted())
 #endif

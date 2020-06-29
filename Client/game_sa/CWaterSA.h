@@ -9,11 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 // -------------------------------
 // SA interfaces
 
+#dummy
 #pragma pack(push)
 #pragma pack(1)
 
@@ -49,6 +51,7 @@ public:
     WORD m_wFlags;
 };
 
+#dummy
 #pragma pack(pop)
 
 // -------------------------------

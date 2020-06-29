@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CGUIElement.h"
 
 class CGUITab : public CGUIElement

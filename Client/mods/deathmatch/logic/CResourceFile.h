@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CDownloadableResource.h"
 
 class CResourceFile : public CDownloadableResource

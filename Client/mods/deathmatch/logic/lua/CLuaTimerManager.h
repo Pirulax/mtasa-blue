@@ -11,8 +11,10 @@
 
 class CLuaTimerManager;
 
+#dummy
 #pragma once
 
+#dummy
 #include "LuaCommon.h"
 #include "CLuaTimer.h"
 #include <list>

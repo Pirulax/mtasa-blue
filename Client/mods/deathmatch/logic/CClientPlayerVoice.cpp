@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CClientPlayerVoice.h"
 #include "CBassAudio.h"
@@ -21,6 +22,7 @@
 void CALLBACK BPMCallback(int handle, float bpm, void* user);
 void CALLBACK BeatCallback(DWORD chan, double beatpos, void* user);
 
+#dummy
 #define INVALID_FX_HANDLE (-1)  // Hope that BASS doesn't use this as a valid Fx handle
 
 CClientPlayerVoice::CClientPlayerVoice(CClientPlayer* pPlayer, CVoiceRecorder* pVoiceRecorder)
@@ -55,7 +57,7 @@ void CALLBACK BASS_VoiceStateChange(HSYNC handle, DWORD channel, DWORD data, voi
 {
     if (data == 0)
     {
-        CClientPlayerVoice* pVoice = static_cast<CClientPlayerVoice*>(user);
+        CClientPlayerVoice*         pVoice = static_cast<CClientPlayerVoice*>(user);
         std::lock_guard<std::mutex> lock(pVoice->m_Mutex);
 
         if (pVoice->m_bVoiceActive)

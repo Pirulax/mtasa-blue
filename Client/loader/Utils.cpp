@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include <tchar.h>
 #include <strsafe.h>
@@ -122,6 +123,7 @@ HMODULE RemoteLoadLibrary(HANDLE hProcess, const WString& strLibPath)
 ///////////////////////////////////////////////////////////////////////////
 uchar* GetWinMainAddress(HANDLE hProcess)
 {
+#dummy
     #define WINMAIN_US  0x0748710
     #define WINMAIN_EU  0x0748760
 
@@ -1265,10 +1267,13 @@ void FreeLibraryHandle()
 /////////////////////////////////////////////////////////////////////
 void UpdateMTAVersionApplicationSetting(bool bQuiet)
 {
+#dummy
 #ifdef MTA_DEBUG
     SString strFilename = "netc_d.dll";
+#dummy
 #else
     SString strFilename = "netc.dll";
+#dummy
 #endif
 
     //

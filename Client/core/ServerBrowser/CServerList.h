@@ -14,8 +14,10 @@ class CServerListItem;
 class CServerListItemList;
 class CMasterServerManagerInterface;
 
+#dummy
 #pragma once
 
+#dummy
 #include <windows.h>
 #include <string>
 #include <sstream>
@@ -23,21 +25,27 @@ class CMasterServerManagerInterface;
 #include "CSingleton.h"
 
 // Master server list URL
+#dummy
 #define SERVER_LIST_MASTER_URL              "http://master.multitheftauto.com/ase/mta/"
 
 // Query response data buffer
+#dummy
 #define SERVER_LIST_QUERY_BUFFER            4096
 
 // Master server list timeout (in ms)
+#dummy
 #define SERVER_LIST_MASTER_TIMEOUT          10000
 
 // Maximum amount of server queries per pulse (so the list gradually streams in)
+#dummy
 #define SERVER_LIST_QUERIES_PER_PULSE       2
 
 // LAN packet broadcasting interval (in ms)
+#dummy
 #define SERVER_LIST_BROADCAST_REFRESH       2000
 
 // Timeout for one server in the server list to respond to a query (in ms)
+#dummy
 #define SERVER_LIST_ITEM_TIMEOUT       8000
 
 enum
@@ -298,7 +306,7 @@ public:
     CServerListItemList* m_pItemList;
 
 protected:
-    int          m_iDataQuality;
+    int m_iDataQuality;
 
     static std::set<CServerListItem*> ms_ValidServerListItemMap;
 };

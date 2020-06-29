@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 //
@@ -453,13 +454,16 @@ IMPLEMENT_ENUM_BEGIN(eFontQuality)
 ADD_ENUM(FONT_QUALITY_DEFAULT, "default")
 ADD_ENUM(FONT_QUALITY_DRAFT, "draft")
 ADD_ENUM(FONT_QUALITY_PROOF, "proof")
+#dummy
 #if( WINVER >= 0x0400 )
 ADD_ENUM(FONT_QUALITY_NONANTIALIASED, "nonantialiased")
 ADD_ENUM(FONT_QUALITY_ANTIALIASED, "antialiased")
+#dummy
 #endif
 #if( _WIN32_WINNT >= _WIN32_WINNT_WINXP )
 ADD_ENUM(FONT_QUALITY_CLEARTYPE, "cleartype")
 ADD_ENUM(FONT_QUALITY_CLEARTYPE_NATURAL, "cleartype_natural")
+#dummy
 #endif
 IMPLEMENT_ENUM_END_DEFAULTS("font-quality", FONT_QUALITY_DEFAULT, "")
 
@@ -606,8 +610,8 @@ ADD_ENUM(SURFACE_PROPERTY_SOFTLANDING, "softlanding")
 // crash when enabling on surfaces without setting plants and trees
 // table at offset 0xC38070 contain information about which are read from plants.dat
 // i don't know did this will work on objects created by createObject function
-//ADD_ENUM(SURFACE_PROPERTY_CREATEOBJECTS, "createobjects")
-//ADD_ENUM(SURFACE_PROPERTY_CREATEPLANTS, "createplants")
+// ADD_ENUM(SURFACE_PROPERTY_CREATEOBJECTS, "createobjects")
+// ADD_ENUM(SURFACE_PROPERTY_CREATEPLANTS, "createplants")
 IMPLEMENT_ENUM_END("surface-property-type")
 
 IMPLEMENT_ENUM_BEGIN(eSurfaceAudio)
@@ -618,7 +622,7 @@ ADD_ENUM(SURFACE_AUDIO_GRAVEL, "gravel")
 ADD_ENUM(SURFACE_AUDIO_WOOD, "wood")
 ADD_ENUM(SURFACE_AUDIO_WATER, "water")
 ADD_ENUM(SURFACE_AUDIO_METAL, "metal")
-//ADD_ENUM(SURFACE_AUDIO_LONGGRASS, "longgrass") // same sound as grass
+// ADD_ENUM(SURFACE_AUDIO_LONGGRASS, "longgrass") // same sound as grass
 IMPLEMENT_ENUM_END("surface-audio-type")
 
 IMPLEMENT_ENUM_BEGIN(eSurfaceWheelEffect)
@@ -825,9 +829,11 @@ bool MinClientReqCheck(CScriptArgReader& argStream, const char* szVersionReq, co
         {
             if (pResource->GetMinClientReq() < szVersionReq)
             {
+#dummy
                 #if MTASA_VERSION_TYPE == VERSION_TYPE_RELEASE
                 if (szReason)
                     argStream.SetVersionWarning(szVersionReq, "client", szReason);
+#dummy
                 #endif
                 return false;
             }

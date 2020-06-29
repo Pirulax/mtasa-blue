@@ -7,6 +7,7 @@
  *  PURPOSE:     CefApp implementation
  *
  *****************************************************************************/
+#dummy
 #include <cef3/include/cef_app.h>
 #include <string>
 #include <sstream>

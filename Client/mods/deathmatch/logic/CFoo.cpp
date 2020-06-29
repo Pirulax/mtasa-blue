@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
+#dummy
 #ifdef MTA_DEBUG
 
 bool bFoo_PlayerLimitCrash = false;
@@ -545,4 +547,5 @@ void CFoo::Test(const char* szString)
     }
 }
 
+#dummy
 #endif

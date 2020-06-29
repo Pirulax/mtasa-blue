@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 DWORD FUNC_CStreamingInfoAddToList = 0x407480;
@@ -71,6 +72,7 @@ bool _cdecl IsPlayerImgDirLoaded()
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_LoadingPlayerImgDir                     0x5A69E3
 #define HOOKSIZE_LoadingPlayerImgDir                    5
 DWORD RETURN_LoadingPlayerImgDirA = 0x5A69E8;
@@ -137,6 +139,7 @@ bool _cdecl OnCallCStreamingInfoAddToList(int flags, SImgGTAItemInfo* pImgGTAInf
     if (pImgGTAInfo->ucImgId == 5)
     {
         // If bLoadingBigModel is set, try to get it unset
+#dummy
         #define VAR_CStreaming_bLoadingBigModel     0x08E4A58
         BYTE& bLoadingBigModel = *(BYTE*)VAR_CStreaming_bLoadingBigModel;
         if (bLoadingBigModel)
@@ -165,6 +168,7 @@ bool _cdecl OnCallCStreamingInfoAddToList(int flags, SImgGTAItemInfo* pImgGTAInf
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CallCStreamingInfoAddToList             0x408962
 #define HOOKSIZE_CallCStreamingInfoAddToList            5
 DWORD RETURN_CallCStreamingInfoAddToListA = 0x408967;
@@ -225,6 +229,7 @@ bool _cdecl ShouldSkipLoadRequestedModels(DWORD calledFrom)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CStreamingLoadRequestedModels_US        0x15670A0
 #define HOOKPOS_CStreamingLoadRequestedModels_EU        0x1567090
 #define HOOKSIZE_CStreamingLoadRequestedModels_US       5

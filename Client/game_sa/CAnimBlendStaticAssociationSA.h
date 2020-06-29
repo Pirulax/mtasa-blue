@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CAnimBlendStaticAssociation.h>
 #include "Common.h"
 
+#dummy
 #define FUNC_CAnimBlendStaticAssociation_Initialize 0x4CEC20
 
 class CAnimBlendAssocGroupSA;

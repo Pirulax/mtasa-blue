@@ -8,10 +8,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define WORLD_SIZE          6000.0f     // was 3000.0f
 
+#dummy
 #include "CClientCommon.h"
 #include <list>
 class CClientStreamSector;

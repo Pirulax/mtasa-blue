@@ -9,9 +9,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
-CSingularFileDownload::CSingularFileDownload(CResource* pResource, const char* szName, const char* szNameShort, SString strHTTPURL, CResource* pRequestResource, CChecksum serverChecksum)
+CSingularFileDownload::CSingularFileDownload(CResource* pResource, const char* szName, const char* szNameShort, SString strHTTPURL, CResource* pRequestResource,
+                                             CChecksum serverChecksum)
 {
     // Store the name
     m_strName = szName;
@@ -68,11 +70,11 @@ void CSingularFileDownload::CallFinished(bool bSuccess)
         Arguments.PushBoolean(bSuccess);                 // Completed successfully?
         if (m_pRequestResource)
         {
-            Arguments.PushResource(m_pRequestResource);  // Resource that called downloadFile
+            Arguments.PushResource(m_pRequestResource);            // Resource that called downloadFile
         }
         else
         {
-            Arguments.PushBoolean(false);                 // or false
+            Arguments.PushBoolean(false);            // or false
         }
 
         m_pResource->GetResourceEntity()->CallEvent("onClientFileDownloadComplete", Arguments, false);

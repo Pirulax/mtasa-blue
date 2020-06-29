@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include <libpng/png.h>
 
@@ -159,6 +160,7 @@ DWORD CScreenShot::ThreadProc(LPVOID lpdwThreadParam)
     }
 
     // Copy the surface data into a row-based buffer for libpng
+#dummy
     #define BYTESPERPIXEL 4
     unsigned long ulLineWidth = ulScreenWidth * 4;
     for (unsigned int i = 0; i < ulScreenHeight; i++)

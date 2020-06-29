@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 namespace
@@ -31,6 +32,7 @@ void OnMY_RwTextureCreate_Post(RwTexture* pTexture, DWORD calledFrom)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_RwTextureCreate_US                         0x7F37C0
 #define HOOKPOS_RwTextureCreate_EU                         0x7F3800
 #define HOOKSIZE_RwTextureCreate_US                        5
@@ -79,6 +81,7 @@ void OnMY_RwTextureDestroy(RwTexture* pTexture, DWORD calledFrom)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_RwTextureDestroy_US                         0x7F3820
 #define HOOKPOS_RwTextureDestroy_EU                         0x7F3860
 #define HOOKSIZE_RwTextureDestroy_EU                        5
@@ -114,6 +117,7 @@ void OnMY_RwRasterCreate(DWORD calledFrom)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_RwRasterCreate_US                         0x7FB230
 #define HOOKPOS_RwRasterCreate_EU                         0x7FB270
 #define HOOKSIZE_RwRasterCreate_US                        5
@@ -148,6 +152,7 @@ void OnMY_RwRasterDestroy(DWORD calledFrom)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_RwRasterDestroy_US                         0x7FB020
 #define HOOKPOS_RwRasterDestroy_EU                         0x7FB060
 #define HOOKSIZE_RwRasterDestroy_US                        5
@@ -186,6 +191,7 @@ void OnMY_RwGeometryCreate_Post(RwGeometry* pGeometry, DWORD calledFrom)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_RwGeometryCreate_US                         0x74CA90
 #define HOOKPOS_RwGeometryCreate_EU                         0x74CAE0
 #define HOOKSIZE_RwGeometryCreate_US                        7
@@ -237,6 +243,7 @@ void OnMY_RwGeometryDestroy(DWORD calledFrom, RwGeometry* pGeometry)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_RwGeometryDestroy_US                         0x74CCC0
 #define HOOKPOS_RwGeometryDestroy_EU                         0x74CD10
 #define HOOKSIZE_RwGeometryDestroy_US                        5

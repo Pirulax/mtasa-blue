@@ -10,8 +10,10 @@
 
 class CClientDisplayManager;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientManager.h"
 #include <list>
 

@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 CClientPointLights::CClientPointLights(class CClientManager* pManager, ElementID ID) : ClassInit(this), CClientEntity(ID)

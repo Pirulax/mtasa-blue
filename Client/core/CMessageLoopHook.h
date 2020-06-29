@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <windows.h>
 #include "CSingleton.h"
 
+#dummy
 #define URI_CONNECT 1
 #define VK_1    0x30
 #define VK_9    0x39

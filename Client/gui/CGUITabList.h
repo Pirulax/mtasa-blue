@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <list>
 
 typedef std::list<CGUITabListItem*>::const_iterator CGUITabIterator;

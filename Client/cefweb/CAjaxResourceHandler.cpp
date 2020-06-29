@@ -7,6 +7,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CWebCore.h"
 #include "CWebView.h"

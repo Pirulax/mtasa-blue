@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include <game/CGame.h>
 #include <Accctrl.h>
@@ -570,8 +571,10 @@ void CCore::SetConnected(bool bConnected)
     m_pLocalGUI->GetMainMenu()->SetIsIngame(bConnected);
     UpdateIsWindowMinimized();            // Force update of stuff
 
-    if (bConnected) m_DiscordManager->RegisterPlay(true);
-    else ResetDiscordRichPresence();
+    if (bConnected)
+        m_DiscordManager->RegisterPlay(true);
+    else
+        ResetDiscordRichPresence();
 }
 
 bool CCore::IsConnected()
@@ -742,8 +745,8 @@ void CCore::ApplyHooks()
     // Remove useless DirectPlay dependency (dpnhpast.dll) @ 0x745701
     // We have to patch here as multiplayer_sa and game_sa are loaded too late
     using LoadLibraryA_t = HMODULE(__stdcall*)(LPCTSTR fileName);
-    static LoadLibraryA_t oldLoadLibraryA =
-        (LoadLibraryA_t)DetourFunction(DetourFindFunction("KERNEL32.DLL", "LoadLibraryA"), (PBYTE)(LoadLibraryA_t)[](LPCSTR fileName)->HMODULE {
+    static LoadLibraryA_t oldLoadLibraryA = (LoadLibraryA_t)DetourFunction(
+        DetourFindFunction("KERNEL32.DLL", "LoadLibraryA"), (PBYTE)(LoadLibraryA_t)[](LPCSTR fileName)->HMODULE {
             // Don't load dpnhpast.dll
             if (StrCmpA("dpnhpast.dll", fileName) == 0)
             {
@@ -831,10 +834,13 @@ void LoadModule(CModuleLoader& m_Loader, const SString& strName, const SString& 
     SString strSavedCwd = GetSystemCurrentDirectory();
 
     // Load approrpiate compilation-specific library.
+#dummy
 #ifdef MTA_DEBUG
     SString strModuleFileName = strModuleName + "_d.dll";
+#dummy
 #else
     SString strModuleFileName = strModuleName + ".dll";
+#dummy
 #endif
     m_Loader.LoadModule(CalcMTASAPath(PathJoin("mta", strModuleFileName)));
 
@@ -968,8 +974,10 @@ void CCore::CreateNetwork()
         ulong ulNetModuleVersion = 0;
         pfnCheckCompatibility(1, &ulNetModuleVersion);
         SString strMessage("Network module not compatible! (Expected 0x%x, got 0x%x)", MTA_DM_CLIENT_NET_MODULE_VERSION, ulNetModuleVersion);
+#dummy
 #if !defined(MTA_DM_CONNECT_TO_PUBLIC)
         strMessage += "\n\n(Devs: Update source and run win-install-data.bat)";
+#dummy
 #endif
         BrowseToSolution("netc-not-compatible", ASK_GO_ONLINE | TERMINATE_PROCESS, strMessage);
     }
@@ -1296,11 +1304,13 @@ void CCore::RegisterCommands()
     m_pCommands->Add("binds", _("shows all the binds"), CCommandFuncs::Binds);
     m_pCommands->Add("serial", _("shows your serial"), CCommandFuncs::Serial);
 
+#dummy
 #if 0
     m_pCommands->Add ( "vid",               "changes the video settings (id)",  CCommandFuncs::Vid );
     m_pCommands->Add ( "window",            "enter/leave windowed mode",        CCommandFuncs::Window );
     m_pCommands->Add ( "load",              "loads a mod (name args)",          CCommandFuncs::Load );
     m_pCommands->Add ( "unload",            "unloads a mod (name)",             CCommandFuncs::Unload );
+#dummy
 #endif
 
     m_pCommands->Add("connect", _("connects to a server (host port nick pass)"), CCommandFuncs::Connect);
@@ -1322,13 +1332,12 @@ void CCore::RegisterCommands()
     m_pCommands->Add("showframegraph", _("shows the frame timing graph"), CCommandFuncs::ShowFrameGraph);
     m_pCommands->Add("jinglebells", "", CCommandFuncs::JingleBells);
     m_pCommands->Add("fakelag", "", CCommandFuncs::FakeLag);
-    
-    m_pCommands->Add("reloadnews", "for developers: reload news", CCommandFuncs::ReloadNews);
 }
 
 void CCore::SwitchRenderWindow(HWND hWnd, HWND hWndInput)
 {
     assert(0);
+#dummy
 #if 0
     // Make GTA windowed
     m_pGame->GetSettings()->SetCurrentVideoMode(0);
@@ -1349,6 +1358,7 @@ void CCore::SwitchRenderWindow(HWND hWnd, HWND hWndInput)
     // Turn the GTA window into a child window of our static render container window
     SetParent ( hDeviceWindow, hWnd );
     SetWindowLong ( hDeviceWindow, GWL_STYLE, WS_VISIBLE | WS_CHILD );
+#dummy
 #endif
 }
 
@@ -1675,6 +1685,7 @@ void CCore::UpdateRecentlyPlayed()
 
 void CCore::ApplyCoreInitSettings()
 {
+#dummy
 #if (_WIN32_WINNT >= _WIN32_WINNT_LONGHORN) // Windows Vista
     bool bValue;
     CVARS_GET("process_dpi_aware", bValue);
@@ -1685,6 +1696,7 @@ void CCore::ApplyCoreInitSettings()
         // See also: https://technet.microsoft.com/en-us/evalcenter/dn469266(v=vs.90)
         SetProcessDPIAware();
     }
+#dummy
 #endif
 }
 
@@ -1973,8 +1985,10 @@ uint CCore::GetMinStreamingMemory()
 {
     CalculateStreamingMemoryRange();
 
+#dummy
 #ifdef MTA_DEBUG
     return 1;
+#dummy
 #endif
     return m_fMinStreamingMemory;
 }

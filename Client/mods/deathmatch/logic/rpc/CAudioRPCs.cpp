@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 #include "CAudioRPCs.h"
 #include "net/SyncStructures.h"

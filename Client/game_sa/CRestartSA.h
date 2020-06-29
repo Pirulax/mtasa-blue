@@ -9,14 +9,17 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CRestart.h>
 #include <CVector.h>
 #include "Common.h"
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#dummy
 #define FUNC_CancelOverrideRestart                  0x460800    // not used
 #define FUNC_OverrideNextRestart                    0x4607d0    // not used
 #define FUNC_FindClosestPoliceRestartPoint          0x460a50
@@ -24,11 +27,13 @@
 #define FUNC_AddPoliceRestartPoint                  0x460780
 #define FUNC_AddHospitalRestartPoint                0x460730
 // belong in CPlayerInfo
+#dummy
 #define FUNC_IsRestartingAfterArrest                0x56e560
 #define FUNC_IsRestartingAfterDeath                 0x56e550
 /**
  * \todo 10: Update for SA
  */
+#dummy
 #define VAR_OverrideNextRestart                     0xA10AF8
 #define VAR_OverrideNextRestartPosition             0x975344
 #define VAR_OverrideNextRestartRotation             0x978E54

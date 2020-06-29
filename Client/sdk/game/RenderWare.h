@@ -11,6 +11,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 /*****************************************************************************/
@@ -18,6 +19,7 @@
 /*****************************************************************************/
 
 // RenderWare definitions
+#dummy
 #define RW_STRUCT_ALIGN           ((int)((~((unsigned int)0))>>1))
 #define RW_TEXTURE_NAME_LENGTH    32
 #define RW_FRAME_NAME_LENGTH      23
@@ -392,7 +394,8 @@ struct RwBuffer
     void*        ptr;
     unsigned int size;
 };
-union RwStreamTypeData {
+union RwStreamTypeData
+{
     struct
     {
         unsigned int position;
@@ -425,9 +428,10 @@ struct RwError
     int err1, err2;
 };
 
-struct TimeInfo {
-    TimeInfo(char timeOn, char timeOff, short OtherTimeModel) : m_nTimeOn(timeOn), m_nTimeOff(timeOff), m_wOtherTimeModel(OtherTimeModel) {};
-    char m_nTimeOn;
-    char m_nTimeOff;
+struct TimeInfo
+{
+    TimeInfo(char timeOn, char timeOff, short OtherTimeModel) : m_nTimeOn(timeOn), m_nTimeOff(timeOff), m_wOtherTimeModel(OtherTimeModel){};
+    char  m_nTimeOn;
+    char  m_nTimeOff;
     short m_wOtherTimeModel;
 };

@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPickup.h>
 #include "CObjectSA.h"
 
+#dummy
 #define FUNC_GIVEUSAPICKUP      0x4567e0
 #define FUNC_CPickup_Remove     0x4556C0
 

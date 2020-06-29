@@ -9,11 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 using std::list;
 using std::vector;
 
+#dummy
 #ifdef MTA_DEBUG
 #include <Tlhelp32.h>
 #include <Psapi.h>
@@ -22,6 +24,7 @@ using std::vector;
 #endif
 
 // Hide the "conversion from 'unsigned long' to 'DWORD*' of greater size" warning
+#dummy
 #pragma warning(disable:4312)
 
 extern CClientGame* g_pClientGame;
@@ -764,6 +767,7 @@ void COMMAND_ServerInfo(const char* szCmdLine)
     g_pCore->GetConsole()->Print(*strSpacer);
 }
 
+#dummy
 #if defined (MTA_DEBUG) || defined (MTA_BETA)
 
 void COMMAND_ShowSyncing(const char* szCmdLine)
@@ -771,8 +775,10 @@ void COMMAND_ShowSyncing(const char* szCmdLine)
     g_pClientGame->ShowSyncingInfo(atoi(szCmdLine) == 1);
 }
 
+#dummy
 #endif
 
+#dummy
 #ifdef MTA_DEBUG
 
 void COMMAND_Foo(const char* szCmdLine)
@@ -780,8 +786,10 @@ void COMMAND_Foo(const char* szCmdLine)
     g_pClientGame->m_Foo.Test(szCmdLine);
 }
 
+#dummy
 #endif
 
+#dummy
 #if defined(MTA_DEBUG) || defined(MTA_DEBUG_COMMANDS)
 void COMMAND_ShowWepdata(const char* szCmdLine)
 {
@@ -957,6 +965,7 @@ void COMMAND_Modules(const char* szCmdLine)
     }
 }
 
+#dummy
 #include <CClientCorona.h>
 CClientPickup* pPickupTest = NULL;
 CClientCorona* pCoronaTest = NULL;
@@ -980,6 +989,7 @@ void COMMAND_Debug(const char* szCmdLine)
     g_pCore->GetConsole()->Printf("dbl node: %i", iPointerNodeDoubleLinkEntries);
 }
 
+#dummy
 #include "CVehicleNames.h"
 
 CVehicle* aaa = NULL;
@@ -988,6 +998,7 @@ CVehicle* bbb = NULL;
 CMatrix* save = NULL;
 float    fTest = 0;
 
+#dummy
 #include <crtdbg.h>
 void COMMAND_Debug2(const char* szCmdLine)
 {
@@ -1021,6 +1032,7 @@ void COMMAND_Debug4(const char* szCmdLine)
     g_pClientGame->StartPlayback();
     return;
 }
+#dummy
 #endif
 
 void COMMAND_ShowCollision(const char* szCmdLine)

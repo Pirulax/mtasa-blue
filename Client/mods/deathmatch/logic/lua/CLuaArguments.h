@@ -8,13 +8,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 extern "C"
 {
+#dummy
     #include "lua.h"
 }
 
+#dummy
 #include <net/bitstream.h>
 #include "CLuaArgument.h"
 #include "json.h"

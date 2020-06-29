@@ -9,14 +9,18 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <game/TaskAttack.h>
 
+#dummy
 #include "TaskSA.h"
 
+#dummy
 #define FUNC_CTaskSimpleGangDriveBy__Constructor        0x6217d0
 #define FUNC_CTaskSimpleUseGun__Constructor             0x61de60
 #define FUNC_CTaskSimpleUseGun_ControlGun               0x61e040

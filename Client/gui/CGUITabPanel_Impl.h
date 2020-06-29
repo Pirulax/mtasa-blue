@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUITabPanel.h>
 #include "CGUIElement_Impl.h"
 #include "CGUITab_Impl.h"
 
+#dummy
 #define MAX_TABS 64
 
 class CGUITabPanel_Impl : public CGUITabPanel, public CGUIElement_Impl
@@ -42,6 +45,7 @@ public:
 
     void SetSelectionHandler(GUI_CALLBACK Callback);
 
+#dummy
     #include "CGUIElement_Inc.h"
 
 private:

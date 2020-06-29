@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CGUIElement.h"
 
 class CGUIScrollPane : public CGUIElement

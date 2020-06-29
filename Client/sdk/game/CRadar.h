@@ -9,15 +9,19 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Common.h"
 
+#dummy
 #include "CMarker.h"
 #include "CObject.h"
 #include "CPed.h"
 #include "CVehicle.h"
 
+#dummy
 #include <windows.h>
 
 class CRadar

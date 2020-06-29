@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 bool g_bAllowAspectRatioAdjustment = false;
 
@@ -165,8 +166,10 @@ bool CMapEventManager::Call(const char* szName, const CLuaArguments& Arguments, 
 
                     LUA_CHECKSTACK(pState, 1);            // Ensure some room
 
+#dummy
                     #if MTA_DEBUG
                     int luaStackPointer = lua_gettop(pState);
+#dummy
                     #endif
 
                     TIMEUS startTime = GetTimeUs();
@@ -259,8 +262,10 @@ bool CMapEventManager::Call(const char* szName, const CLuaArguments& Arguments, 
                     OldEventName.Push(pState);
                     lua_setglobal(pState, "eventName");
 
+#dummy
                     #if MTA_DEBUG
                     assert(lua_gettop(pState) == luaStackPointer);
+#dummy
                     #endif
 
                     // Aspect ratio adjustment bodges

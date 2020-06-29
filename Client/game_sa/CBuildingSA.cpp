@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CBuildingSA::CBuildingSA(CBuildingSAInterface* objectInterface)

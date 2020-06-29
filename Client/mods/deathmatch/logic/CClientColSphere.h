@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 class CClientColSphere : public CClientColShape

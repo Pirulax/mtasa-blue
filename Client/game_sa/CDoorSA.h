@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CDoor.h>
 #include <CVector.h>
 #include "Common.h"
@@ -18,12 +20,16 @@
 #include <windows.h>
 
 // 006f47e0      public: FLOAT __thiscall CDoor::GetAngleOpenRatio()const
+#dummy
 #define FUNC_GetAngleOpenRatio      0x6f47e0
 // 006f4800      public: bool __thiscall CDoor::IsClosed()const
+#dummy
 #define FUNC_IsClosed               0x6f4800
 // 006f4820      public: bool __thiscall CDoor::IsFullyOpen()const
+#dummy
 #define FUNC_IsFullyOpen            0x6f4820
 // 006f4790      public: void __thiscall CDoor::Open(FLOAT)
+#dummy
 #define FUNC_Open                   0x6f4790
 
 class CDoorSAInterface

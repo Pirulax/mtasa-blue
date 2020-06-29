@@ -17,6 +17,7 @@ struct SPDTVertex
     float             u, v;
 };
 
+#dummy
 #define WRITE_PDT_VERTEX(buf,fX,fY,fZ,dwColor,fU,fV) \
         buf->x = fX; \
         buf->y = fY; \
@@ -26,6 +27,7 @@ struct SPDTVertex
         buf->v = fV; \
         buf++;
 
+#dummy
 #define WRITE_QUAD_INDICES(buf,row0,row1) \
         *buf++ = (row0); \
         *buf++ = (row0) + 1; \

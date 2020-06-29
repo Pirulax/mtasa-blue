@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define TRANSFERBOX_FRAMES  10
 #define TRANSFERBOX_DELAY   50
 
+#dummy
 #include "CClientCommon.h"
 #include <gui/CGUI.h>
 

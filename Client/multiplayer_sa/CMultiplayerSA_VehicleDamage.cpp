@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 // Used by tyre burst
@@ -58,6 +59,7 @@ bool OnMY_CVehicle_BurstTyre(CVehicleSAInterface* pVehicle, uchar ucTyre)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CAutomobile_BurstTyre                       0x06A331C
 #define HOOKSIZE_CAutomobile_BurstTyre                      5
 #define HOOKCHECK_CAutomobile_BurstTyre                     0x6A
@@ -95,6 +97,7 @@ cont:
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 // Hook info
+#dummy
 #define HOOKPOS_CBike_BurstTyre                         0x06BEB94
 #define HOOKSIZE_CBike_BurstTyre                        10
 #define HOOKCHECK_CBike_BurstTyre                       0x6A
@@ -145,6 +148,7 @@ bool OnMY_CVehicle_InflictDamage(CVehicleSAInterface* pVehicle, CEntitySAInterfa
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CVehicle_InflictDamage_US                       0x06D7C90
 #define HOOKSIZE_CVehicle_InflictDamage_US                      5
 #define HOOKCHECK_CVehicle_InflictDamage_US                     0x6A
@@ -204,6 +208,7 @@ void OnMY_CVehicle_VehicleDamage1(CVehicleSAInterface* pVehicle, float f, ushort
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CAutomobile_VehicleDamage1                      0x06A7650
 #define HOOKSIZE_CAutomobile_VehicleDamage1                     7
 #define HOOKCHECK_CAutomobile_VehicleDamage1                    0x6A
@@ -263,6 +268,7 @@ float OnMY_CVehicle_VehicleDamage2(CVehicleSAInterface* pVehicle, float fDamage)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CAutomobile_VehicleDamage2                      0x06A8325
 #define HOOKSIZE_CAutomobile_VehicleDamage2                     6
 #define HOOKCHECK_CAutomobile_VehicleDamage2                    0xD8
@@ -294,6 +300,7 @@ void _declspec(naked) HOOK_CAutomobile_VehicleDamage2()
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 // Hook info
+#dummy
 #define HOOKPOS_CPlane_VehicleDamage1                       0x06CC4B0
 #define HOOKSIZE_CPlane_VehicleDamage1                      8
 #define HOOKCHECK_CPlane_VehicleDamage1                     0x83
@@ -329,6 +336,7 @@ void _declspec(naked) HOOK_CPlane_VehicleDamage1()
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 // Hook info
+#dummy
 #define HOOKPOS_CPlane_VehicleDamage2                       0x06CC6C8
 #define HOOKSIZE_CPlane_VehicleDamage2                      6
 #define HOOKCHECK_CPlane_VehicleDamage2                     0xD8
@@ -360,6 +368,7 @@ void _declspec(naked) HOOK_CPlane_VehicleDamage2()
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 // Hook info
+#dummy
 #define HOOKPOS_CBike_VehicleDamage1                        0x06B8EC0
 #define HOOKSIZE_CBike_VehicleDamage1                       5
 #define HOOKCHECK_CBike_VehicleDamage1                      0x51
@@ -395,6 +404,7 @@ void _declspec(naked) HOOK_CBike_VehicleDamage1()
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 // Hook info
+#dummy
 #define HOOKPOS_CBike_VehicleDamage2                        0x06B91C2
 #define HOOKSIZE_CBike_VehicleDamage2                       6
 #define HOOKCHECK_CBike_VehicleDamage2                      0xD8

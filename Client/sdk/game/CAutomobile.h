@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CDamageManager.h"
 #include "CDoor.h"
 #include "Common.h"

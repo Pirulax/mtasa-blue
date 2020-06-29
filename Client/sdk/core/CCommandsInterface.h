@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <list>
 
 typedef void (*PFNCOMMANDHANDLER)(const char*);
@@ -18,6 +20,7 @@ typedef bool (*pfnExecuteCommandHandler)(const char*, const char*, bool, bool, b
 
 typedef void (*PFNCOMMAND)(const char*);
 
+#dummy
 #define MAX_COMMAND_NAME_LENGTH             128
 #define MAX_COMMAND_DESCRIPTION_LENGTH      128
 

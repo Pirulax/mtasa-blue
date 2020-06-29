@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 namespace
@@ -25,6 +26,7 @@ namespace
 
         void Record()
         {
+#dummy
             #define VAR_CStreaming_bLoadingBigModel         0x08E4A58
             #define VAR_CStreaming_numPriorityRequests      0x08E4BA0
             #define VAR_CStreaming_numModelsRequested       0x08E4CB8

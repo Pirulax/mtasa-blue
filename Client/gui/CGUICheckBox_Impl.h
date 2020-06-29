@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUICheckBox.h>
 #include "CGUIElement_Impl.h"
 
@@ -25,5 +27,6 @@ public:
 
     eCGUIType GetType() { return CGUI_CHECKBOX; };
 
+#dummy
     #include "CGUIElement_Inc.h"
 };

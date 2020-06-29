@@ -220,7 +220,7 @@ public:
     }
 
     // Write a string (incl. ushort size header)
-    template<typename SizeType = unsigned short>
+    template <typename SizeType = unsigned short>
     void WriteString(const std::string& value)
     {
         // Write the length
@@ -232,7 +232,7 @@ public:
     }
 
     // Read a string (incl. ushort size header)
-    template<typename SizeType = unsigned short>
+    template <typename SizeType = unsigned short>
     bool ReadString(std::string& result)
     {
         result = "";

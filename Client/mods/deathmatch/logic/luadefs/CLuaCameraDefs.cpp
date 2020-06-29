@@ -10,6 +10,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 void CLuaCameraDefs::LoadFunctions()

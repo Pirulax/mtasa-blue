@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 void CFontSA::PrintString(float fX, float fY, char* szString)

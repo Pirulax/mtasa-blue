@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CClientColPolygon::CClientColPolygon(CClientManager* pManager, ElementID ID, const CVector2D& vecPosition) : ClassInit(this), CClientColShape(pManager, ID)

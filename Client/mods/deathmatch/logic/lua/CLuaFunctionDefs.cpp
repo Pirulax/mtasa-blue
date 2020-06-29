@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CLuaManager*               CLuaFunctionDefs::m_pLuaManager;

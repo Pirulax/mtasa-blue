@@ -9,17 +9,21 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPedIntelligence.h>
 #include "CEventSA.h"
 class CTaskManagerSA;
 class CVehicleScannerSA;
 class CTaskSimpleUseGunSAInterface;
 
+#dummy
 #include "CTaskManagerSA.h"
 #include "CVehicleScannerSA.h"
 
+#dummy
 #define FUNC_IsRespondingToEvent                    0x600DB0
 #define FUNC_GetCurrentEvent                        0x4ABE70
 #define FUNC_GetCurrentEventType                    0x4ABE60

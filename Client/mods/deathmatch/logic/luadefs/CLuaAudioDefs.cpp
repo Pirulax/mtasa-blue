@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 void CLuaAudioDefs::LoadFunctions()
@@ -156,8 +157,8 @@ int CLuaAudioDefs::PlaySound(lua_State* luaVM)
                     strSound = strFilename;
                 else
                 {
-                    if ((stricmp(strSound.Left(4), "http") == 0 || stricmp(strSound.Left(3), "ftp") == 0)
-                        && (strSound.length() <= 2048 || strSound.find('\n') == SString::npos))
+                    if ((stricmp(strSound.Left(4), "http") == 0 || stricmp(strSound.Left(3), "ftp") == 0) &&
+                        (strSound.length() <= 2048 || strSound.find('\n') == SString::npos))
                         bIsURL = true;
                     else
                         bIsRawData = true;
@@ -216,8 +217,8 @@ int CLuaAudioDefs::PlaySound3D(lua_State* luaVM)
                     strSound = strFilename;
                 else
                 {
-                    if ((stricmp(strSound.Left(4), "http") == 0 || stricmp(strSound.Left(3), "ftp") == 0)
-                        && (strSound.length() <= 2048 || strSound.find('\n') == SString::npos))
+                    if ((stricmp(strSound.Left(4), "http") == 0 || stricmp(strSound.Left(3), "ftp") == 0) &&
+                        (strSound.length() <= 2048 || strSound.find('\n') == SString::npos))
                         bIsURL = true;
                     else
                         bIsRawData = true;
@@ -419,7 +420,7 @@ int CLuaAudioDefs::GetSoundLength(lua_State* luaVM)
 
 int CLuaAudioDefs::GetSoundBufferLength(lua_State* luaVM)
 {
-    CClientSound*    pSound;
+    CClientSound* pSound;
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadUserData(pSound);

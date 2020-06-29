@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CClientModel::CClientModel(CClientManager* pManager, int iModelID, eClientModelType eModelType)

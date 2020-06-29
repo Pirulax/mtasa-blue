@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "jinclude.h"
 #include "jpeglib.h"

@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPedIK.h>
 #include "Common.h"
 #include <CVector.h>

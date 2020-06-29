@@ -6,11 +6,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #ifdef SHADER_DEBUG_OUTPUT
 class CShaderAndEntityPair;
 struct SWildcardMatchChain;
 class CMatchChannel;
 
+#dummy
     #define OutputDebug(x) OutputDebugLine(x)
     #define GetDebugTag(x) *GetDebugTagStr(x)
 SString GetDebugTagStr(const CShaderAndEntityPair& key);
@@ -19,6 +21,7 @@ SString GetDebugTagStr(STexNameInfo* pTexNameInfo);
 SString GetDebugTagStr(CClientEntityBase* pClientEntity);
 SString GetDebugTagStr(SShaderInfo* pShaderInfo);
 SString GetDebugTagStr(CMatchChannel* pChannel);
+#dummy
 #else
     #define OutputDebug(x) {}
 #endif
@@ -156,18 +159,22 @@ public:
     //////////////////////////////////////////////
     void AddShaderAndEntity(const CShaderAndEntityPair& key)
     {
+#dummy
     #ifdef SHADER_DEBUG_OUTPUT
         if (!MapContains(m_ShaderAndEntityList, key))
             OutputDebug(SString("     +Channel:%s adds (ShaderEntity:%s)", GetDebugTag(this), GetDebugTag(key)));
+#dummy
     #endif
         MapInsert(m_ShaderAndEntityList, key);
     }
 
     void RemoveShaderAndEntity(const CShaderAndEntityPair& key)
     {
+#dummy
     #ifdef SHADER_DEBUG_OUTPUT
         if (MapContains(m_ShaderAndEntityList, key))
             OutputDebug(SString("     -Channel:%s removes (ShaderEntity:%s)", GetDebugTag(this), GetDebugTag(key)));
+#dummy
     #endif
         MapRemove(m_ShaderAndEntityList, key);
     }
@@ -207,18 +214,22 @@ public:
     //////////////////////////////////////////////
     void AddTexture(STexNameInfo* pTexNameInfo)
     {
+#dummy
     #ifdef SHADER_DEBUG_OUTPUT
         if (!MapContains(m_MatchedTextureList, pTexNameInfo))
             OutputDebug(SString("     +Channel:%s adds Tex:%s", GetDebugTag(this), GetDebugTag(pTexNameInfo)));
+#dummy
     #endif
         MapInsert(m_MatchedTextureList, pTexNameInfo);
     }
 
     void RemoveTexture(STexNameInfo* pTexNameInfo)
     {
+#dummy
     #ifdef SHADER_DEBUG_OUTPUT
         if (MapContains(m_MatchedTextureList, pTexNameInfo))
             OutputDebug(SString("     -Channel:%s removes Tex:%s", GetDebugTag(this), GetDebugTag(pTexNameInfo)));
+#dummy
     #endif
         MapRemove(m_MatchedTextureList, pTexNameInfo);
     }
@@ -228,9 +239,11 @@ public:
     //////////////////////////////////////////////
     void SetMatchChain(const SWildcardMatchChain& matchChain)
     {
+#dummy
     #ifdef SHADER_DEBUG_OUTPUT
         if (!(m_MatchChain == matchChain))
             OutputDebug(SString("     Channel:%s SetMatchChain:%s", GetDebugTag(this), GetDebugTag(matchChain)));
+#dummy
     #endif
         m_MatchChain = matchChain;
     }

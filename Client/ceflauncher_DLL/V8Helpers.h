@@ -7,6 +7,7 @@
  *  PURPOSE:     V8 helper classes and functions
  *
  *****************************************************************************/
+#dummy
 #include <string>
 #include <cef3/include/cef_app.h>
 typedef void (*JavascriptCallback)(CefRefPtr<CefFrame> frame, const CefV8ValueList& arguments);

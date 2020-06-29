@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -28,9 +30,12 @@ public:
     void* GetProcedureAddress(const char* szProcName);
 
 private:
+#dummy
     #ifdef WIN32
     HMODULE m_hModule;
+#dummy
     #else
     void* m_hModule;
+#dummy
     #endif
 };

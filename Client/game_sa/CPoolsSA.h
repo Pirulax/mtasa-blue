@@ -8,8 +8,10 @@
  *  Multi Theft Auto is available from http://www.multitheftauto.com/
  *
  *****************************************************************************/
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPools.h>
 #include "CPedSA.h"
 #include "CVehicleSA.h"
@@ -17,6 +19,7 @@
 #include "CBuildingSA.h"
 #include <array>
 
+#dummy
 #define INVALID_POOL_ARRAY_ID 0xFFFFFFFF
 
 class CClientEntity;
@@ -40,7 +43,8 @@ public:
 };
 
 // size of tPoolObjectFlags is 1 byte only
-union tPoolObjectFlags {
+union tPoolObjectFlags
+{
     struct
     {
         unsigned char nId : 7;
@@ -202,20 +206,25 @@ private:
     CPointerNodeSingleLinkPool* PointerNodeSingleLinkPool;
 };
 
+#dummy
 #define FUNC_GetVehicle 0x54fff0
 #define FUNC_GetVehicleRef 0x54ffc0
 //#define FUNC_GetVehicleCount              0x429510
+#dummy
 #define FUNC_GetPed 0x54ff90
 #define FUNC_GetPedRef 0x54ff60
 //#define FUNC_GetPedCount                  0x4A7440
+#dummy
 #define FUNC_GetObject 0x550050
 #define FUNC_GetObjectRef 0x550020
 //#define FUNC_GetObjectCount                   0x4A74D0
 
+#dummy
 #define CLASS_CPool_Vehicle 0xB74494
 #define CLASS_CPool_Ped 0xB74490
 #define CLASS_CPool_Object 0xB7449C
 
+#dummy
 #define CLASS_CBuildingPool 0xb74498
 #define CLASS_CPedPool 0xb74490
 #define CLASS_CObjectPool 0xb7449c
@@ -234,6 +243,7 @@ private:
 #define CLASS_CPtrNodeDoubleLinkPool 0xB74488
 #define CLASS_CPtrNodeSingleLinkPool 0xB74484
 
+#dummy
 #define FUNC_CBuildingPool_GetNoOfUsedSpaces 0x550620
 #define FUNC_CPedPool_GetNoOfUsedSpaces 0x5504A0
 #define FUNC_CObjectPool_GetNoOfUsedSpaces 0x54F6B0
@@ -252,5 +262,6 @@ private:
 #define FUNC_CPtrNodeSingleLinkPool_GetNoOfUsedSpaces 0x550230
 #define FUNC_CPtrNodeDoubleLinkPool_GetNoOfUsedSpaces 0x550300
 
+#dummy
 #define FUNC_CTrain_CreateMissionTrain 0x6F7550
 #define VAR_TrainModelArray 0x8D44F8

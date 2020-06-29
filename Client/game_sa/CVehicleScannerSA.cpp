@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CVehicleScannerSA::CVehicleScannerSA(CVehicleScannerSAInterface* pInterface)

@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define CGUISCROLLBAR_HORIZONTAL_NAME   "CGUI/HorizontalScrollbar"
 #define CGUISCROLLBAR_VERTICAL_NAME     "CGUI/VerticalScrollbar"
 

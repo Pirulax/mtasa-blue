@@ -10,8 +10,10 @@
 
 class CClientPacketRecorder;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientManager.h"
 #include <ctime>
 

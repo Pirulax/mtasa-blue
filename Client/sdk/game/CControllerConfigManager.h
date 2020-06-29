@@ -9,9 +9,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 // FROM VC, unlikely that they were changed though
+#dummy
 #define GTA_KEY_NO_MOUSE_BUTTON 0
 #define GTA_KEY_LMOUSE          1
 #define GTA_KEY_MMOUSE          2
@@ -126,6 +128,7 @@
 
 /*
 FROM VC:
+#dummy
 #define KEYBOARD                0
 #define OPTIONAL_EXTRA_KEY      1
 #define MOUSE                   2

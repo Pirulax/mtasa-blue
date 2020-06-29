@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 HRESULT HandleCreateDeviceResult(HRESULT hResult, IDirect3D9* pDirect3D, UINT Adapter, D3DDEVTYPE DeviceType, HWND hFocusWindow, DWORD BehaviorFlags,
                                  D3DPRESENT_PARAMETERS* pPresentationParameters, IDirect3DDevice9** ppReturnedDeviceInterface);
@@ -160,10 +161,13 @@ HRESULT CProxyDirect3D9::CreateDevice(UINT Adapter, D3DDEVTYPE DeviceType, HWND 
                             pPresentationParameters->PresentationInterval));
 
     // Change the window title to MTA: San Andreas
+#dummy
     #ifdef MTA_DEBUG
     SetWindowTextW(hFocusWindow, MbUTF8ToUTF16("MTA: San Andreas [DEBUG]").c_str());
+#dummy
     #else
     SetWindowTextW(hFocusWindow, MbUTF8ToUTF16("MTA: San Andreas").c_str());
+#dummy
     #endif
 
     // Detect if second call to CreateDevice
@@ -232,6 +236,7 @@ HRESULT CProxyDirect3D9::CreateDevice(UINT Adapter, D3DDEVTYPE DeviceType, HWND 
 /////////////////////////////////////////////////////////////
 SString GUIDToString(const GUID& g);
 
+#dummy
 #define CREATE_DEVICE_FAIL          1
 #define CREATE_DEVICE_RETRY_SUCCESS 2
 #define CREATE_DEVICE_SUCCESS       3
@@ -290,6 +295,7 @@ namespace
         ms_strExtraLogBuffer += strText.Replace("\n", " ") + "\n";
         WriteDebugEvent(strText);
     }
+#dummy
     #define WriteDebugEvent WriteDebugEventTest
 
     uint ms_uiCreationAttempts = 0;
@@ -460,14 +466,17 @@ HRESULT DoCreateDevice(IDirect3D9* pDirect3D, UINT Adapter, D3DDEVTYPE DeviceTyp
                                     pPresentationParameters->SwapEffect = swapEffectList[iSwap];
                                     pPresentationParameters->BackBufferFormat = format.rtFormatList[iRt];
                                     pPresentationParameters->AutoDepthStencilFormat = format.depthFormatList[iDepth];
+#dummy
         #ifndef MTA_DEBUG
                                     hResult = CreateDeviceInsist(2, 0, pDirect3D, Adapter, DeviceType, hFocusWindow, BehaviorFlags, pPresentationParameters,
                                                                  ppReturnedDeviceInterface);
+#dummy
         #else
                                     WriteDebugEvent("--------------------------------");
                                     WriteDebugEvent(ToString(Adapter, DeviceType, hFocusWindow, BehaviorFlags, *pPresentationParameters));
                                     WriteDebugEvent(SString("        32 result: %08x", hResult));
                                     hResult = -1;
+#dummy
         #endif
                                     if (hResult == D3D_OK)
                                     {
@@ -936,10 +945,13 @@ HRESULT CCore::OnPostCreateDevice(HRESULT hResult, IDirect3D9* pDirect3D, UINT A
     AddCapsReport(Adapter, pDirect3D, *ppReturnedDeviceInterface, true);
 
     // Change the window title to MTA: San Andreas
+#dummy
     #ifdef MTA_DEBUG
     SetWindowTextW(hFocusWindow, MbUTF8ToUTF16("MTA: San Andreas [DEBUG]").c_str());
+#dummy
     #else
     SetWindowTextW(hFocusWindow, MbUTF8ToUTF16("MTA: San Andreas").c_str());
+#dummy
     #endif
 
     // Log graphic card name

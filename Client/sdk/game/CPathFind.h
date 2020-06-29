@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <CVector.h>
 
 // This class can be used to retrieve a CPathNode if required, using GetPathNode(..)

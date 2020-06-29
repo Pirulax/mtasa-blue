@@ -9,15 +9,20 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #ifndef _WINDOWS_
 
+#dummy
 #define WIN32_LEAN_AND_MEAN     // Exclude all uncommon functions from windows.h to reduce build time by 100ms
 
+#dummy
 #include <windows.h>
 #endif
 
+#dummy
 #include <bochs_internal/crc32.h>
 #include "CChecksum.h"
 #include "CSingularFileDownload.h"
@@ -28,7 +33,8 @@ public:
     CSingularFileDownloadManager();
     ~CSingularFileDownloadManager();
 
-    CSingularFileDownload* AddFile(CResource* pResource, const char* szName, const char* szNameShort, SString strHTTPURL, CResource* pRequestResource, CChecksum checksum = CChecksum());
+    CSingularFileDownload* AddFile(CResource* pResource, const char* szName, const char* szNameShort, SString strHTTPURL, CResource* pRequestResource,
+                                   CChecksum checksum = CChecksum());
     void                   CancelResourceDownloads(CResource* pResource);
 
     void ClearList();

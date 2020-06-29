@@ -9,32 +9,40 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CHud.h>
 #include <CVector.h>
 #include "Common.h"
 
+#dummy
 #define FUNC_GetRidOfAllHudMessages 0x588a50
 #define FUNC_SetHelpMessage         0x588be0
 #define FUNC_SetVehicleName         0x588f50
 #define FUNC_SetZoneName            0x588bb0
 #define FUNC_SetBigMessage          0x588fc0
 
+#dummy
 #define FUNC_DrawBarChart           0x728640
 #define FUNC_CalcScreenCoors        0x70CE30
 #define FUNC_Draw2DPolygon          0x7285B0
 #define FUNC_Draw                   0x58FAE0
 
+#dummy
 #define VAR_DisableHud              0xC8A7C1
 #define VAR_DisableClock            0xBAA400
 
+#dummy
 #define VAR_VehicleNamePtr          0xA0FC98
 #define VAR_ZoneNamePtr             0x97537C
 
+#dummy
 #define VAR_AspectRatioMult         0x859524
 #define VAR_CameraCrosshairScale    0x866C74
 
+#dummy
 #define FUNC_DrawAmmo               0x5893B0
 #define FUNC_DrawWeaponIcon         0x58D7D0
 #define FUNC_PrintHealthForPlayer   0x589270
@@ -50,6 +58,7 @@
 #define FUNC_DrawWantedLevel        0x58D9A0
 #define FUNC_DrawCrosshair          0x58E020
 
+#dummy
 #define CODE_ShowMoney              0x58F47D
 
 struct SHudComponent

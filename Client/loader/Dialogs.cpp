@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 static bool          bCancelPressed = false;
@@ -134,6 +135,7 @@ void InitDialogStrings(HWND hwndDialog, const SDialogItemInfo* dialogItems)
         if (hwndItem)
         {
             SString strItemText = PadLeft(_(item.szItemText), item.iLeadingSpaces, ' ');
+#dummy
 #if MTA_DEBUG
             char szPrevText[200] = "";
             GetWindowText(hwndItem, szPrevText, NUMELMS(szPrevText));
@@ -142,6 +144,7 @@ void InitDialogStrings(HWND hwndDialog, const SDialogItemInfo* dialogItems)
                 OutputDebugLine(
                     SString("Possible text mismatch for dialog item (idx:%d id:%d) '%s' (orig:'%s')", i, item.iItemId, item.szItemText, szPrevText));
             }
+#dummy
 #endif
             SetWindowTextW(hwndItem, FromUTF8(strItemText));
         }
@@ -186,6 +189,7 @@ int CALLBACK DialogProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 //
 void ShowSplash(HINSTANCE hInstance)
 {
+#dummy
 #ifndef MTA_DEBUG
     if (!hwndSplash)
     {
@@ -215,6 +219,7 @@ void ShowSplash(HINSTANCE hInstance)
             DispatchMessage(&msg);
         }
     }
+#dummy
 #endif
 }
 
@@ -466,7 +471,7 @@ void ShowD3dDllDialog(HINSTANCE hInstance, const SString& strPath)
         }
         Sleep(10);
     }
-    
+
     // Process input
     bool doNotCheckAgainOption = SendMessageA(GetDlgItem(hwndD3dDllDialog, IDC_CHECK_NOT_AGAIN), BM_GETCHECK, 0, 0) == BST_CHECKED;
     SetApplicationSetting("diagnostics", "d3d9-dll-last-hash", strFileHash);
@@ -702,6 +707,7 @@ void HideNoAvDialog()
     }
 }
 
+#dummy
 #ifdef MTA_DEBUG
 ///////////////////////////////////////////////////////////////
 //
@@ -712,6 +718,7 @@ void HideNoAvDialog()
 ///////////////////////////////////////////////////////////////
 void TestDialogs()
 {
+#dummy
 #if 0
 #if 1
     ShowProgressDialog( g_hInstance, _("Searching for Grand Theft Auto San Andreas"), true );
@@ -757,39 +764,51 @@ void TestDialogs()
         Sleep( 10 );
     }
     HideProgressDialog();
+#dummy
 #endif
 
+#dummy
 #if 1
     ShowCrashedDialog( g_hInstance, "test2" );
     HideCrashedDialog();
+#dummy
 #endif
 
+#dummy
 #if 1
     SetApplicationSetting ( "diagnostics", "d3d9-dll-last-hash", "123" );
     ShowD3dDllDialog( g_hInstance, "c:\\dummy path\\" );
     HideD3dDllDialog();
+#dummy
 #endif
 
+#dummy
 #if 1
     ShowOptimusDialog( g_hInstance );
     HideOptimusDialog();
+#dummy
 #endif
 
+#dummy
 #if 1
     // Friendly option
     SetApplicationSettingInt( "noav-last-asked-time", 1 );
     SetApplicationSettingInt( "noav-user-says-skip", 0 );
     ShowNoAvDialog( g_hInstance, true );
     HideNoAvDialog();
+#dummy
 #endif
 
+#dummy
 #if 1
     // Scaremongering option option
     SetApplicationSettingInt( "noav-last-asked-time", 1 );
     SetApplicationSettingInt( "noav-user-says-skip", 0 );
     ShowNoAvDialog( g_hInstance, false );
     HideNoAvDialog();
+#dummy
 #endif
 #endif
 }
+#dummy
 #endif

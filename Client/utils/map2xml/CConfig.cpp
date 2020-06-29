@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "CConfig.h"
 
 CConfig::CConfig(const char* szFileName)

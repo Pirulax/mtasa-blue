@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define MIN_CLIENT_REQ_CALLREMOTE_QUEUE_NAME                "1.5.3-9.11270"
 #define MIN_CLIENT_REQ_FETCHREMOTE_CONNECT_TIMEOUT          "1.3.5"
 #define MIN_CLIENT_REQ_CALLREMOTE_OPTIONS_TABLE             "1.5.4-9.11342"
@@ -1555,38 +1557,38 @@ int CLuaFunctionDefs::ResetVehiclesLODDistance(lua_State* luaVM)
     return 1;
 }
 
-int CLuaFunctionDefs::GetPedsLODDistance(lua_State* luaVM) 
-{  
+int CLuaFunctionDefs::GetPedsLODDistance(lua_State* luaVM)
+{
     lua_pushnumber(luaVM, g_pGame->GetSettings()->GetPedsLODDistance());
-    return 1; 
+    return 1;
 }
- 
-int CLuaFunctionDefs::SetPedsLODDistance(lua_State* luaVM) 
-{ 
-    float fPedsDistance; 
- 
-    CScriptArgReader argStream(luaVM); 
-    argStream.ReadNumber(fPedsDistance); 
- 
-    if (!argStream.HasErrors()) 
+
+int CLuaFunctionDefs::SetPedsLODDistance(lua_State* luaVM)
+{
+    float fPedsDistance;
+
+    CScriptArgReader argStream(luaVM);
+    argStream.ReadNumber(fPedsDistance);
+
+    if (!argStream.HasErrors())
     {
         fPedsDistance = Clamp(0.0f, fPedsDistance, 500.0f);
-        g_pGame->GetSettings()->SetPedsLODDistance(fPedsDistance, true); 
+        g_pGame->GetSettings()->SetPedsLODDistance(fPedsDistance, true);
         lua_pushboolean(luaVM, true);
-        return 1; 
-    } 
-    else 
-        m_pScriptDebugging->LogCustom(luaVM, argStream.GetFullErrorMessage()); 
- 
-    lua_pushboolean(luaVM, false); 
-    return 1; 
+        return 1;
+    }
+    else
+        m_pScriptDebugging->LogCustom(luaVM, argStream.GetFullErrorMessage());
+
+    lua_pushboolean(luaVM, false);
+    return 1;
 }
- 
-int CLuaFunctionDefs::ResetPedsLODDistance(lua_State* luaVM) 
-{ 
-    g_pGame->GetSettings()->ResetPedsLODDistance(true); 
-    lua_pushboolean(luaVM, true); 
-    return 1; 
+
+int CLuaFunctionDefs::ResetPedsLODDistance(lua_State* luaVM)
+{
+    g_pGame->GetSettings()->ResetPedsLODDistance(true);
+    lua_pushboolean(luaVM, true);
+    return 1;
 }
 
 int CLuaFunctionDefs::GetFogDistance(lua_State* luaVM)
@@ -1876,8 +1878,9 @@ int CLuaFunctionDefs::FetchRemote(lua_State* luaVM)
             if (luaMain)
             {
                 httpRequestOptions.bIsLegacy = true;
-                CRemoteCall* pRemoteCall = g_pClientGame->GetRemoteCalls()->Call(strURL, &callbackArguments, luaMain, iLuaFunction, strQueueName, httpRequestOptions);
-                
+                CRemoteCall* pRemoteCall =
+                    g_pClientGame->GetRemoteCalls()->Call(strURL, &callbackArguments, luaMain, iLuaFunction, strQueueName, httpRequestOptions);
+
                 lua_pushuserdata(luaVM, pRemoteCall);
                 return 1;
             }
@@ -1915,8 +1918,9 @@ int CLuaFunctionDefs::FetchRemote(lua_State* luaVM)
             CLuaMain* luaMain = m_pLuaManager->GetVirtualMachine(luaVM);
             if (luaMain)
             {
-                CRemoteCall* pRemoteCall = g_pClientGame->GetRemoteCalls()->Call(strURL, &callbackArguments, luaMain, iLuaFunction, strQueueName, httpRequestOptions);
-                
+                CRemoteCall* pRemoteCall =
+                    g_pClientGame->GetRemoteCalls()->Call(strURL, &callbackArguments, luaMain, iLuaFunction, strQueueName, httpRequestOptions);
+
                 lua_pushuserdata(luaVM, pRemoteCall);
                 return 1;
             }
@@ -1947,7 +1951,7 @@ int CLuaFunctionDefs::GetRemoteRequests(lua_State* luaVM)
     lua_newtable(luaVM);
     for (const auto& request : g_pClientGame->GetRemoteCalls()->GetCalls())
     {
-        if(!pLuaMain || request->GetVM() == pLuaMain)
+        if (!pLuaMain || request->GetVM() == pLuaMain)
         {
             lua_pushnumber(luaVM, ++iIndex);
             lua_pushuserdata(luaVM, request);
@@ -1977,9 +1981,9 @@ int CLuaFunctionDefs::GetRemoteRequestInfo(lua_State* luaVM)
         CResource* pResource = nullptr;
         if (pRemoteCall->GetVM())
             pResource = pRemoteCall->GetVM()->GetResource();
-        
+
         bool bExtendedInfo = (pResource == pThisResource);
-        
+
         info.PushString("type");
         info.PushString((pRemoteCall->IsFetch() ? "fetch" : "call"));
 
@@ -1994,9 +1998,9 @@ int CLuaFunctionDefs::GetRemoteRequestInfo(lua_State* luaVM)
 
         info.PushString("queue");
         info.PushString(pRemoteCall->GetQueueName());
-        
+
         info.PushString("resource");
-        
+
         if (pResource)
             info.PushResource(pResource);
         else

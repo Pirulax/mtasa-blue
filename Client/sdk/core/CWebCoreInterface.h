@@ -7,6 +7,7 @@
  *  PURPOSE:     Webbrowser interface class
  *
  *****************************************************************************/
+#dummy
 #pragma once
 #include <unordered_set>
 

@@ -22,5 +22,6 @@ void CheckLibVersions();
 int  LaunchGame(SString strCmdLine);
 void HandleOnQuitCommand();
 
+#dummy
 #define EXIT_OK     (0)
 #define EXIT_ERROR  (1)

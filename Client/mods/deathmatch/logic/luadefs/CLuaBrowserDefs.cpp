@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 void CLuaBrowserDefs::LoadFunctions()
@@ -938,7 +939,7 @@ int CLuaBrowserDefs::GUICreateBrowser(lua_State* luaVM)
             }
         }
     }
-    
+
     if (argStream.HasErrors())
         m_pScriptDebugging->LogCustom(luaVM, argStream.GetFullErrorMessage());
 

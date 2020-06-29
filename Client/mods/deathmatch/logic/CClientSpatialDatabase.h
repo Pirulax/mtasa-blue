@@ -10,9 +10,11 @@
 
 class CClientEntity;
 
+#dummy
 #pragma once
 
 // Bounding sphere z position for 2d objects
+#dummy
 #define SPATIAL_2D_Z    0
 
 // Result of a Query

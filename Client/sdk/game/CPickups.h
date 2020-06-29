@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Common.h"
 #include "CPickup.h"
 #include <CVector.h>
 
+#dummy
 #include <windows.h>
 
 class CPickups

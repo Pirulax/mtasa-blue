@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 #include <net/SyncStructures.h>
 
@@ -168,6 +169,7 @@ bool CNetAPI::ProcessPacket(unsigned char bytePacketID, NetBitStreamInterface& B
             if (bInVehicle)
             {
                 CClientVehicle* pVehicle = m_pPlayerManager->GetLocalPlayer()->GetOccupiedVehicle();
+#dummy
 #ifdef MTA_DEBUG
                 if (m_pPlayerManager->GetLocalPlayer()->GetOccupiedVehicleSeat() == 0)
                 {
@@ -178,6 +180,7 @@ bool CNetAPI::ProcessPacket(unsigned char bytePacketID, NetBitStreamInterface& B
                         pVehicle->m_szLastSyncType = "pure";
                     }
                 }
+#dummy
 #endif
 
                 // Read out position
@@ -1237,8 +1240,10 @@ void CNetAPI::ReadVehiclePuresync(CClientPlayer* pPlayer, CClientVehicle* pVehic
     // Only update the sync if this packet is from the same context.
     if (!pPlayer->CanUpdateSync(ucSyncTimeContext))
     {
+#dummy
 #ifdef MTA_DEBUG
         g_pCore->GetConsole()->Printf("ignoring vehicle sync: %u", ucSyncTimeContext);
+#dummy
 #endif
         return;
     }
@@ -1281,6 +1286,7 @@ void CNetAPI::ReadVehiclePuresync(CClientPlayer* pPlayer, CClientVehicle* pVehic
 
     if (uiSeat == 0)
     {
+#dummy
 #ifdef MTA_DEBUG
         if (pVehicle)
         {
@@ -1288,6 +1294,7 @@ void CNetAPI::ReadVehiclePuresync(CClientPlayer* pPlayer, CClientVehicle* pVehic
             pVehicle->m_ulLastSyncTime = GetTickCount32();
             pVehicle->m_szLastSyncType = "pure";
         }
+#dummy
 #endif
 
         // Read out vehicle position and rotation
@@ -1768,7 +1775,7 @@ bool CNetAPI::ReadSmallKeysync(CControllerState& ControllerState, NetBitStreamIn
             sButtonSquare = (short)keys.data.ucButtonSquare;            // override controller state with analog data if present
 
         if (keys.data.ucButtonCross != 0)
-            sButtonCross = (short)keys.data.ucButtonCross;              // override controller state with analog data if present
+            sButtonCross = (short)keys.data.ucButtonCross;            // override controller state with analog data if present
     }
     ControllerState.ButtonSquare = sButtonSquare;
     ControllerState.ButtonCross = sButtonCross;
@@ -1819,7 +1826,7 @@ bool CNetAPI::ReadFullKeysync(CControllerState& ControllerState, NetBitStreamInt
             sButtonSquare = (short)keys.data.ucButtonSquare;            // override controller state with analog data if present
 
         if (keys.data.ucButtonCross != 0)
-            sButtonCross = (short)keys.data.ucButtonCross;              // override controller state with analog data if present
+            sButtonCross = (short)keys.data.ucButtonCross;            // override controller state with analog data if present
     }
     ControllerState.ButtonSquare = sButtonSquare;
     ControllerState.ButtonCross = sButtonCross;

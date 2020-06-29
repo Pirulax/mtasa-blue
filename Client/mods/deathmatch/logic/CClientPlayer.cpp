@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 int                g_iDamageEventLimit = -1;
 extern float       g_fApplyDamageLastAmount;
@@ -81,8 +82,10 @@ CClientPlayer::CClientPlayer(CClientManager* pManager, ElementID ID, bool bIsLoc
     // Add us to the player list
     m_pManager->GetPlayerManager()->AddToList(this);
 
+#dummy
 #ifdef MTA_DEBUG
     m_bShowingWepdata = false;
+#dummy
 #endif
     m_LastPuresyncType = PURESYNC_TYPE_NONE;
 }

@@ -7,8 +7,10 @@
  *  Multi Theft Auto is available from http://www.multitheftauto.com/
  *
  *****************************************************************************/
+#dummy
 #pragma once
 
+#dummy
 #include "CLuaDefs.h"
 
 class CLuaFireDefs : public CLuaDefs

@@ -9,15 +9,19 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/TaskSecondary.h>
 
+#dummy
 #include "TaskSA.h"
 
 // typedef int CAnimBlendAssociation       ;
 typedef DWORD IKChain_c;
 
+#dummy
 #define FUNC_CTaskSimpleDuck__Constructor               0x691FC0
 
 // ##############################################################################

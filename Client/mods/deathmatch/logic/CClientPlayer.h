@@ -10,14 +10,18 @@
 
 class CClientPlayer;
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPlayerPed.h>
 
+#dummy
 #include "CClientCommon.h"
 #include "CClientPed.h"
 #include "CClientPlayerVoice.h"
 
+#dummy
 #define NUM_PLAYER_STATS 343
 
 class CClientPlayerManager;
@@ -167,6 +171,7 @@ private:
     bool                m_bInNetworkInterruption;
     CElapsedTime        m_TimeSinceNetworkInterruptionEnded;
 
+#dummy
 #ifdef MTA_DEBUG
 private:
     bool m_bShowingWepdata;
@@ -174,5 +179,6 @@ private:
 public:
     void SetShowingWepdata(bool bState) { m_bShowingWepdata = bState; }
     bool IsShowingWepdata() const { return m_bShowingWepdata; }
+#dummy
 #endif
 };

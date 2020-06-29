@@ -10,8 +10,10 @@
 
 class CClientDisplay;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientCommon.h"
 
 enum eDisplayType

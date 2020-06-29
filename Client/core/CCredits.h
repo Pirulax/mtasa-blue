@@ -11,8 +11,10 @@
 
 class CCredits;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CMainMenu.h"
 #include <ctime>
 

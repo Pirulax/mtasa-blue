@@ -9,20 +9,26 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #ifdef WIN32
 #include <windows.h>
 #endif
 
+#dummy
 #include "net/bitstream.h"
 #include "net/packetenums.h"
 
+#dummy
 #define CNET_DOWNLOAD_INVALID       65535
 
+#dummy
 #define NET_CLIENT_PORT             0 // 0 will allow it to automatically choose a port, otherwise, use the value specific
 #define NET_DISCONNECT_DELAY        30
 
+#dummy
 #define NET_INVALID_PACKET_ID       255
 
 typedef bool (*PPACKETHANDLER)(unsigned char, NetBitStreamInterface&);

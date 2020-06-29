@@ -550,7 +550,7 @@ public:
         if (iArgument == LUA_TSTRING || iArgument == LUA_TNUMBER)
         {
             size_t length = lua_strlen(m_luaVM, m_iIndex);
-            
+
             try
             {
                 outValue.assign(lua_tostring(m_luaVM, m_iIndex++), length);

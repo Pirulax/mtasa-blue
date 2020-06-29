@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUIElement.h>
 
+#dummy
 #include <list>
 
 namespace CEGUI

@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 extern CGame* g_pGame;
@@ -64,8 +65,10 @@ bool CClientWater::Create()
     else
         m_pPoly = g_pGame->GetWaterManager()->CreateQuad(m_Vertices[0], m_Vertices[1], m_Vertices[2], m_Vertices[3], m_bShallow);
 
+#dummy
 #ifdef MTA_DEBUG
     g_pCore->GetConsole()->Printf("CClientWater::Create %d", GetID());
+#dummy
 #endif
 
     return true;
@@ -76,8 +79,10 @@ bool CClientWater::Destroy()
     if (!m_pPoly)
         return false;
 
+#dummy
 #ifdef MTA_DEBUG
     g_pCore->GetConsole()->Printf("CClientWater::Destroy %d", GetID());
+#dummy
 #endif
 
     g_pGame->GetWaterManager()->DeletePoly(m_pPoly);

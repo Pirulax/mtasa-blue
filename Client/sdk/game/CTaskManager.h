@@ -9,14 +9,17 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 class CPed;
 class CVehicle;
 class CTask;
 
+#dummy
 #include <CVector.h>
 
+#dummy
 #ifndef GAME_SA_EXPORTS
     #include "TaskBasic.h"
     #include "TaskCarAccessories.h"
@@ -64,6 +67,7 @@ class CTaskSimpleUseGun;
 class CTaskSimpleFight;
 
 enum eDuckControlTypes;
+#dummy
 #endif
 
 enum

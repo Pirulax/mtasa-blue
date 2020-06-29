@@ -11,8 +11,10 @@
 // Some enums are redefined so the interface won't require discord's header
 //
 
+#dummy
 #pragma once
 
+#dummy
 #include <functional>
 
 enum EDiscordActivityT

@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "detours/include/detours.h"
 
@@ -91,8 +92,10 @@ IDirect3D9* CDirect3DHook9::API_Direct3DCreate9(UINT SDKVersion)
 
     // D3DX_SDK_VERSION checks
     // August 2009 SDK required for shaders to work properly
+#dummy
     #if D3DX_SDK_VERSION != 42
     WriteDebugEvent("D3DX_SDK_VERSION incorrect " QUOTE_DEFINE(D3DX_SDK_VERSION));
+#dummy
         #pragma message( "WARNING: Microsoft DirectX SDK (August 2009) includes missing" )
         #ifndef CI_BUILD
             #ifndef MTA_DEBUG

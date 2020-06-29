@@ -8,6 +8,7 @@
  *  Multi Theft Auto is available from http://www.multitheftauto.com/
  *
  *****************************************************************************/
+#dummy
 #pragma once
 
 class CAjaxResourceHandlerInterface

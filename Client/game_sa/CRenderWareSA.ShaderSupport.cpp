@@ -10,9 +10,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CRenderWareSA.ShaderMatching.h"
 
+#dummy
 #define ADDR_CCustomCarPlateMgr_CreatePlateTexture_TextureSetName        0x06FDF40
 #define ADDR_CCustomRoadsignMgr_CreateRoadsignTexture_TextureSetName     0x06FED49
 #define ADDR_CClothesBuilder_ConstructTextures_Start                     0x05A6040
@@ -41,8 +43,10 @@ int CRenderWareSA::ms_iRenderingType = 0;
 ////////////////////////////////////////////////////////////////
 
 // Hooks for creating txd create and destroy events
+#dummy
 #define HOOKPOS_CTxdStore_SetupTxdParent       0x731D55
 DWORD RETURN_CTxdStore_SetupTxdParent = 0x731D5B;
+#dummy
 #define HOOKPOS_CTxdStore_RemoveTxd         0x731E90
 DWORD RETURN_CTxdStore_RemoveTxd = 0x731E96;
 
@@ -612,10 +616,13 @@ void CRenderWareSA::DisableGTAVertexShadersForAWhile()
 ////////////////////////////////////////////////////////////////
 void CRenderWareSA::UpdateDisableGTAVertexShadersTimer()
 {
+#dummy
 #if MTA_DEBUG
     if (m_GTAVertexShadersDisabledTimer.Get() > 1 * 1000)
+#dummy
 #else
     if (m_GTAVertexShadersDisabledTimer.Get() > 10 * 1000)
+#dummy
 #endif
     {
         SetGTAVertexShadersEnabled(true);
@@ -683,6 +690,7 @@ __declspec(noinline) void OnMY_RwTextureSetName(DWORD dwAddrCalledFrom, RwTextur
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_RwTextureSetName_US     0x7F38A0
 #define HOOKSIZE_RwTextureSetName_US    9
 #define HOOKPOS_RwTextureSetName_EU     0x7F38E0
@@ -721,6 +729,7 @@ __declspec(noinline) void OnMY_RwTextureDestroy_Mid(RwTexture* pTexture)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_RwTextureDestroy_Mid_US     0x07F3834
 #define HOOKSIZE_RwTextureDestroy_Mid_US    5
 #define HOOKPOS_RwTextureDestroy_Mid_EU     0x07F3874
@@ -769,6 +778,7 @@ __declspec(noinline) void OnMY_RwIm3DRenderIndexedPrimitive_Post(DWORD dwAddrCal
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_RwIm3DRenderIndexedPrimitive_US     0x07EF550
 #define HOOKSIZE_RwIm3DRenderIndexedPrimitive_US    5
 #define HOOKPOS_RwIm3DRenderIndexedPrimitive_EU     0x07EF590
@@ -822,6 +832,7 @@ __declspec(noinline) void OnMY_RwIm3DRenderPrimitive_Post(DWORD dwAddrCalledFrom
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_RwIm3DRenderPrimitive_US    0x07EF6B0
 #define HOOKSIZE_RwIm3DRenderPrimitive_US   6
 #define HOOKPOS_RwIm3DRenderPrimitive_EU    0x07EF6F0
@@ -875,6 +886,7 @@ __declspec(noinline) void OnMY_RwIm2DRenderIndexedPrimitive_Post(DWORD dwAddrCal
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_RwIm2DRenderIndexedPrimitive_US     0x0734EA1
 #define HOOKSIZE_RwIm2DRenderIndexedPrimitive_US    5
 #define HOOKPOS_RwIm2DRenderIndexedPrimitive_EU     0x0734EA1
@@ -930,6 +942,7 @@ __declspec(noinline) void OnMY_RwIm2DRenderPrimitive_Post(DWORD dwAddrCalledFrom
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_RwIm2DRenderPrimitive                0x0734E90
 #define HOOKSIZE_RwIm2DRenderPrimitive               5
 DWORD RETURN_RwIm2DRenderPrimitive = 0x0734E95;

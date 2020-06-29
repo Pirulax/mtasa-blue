@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientStreamElement.h"
 #include "CClientMarkerCommon.h"
 #include "CClient3DMarker.h"

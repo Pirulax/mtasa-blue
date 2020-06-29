@@ -10,8 +10,10 @@
 
 class CClientEntity;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CElementArray.h"
 #include "CClientCommon.h"
 #include <core/CClientEntityBase.h>
@@ -23,6 +25,7 @@ class CLuaFunctionRef;
 
 class CClientManager;
 
+#dummy
 #define IS_PED(entity) ((entity)->GetType()==CCLIENTPLAYER||(entity)->GetType()==CCLIENTPED)
 #define IS_PLAYER(entity) ((entity)->GetType()==CCLIENTPLAYER)
 #define IS_REMOTE_PLAYER(player) (IS_PLAYER(player)&&!(player)->IsLocalPlayer())
@@ -379,9 +382,11 @@ private:
     static void RemoveEntityFromRoot(unsigned int uiTypeHash, CClientEntity* pEntity);
     static void GetEntitiesFromRoot(unsigned int uiTypeHash, lua_State* luaVM, bool bStreamedIn);
 
+#dummy
 #if CHECK_ENTITIES_FROM_ROOT
     static void _CheckEntitiesFromRoot(unsigned int uiTypeHash);
     void        _FindAllChildrenByTypeIndex(unsigned int uiTypeHash, std::map<CClientEntity*, int>& mapResults);
     static void _GetEntitiesFromRoot(unsigned int uiTypeHash, std::map<CClientEntity*, int>& mapResults);
+#dummy
 #endif
 };

@@ -8,10 +8,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 namespace
 {
+#dummy
     #define GRAPHSTAT_HISTORY_SIZE 256
 
     struct SGraphStatLine

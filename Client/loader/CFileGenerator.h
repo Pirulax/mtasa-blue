@@ -32,8 +32,8 @@ public:
 
     CFileGenerator(const SString& strTarget, const SString& strTargetMd5, const std::vector<SResetItem>& targetResetList, const SString& strPatchBase,
                    const SString& strPatchDiff);
-    bool           IsGenerationRequired();
-    EResult        GenerateFile();
+    bool    IsGenerationRequired();
+    EResult GenerateFile();
 
 protected:
     EResult        CheckTarget(const SString& strTarget);

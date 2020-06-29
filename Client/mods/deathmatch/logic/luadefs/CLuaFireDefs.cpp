@@ -7,6 +7,7 @@
  *  Multi Theft Auto is available from http://www.multitheftauto.com/
  *
  *****************************************************************************/
+#dummy
 #include "StdInc.h"
 #include "CLuaFireDefs.h"
 

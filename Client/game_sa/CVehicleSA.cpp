@@ -9,11 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 extern CGameSA* pGame;
 bool            g_bVehiclePointerInvalid = false;
 
+#dummy
 #include "gamesa_renderware.h"
 
 namespace
@@ -173,6 +175,7 @@ CVehicleSA::CVehicleSA(eVehicleTypes dwModelID, unsigned char ucVariation, unsig
     }
 
     m_pInterface = reinterpret_cast<CEntitySAInterface*>(dwReturn);
+#dummy
 #if 0
     this->BeingDeleted = FALSE;
 
@@ -207,10 +210,12 @@ CVehicleSA::CVehicleSA(eVehicleTypes dwModelID, unsigned char ucVariation, unsig
     GetVehicleInterface ()->m_nVehicleFlags.bVehicleCanBeTargetted = true;
 
     this->internalID = pGame->GetPools ()->GetVehicleRef ( (DWORD *)this->GetVehicleInterface () );
+#dummy
 #else
     m_ucVariant = ucVariation;
     m_ucVariant2 = ucVariation2;
     Init();            // Use common setup
+#dummy
 #endif
 }
 
@@ -220,6 +225,7 @@ CVehicleSA::CVehicleSA(CVehicleSAInterface* pVehicleInterface)
     m_pHandlingData = NULL;
     m_pSuspensionLines = NULL;
 
+#dummy
 #if 0
     m_pInterface->bStreamingDontDelete = true;
     m_pInterface->bDontStream = true;
@@ -241,8 +247,10 @@ CVehicleSA::CVehicleSA(CVehicleSAInterface* pVehicleInterface)
 
     m_bIsDerailable = true;
     m_ucAlpha = 255;
+#dummy
 #else
     Init();            // Use common setup
+#dummy
 #endif
 }
 
@@ -400,6 +408,7 @@ VOID CVehicleSA::SetMoveSpeed(CVector* vecMoveSpeed)
     MemCpyFast((void*)dwReturn, vecMoveSpeed, sizeof(CVector));
 
     // INACCURATE. Use Get/SetTrainSpeed instead of Get/SetMoveSpeed. (Causes issue #4829).
+#dummy
 #if 0
     // In case of train: calculate on-rail speed
     WORD wModelID = GetModelIndex();
@@ -428,6 +437,7 @@ VOID CVehicleSA::SetMoveSpeed(CVector* vecMoveSpeed)
             pInterf->m_fTrainSpeed = vecDirection.DotProduct ( vecMoveSpeed );
         }
     }
+#dummy
 #endif
 }
 
@@ -770,8 +780,8 @@ bool CVehicleSA::AreSwingingDoorsAllowed() const
 
 bool CVehicleSA::AreDoorsLocked()
 {
-    return (GetVehicleInterface()->m_doorLock == DOOR_LOCK_LOCKED || GetVehicleInterface()->m_doorLock == DOOR_LOCK_COP_CAR || 
-            GetVehicleInterface()->m_doorLock == DOOR_LOCK_LOCKED_PLAYER_INSIDE || GetVehicleInterface()->m_doorLock == DOOR_LOCK_SKIP_SHUT_DOORS || 
+    return (GetVehicleInterface()->m_doorLock == DOOR_LOCK_LOCKED || GetVehicleInterface()->m_doorLock == DOOR_LOCK_COP_CAR ||
+            GetVehicleInterface()->m_doorLock == DOOR_LOCK_LOCKED_PLAYER_INSIDE || GetVehicleInterface()->m_doorLock == DOOR_LOCK_SKIP_SHUT_DOORS ||
             GetVehicleInterface()->m_doorLock == DOOR_LOCK_LOCKOUT_PLAYER_ONLY);
 }
 

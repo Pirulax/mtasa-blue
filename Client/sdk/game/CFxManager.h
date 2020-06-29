@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "RenderWare.h"
 
 class CFxSystem;
@@ -23,7 +25,7 @@ public:
     virtual CFxSystem* CreateFxSystem(const char* szBlueprint, const CVector& vecPosition, RwMatrix* pRwMatrixTag, unsigned char bSkipCameraFrustumCheck,
                                       bool bSoundEnable) = 0;
     virtual void       DestroyFxSystem(CFxSystem* pFxSystem) = 0;
-    virtual void                    OnFxSystemSAInterfaceDestroyed(CFxSystemSAInterface* pFxSystemSAInterface) = 0;
+    virtual void       OnFxSystemSAInterfaceDestroyed(CFxSystemSAInterface* pFxSystemSAInterface) = 0;
     virtual CFxSystemBPSAInterface* GetFxSystemBlueprintByName(SString sName) = 0;
     virtual bool                    IsValidFxSystemBlueprintName(SString sName) = 0;
 };

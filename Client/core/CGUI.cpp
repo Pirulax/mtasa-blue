@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CNewsBrowser.h"
 #include <game/CGame.h>
@@ -19,6 +20,7 @@ using std::string;
 template <>
 CLocalGUI* CSingleton<CLocalGUI>::m_pSingleton = NULL;
 
+#dummy
 #ifndef HIWORD
     #define HIWORD(l)           ((WORD)((DWORD_PTR)(l) >> 16))
 #endif
@@ -568,6 +570,7 @@ bool CLocalGUI::ProcessMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
             case WM_MBUTTONUP:
                 pGUI->ProcessMouseInput(CGUI_MI_MOUSEUP, 0, 0, MiddleButton);
                 return true;
+#dummy
 #ifdef WM_XBUTTONDOWN
             case WM_XBUTTONDOWN:
                 pGUI->ProcessMouseInput(CGUI_MI_MOUSEDOWN, 0, 0, X1Button);
@@ -576,6 +579,7 @@ bool CLocalGUI::ProcessMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
             case WM_XBUTTONUP:
                 pGUI->ProcessMouseInput(CGUI_MI_MOUSEUP, 0, 0, X1Button);
                 return true;
+#dummy
 #endif
             case WM_KEYDOWN:
             {

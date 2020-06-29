@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define MAX_GTA_CONTROLS 44
 #define MAX_GTA_ANALOG_CONTROLS 14
 

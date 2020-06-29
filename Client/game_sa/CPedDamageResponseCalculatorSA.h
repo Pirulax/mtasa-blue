@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPedDamageResponseCalculator.h>
 
+#dummy
 #define FUNC_CPedDamageResponseCalculator_Constructor               0x4ad3f0
 #define FUNC_CPedDamageResponseCalculator_Destructor                0x4ad420
 #define FUNC_CPedDamageResponseCalculator_ComputeDamageResponse     0x4b5ac0

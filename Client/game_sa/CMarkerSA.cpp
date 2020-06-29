@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 void CMarkerSA::Init()
@@ -27,6 +28,7 @@ void CMarkerSA::Init()
     internalInterface->bBlipFade = FALSE;
     internalInterface->nBlipDisplayFlag = MARKER_DISPLAY_BLIPONLY;
     internalInterface->nBlipSprite = RADAR_SPRITE_NONE;
+#dummy
     #define COORD_BLIP_APPEARANCE_NORMAL 0
     internalInterface->nCoordBlipAppearance = COORD_BLIP_APPEARANCE_NORMAL;
     internalInterface->pEntryExit = NULL;

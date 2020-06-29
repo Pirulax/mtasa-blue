@@ -7,6 +7,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CRenderItem.EffectParameters.h"
 
@@ -44,11 +45,13 @@ const STypeMapping TypeMappingList[] = {
 // Big list of D3D registers
 //
 
+#dummy
 #define ADD_REGISTER(type,name) \
     {offsetof(USING_STRUCT, name), USING_LIST, #name, type}
 
 const SRegisterInfo BigRegisterInfoList[] = {
 
+#dummy
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DRenderState
 #define USING_LIST "RenderState"
     ADD_REGISTER(TYPE_INT, ZENABLE),                             //  = 7,    /* D3DZBUFFERTYPE (or TRUE/FALSE for legacy) */
@@ -154,9 +157,11 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_INT, SRCBLENDALPHA),             //  = 207,  /* SRC blend factor for the alpha channel when DWORD SEPARATEDESTALPHAENABLE )  */
     ADD_REGISTER(TYPE_INT, DESTBLENDALPHA),            //  = 208,  /* DST blend factor for the alpha channel when DWORD SEPARATEDESTALPHAENABLE ) */
     ADD_REGISTER(TYPE_INT, BLENDOPALPHA),              //  = 209,  /* Blending operation for the alpha channel when DWORD SEPARATEDESTALPHAENABLE ) */
+#dummy
 #undef  USING_STRUCT
 #undef  USING_LIST
 
+#dummy
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DStageState
 #define USING_LIST "StageState"
     ADD_REGISTER(TYPE_INT, COLOROP),                          //  =  1, /* D3DTEXTUREOP - per-stage blending controls for color channels */
@@ -177,9 +182,11 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_INT, ALPHAARG0),                        //  = 27, /* D3DTA_* third arg for triadic ops */
     ADD_REGISTER(TYPE_INT, RESULTARG),                        //  = 28, /* D3DTA_* arg for result (CURRENT or TEMP) */
     ADD_REGISTER(TYPE_INT, CONSTANT),                         //  = 32, /* Per-stage constant D3DTA_CONSTANT */
+#dummy
 #undef  USING_STRUCT
 #undef  USING_LIST
 
+#dummy
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DSamplerState
 #define USING_LIST "SamplerState"
     ADD_REGISTER(TYPE_INT, ADDRESSU),                    //  = 1,  /* D3DTEXTUREADDRESS for U coordinate */
@@ -195,9 +202,11 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_INT, SRGBTEXTURE),             //  = 11, /* Default = 0 (which means Gamma 1.0, no correction required.) else correct for Gamma = 2.2 */
     ADD_REGISTER(TYPE_INT, ELEMENTINDEX),            //  = 12, When multi-element texture is assigned to sampler, this indicates which element index to use.
     ADD_REGISTER(TYPE_INT, DMAPOFFSET),              //  = 13, /* Offset in vertices in the pre-sampled displacement map. */
+#dummy
 #undef  USING_STRUCT
 #undef  USING_LIST
 
+#dummy
 #define USING_STRUCT D3DMATERIAL9
 #define USING_LIST "MaterialState"
     ADD_REGISTER(TYPE_D3DCOLORVALUE, Diffuse),  /* Diffuse color RGBA */
@@ -205,9 +214,11 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_D3DCOLORVALUE, Specular), /* Specular 'shininess' */
     ADD_REGISTER(TYPE_D3DCOLORVALUE, Emissive), /* Emissive color RGB */
     ADD_REGISTER(TYPE_FLOAT, Power),            /* Sharpness if specular highlight */
+#dummy
 #undef  USING_STRUCT
 #undef  USING_LIST
 
+#dummy
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DTransformState
 #define USING_LIST "TransformState"
     ADD_REGISTER(TYPE_MATRIX, VIEW),                  //  = 2,
@@ -224,9 +235,11 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_MATRIX, WORLD1),                //  = 257,
     ADD_REGISTER(TYPE_MATRIX, WORLD2),                //  = 258,
     ADD_REGISTER(TYPE_MATRIX, WORLD3),                //  = 259,
+#dummy
 #undef  USING_STRUCT
 #undef  USING_LIST
 
+#dummy
 #define USING_STRUCT D3DLIGHT9
 #define USING_LIST "LightState"
     ADD_REGISTER(TYPE_INT, Type),               /* Type of light source */
@@ -242,21 +255,27 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_FLOAT, Attenuation2),     /* Quadratic attenuation */
     ADD_REGISTER(TYPE_FLOAT, Theta),            /* Inner angle of spotlight cone */
     ADD_REGISTER(TYPE_FLOAT, Phi),              /* Outer angle of spotlight cone */
+#dummy
 #undef  USING_STRUCT
 #undef  USING_LIST
 
+#dummy
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DLightEnableState
 #define USING_LIST "LightEnableState"
     ADD_REGISTER(TYPE_INT, Enable),
+#dummy
 #undef  USING_STRUCT
 #undef  USING_LIST
 
+#dummy
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DTextureState
 #define USING_LIST "TextureState"
     ADD_REGISTER(TYPE_TEXTURE, Texture),
+#dummy
 #undef  USING_STRUCT
 #undef  USING_LIST
 
+#dummy
 #define USING_STRUCT D3DCAPS9
 #define USING_LIST "DeviceCaps"
     ADD_REGISTER(TYPE_INT, DeviceType),
@@ -335,9 +354,11 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_INT, MaxPShaderInstructionsExecuted),            // maximum number of pixel shader instructions that can be executed
     ADD_REGISTER(TYPE_INT, MaxVertexShader30InstructionSlots),
     ADD_REGISTER(TYPE_INT, MaxPixelShader30InstructionSlots),
+#dummy
 #undef  USING_STRUCT
 #undef  USING_LIST
 
+#dummy
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DVertexDeclState
 #define USING_LIST "VertexDeclState"
     ADD_REGISTER(TYPE_INT, Position),            // Does each vertex have these components ?
@@ -347,6 +368,7 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_INT, Color1),
     ADD_REGISTER(TYPE_INT, TexCoord0),
     ADD_REGISTER(TYPE_INT, TexCoord1),
+#dummy
 #undef  USING_STRUCT
 #undef  USING_LIST
 };

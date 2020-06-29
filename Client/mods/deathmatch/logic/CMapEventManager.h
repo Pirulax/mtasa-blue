@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "lua/CLuaArguments.h"
 #include "CMapEvent.h"
 #include <list>

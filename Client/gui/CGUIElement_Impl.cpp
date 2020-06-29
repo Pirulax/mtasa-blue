@@ -9,10 +9,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 // Define no-drawing zones, a.k.a. the inside borders in the FrameWindow of BlueLook in pixels
 // If something is drawn inside of these areas, the theme border is drawn on top of it
+#dummy
 #define CGUI_NODRAW_LEFT 9.0f
 #define CGUI_NODRAW_RIGHT 9.0f
 #define CGUI_NODRAW_TOP 9.0f
@@ -573,7 +575,7 @@ bool CGUIElement_Impl::Event_OnSized(const CEGUI::EventArgs& e)
 bool CGUIElement_Impl::Event_OnClick(const CEGUI::EventArgs& eBase)
 {
     const CEGUI::MouseEventArgs& e = reinterpret_cast<const CEGUI::MouseEventArgs&>(eBase);
-    CGUIElement*               pElement = reinterpret_cast<CGUIElement*>(this);
+    CGUIElement*                 pElement = reinterpret_cast<CGUIElement*>(this);
 
     if (m_OnClick)
         m_OnClick(pElement);

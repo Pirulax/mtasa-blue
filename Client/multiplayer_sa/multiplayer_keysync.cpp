@@ -9,10 +9,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #define MULTIPLAYER_STATS
 
 // These includes have to be fixed!
+#dummy
 #include "../game_sa/CPlayerInfoSA.h"
 #include "../game_sa/CPedSA.h"
 #include "../game_sa/CVehicleSA.h"

@@ -323,7 +323,7 @@ long long SharedUtil::GetWMITotalPhysicalMemory()
 //
 // GetWMIVideoAdapterMemorySize
 //  Note that this will never return more than 4 GB of video memory
-//  
+//
 //
 /////////////////////////////////////////////////////////////////////
 unsigned int SharedUtil::GetWMIVideoAdapterMemorySize(const SString& strDisplay)
@@ -373,7 +373,7 @@ unsigned int SharedUtil::GetWMIVideoAdapterMemorySize(const SString& strDisplay)
             const SString& Availability = result[i][2];
 
             unsigned int uiAdapterRAM = atoi(AdapterRAM);
-            int       iAvailability = atoi(Availability);
+            int          iAvailability = atoi(Availability);
 
             if (uiResult == 0)
                 uiResult = uiAdapterRAM;

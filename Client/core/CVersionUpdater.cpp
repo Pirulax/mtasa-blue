@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CVersionUpdater.Util.hpp"
 #include "CNewsBrowser.h"
@@ -2007,14 +2008,18 @@ void CVersionUpdater::_QUpdateResult()
             // 'silent' - Self extracting archive
             SetOnRestartCommand("silent", m_JobInfo.strSaveLocation, m_JobInfo.strParameters);
         }
+#dummy
 #if MTA_DEBUG
         else
             MessageBoxUTF8(NULL, "_QUpdateResult m_JobInfo.strStatus != 'silent'", m_JobInfo.strStatus, MB_OK);
+#dummy
 #endif
     }
+#dummy
 #if MTA_DEBUG
     else
         MessageBoxUTF8(NULL, "_QUpdateResult Download.!Ok", "Error", MB_OK);
+#dummy
 #endif
 }
 
@@ -2051,14 +2056,18 @@ void CVersionUpdater::_QUpdateNewsResult()
                 m_bCheckedTimeForNewsUpdate = false;
             }
         }
+#dummy
 #if MTA_DEBUG
         else
             MessageBoxUTF8(NULL, "_QUpdateNewsResult m_JobInfo.strStatus != 'silent'", m_JobInfo.strStatus, MB_OK);
+#dummy
 #endif
     }
+#dummy
 #if MTA_DEBUG
     else
         MessageBoxUTF8(NULL, "_QUpdateNewsResult Download.!Ok", "Error", MB_OK);
+#dummy
 #endif
 }
 
@@ -2764,8 +2773,10 @@ void CVersionUpdater::_UseReportLogURLs()
 void CVersionUpdater::_UseReportLogPostContent()
 {
     // Remove unrequired items
+#dummy
 #ifndef MTA_DEBUG
     GetReportWrap()->ClearLogContents(GetReportWrap()->GetFilter());
+#dummy
 #endif
     // See if anything left to send
     SString strContents = GetReportWrap()->GetLogContents(GetReportWrap()->GetFilter(), GetReportWrap()->GetMaxSize());
@@ -3108,7 +3119,8 @@ int CVersionUpdater::DoSendDownloadRequestToNextServer()
     g_pGraphics->GetRenderItemManager()->GetDxStatus(dxStatus);
     CGameSettings* gameSettings = CCore::GetSingleton().GetGame()->GetSettings();
     SString        strVideoCard = SStringX(g_pDeviceState->AdapterState.Name).Left(30);
-    std::replace_if(strVideoCard.begin(), strVideoCard.end(), [](int c) { return !isalnum(c); }, '_');
+    std::replace_if(
+        strVideoCard.begin(), strVideoCard.end(), [](int c) { return !isalnum(c); }, '_');
     SString strSystemStats(
         "1_%d_%d_%d_%d_%d"
         "_%d%d%d%d"

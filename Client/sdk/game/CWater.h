@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 enum EWaterPolyType
@@ -19,6 +20,7 @@ enum EWaterPolyType
     WATER_POLY_LIST = 3
 };
 
+#dummy
 #define WATER_VISIBLE 1
 #define WATER_SHALLOW 2
 

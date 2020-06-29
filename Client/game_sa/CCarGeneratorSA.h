@@ -9,13 +9,17 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 
+#dummy
 #include <game/CCarGenerator.h>
 #include <CVector.h>
 
+#dummy
 #include <windows.h>
 
 class CCarGeneratorSAInterface

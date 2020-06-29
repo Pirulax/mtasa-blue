@@ -14,11 +14,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 // ignore the return type warning for the -> operator when we are potentially using pointers themselves
+#dummy
 #pragma warning(disable:4284)
 
+#dummy
 #include <windows.h>
 
 template <class T>

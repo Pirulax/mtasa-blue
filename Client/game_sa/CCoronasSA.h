@@ -9,13 +9,17 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CCoronas.h>
 #include "CRegisteredCoronaSA.h"
 
+#dummy
 #define FUNC_DoSunAndMoon           0x6FC5A0
 
+#dummy
 #define MAX_CORONAS                 64 // ##SA##
 #define MAX_CORONA_TEXTURES         9
 #define ARRAY_CORONAS               0xC3E058 // also in CRegisteredCoronasSA.h ##SA##

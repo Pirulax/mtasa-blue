@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 /**
@@ -524,6 +525,7 @@ __declspec(noinline) int _cdecl OnCPlayerPed_ProcessAnimGroups_Mid(CPlayerPedSAI
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CPlayerPed_ProcessAnimGroups_Mid        0x0609A44
 #define HOOKSIZE_CPlayerPed_ProcessAnimGroups_Mid       6
 DWORD RETURN_CPlayerPed_ProcessAnimGroups_Mid = 0x0609A4A;
@@ -576,6 +578,7 @@ __declspec(noinline) int _cdecl OnCClothes_GetDefaultPlayerMotionGroup(int iReqM
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CClothes_GetDefaultPlayerMotionGroup        0x05A81B0
 #define HOOKSIZE_CClothes_GetDefaultPlayerMotionGroup       5
 DWORD RETURN_CClothes_GetDefaultPlayerMotionGroup = 0x05A81B5;

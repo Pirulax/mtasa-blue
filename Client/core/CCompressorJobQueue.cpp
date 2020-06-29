@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CCompressorJobQueue.h"
 #include "CFileFormat.h"

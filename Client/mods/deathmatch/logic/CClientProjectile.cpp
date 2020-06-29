@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
+#dummy
 #define AIRBOMB_MAX_LIFETIME 60000
 
 /* An instance of this class is created when GTA creates a projectile, it automatically

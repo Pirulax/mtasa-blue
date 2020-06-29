@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 BYTE CMenuManagerSA::GetCurrentScreen()

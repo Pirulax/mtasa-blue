@@ -1,11 +1,13 @@
 
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #define MTA_CLIENT
 #define SHARED_UTIL_WITH_SYS_INFO
 #include "SharedUtil.h"
 
+#dummy
 #include "resource.h"
 #include <shlwapi.h>
 #include <stdio.h>
@@ -17,9 +19,11 @@
 #include <fstream>
 #include <winternl.h>
 
+#dummy
 #include "..\sdk\core\CLocalizationInterface.h"
 extern CLocalizationInterface* g_pLocalization;
 
+#dummy
 #include "Main.h"
 #include "MainFunctions.h"
 #include "Install.h"

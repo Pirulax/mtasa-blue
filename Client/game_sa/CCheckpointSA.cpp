@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 VOID CCheckpointSA::SetPosition(CVector* vecPosition)
@@ -156,8 +157,10 @@ VOID CCheckpointSA::Remove()
     }
     else
     {
+#dummy
         #ifdef MTA_DEBUG
         // OutputDebugString ( "Couldn't find marker for checkpoint!" );
+#dummy
         #endif
     }
 }

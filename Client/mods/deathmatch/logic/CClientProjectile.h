@@ -10,8 +10,10 @@
 
 class CClientProjectile;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientEntity.h"
 #include "CClientCommon.h"
 

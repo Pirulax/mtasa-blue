@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define FUNC_CVisiblityPlugins_SetClumpAlpha    0x732B00
 #define FUNC_CVisibilityPlugins_GetAtomicId     0x732370
 
+#dummy
 #include <game/CVisibilityPlugins.h>
 typedef unsigned long DWORD;
 

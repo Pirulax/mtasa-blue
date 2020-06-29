@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <CClientCommon.h>
 #include "CClientVehicle.h"
 

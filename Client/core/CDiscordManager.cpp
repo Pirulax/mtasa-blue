@@ -8,10 +8,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "SharedUtil.Thread.h"
 #include "CDiscordManager.h"
 
+#dummy
 #ifndef DISCORD_CLIENT_ID
     #define DISCORD_CLIENT_ID 468493322583801867
 #endif

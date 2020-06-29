@@ -8,10 +8,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define MAPEVENT_MAX_LENGTH_NAME 100
 
+#dummy
 #include <string>
 
 class CMapEvent

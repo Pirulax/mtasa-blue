@@ -10,11 +10,14 @@
  *****************************************************************************/
 
 /* CAnimBlendHierarchy: data tree on animation blending?*/
+#dummy
 #pragma once
 
+#dummy
 #include <game/CAnimBlendHierarchy.h>
 #include "Common.h"
 
+#dummy
 #define FUNC_CAnimBlendHierarchy_SetName                     0x4CF2D0
 #define FUNC_CAnimBlendHierarchy_RemoveAnimSequences         0x4CF8E0
 #define FUNC_CAnimBlendHierarchy_RemoveFromUncompressedCache 0x4D42A0
@@ -68,4 +71,3 @@ public:
 protected:
     CAnimBlendHierarchySAInterface* m_pInterface;
 };
-

@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 #include "CTileBatcher.h"
 #include "CMaterialLine3DBatcher.h"

@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CQuadBike.h>
 #include "CAutomobileSA.h"
 

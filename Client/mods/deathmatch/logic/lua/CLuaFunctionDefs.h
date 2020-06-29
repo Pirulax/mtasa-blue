@@ -10,14 +10,17 @@
 
 class CLuaFunctionDefinitions;
 
+#dummy
 #pragma once
 
+#dummy
 #include "LuaCommon.h"
 #include "CLuaMain.h"
 #include "CLuaTimerManager.h"
 
 class CRegisteredCommands;
 
+#dummy
 #define LUA_DECLARE(x) static int x ( lua_State * luaVM );
 
 class CLuaFunctionDefs
@@ -149,9 +152,9 @@ public:
     LUA_DECLARE(GetVehiclesLODDistance);
     LUA_DECLARE(SetVehiclesLODDistance);
     LUA_DECLARE(ResetVehiclesLODDistance);
-    LUA_DECLARE(GetPedsLODDistance); 
-    LUA_DECLARE(SetPedsLODDistance); 
-    LUA_DECLARE(ResetPedsLODDistance); 
+    LUA_DECLARE(GetPedsLODDistance);
+    LUA_DECLARE(SetPedsLODDistance);
+    LUA_DECLARE(ResetPedsLODDistance);
     LUA_DECLARE(GetFogDistance);
     LUA_DECLARE(SetFogDistance);
     LUA_DECLARE(ResetFogDistance);

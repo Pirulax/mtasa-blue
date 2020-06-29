@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CEventGunShot.h>
 
+#dummy
 #define FUNC_CEventGunShot_Constructor  0x4ac610
 #define FUNC_CEventGunShot_Destructor   0x4ac720
 

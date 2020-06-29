@@ -10,12 +10,16 @@
 
 class CClientCivilianManager;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientCivilian.h"
 
+#dummy
 #include <game/CCivilianPed.h>
 
+#dummy
 #include <list>
 
 class CClientCivilianManager

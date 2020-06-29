@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CCivilianPed.h>
 
 typedef void(CivilianAddHandler)(CCivilianPed* pPed);

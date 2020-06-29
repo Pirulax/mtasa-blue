@@ -9,13 +9,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CGUI.h"
 #include <core/CCoreInterface.h>
 
 class CChatLineSection;
 
+#dummy
 #define CHAT_WIDTH 320                                   // Chatbox default width
 #define CHAT_TEXT_COLOR CColor(235, 221, 178)            // Chatbox default text color
 #define CHAT_MAX_LINES 100                               // Chatbox maximum chat lines

@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUIMessageBox.h>
 #include "CGUIButton_Impl.h"
 #include "CGUILabel_Impl.h"

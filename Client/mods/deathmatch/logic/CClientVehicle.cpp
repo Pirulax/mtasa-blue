@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 using std::list;
@@ -16,10 +17,12 @@ extern CClientGame*            g_pClientGame;
 std::set<const CClientEntity*> ms_AttachedVehiclesToIgnore;
 
 // To hide the ugly "pointer truncation from DWORD* to unsigned long warning
+#dummy
 #pragma warning(disable:4311)
 
 // Maximum distance between current position and target position (for interpolation)
 // before we disable interpolation and warp to the position instead
+#dummy
 #define VEHICLE_INTERPOLATION_WARP_THRESHOLD            15
 #define VEHICLE_INTERPOLATION_WARP_THRESHOLD_FOR_SPEED  10
 
@@ -141,10 +144,12 @@ CClientVehicle::CClientVehicle(CClientManager* pManager, ElementID ID, unsigned 
         m_bWindowOpen[i] = false;
     }
 
+#dummy
 #ifdef MTA_DEBUG
     m_pLastSyncer = NULL;
     m_ulLastSyncTime = 0;
     m_szLastSyncType = "none";
+#dummy
 #endif
 
     m_interp.rot.ulFinishTime = 0;
@@ -2532,8 +2537,10 @@ void CClientVehicle::Create()
     // If the vehicle doesn't exist
     if (!m_pVehicle)
     {
+#dummy
         #ifdef MTA_DEBUG
         g_pCore->GetConsole()->Printf("CClientVehicle::Create %d", GetModel());
+#dummy
         #endif
 
         // Check again that the limit isn't reached. We are required to do so because
@@ -2934,8 +2941,10 @@ void CClientVehicle::Destroy()
     // If the vehicle exists
     if (m_pVehicle)
     {
+#dummy
         #ifdef MTA_DEBUG
         g_pCore->GetConsole()->Printf("CClientVehicle::Destroy %d", GetModel());
+#dummy
         #endif
 
         // Invalidate
@@ -3021,7 +3030,7 @@ void CClientVehicle::Destroy()
             // Force the trailer to stream out
             GetTowedVehicle()->StreamOut();
         }
-        
+
         if (m_pTowedByVehicle)
         {
             m_pVehicle->BreakTowLink();
@@ -3620,8 +3629,10 @@ void CClientVehicle::SetTargetPosition(const CVector& vecTargetPosition, unsigne
         CVector       vecLocalPosition;
         GetPosition(vecLocalPosition);
 
+#dummy
 #ifdef MTA_DEBUG
         m_interp.pos.vecStart = vecLocalPosition;
+#dummy
 #endif
         m_interp.pos.vecTarget = vecTargetPosition;
         // Calculate the relative error
@@ -3679,8 +3690,10 @@ void CClientVehicle::SetTargetRotation(const CVector& vecRotation, unsigned long
         CVector       vecLocalRotation;
         GetRotationDegrees(vecLocalRotation);
 
+#dummy
 #ifdef MTA_DEBUG
         m_interp.rot.vecStart = vecLocalRotation;
+#dummy
 #endif
         m_interp.rot.vecTarget = vecRotation;
         // Get the error
@@ -3776,6 +3789,7 @@ void CClientVehicle::UpdateTargetPosition()
             }
         }
 
+#dummy
 #ifdef MTA_DEBUG
         if (g_pClientGame->IsShowingInterpolation() && g_pClientGame->GetLocalPlayer() && g_pClientGame->GetLocalPlayer()->GetOccupiedVehicle() == this)
         {
@@ -3793,6 +3807,7 @@ void CClientVehicle::UpdateTargetPosition()
                 m_interp.pos.vecError.fZ, fAlpha, (m_interp.pos.ulFinishTime == 0 ? "no" : "yes"));
             g_pClientGame->GetManager()->GetDisplayManager()->DrawText2D(strBuffer, CVector(0.45f, 0.05f, 0), 1.0f, 0xFFFFFFFF);
         }
+#dummy
 #endif
 
         // Update our contact players
@@ -3972,6 +3987,7 @@ void CClientVehicle::SetHeadLightColor(const SColor color)
 // But there you go.
 //
 
+#dummy
 #if OCCUPY_DEBUG_INFO
     #define INFO(x)    g_pCore->GetConsole ()->Printf x
     #define WARN(x)    g_pCore->GetConsole ()->Printf x
@@ -4111,6 +4127,7 @@ void CClientVehicle::SetPedOccupyingVehicle(CClientPed* pClientPed, CClientVehic
 //
 void CClientVehicle::ValidatePedAndVehiclePair(CClientPed* pClientPed, CClientVehicle* pVehicle)
 {
+#dummy
 #if MTA_DEBUG
     // Occupied
     // Vehicle vars
@@ -4159,6 +4176,7 @@ void CClientVehicle::ValidatePedAndVehiclePair(CClientPed* pClientPed, CClientVe
 
         assert(iCount == 1);
     }
+#dummy
 #endif
 }
 
@@ -4309,8 +4327,10 @@ void CClientVehicle::HandleWaitingForGroundToLoad()
     {
         // If not near any MTA objects, then don't bother waiting
         SetFrozenWaitingForGroundToLoad(false, true);
+#dummy
         #ifdef ASYNC_LOADING_DEBUG_OUTPUTA
         OutputDebugLine("[AsyncLoading]   FreezeUntilCollisionLoaded - Early stop");
+#dummy
         #endif
         return;
     }
@@ -4336,19 +4356,24 @@ void CClientVehicle::HandleWaitingForGroundToLoad()
     bool                  bASync = g_pGame->IsASyncLoadingEnabled();
     bool                  bMTAObjLimit = pObjectManager->IsObjectLimitReached();
     bool                  bHasModel = GetModelInfo() != NULL;
+#dummy
     #ifndef ASYNC_LOADING_DEBUG_OUTPUTA
     bool bMTALoaded = pObjectManager->ObjectsAroundPointLoaded(vecPosition, fUseRadius, m_usDimension);
+#dummy
     #else
     SString strAround;
     bool    bMTALoaded = pObjectManager->ObjectsAroundPointLoaded(vecPosition, fUseRadius, m_usDimension, &strAround);
+#dummy
     #endif
 
+#dummy
     #ifdef ASYNC_LOADING_DEBUG_OUTPUTA
     SString status = SString(
         "%2.2f,%2.2f,%2.2f  bASync:%d   bHasModel:%d   bMTALoaded:%d   bMTAObjLimit:%d   m_fGroundCheckTolerance:%2.2f   m_fObjectsAroundTolerance:%2.2f  "
         "fUseRadius:%2.1f",
         vecPosition.fX, vecPosition.fY, vecPosition.fZ, bASync, bHasModel, bMTALoaded, bMTAObjLimit, m_fGroundCheckTolerance, m_fObjectsAroundTolerance,
         fUseRadius);
+#dummy
     #endif
 
     // See if ground is ready
@@ -4356,8 +4381,10 @@ void CClientVehicle::HandleWaitingForGroundToLoad()
     {
         m_fGroundCheckTolerance = 0.f;
         m_fObjectsAroundTolerance = std::min(1.f, m_fObjectsAroundTolerance + 0.01f);
+#dummy
         #ifdef ASYNC_LOADING_DEBUG_OUTPUTA
         status += ("  FreezeUntilCollisionLoaded - wait");
+#dummy
         #endif
     }
     else
@@ -4371,8 +4398,10 @@ void CClientVehicle::HandleWaitingForGroundToLoad()
         if (fUseDist > -0.2f && fUseDist < 1.5f)
             SetFrozenWaitingForGroundToLoad(false, true);
 
+#dummy
         #ifdef ASYNC_LOADING_DEBUG_OUTPUTA
         status += (SString("  GetDistanceFromGround:  fDist:%2.2f   fUseDist:%2.2f", fDist, fUseDist));
+#dummy
         #endif
 
         // Stop waiting after 3 frames, if the object limit has not been reached. (bASync should always be false here)
@@ -4380,6 +4409,7 @@ void CClientVehicle::HandleWaitingForGroundToLoad()
             SetFrozenWaitingForGroundToLoad(false, true);
     }
 
+#dummy
     #ifdef ASYNC_LOADING_DEBUG_OUTPUTA
     OutputDebugLine(SStringX("[AsyncLoading] ") + status);
     g_pCore->GetGraphics()->DrawString(10, 220, -1, 1, status);
@@ -4388,6 +4418,7 @@ void CClientVehicle::HandleWaitingForGroundToLoad()
     strAround.Split("\n", lineList);
     for (unsigned int i = 0; i < lineList.size(); i++)
         g_pCore->GetGraphics()->DrawString(10, 230 + i * 10, -1, 1, lineList[i]);
+#dummy
     #endif
 }
 

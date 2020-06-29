@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Common.h"
 #include "CColPoint.h"
 #include "CPhysical.h"
@@ -20,8 +22,10 @@
 #include "CWeaponInfo.h"
 #include "CAEVehicleAudioEntity.h"
 
+#dummy
 #include <CVector.h>
 
+#dummy
 #include <windows.h>
 
 enum eWinchType
@@ -48,6 +52,7 @@ class CPed;
 class CObject;
 class CColModel;
 
+#dummy
 #define SIREN_TYPE_FIRST 1
 #define SIREN_TYPE_LAST 6
 #define SIREN_ID_MAX 7

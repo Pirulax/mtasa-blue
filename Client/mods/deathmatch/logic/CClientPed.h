@@ -10,12 +10,15 @@
 
 class CClientPed;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CAntiCheatModule.h"
 #include "CClientCommon.h"
 #include "CClientStreamElement.h"
 
+#dummy
 #include <multiplayer/CMultiplayer.h>
 #include "CClientPad.h"
 #include <memory>
@@ -143,6 +146,7 @@ struct SAnimationCache
 class CClientObject;
 
 // To hide the ugly "pointer truncation from DWORD* to unsigned long warning
+#dummy
 #pragma warning(disable:4311)
 
 class CClientPed : public CClientStreamElement, public CAntiCheatModule
@@ -318,14 +322,14 @@ public:
             fDirectionY = m_shotSyncData->m_fArmDirectionY;
         }
     };
-    CVector        GetAim() const;
-    const CVector& GetAimSource() { return m_shotSyncData->m_vecShotOrigin; };
-    const CVector& GetAimTarget() { return m_shotSyncData->m_vecShotTarget; };
+    CVector              GetAim() const;
+    const CVector&       GetAimSource() { return m_shotSyncData->m_vecShotOrigin; };
+    const CVector&       GetAimTarget() { return m_shotSyncData->m_vecShotTarget; };
     eVehicleAimDirection GetVehicleAimAnim() { return m_shotSyncData->m_cInVehicleAimDirection; };
-    void           SetAim(float fArmDirectionX, float fArmDirectionY, eVehicleAimDirection cInVehicleAimAnim);
-    void           SetAimInterpolated(unsigned long ulDelay, float fArmDirectionX, float fArmDirectionY, bool bAkimboAimUp, eVehicleAimDirection cInVehicleAimAnim);
-    void           SetAimingData(unsigned long ulDelay, const CVector& vecTargetPosition, float fArmDirectionX, float fArmDirectionY, eVehicleAimDirection cInVehicleAimAnim,
-                                 CVector* pSource, bool bInterpolateAim);
+    void                 SetAim(float fArmDirectionX, float fArmDirectionY, eVehicleAimDirection cInVehicleAimAnim);
+    void SetAimInterpolated(unsigned long ulDelay, float fArmDirectionX, float fArmDirectionY, bool bAkimboAimUp, eVehicleAimDirection cInVehicleAimAnim);
+    void SetAimingData(unsigned long ulDelay, const CVector& vecTargetPosition, float fArmDirectionX, float fArmDirectionY,
+                       eVehicleAimDirection cInVehicleAimAnim, CVector* pSource, bool bInterpolateAim);
 
     unsigned long GetMemoryValue(unsigned long ulOffset) { return (m_pPlayerPed) ? *m_pPlayerPed->GetMemoryValue(ulOffset) : 0; };
     unsigned long GetGameBaseAddress() { return (m_pPlayerPed) ? (unsigned long)m_pPlayerPed->GetMemoryValue(0) : 0; };
@@ -591,14 +595,15 @@ public:
     CClientVehiclePtr           m_pOccupiedVehicle;
     CClientVehiclePtr           m_pOccupyingVehicle;
     // unsigned int                m_uiOccupyingSeat;
-    unsigned int                             m_uiOccupiedVehicleSeat;
-    bool                                     m_bForceGettingIn;
-    bool                                     m_bForceGettingOut;
-    CShotSyncData*                           m_shotSyncData;
-    CStatsData*                              m_stats;
-    CControllerState*                        m_currentControllerState;
-    CControllerState*                        m_lastControllerState;
-    CControllerState                         m_rawControllerState; // copy of lastControllerState before CClientPed::ApplyControllerStateFixes is applied (modifies states to prevent stuff like rapid input glitch)
+    unsigned int      m_uiOccupiedVehicleSeat;
+    bool              m_bForceGettingIn;
+    bool              m_bForceGettingOut;
+    CShotSyncData*    m_shotSyncData;
+    CStatsData*       m_stats;
+    CControllerState* m_currentControllerState;
+    CControllerState* m_lastControllerState;
+    CControllerState m_rawControllerState;            // copy of lastControllerState before CClientPed::ApplyControllerStateFixes is applied (modifies states to
+                                                      // prevent stuff like rapid input glitch)
     CRemoteDataStorage*                      m_remoteDataStorage;
     unsigned long                            m_ulLastTimeFired;
     unsigned long                            m_ulLastTimeBeganAiming;

@@ -10,8 +10,10 @@
 
 class CClientTextDisplay;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientDisplay.h"
 #include "CClientDisplayManager.h"
 #include <gui/CGUI.h>

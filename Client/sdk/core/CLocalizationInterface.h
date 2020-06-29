@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #ifdef _
 #undef _
 #endif
 
+#dummy
 #define _        g_pLocalization->Translate
 #define _tc      g_pLocalization->TranslateWithContext
 #define _tn      g_pLocalization->TranslatePlural

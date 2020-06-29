@@ -9,11 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include <game/CGame.h>
 
 using namespace std;
 
+#dummy
 #define CORE_MTA_FILLER "cgui\\images\\mta_filler.png"
 #define CORE_SETTINGS_UPDATE_INTERVAL 30            // Settings update interval in frames
 #define CORE_SETTINGS_HEADERS 3
@@ -649,10 +651,12 @@ void CSettings::CreateGUI()
     vecTemp.fY += 4;
 
     m_pCheckBoxMipMapping = reinterpret_cast<CGUICheckBox*>(pManager->CreateCheckBox(pTabVideo, _("Mip Mapping"), true));
+#dummy
 #ifndef MIP_MAPPING_SETTING_APPEARS_TO_DO_SOMETHING
     m_pCheckBoxMipMapping->SetPosition(CVector2D(vecTemp.fX + 340.0f, vecTemp.fY + 45.0f));
     m_pCheckBoxMipMapping->SetSize(CVector2D(224.0f, 16.0f));
     m_pCheckBoxMipMapping->SetVisible(false);
+#dummy
 #endif
 
     vecTemp.fY -= 5;
@@ -814,36 +818,42 @@ void CSettings::CreateGUI()
     m_pCheckBoxMinimize->SetPosition(CVector2D(vecTemp.fX + 245.0f, fPosY + 30.0f));
     m_pCheckBoxMinimize->AutoSize(NULL, 20.0f);
 
+#dummy
 #ifndef SHOWALLSETTINGS
     if (!GetVideoModeManager()->IsMultiMonitor())
     {
         m_pCheckBoxMinimize->SetVisible(false);
         fPosY -= 20.0f;
     }
+#dummy
 #endif
 
     m_pCheckBoxDeviceSelectionDialog = reinterpret_cast<CGUICheckBox*>(pManager->CreateCheckBox(pTabVideo, _("Enable Device Selection Dialog"), true));
     m_pCheckBoxDeviceSelectionDialog->SetPosition(CVector2D(vecTemp.fX + 245.0f, fPosY + 50.0f));
     m_pCheckBoxDeviceSelectionDialog->AutoSize(NULL, 20.0f);
 
+#dummy
 #ifndef SHOWALLSETTINGS
     if (!GetVideoModeManager()->IsMultiMonitor())
     {
         m_pCheckBoxDeviceSelectionDialog->SetVisible(false);
         fPosY -= 20.0f;
     }
+#dummy
 #endif
 
     m_pCheckBoxShowUnsafeResolutions = reinterpret_cast<CGUICheckBox*>(pManager->CreateCheckBox(pTabVideo, _("Show unsafe resolutions"), true));
     m_pCheckBoxShowUnsafeResolutions->SetPosition(CVector2D(vecTemp.fX + 245.0f, fPosY + 70.0f));
     m_pCheckBoxShowUnsafeResolutions->AutoSize(NULL, 20.0f);
 
+#dummy
 #ifndef SHOWALLSETTINGS
     if (!CCore::GetSingleton().GetGame()->GetSettings()->HasUnsafeResolutions())
     {
         m_pCheckBoxShowUnsafeResolutions->SetVisible(false);
         fPosY -= 20.0f;
     }
+#dummy
 #endif
     vecTemp.fY += 10;
 
@@ -1106,11 +1116,13 @@ void CSettings::CreateGUI()
     // Hide if not Win8
     if (atoi(GetApplicationSetting("real-os-version")) != 8)
     {
+#dummy
 #ifndef MTA_DEBUG            // Don't hide when debugging
         m_pWin8Label->SetVisible(false);
         m_pWin8ColorCheckBox->SetVisible(false);
         m_pWin8MouseCheckBox->SetVisible(false);
         vecTemp.fY -= fLineHeight;
+#dummy
 #endif
     }
 
@@ -2559,6 +2571,7 @@ bool CSettings::OnBindsListClick(CGUIElement* pElement)
     return true;
 }
 
+#dummy
 #ifndef WM_XBUTTONDOWN
 #define WM_XBUTTONDOWN 0x020B
 #endif
@@ -2817,9 +2830,11 @@ void CSettings::SetVisible(bool bVisible)
     // Load the config file if the dialog is shown
     if (bVisible)
     {
+#dummy
 #ifdef MTA_DEBUG
         if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0)
             CreateGUI();            // Recreate GUI (for adjusting layout with edit and continue)
+#dummy
 #endif
         m_pWindow->BringToFront();
         m_pWindow->Activate();

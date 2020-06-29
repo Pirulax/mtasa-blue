@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CFx.h>
 
+#dummy
 #define FUNC_CFx_AddBlood                  0x49eb00
 #define FUNC_CFx_AddWood                   0x49ee10
 #define FUNC_CFx_AddSparks                 0x49f040

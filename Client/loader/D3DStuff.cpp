@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "d3d9.h"
 #include "nvapi/nvapi.h"

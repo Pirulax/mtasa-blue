@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "../game_sa/CAnimBlendAssocGroupSA.h"
 
@@ -33,7 +34,7 @@ eAnimID _cdecl OnCAnimBlendAssocGroupCopyAnimation_FixBadAnim(eAnimGroup* pAnimG
     }
 
     CAnimBlendAssocGroupSAInterface* pGroup = getAnimAssocGroupInterface(*pAnimGroup);
-    DWORD* pInterface = reinterpret_cast<DWORD*>(pGroup);
+    DWORD*                           pInterface = reinterpret_cast<DWORD*>(pGroup);
     if (pInterface < (DWORD*)0x250)
     {
         LogEvent(534, "CopyAnimation", "Incorrect Group Interface", SString("GroupID = %d | AnimID = %d", *pAnimGroup, *pAnimId), 534);
@@ -92,6 +93,7 @@ void _cdecl OnGetAnimHierarchyFromSkinClump(RpClump* pRpClump, void* pRpHAnimHie
     }
 }
 
+#dummy
 #define HOOKPOS_GetAnimHierarchyFromSkinClump        0x734A5D
 #define HOOKSIZE_GetAnimHierarchyFromSkinClump       7
 DWORD RETURN_GetAnimHierarchyFromSkinClump = 0x734A64;

@@ -9,25 +9,31 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CProjectileInfo.h>
 #include "CProjectileSA.h"
 #include "Common.h"
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#dummy
 #define PROJECTILE_COUNT                    32
 #define PROJECTILE_INFO_COUNT               32
 
+#dummy
 #define FUNC_RemoveAllProjectiles           0x7399B0 //##SA##
 #define FUNC_RemoveProjectile               0x7388F0 //##SA##
 #define FUNC_RemoveIfThisIsAProjectile      0x739A40 //##SA##
 #define FUNC_AddProjectile                  0x737C80 //##SA##
 
+#dummy
 #define ARRAY_CProjectile                   0xC89110 //##SA##
 #define ARRAY_CProjectileInfo               0xC891A8 //##SA##
 
+#dummy
 #define VTBL_CProjectile 0x867030
 
 //#pragma pack(push,1)

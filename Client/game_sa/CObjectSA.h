@@ -9,14 +9,18 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "CVehicleSA.h"
 #include "CPedSA.h"
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CObject.h>
 #include "CPhysicalSA.h"
 
+#dummy
 #define FUNC_CObject_Create             0x5A1F60
 #define FUNC_CObject_Explode            0x5A1340
 #define FUNC_CGlass_WindowRespondsToCollision 0x71BC40
@@ -155,6 +159,7 @@ private:
 };
 
 /*
+#dummy
 #define COBJECTSA_DEFINED
 #define COBJECTSAINTERFACE_DEFINED
 */

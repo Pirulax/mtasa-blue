@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #define DECLARE_PROFILER_SECTION_CDirect3DEvents9
 #include "profiler/SharedUtil.Profiler.h"
@@ -244,12 +245,14 @@ void CDirect3DEvents9::CheckForScreenShot()
     }
 }
 
+#dummy
 #define SAVE_RENDERSTATE_AND_SET( reg, value ) \
     const DWORD dwSaved_##reg = g_pDeviceState->RenderState.reg; \
     const bool bSet_##reg = ( dwSaved_##reg != value ); \
     if ( bSet_##reg ) \
         pDevice->SetRenderState ( D3DRS_##reg, value )
 
+#dummy
 #define RESTORE_RENDERSTATE( reg ) \
     if ( bSet_##reg ) \
         pDevice->SetRenderState ( D3DRS_##reg, dwSaved_##reg )

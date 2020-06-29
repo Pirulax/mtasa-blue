@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 // Don't whine bout my gotos, lua api is a bitch, i had to!

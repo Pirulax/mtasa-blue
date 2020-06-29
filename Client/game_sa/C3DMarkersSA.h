@@ -9,22 +9,30 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #ifdef GTASA_30
 
+#dummy
 #define FUNC_PlaceMarker        0x756D60
 #define ARRAY_3D_MARKERS        0xCEA2F0
 
+#dummy
 #else
 
+#dummy
 #define FUNC_PlaceMarker        0x725120 // ##SA##
 #define ARRAY_3D_MARKERS        0xC7DD58
 
+#dummy
 #endif
 
+#dummy
 #define MAX_3D_MARKERS          32
 
+#dummy
 #include <game/C3DMarkers.h>
 #include "C3DMarkerSA.h"
 

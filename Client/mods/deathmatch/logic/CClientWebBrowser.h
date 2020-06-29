@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <core/CWebViewInterface.h>
 #include <core/CAjaxResourceHandlerInterface.h>
 #include <core/CWebBrowserEventsInterface.h>

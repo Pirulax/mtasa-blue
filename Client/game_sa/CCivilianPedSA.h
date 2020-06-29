@@ -9,19 +9,25 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CCivilianPed.h>
 #include "CPedSA.h"
 
+#dummy
 #define FUNC_ClearWeaponTarget          0x533B30
 
+#dummy
 #define FUNC_CPedOperatorNew            0x5E4720 // ##SA##
 #define FUNC_CCivilianPedConstructor    0x5DDB70 // ##SA##
 
+#dummy
 #define FUNC_CCivilianPedDestructor     0x5DDBE0 // ##SA##
 #define FUNC_CCivilianPedOperatorDelete 0x5E4760 // ##SA##
 
+#dummy
 #define SIZEOF_CCIVILIANPED             1948
 
 class CCivilianPedSAInterface : public CPedSAInterface

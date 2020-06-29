@@ -9,9 +9,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 #include "CLuaDefs.h"
 
+#dummy
 #define MAX_CHATBOX_LAYOUT_CVARS 20
 
 class CLuaGUIDefs : public CLuaDefs

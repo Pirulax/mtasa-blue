@@ -9,15 +9,19 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "multiplayersa_init.h"
 #include <multiplayer/CMultiplayer.h>
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPlayerPed.h>
 
 //#include "../game_sa/CPedIKSA.h"
 
+#dummy
 #define HOOKPOS_CWeapon__Fire                           0x742300
 #define HOOKPOS_CWeapon__PostFire                       0x742A02 // if the function returns true
 #define HOOKPOS_CWeapon__PostFire2                      0x742423 // if the function returns false
@@ -43,8 +47,8 @@
 // our stuff
 VOID           InitShotsyncHooks();
 CShotSyncData* GetLocalPedShotSyncData();
-VOID           WriteGunDirectionDataForPed(class CPedSAInterface* pPedInterface, float* fGunDirectionX, float* fGunDirectionY, eVehicleAimDirection* cGunDirection);
-bool           IsLocalPlayer(CPedSAInterface* pPedInterface);
+VOID WriteGunDirectionDataForPed(class CPedSAInterface* pPedInterface, float* fGunDirectionX, float* fGunDirectionY, eVehicleAimDirection* cGunDirection);
+bool IsLocalPlayer(CPedSAInterface* pPedInterface);
 
 // hooks
 VOID HOOK_CWeapon__Fire();

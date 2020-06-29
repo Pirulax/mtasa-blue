@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPhysical.h>
 #include "CEntitySA.h"
 #include <CVector.h>

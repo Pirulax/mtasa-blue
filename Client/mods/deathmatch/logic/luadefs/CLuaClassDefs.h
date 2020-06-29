@@ -9,10 +9,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 extern "C"
 {
+#dummy
     #include "lua.h"
     #include "lualib.h"
     #include "lauxlib.h"

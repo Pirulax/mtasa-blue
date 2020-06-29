@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Task.h"
 
 class CTaskSimpleGangDriveBy : public virtual CTaskSimple

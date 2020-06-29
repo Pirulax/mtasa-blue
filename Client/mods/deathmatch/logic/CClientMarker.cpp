@@ -8,10 +8,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 extern CClientGame* g_pClientGame;
 
+#dummy
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -92,7 +94,8 @@ void CClientMarker::SetPosition(const CVector& vecPosition)
 void CClientMarker::AttachTo(CClientEntity* pEntity)
 {
     CClientEntity::AttachTo(pEntity);
-    if (m_pCollision){
+    if (m_pCollision)
+    {
         m_pCollision->AttachTo(pEntity);
     }
 }

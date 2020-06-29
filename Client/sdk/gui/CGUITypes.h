@@ -9,13 +9,17 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <CVector2D.h>
 #include <CRect2D.h>
 
+#dummy
 #include <list>
 
+#dummy
 #ifndef NULL
 #define NULL 0
 #endif

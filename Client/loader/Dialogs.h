@@ -30,6 +30,8 @@ void HideOptimusDialog();
 void ShowNoAvDialog(HINSTANCE hInstance, bool bEnableScaremongering);
 void HideNoAvDialog();
 
+#dummy
 #ifdef MTA_DEBUG
 void TestDialogs();
+#dummy
 #endif

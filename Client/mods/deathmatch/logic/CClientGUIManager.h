@@ -11,8 +11,10 @@
 class CClientGUIManager;
 struct SGUIManagerListEntry;
 
+#dummy
 #pragma once
 
+#dummy
 #include <list>
 #include "CClientManager.h"
 #include "CClientGUIElement.h"

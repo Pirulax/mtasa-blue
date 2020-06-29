@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 namespace
@@ -21,6 +22,7 @@ namespace
     GameModelRemoveHandler*            pGameModelRemoveHandler = NULL;
     GameRunNamedAnimDestructorHandler* pRunNamedAnimDestructorHandler = nullptr;
 
+#dummy
     #define FUNC_CPtrListSingleLink_Remove  0x0533610
     #define FUNC_CPtrListDoubleLink_Remove  0x05336B0
 
@@ -178,6 +180,7 @@ void _cdecl OnCObjectDestructor(DWORD calledFrom, CObjectSAInterface* pObject)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CObjectDestructor        0x59F667
 #define HOOKSIZE_CObjectDestructor       6
 DWORD RETURN_CObjectDestructor = 0x59F66D;
@@ -207,6 +210,7 @@ void _cdecl OnVehicleDestructor(DWORD calledFrom, CVehicleSAInterface* pVehicle)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CVehicleDestructor_US        0x6E2B40
 #define HOOKPOS_CVehicleDestructor_EU        0x6E2B40
 #define HOOKSIZE_CVehicleDestructor_US       7
@@ -240,6 +244,7 @@ void _cdecl OnCPlayerPedDestructor(DWORD calledFrom, CPedSAInterface* pPlayerPed
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CPlayerPedDestructor        0x6093B7
 #define HOOKSIZE_CPlayerPedDestructor       6
 DWORD RETURN_CPlayerPedDestructor = 0x6093BD;
@@ -269,6 +274,7 @@ void _cdecl OnCProjectileDestructor(DWORD calledFrom, CEntitySAInterface* pProje
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CProjectileDestructor        0x5A40E0
 #define HOOKSIZE_CProjectileDestructor       6
 DWORD RETURN_CProjectileDestructor = 0x5A40E6;
@@ -306,6 +312,7 @@ void _cdecl OnCPhysicalDestructor(DWORD calledFrom, CPhysicalSAInterface* pEntit
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CPhysicalDestructor        0x0542457
 #define HOOKSIZE_CPhysicalDestructor       6
 DWORD RETURN_CPhysicalDestructor = 0x054245D;
@@ -333,6 +340,7 @@ void _cdecl OnCEntityDestructor(DWORD calledFrom, CEntitySAInterface* pEntity)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CEntityDestructor        0x535E97
 #define HOOKSIZE_CEntityDestructor       6
 DWORD RETURN_CEntityDestructor = 0x535E9D;
@@ -362,6 +370,7 @@ void cdecl OnCEntityAddMid1(SStreamSectorEntrySingle** ppStreamEntryList, CEntit
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CEntityAddMid1        0x5348FB
 #define HOOKSIZE_CEntityAddMid1       5
 #define HOOKCHECK_CEntityAddMid1      0xE8
@@ -393,6 +402,7 @@ void cdecl OnCEntityAddMid2(SStreamSectorEntrySingle** ppStreamEntryList, CEntit
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CEntityAddMid2        0x534A10
 #define HOOKSIZE_CEntityAddMid2       5
 #define HOOKCHECK_CEntityAddMid2      0xE8
@@ -427,6 +437,7 @@ void cdecl OnCEntityAddMid3(SStreamSectorEntryDouble** ppStreamEntryList, CEntit
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CEntityAddMid3        0x534AA2
 #define HOOKSIZE_CEntityAddMid3       5
 #define HOOKCHECK_CEntityAddMid3      0xE8
@@ -456,6 +467,7 @@ void cdecl OnCEntityRemovePost(CEntitySAInterface* pEntity)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CEntityRemove        0x534AE0
 #define HOOKSIZE_CEntityRemove       5
 #define HOOKCHECK_CEntityRemove      0x83
@@ -494,6 +506,7 @@ void _cdecl OnCStreamingRemoveModel(DWORD calledFrom, ushort usModelId)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CStreamingRemoveModel        0x4089A0
 #define HOOKSIZE_CStreamingRemoveModel       5
 DWORD RETURN_CStreamingRemoveModel = 0x4089A5;
@@ -523,6 +536,7 @@ void _cdecl OnCTaskSimpleRunNamedAnimDestructor(class CTaskSimpleRunNamedAnimSAI
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CTaskSimpleRunNamedAnimDestructor        0x61BEF0
 #define HOOKSIZE_CTaskSimpleRunNamedAnimDestructor       8
 DWORD RETURN_CTaskSimpleRunNamedAnim = 0x61BEF8;

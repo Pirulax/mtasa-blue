@@ -9,12 +9,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CText.h>
 
+#dummy
 #define FUNC_CText_Get          0x6A0050
 
+#dummy
 #define MAX_TEXT_ENTRIES        512
 
 struct TextEntry

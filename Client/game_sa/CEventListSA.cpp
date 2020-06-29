@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CEvent* CEventListSA::FindClosestEvent(eEventType eventtype, CVector* vecPosition)

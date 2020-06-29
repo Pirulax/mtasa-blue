@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "../luadefs/CLuaFireDefs.h"
 
@@ -27,6 +28,7 @@ CLuaManager::CLuaManager(CClientGame* pClientGame)
     m_pRegisteredCommands = pClientGame->GetRegisteredCommands();
 
     // Ensure lua was compiled with apichecks
+#dummy
     #ifdef NDEBUG
         #error "NDEBUG should not be defined"
     #endif
@@ -47,8 +49,8 @@ CLuaManager::~CLuaManager()
         delete (*iter);
     }
 
-	// Close and remove LVM from memory
-	ProcessPendingDeleteList();
+    // Close and remove LVM from memory
+    ProcessPendingDeleteList();
 
     // Clear the C functions
     CLuaCFunctions::RemoveAllFunctions();

@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <windows.h>
 
 // Set values to 128 unless otherwise specified

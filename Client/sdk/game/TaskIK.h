@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Task.h"
 
+#dummy
 #define NUM_IK_CHAIN_SLOTS 5 //(28 - sizeof(CTaskSimple)) / 4
 
 class CTaskSimpleIKChain : public virtual CTaskSimple

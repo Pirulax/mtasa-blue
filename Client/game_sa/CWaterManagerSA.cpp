@@ -9,11 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 extern int ms_iNumNonDefaultAndNonZeroVertices;
 
 using namespace std;
 
+#dummy
 #define POLYENTRY_TYPE(entry) ( (entry)->m_wValue >> 14 )
 #define POLYENTRY_ID(entry) ( (entry)->m_wValue & 0x3FFF )
 #define MAKE_POLYENTRY(type, id) (WORD)( ((type) << 14) | (id) )
@@ -357,6 +359,7 @@ void CWaterManagerSA::RelocatePools()
     //
 
     // GTA default is 70 blocks. We increase this to 512 which is 2^9
+#dummy
     #define OUTSIDE_WORLD_BLOCKS_BITS   9
     static short ms_BlocksToBeRenderedOutsideWorldX[1 << OUTSIDE_WORLD_BLOCKS_BITS];
     static short ms_BlocksToBeRenderedOutsideWorldY[1 << OUTSIDE_WORLD_BLOCKS_BITS];
@@ -548,9 +551,9 @@ void CWaterManagerSA::GetZonesIntersecting(const CVector& startPos, const CVecto
     float dX = fabs(maxX - minX);
     float dY = fabs(maxY - minY);
     float dist;
-    int n = 1;
-    int xZone = lowXZone;
-    int yZone = lowYZone;
+    int   n = 1;
+    int   xZone = lowXZone;
+    int   yZone = lowYZone;
 
     n += highXZone - lowXZone;
     n += highYZone - lowYZone;
@@ -561,8 +564,7 @@ void CWaterManagerSA::GetZonesIntersecting(const CVector& startPos, const CVecto
     {
         // A bound check here fixes client crash (https://github.com/multitheftauto/mtasa-blue/issues/835)
         // See PR https://github.com/multitheftauto/mtasa-blue/pull/836
-        if (Between<int>(lowXZone, xZone, highXZone) &&
-            Between<int>(lowYZone, yZone, highYZone))
+        if (Between<int>(lowXZone, xZone, highXZone) && Between<int>(lowYZone, yZone, highYZone))
         {
             vecOut.push_back(GetZone(xZone, yZone));
         }
@@ -831,10 +833,8 @@ bool CWaterManagerSA::TestLineAgainstWater(const CVector& vecStart, const CVecto
     {
         // Check if both points are on the same side of the map, in case of some mad person
         // trying to testLineAgainstWater over entire SA landmass, which is still a valid option.
-        if ((vecStart.fX < -3000.0f && vecEnd.fX < -3000.0f) ||
-            (vecStart.fX > 3000.0f && vecEnd.fX > 3000.0f) ||
-            (vecStart.fY < -3000.0f && vecEnd.fY < -3000.0f) ||
-            (vecStart.fY > 3000.0f && vecEnd.fY > 3000.0f))
+        if ((vecStart.fX < -3000.0f && vecEnd.fX < -3000.0f) || (vecStart.fX > 3000.0f && vecEnd.fX > 3000.0f) ||
+            (vecStart.fY < -3000.0f && vecEnd.fY < -3000.0f) || (vecStart.fY > 3000.0f && vecEnd.fY > 3000.0f))
         {
             return false;
         }
@@ -847,7 +847,7 @@ bool CWaterManagerSA::TestLineAgainstWater(const CVector& vecStart, const CVecto
     {
         return false;
     }
-   
+
     std::deque<CVector> vecVertices;
     for (auto& zone : vecZones)
     {
@@ -855,8 +855,9 @@ bool CWaterManagerSA::TestLineAgainstWater(const CVector& vecStart, const CVecto
         for (iter = zone->begin(); iter != zone->end(); ++iter)
         {
             auto poly = *iter;
-            int iNumVertices = poly->GetNumVertices();
-            if (iNumVertices < 3) continue;
+            int  iNumVertices = poly->GetNumVertices();
+            if (iNumVertices < 3)
+                continue;
 
             vecVertices.clear();
 
@@ -873,7 +874,8 @@ bool CWaterManagerSA::TestLineAgainstWater(const CVector& vecStart, const CVecto
                 return true;
             }
 
-            if (iNumVertices < 4) continue;
+            if (iNumVertices < 4)
+                continue;
 
             for (int i = 3; i < iNumVertices; i++)
             {
@@ -886,12 +888,10 @@ bool CWaterManagerSA::TestLineAgainstWater(const CVector& vecStart, const CVecto
                     return true;
                 }
             }
-            
         }
     }
 
     return false;
-
 }
 
 void CWaterManagerSA::AddChange(void* pChangeSource, void* pChangedObject, CWaterChange* pChange)

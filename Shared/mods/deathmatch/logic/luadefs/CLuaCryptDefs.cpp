@@ -173,7 +173,6 @@ int CLuaCryptDefs::PasswordHash(lua_State* luaVM)
     return 1;
 }
 
-
 int CLuaCryptDefs::PasswordVerify(lua_State* luaVM)
 {
     //  bool passwordVerify(string password, string hash [, table options, function callback])

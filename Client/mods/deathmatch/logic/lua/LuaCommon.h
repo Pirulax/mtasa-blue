@@ -9,10 +9,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 extern "C"
 {
+#dummy
     #include "lua.h"
     #include "lualib.h"
     #include "lauxlib.h"
@@ -20,6 +22,7 @@ extern "C"
 
 CLuaFunctionRef luaM_toref(lua_State* luaVM, int iArgument);
 
+#dummy
 #define TO_ELEMENTID(x) ((ElementID) reinterpret_cast < unsigned long > (x) )
 
 // Predeclarations of our classes
@@ -86,6 +89,7 @@ enum
     DEBUG_INFO_SHORT_SRC,
 };
 
+#dummy
 #define INVALID_LINE_NUMBER (-1)
 
 struct SLuaDebugInfo

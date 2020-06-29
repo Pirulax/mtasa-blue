@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <windows.h>
 #include <game/CColModel.h>
 
+#dummy
 #define FUNC_CColModel_Constructor      0x40FB60
 #define FUNC_CColModel_Destructor       0x40F700
 

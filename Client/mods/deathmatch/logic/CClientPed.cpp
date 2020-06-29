@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "game/CAnimBlendAssocGroup.h"
 
@@ -16,12 +17,15 @@ using std::vector;
 
 extern CClientGame* g_pClientGame;
 
+#dummy
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
+#dummy
 #define INVALID_VALUE   0xFFFFFFFF
 
+#dummy
 #define PED_INTERPOLATION_WARP_THRESHOLD            5   // Minimal threshold
 #define PED_INTERPOLATION_WARP_THRESHOLD_FOR_SPEED  5   // Units to increment the threshold per speed unit
 
@@ -42,6 +46,7 @@ enum eAnimIDs
     ANIM_ID_STEALTH_AIM = 347,
 };
 
+#dummy
 #define STEALTH_KILL_RANGE 2.5f
 
 struct SBodyPartName
@@ -1567,7 +1572,8 @@ CClientVehicle* CClientPed::RemoveFromVehicle(bool bSkipWarpIfGettingOut)
             if (pVehicle != m_pOccupyingVehicle && pVehicle->GetOccupant())
             {
                 // Local player left vehicle or got abandoned by remote driver
-                if ((m_bIsLocalPlayer || (m_uiOccupiedVehicleSeat == 0 && (g_pClientGame->GetLocalPlayer() && g_pClientGame->GetLocalPlayer()->GetOccupiedVehicle() == pVehicle))))
+                if ((m_bIsLocalPlayer ||
+                     (m_uiOccupiedVehicleSeat == 0 && (g_pClientGame->GetLocalPlayer() && g_pClientGame->GetLocalPlayer()->GetOccupiedVehicle() == pVehicle))))
                 {
                     // Tell vehicle audio the driver left
                     pGameVehicle->GetVehicleAudioEntity()->JustGotOutOfVehicleAsDriver();
@@ -2568,7 +2574,8 @@ void CClientPed::SetAim(float fArmDirectionX, float fArmDirectionY, eVehicleAimD
     }
 }
 
-void CClientPed::SetAimInterpolated(unsigned long ulDelay, float fArmDirectionX, float fArmDirectionY, bool bAkimboAimUp, eVehicleAimDirection cInVehicleAimAnim)
+void CClientPed::SetAimInterpolated(unsigned long ulDelay, float fArmDirectionX, float fArmDirectionY, bool bAkimboAimUp,
+                                    eVehicleAimDirection cInVehicleAimAnim)
 {
     if (!m_bIsLocalPlayer)
     {
@@ -2587,8 +2594,8 @@ void CClientPed::SetAimInterpolated(unsigned long ulDelay, float fArmDirectionX,
     }
 }
 
-void CClientPed::SetAimingData(unsigned long ulDelay, const CVector& vecTargetPosition, float fArmDirectionX, float fArmDirectionY, eVehicleAimDirection cInVehicleAimAnim,
-                               CVector* pSource, bool bInterpolateAim)
+void CClientPed::SetAimingData(unsigned long ulDelay, const CVector& vecTargetPosition, float fArmDirectionX, float fArmDirectionY,
+                               eVehicleAimDirection cInVehicleAimAnim, CVector* pSource, bool bInterpolateAim)
 {
     if (!m_bIsLocalPlayer)
     {
@@ -2835,8 +2842,8 @@ void CClientPed::StreamedInPulse(bool bDoStandardPulses)
                 // Copy our name incase it gets deleted
                 SString strAnimName = m_AnimationCache.strName;
                 // Run our animation
-                RunNamedAnimation(m_pAnimationBlock, strAnimName, m_AnimationCache.iTime, m_AnimationCache.iBlend, m_AnimationCache.bLoop, m_AnimationCache.bUpdatePosition,
-                    m_AnimationCache.bInterruptable, m_AnimationCache.bFreezeLastFrame);
+                RunNamedAnimation(m_pAnimationBlock, strAnimName, m_AnimationCache.iTime, m_AnimationCache.iBlend, m_AnimationCache.bLoop,
+                                  m_AnimationCache.bUpdatePosition, m_AnimationCache.bInterruptable, m_AnimationCache.bFreezeLastFrame);
             }
         }
 
@@ -3347,6 +3354,7 @@ void CClientPed::SetTargetRotation(unsigned long ulDelay, float fRotation, float
 }
 
 // Temporary
+#dummy
 #include "../mods/deathmatch/logic/CClientGame.h"
 extern CClientGame* g_pClientGame;
 
@@ -3682,8 +3690,8 @@ void CClientPed::_CreateModel()
             // Copy our anim name incase it gets deleted
             SString strAnimName = m_AnimationCache.strName;
             // Run our animation
-            RunNamedAnimation(m_pAnimationBlock, strAnimName, m_AnimationCache.iTime, m_AnimationCache.iBlend, m_AnimationCache.bLoop, m_AnimationCache.bUpdatePosition,
-                m_AnimationCache.bInterruptable, m_AnimationCache.bFreezeLastFrame);
+            RunNamedAnimation(m_pAnimationBlock, strAnimName, m_AnimationCache.iTime, m_AnimationCache.iBlend, m_AnimationCache.bLoop,
+                              m_AnimationCache.bUpdatePosition, m_AnimationCache.bInterruptable, m_AnimationCache.bFreezeLastFrame);
         }
 
         // Set the voice that corresponds to our model
@@ -3933,16 +3941,20 @@ void CClientPed::_ChangeModel()
                 m_pPlayerPed->RebuildPlayer();
 
                 // ...and decrement the extra ref
+#dummy
             #ifdef NO_CRASH_FIX_TEST2
                 m_pPlayerPed->RemoveGeometryRef();
+#dummy
             #endif
             }
             else
             {
                 // When the local player changes to another (non CJ) model, the geometry gets an extra ref from somewhere, causing a memory leak.
                 // So decrement the extra ref here
+#dummy
             #ifdef NO_CRASH_FIX_TEST
                 m_pPlayerPed->RemoveGeometryRef();
+#dummy
             #endif
                 // As we will have problem removing the geometry later, we might as well keep the model cached until exit
                 g_pCore->AddModelToPersistentCache((ushort)m_ulModel);
@@ -3975,8 +3987,8 @@ void CClientPed::_ChangeModel()
                 // Copy our anim name incase it gets deleted
                 SString strAnimName = m_AnimationCache.strName;
                 // Run our animation
-                RunNamedAnimation(m_pAnimationBlock, strAnimName, m_AnimationCache.iTime, m_AnimationCache.iBlend, m_AnimationCache.bLoop, m_AnimationCache.bUpdatePosition,
-                    m_AnimationCache.bInterruptable, m_AnimationCache.bFreezeLastFrame);
+                RunNamedAnimation(m_pAnimationBlock, strAnimName, m_AnimationCache.iTime, m_AnimationCache.iBlend, m_AnimationCache.bLoop,
+                                  m_AnimationCache.bUpdatePosition, m_AnimationCache.bInterruptable, m_AnimationCache.bFreezeLastFrame);
             }
 
             // Set the voice that corresponds to the new model
@@ -4093,6 +4105,7 @@ void CClientPed::StreamIn(bool bInstantly)
         NotifyCreate();
         return;
     }
+#dummy
 #if 0
     // We need to create now?
     if ( bInstantly )
@@ -4107,6 +4120,7 @@ void CClientPed::StreamIn(bool bInstantly)
         else NotifyUnableToCreate ();
     }
     else
+#dummy
 #endif
     {
         // Request it
@@ -6167,10 +6181,10 @@ void CClientPed::RestoreAllAnimations()
         auto pAnimAssociation = pAnimationManager->RpAnimBlendClumpGetFirstAssociation(pClump);
         while (pAnimAssociation)
         {
-            auto pAnimNextAssociation = pAnimationManager->RpAnimBlendGetNextAssociation(pAnimAssociation);
-            auto pAnimHierarchy = pAnimAssociation->GetAnimHierarchy();
-            eAnimGroup  iGroupID = pAnimAssociation->GetAnimGroup();
-            eAnimID iAnimID = pAnimAssociation->GetAnimID();
+            auto       pAnimNextAssociation = pAnimationManager->RpAnimBlendGetNextAssociation(pAnimAssociation);
+            auto       pAnimHierarchy = pAnimAssociation->GetAnimHierarchy();
+            eAnimGroup iGroupID = pAnimAssociation->GetAnimGroup();
+            eAnimID    iAnimID = pAnimAssociation->GetAnimID();
             if (pAnimHierarchy && iGroupID >= eAnimGroup::ANIM_GROUP_DEFAULT && iAnimID >= eAnimID::ANIM_ID_WALK)
             {
                 auto pAnimStaticAssociation = pAnimationManager->GetAnimStaticAssociation(iGroupID, iAnimID);
@@ -6274,8 +6288,10 @@ void CClientPed::HandleWaitingForGroundToLoad()
     {
         // If not near any MTA objects, then don't bother waiting
         SetFrozenWaitingForGroundToLoad(false);
+#dummy
         #ifdef ASYNC_LOADING_DEBUG_OUTPUTA
         OutputDebugLine("[AsyncLoading]   FreezeUntilCollisionLoaded - Early stop");
+#dummy
         #endif
         return;
     }
@@ -6297,19 +6313,24 @@ void CClientPed::HandleWaitingForGroundToLoad()
     bool                  bASync = g_pGame->IsASyncLoadingEnabled();
     bool                  bMTAObjLimit = pObjectManager->IsObjectLimitReached();
     bool                  bHasModel = GetModelInfo() != NULL;
+#dummy
     #ifndef ASYNC_LOADING_DEBUG_OUTPUTA
     bool bMTALoaded = pObjectManager->ObjectsAroundPointLoaded(vecPosition, fUseRadius, m_usDimension);
+#dummy
     #else
     SString strAround;
     bool    bMTALoaded = pObjectManager->ObjectsAroundPointLoaded(vecPosition, fUseRadius, m_usDimension, &strAround);
+#dummy
     #endif
 
+#dummy
     #ifdef ASYNC_LOADING_DEBUG_OUTPUTA
     SString status = SString(
         "%2.2f,%2.2f,%2.2f  bASync:%d   bHasModel:%d   bMTALoaded:%d   bMTAObjLimit:%d   m_fGroundCheckTolerance:%2.2f   m_fObjectsAroundTolerance:%2.2f  "
         "fUseRadius:%2.1f",
         vecPosition.fX, vecPosition.fY, vecPosition.fZ, bASync, bHasModel, bMTALoaded, bMTAObjLimit, m_fGroundCheckTolerance, m_fObjectsAroundTolerance,
         fUseRadius);
+#dummy
     #endif
 
     // See if ground is ready
@@ -6317,8 +6338,10 @@ void CClientPed::HandleWaitingForGroundToLoad()
     {
         m_fGroundCheckTolerance = 0.f;
         m_fObjectsAroundTolerance = std::min(1.f, m_fObjectsAroundTolerance + 0.01f);
+#dummy
         #ifdef ASYNC_LOADING_DEBUG_OUTPUTA
         status += ("  FreezeUntilCollisionLoaded - wait");
+#dummy
         #endif
     }
     else
@@ -6332,8 +6355,10 @@ void CClientPed::HandleWaitingForGroundToLoad()
         if (fUseDist > -0.2f && fUseDist < 1.5f)
             SetFrozenWaitingForGroundToLoad(false);
 
+#dummy
         #ifdef ASYNC_LOADING_DEBUG_OUTPUTA
         status += (SString("  GetDistanceFromGround:  fDist:%2.2f   fUseDist:%2.2f", fDist, fUseDist));
+#dummy
         #endif
 
         // Stop waiting after 3 frames, if the object limit has not been reached. (bASync should always be false here)
@@ -6341,6 +6366,7 @@ void CClientPed::HandleWaitingForGroundToLoad()
             SetFrozenWaitingForGroundToLoad(false);
     }
 
+#dummy
     #ifdef ASYNC_LOADING_DEBUG_OUTPUTA
     OutputDebugLine(SStringX("[AsyncLoading] ")++ status);
     g_pCore->GetGraphics()->DrawString(10, 220, -1, 1, status);
@@ -6349,6 +6375,7 @@ void CClientPed::HandleWaitingForGroundToLoad()
     strAround.Split("\n", lineList);
     for (unsigned int i = 0; i < lineList.size(); i++)
         g_pCore->GetGraphics()->DrawString(10, 230 + i * 10, -1, 1, lineList[i]);
+#dummy
     #endif
 }
 

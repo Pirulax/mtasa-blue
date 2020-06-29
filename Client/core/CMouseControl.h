@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <game/CPad.h>
 
+#dummy
 #pragma once
 
 enum MouseControlVehicleType

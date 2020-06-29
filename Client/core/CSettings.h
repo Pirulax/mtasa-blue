@@ -11,12 +11,15 @@
 
 class CSettings;
 
+#dummy
 #pragma once
 
+#dummy
 #include <core/CCoreInterface.h>
 #include "CMainMenu.h"
 #include "CCore.h"
 
+#dummy
 #define SKINS_PATH                    "skins/*"
 #define CHAT_PRESETS_PATH             "mta/config/chatboxpresets.xml"
 #define CHAT_PRESETS_ROOT             "chatboxpresets"

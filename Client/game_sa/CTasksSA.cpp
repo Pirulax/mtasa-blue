@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CTasksSA::CTasksSA(CTaskManagementSystemSA* pTaskManagementSystem)
@@ -316,6 +317,7 @@ __declspec(noinline) void _cdecl OnCEventHandler_ComputeDamageResponse_Mid(CPedS
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CEventHandler_ComputeDamageResponse_Mid        0x4C0593
 #define HOOKSIZE_CEventHandler_ComputeDamageResponse_Mid       5
 DWORD RETURN_CEventHandler_ComputeDamageResponse_Mid = 0x4C0598;

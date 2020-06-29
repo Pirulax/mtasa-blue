@@ -9,10 +9,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "../../vendor/tinygettext/log.hpp"
 #define MTA_LOCALE_TEXTDOMAIN       "client"
 // TRANSLATORS: Replace with your language native name
+#dummy
 #define NATIVE_LANGUAGE_NAME _td("English")
 
 CLocalization::CLocalization(const SString& strLocale, const SString& strLocalePath)

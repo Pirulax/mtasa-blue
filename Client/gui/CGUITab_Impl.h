@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUITab.h>
 #include "CGUIElement_Impl.h"
 
@@ -24,6 +26,7 @@ public:
 
     eCGUIType GetType() { return CGUI_TAB; };
 
+#dummy
 #define SETVISIBLE_HACK
 #define SETENABLED_HACK
     #include "CGUIElement_Inc.h"

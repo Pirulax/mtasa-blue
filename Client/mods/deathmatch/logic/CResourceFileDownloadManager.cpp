@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 ///////////////////////////////////////////////////////////////
@@ -228,7 +229,7 @@ bool CResourceFileDownloadManager::BeginResourceFileDownload(CDownloadableResour
     options.bIsLocal = g_pClientGame->IsLocalGame();
     SString* pstrContext = MakeDownloadContextString(pResourceFile);
     SString  strFilename = pResourceFile->GetName();
-    bool bUniqueDownload = pHTTP->QueueFile(strHTTPDownloadURLFull, strFilename, pstrContext, StaticDownloadFinished, options);
+    bool     bUniqueDownload = pHTTP->QueueFile(strHTTPDownloadURLFull, strFilename, pstrContext, StaticDownloadFinished, options);
     if (!bUniqueDownload)
     {
         // TODO - If piggybacking on another matching download, then adjust progress bar
@@ -279,8 +280,7 @@ void CResourceFileDownloadManager::DownloadFinished(const SHttpDownloadResult& r
             }
         }
     }
-    else
-    if (result.iErrorCode == 1007)
+    else if (result.iErrorCode == 1007)
     {
         // Download failed due to being unable to create file
         // Ignore here so it will be processed at CResource::HandleDownloadedFileTrouble

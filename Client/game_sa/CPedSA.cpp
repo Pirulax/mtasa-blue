@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 extern CGameSA* pGame;
@@ -1765,6 +1766,7 @@ __declspec(noinline) int _cdecl OnCPed_PreRenderAfterTest(CPedSAInterface* pPedI
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CPed_PreRenderAfterTest        0x05E65A0
 #define HOOKSIZE_CPed_PreRenderAfterTest       15
 DWORD RETURN_CPed_PreRenderAfterTest = 0x05E65AF;
@@ -1814,6 +1816,7 @@ skip_rotation_update:
 ////////////////////////////////////////////////////////////////
 
 // Hook info
+#dummy
 #define HOOKPOS_CPed_PreRenderAfterTest_Mid        0x05E6669
 #define HOOKSIZE_CPed_PreRenderAfterTest_Mid       5
 DWORD RETURN_CPed_PreRenderAfterTest_Mid = 0x05E666E;

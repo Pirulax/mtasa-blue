@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 #include "CBlipRPCs.h"
 #include "net/SyncStructures.h"

@@ -11,8 +11,10 @@
 class CClientSound;
 class CBassAudio;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientSoundManager.h"
 #include "CClientEntity.h"
 #include "CSimulatedPlayPosition.h"

@@ -11,8 +11,10 @@
 
 class CNetAPI;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientCommon.h"
 #include "CClientManager.h"
 #include "CInterpolator.h"
@@ -21,6 +23,7 @@ class CNetAPI;
 #include "CTickRateSettings.h"
 
 // SYNC SETTINGS
+#dummy
 #define TICK_RATE       ( g_TickRateSettings.iPureSync )
 #define CAM_SYNC_RATE   ( g_TickRateSettings.iCamSync )
 #define TICK_RATE_AIM   ( std::min ( TICK_RATE, g_TickRateSettings.iKeySyncRotation ) )  // Keysync or puresync update the aim, so use the shortest interval

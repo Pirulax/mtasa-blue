@@ -9,33 +9,43 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 // R* have this info inside CMenuManager but I can't believe that makes much sense
 
+#dummy
 #include <game/CSettings.h>
 #include "Common.h"
 
+#dummy
 #define CLASS_CMenuManager      0xBA6748
 
+#dummy
 #define FUNC_CMenuManager_Save  0x57C660
 
+#dummy
 #define VAR_ucFxQuality         0xA9AE54
 #define VAR_fMouseSensitivity   0xB6EC1C
 #define VAR_RadarMode           0xBA676C
 
+#dummy
 #define CLASS_CAudioEngine 0xB6BC90
 #define FUNC_CAudioEngine_SetEffectsMasterVolume 0x506E10
 #define FUNC_CAudioEngine_SetMusicMasterVolume 0x506DE0
 
+#dummy
 #define CLASS_CGamma 0xC92134
 #define FUNC_CGamma_SetGamma 0x747200
 
+#dummy
 #define FUNC_SetAntiAliasing    0x7F8A90
 
+#dummy
 #define DEFAULT_VEHICLE_LOD_DISTANCE    ( 70.0f )
 #define DEFAULT_PEDS_LOD_DISTANCE       ( 60.0f )
 // Default train distance is 150, so make it relative to default vehicle distance
+#dummy
 #define TRAIN_LOD_DISTANCE_MULTIPLIER   ( 2.14f )
 #define MAX_VEHICLE_LOD_DISTANCE        ( 500.0f )
 #define MAX_PEDS_LOD_DISTANCE           ( 500.0f )

@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "..\game_sa\gamesa_renderware.h"
 
@@ -58,6 +59,7 @@ void OnMY_CAutomobile_CustomCarPlate_BeforeRenderingStart(CVehicleSAInterface* p
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CAutomobile_CustomCarPlate_BeforeRenderingStart                         0x006A2F00
 #define HOOKSIZE_CAutomobile_CustomCarPlate_BeforeRenderingStart                        7
 DWORD RETURN_CAutomobile_CustomCarPlate_BeforeRenderingStart = 0x006A2F07;
@@ -113,6 +115,7 @@ void OnMY_CAutomobile_CustomCarPlate_AfterRenderingStop(CVehicleModelInfoSAInter
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CAutomobile_CustomCarPlate_AfterRenderingStop                         0x006A2F30
 #define HOOKSIZE_CAutomobile_CustomCarPlate_AfterRenderingStop                        7
 DWORD RETURN_CAutomobile_CustomCarPlate_AfterRenderingStop = 0x006A2F37;
@@ -149,6 +152,7 @@ void OnMY_CCustomCarPlateMgr_SetupMaterialPlateTexture(struct RpMaterial* a, cha
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CCustomCarPlateMgr_SetupMaterialPlateTexture                         0x006FE020
 #define HOOKSIZE_CCustomCarPlateMgr_SetupMaterialPlateTexture                        5
 DWORD RETURN_CCustomCarPlateMgr_SetupMaterialPlateTexture = 0x006FE025;
@@ -193,6 +197,7 @@ void OnMY_CVehicleModelInfo_SetCarCustomPlate_Post()
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CVehicleModelInfo_SetCarCustomPlate                         0x004C9450
 #define HOOKSIZE_CVehicleModelInfo_SetCarCustomPlate                        6
 DWORD RETURN_CVehicleModelInfo_SetCarCustomPlate = 0x004C9456;
@@ -229,6 +234,7 @@ inner:
 // Prevent GTA from generating a new texture for each occurrence of 'carplate' in a model
 //
 //////////////////////////////////////////////////////////////////////////////////////////
+#dummy
 #define HOOKPOS_CCustomCarPlateMgr_CreatePlateTexture                         0x006FDEA0
 #define HOOKSIZE_CCustomCarPlateMgr_CreatePlateTexture                        5
 DWORD RETURN_CCustomCarPlateMgr_CreatePlateTexture = 0x006FDEA5;

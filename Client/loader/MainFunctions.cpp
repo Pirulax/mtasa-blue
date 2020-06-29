@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 DECLARE_ENUM(WSC_SECURITY_PROVIDER_HEALTH)
@@ -103,14 +104,17 @@ void InitLocalization(bool bShowErrors)
     {
         if (!bShowErrors)
             return;
+#dummy
 #ifdef MTA_DEBUG
         DisplayErrorMessageBox(("Loading core failed.  Please ensure that \n"
                                 "the latest DirectX is correctly installed and you executed win-install-data.bat"),
                                _E("CL24"), "core-not-loadable");
+#dummy
 #else
         DisplayErrorMessageBox(("Loading core failed.  Please ensure that \n"
                                 "the latest DirectX is correctly installed."),
                                _E("CL24"), "core-not-loadable");
+#dummy
 #endif
         return ExitProcess(EXIT_ERROR);
     }
@@ -143,8 +147,10 @@ void InitLocalization(bool bShowErrors)
     g_pLocalization = pLocalization;
     bDone = true;
 
+#dummy
 #ifdef MTA_DEBUG
     TestDialogs();
+#dummy
 #endif
 }
 
@@ -201,9 +207,11 @@ void HandleDuplicateLaunching()
         if (strcmp(lpCmdLine, "") != 0)
         {
             HWND hwMTAWindow = FindWindow(NULL, "MTA: San Andreas");
+#dummy
 #ifdef MTA_DEBUG
             if (hwMTAWindow == NULL)
                 hwMTAWindow = FindWindow(NULL, "MTA: San Andreas [DEBUG]");
+#dummy
 #endif
             if (hwMTAWindow != NULL)
             {
@@ -321,7 +329,7 @@ void HandleResetSettings()
             FileRename(strSettingsFilename, strSettingsFilenameBak);
             FileDelete(strSettingsFilename);
 
-            //Also reset NVidia Optimus "remember option" to allow them to choose again
+            // Also reset NVidia Optimus "remember option" to allow them to choose again
             SetApplicationSettingInt("nvhacks", "optimus-remember-option", 0);
 
             if (!FileExists(strSettingsFilename))
@@ -485,6 +493,7 @@ void PreLaunchWatchDogs()
     //
 
     // Check for unclean stop on previous run
+#dummy
 #ifndef MTA_DEBUG
     if (WatchDogIsSectionOpen("L0"))
     {
@@ -492,6 +501,7 @@ void PreLaunchWatchDogs()
         CheckAndShowFileOpenFailureMessage();
     }
     else
+#dummy
 #endif
         WatchDogSetUncleanStop(false);
 
@@ -835,8 +845,10 @@ void CheckDataFiles()
     if (!VerifyEmbeddedSignature(PathJoin(strMTASAPath, MTA_EXE_NAME)))
     {
         SString strMessage(_("Main file is unsigned. Possible virus activity.\n\nSee online help if MTA does not work correctly."));
+#dummy
         #if MTASA_VERSION_BUILD > 0 && defined(MTA_DM_CONNECT_TO_PUBLIC) && !defined(MTA_DEBUG)
         DisplayErrorMessageBox(strMessage, _E("CL29"), "maybe-virus1");
+#dummy
         #endif
     }
 
@@ -911,6 +923,7 @@ void CheckDataFiles()
 //////////////////////////////////////////////////////////
 void CheckLibVersions()
 {
+#dummy
 #if MTASA_VERSION_TYPE == VERSION_TYPE_RELEASE
 
     const char* moduleList[] = {"MTA\\loader.dll",
@@ -927,8 +940,10 @@ void CheckLibVersions()
     for (uint i = 0; i < NUMELMS(moduleList); i++)
     {
         SString strFilename = moduleList[i];
+#dummy
 #ifdef MTA_DEBUG
         strFilename = ExtractBeforeExtension(strFilename) + "_d." + ExtractExtension(strFilename);
+#dummy
 #endif
         SLibVersionInfo fileInfo;
         if (FileExists(CalcMTASAPath(strFilename)))
@@ -958,6 +973,7 @@ void CheckLibVersions()
         }
     }
 
+#dummy
 #endif
 
     if (GetSystemMetrics(SM_CLEANBOOT) != 0)
@@ -984,6 +1000,7 @@ BOOL CreateProcessWithMitigationPolicy(LPCWSTR lpApplicationName, LPWSTR lpComma
     STARTUPINFOEXW StartupInfoEx = {0};
     StartupInfoEx.StartupInfo.cb = sizeof(StartupInfoEx.StartupInfo);
 
+#dummy
 #ifdef PANIC_OVER
     if (IsWindows7OrGreater())
     {
@@ -1010,12 +1027,14 @@ BOOL CreateProcessWithMitigationPolicy(LPCWSTR lpApplicationName, LPWSTR lpComma
             MitigationPolicy |= PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_NO_REMOTE_ALWAYS_ON;
         }
 
+#dummy
         #if 0   // TODO
         if ( IsWindows10FoamybananaOrGreater () )
         {
             // Win 10 build something else
             MitigationPolicy |= PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_PREFER_SYSTEM32_ALWAYS_ON;
         }
+#dummy
         #endif
 
         // Create AttributeList for mitigation policy application system
@@ -1056,6 +1075,7 @@ BOOL CreateProcessWithMitigationPolicy(LPCWSTR lpApplicationName, LPWSTR lpComma
             return false;
         }
     }
+#dummy
 #endif
     // Start GTA
     BOOL bResult = _CreateProcessW(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, nullptr,
@@ -1067,6 +1087,7 @@ BOOL CreateProcessWithMitigationPolicy(LPCWSTR lpApplicationName, LPWSTR lpComma
         strOutErrorContext = "CreateProcess";
     }
 
+#dummy
 #ifdef PANIC_OVER
     if (IsWindows7OrGreater())
     {
@@ -1074,6 +1095,7 @@ BOOL CreateProcessWithMitigationPolicy(LPCWSTR lpApplicationName, LPWSTR lpComma
         _DeleteProcThreadAttributeList(StartupInfoEx.lpAttributeList);
         HeapFree(GetProcessHeap(), 0, (LPVOID)StartupInfoEx.lpAttributeList);
     }
+#dummy
 #endif
     return bResult;
 }
@@ -1237,10 +1259,12 @@ int LaunchGame(SString strCmdLine)
                 if (stuckProcessDetector.UpdateIsStuck())
                 {
                     WriteDebugEvent("Detected stuck process at quit");
+#dummy
                 #ifndef MTA_DEBUG
                     TerminateProcess(piLoadee.hProcess, 1);
                     status = WAIT_FAILED;
                     break;
+#dummy
                 #endif
                 }
                 status = WaitForSingleObject(piLoadee.hProcess, 1000);

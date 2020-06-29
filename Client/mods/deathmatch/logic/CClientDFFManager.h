@@ -10,8 +10,10 @@
 
 class CClientDFFManager;
 
+#dummy
 #pragma once
 
+#dummy
 #include <list>
 #include "CClientDFF.h"
 

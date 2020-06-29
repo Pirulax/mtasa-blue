@@ -9,19 +9,23 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CEGUIExceptions.h"
 
 using std::list;
 
+#dummy
 #define CGUI_MTA_DEFAULT_FONT       "tahoma.ttf"        // %WINDIR%/font/<...>
 #define CGUI_MTA_DEFAULT_FONT_BOLD  "tahomabd.ttf"      // %WINDIR%/font/<...>
 #define CGUI_MTA_CLEAR_FONT         "verdana.ttf"       // %WINDIR%/font/<...>
 
+#dummy
 #define CGUI_MTA_DEFAULT_REG        "Tahoma (TrueType)"
 #define CGUI_MTA_DEFAULT_REG_BOLD   "Tahoma Bold (TrueType)"
 #define CGUI_MTA_CLEAR_REG          "Verdana (TrueType)"
 
+#dummy
 #define CGUI_MTA_SUBSTITUTE_FONT    "cgui/unifont-5.1.20080907.ttf"  // GTA/MTA/<...>
 #define CGUI_MTA_SANS_FONT          "cgui/sans.ttf"     // GTA/MTA/<...>
 #define CGUI_SA_HEADER_FONT         "cgui/saheader.ttf" // GTA/MTA/<...>
@@ -63,10 +67,13 @@ CGUI_Impl::CGUI_Impl(IDirect3DDevice9* pDevice) : m_HasSchemeLoaded(false), m_fC
     SetDefaultGuiWorkingDirectory(CalcMTASAPath("MTA"));
 
     // Set logging to Informative for debug and Standard for release
+#dummy
 #if defined(_DEBUG) || defined(DEBUG)
     CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Informative);
+#dummy
 #else
     CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Standard);
+#dummy
 #endif
 
     // Load our fonts

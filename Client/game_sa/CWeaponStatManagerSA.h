@@ -8,11 +8,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <list>
 
 // Straight out of CGameSA.h
+#dummy
 #define     CLASSSIZE_WeaponInfo            112         // ##SA##
 #define     NUM_WeaponInfosStdSkill         WEAPONTYPE_LAST_WEAPONTYPE
 #define     NUM_WeaponInfosOtherSkill       11
@@ -71,6 +74,7 @@ struct sWeaponInfo
     BYTE combos_available;            // how many further combos are available
 };
 
+#dummy
 #define WEAPON_STAT_MAX 112
 class CWeaponStatManagerSA : public CWeaponStatManager
 {

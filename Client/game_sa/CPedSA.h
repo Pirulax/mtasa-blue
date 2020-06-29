@@ -11,16 +11,20 @@
 
 class CPedSA;
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPed.h>
 #include <game/CWeapon.h>
 
+#dummy
 #include "CEntitySA.h"
 #include "CFireSA.h"
 #include "CPedIKSA.h"
 #include "CPhysicalSA.h"
 
+#dummy
 #include "CPedSoundSA.h"
 #include "CPoolsSA.h"
 #include "CVehicleSA.h"
@@ -30,10 +34,13 @@ class CPedIntelligenceSA;
 class CPlayerPedDataSAInterface;
 class CPedIntelligenceSAInterface;
 
+#dummy
 #include "CPedIntelligenceSA.h"
 
+#dummy
 #define SIZEOF_CPLAYERPED                           1956
 
+#dummy
 #define FUNC_SetModelIndex                          0x5E4880 // ##SA##
 #define FUNC_AttachPedToBike                        0x5E7E60
 #define FUNC_AttachPedToEntity                      0x5E7CB0
@@ -43,12 +50,15 @@ class CPedIntelligenceSAInterface;
 #define FUNC_SetIsStanding                          0x4ABBE0
 #define FUNC_MakeChangesForNewWeapon_Slot           0x60D000
 
+#dummy
 #define FUNC_CPedClothesDesc__SetTextureAndModel    0x5A8080
 #define FUNC_CClothes__RebuildPlayer                0x5A82C0
 #define FUNC_CAEPedWeaponAudioEntity__AddAudioEvent 0x4E69F0
 
+#dummy
 #define FUNC_QuitEnteringCar                        0x650130 // really belongs in CCarEnterExit
 
+#dummy
 #define FUNC_CanPedReturnToState        0x5018D0
 #define FUNC_ClearAimFlag               0x50B4A0
 #define FUNC_ClearAll                   0x509DF0
@@ -104,17 +114,21 @@ class CPedIntelligenceSAInterface;
 #define FUNC_CPed_RemoveBodyPart        0x5f0140
 #define FUNC_PreRenderAfterTest         0x5E65A0
 
+#dummy
 #define VAR_LocalPlayer                 0x94AD28
 
 /*
+#dummy
 #ifndef CVehicleSA_DEFINED
 #define CVehicleSA void
 #endif
 
+#dummy
 #ifdef CPedSA
 #undef CPedSA
 #endif
 
+#dummy
 #ifdef CPedSAInterface
 #undef CPedSAInterface
 #endif

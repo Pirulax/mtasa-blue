@@ -7,6 +7,7 @@
  *  PURPOSE:     Webbrowser helper classes and functions
  *
  *****************************************************************************/
+#dummy
 #pragma once
 #include <cef3/include/cef_v8.h>
 #include <SString.h>

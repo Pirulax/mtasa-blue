@@ -9,14 +9,18 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <game/TaskBasic.h>
 
+#dummy
 #include "TaskSA.h"
 
+#dummy
 #define FUNC_CTaskComplexUseMobilePhone__Constructor        0x6348A0
 #define FUNC_CTaskSimpleRunAnim__Constructor                0x61A900
 #define FUNC_CTaskSimpleRunNamedAnim__Constructor           0x61A990
@@ -86,6 +90,7 @@ public:
                          const bool bHoldLastFrame = false);
 };
 
+#dummy
 #define ANIM_NAMELEN 24
 #define ANIMBLOCK_NAMELEN 16
 

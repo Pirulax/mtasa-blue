@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #ifdef DETECT_LEAKS
 #include <list>
 using namespace std;
@@ -152,6 +154,7 @@ void DumpUnfreed()
     delete pAllocList;
 };
 
+#dummy
 #else
 void AddTrack(void* pAddress, size_t size, const char* szFile, int iLine)
 {
@@ -162,4 +165,5 @@ void RemoveTrack(void* pAddress)
 void DumpUnfreed()
 {
 }
+#dummy
 #endif

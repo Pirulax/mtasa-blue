@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <d3d9.h>
 
 struct IDirect3DTexture9;

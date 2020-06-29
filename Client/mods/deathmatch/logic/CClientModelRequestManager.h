@@ -10,8 +10,10 @@
 
 class CClientModelRequestManager;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientCommon.h"
 #include "CClientEntity.h"
 #include <list>

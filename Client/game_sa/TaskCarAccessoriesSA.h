@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <game/TaskCarAccessories.h>
 
+#dummy
 #include "CVehicleSA.h"
 #include "TaskSA.h"
 
@@ -22,10 +25,12 @@
 class CAnimBlendAssociation;
 typedef DWORD CTaskUtilityLineUpPedWithCar;
 
+#dummy
 #define FUNC_CTaskSimpleCarSetPedInAsDriver__Constructor            0x6470E0
 #define FUNC_CTaskSimpleCarSetPedInAsPassenger__Constructor         0x646FE0
 #define FUNC_CTaskSimpleCarSetPedOut__Constructor                   0x6478B0
 
+#dummy
 #define FUNC_CTaskSimpleCarSetPedOut__PositionPedOutOfCollision     0x6479B0
 
 // ##############################################################################

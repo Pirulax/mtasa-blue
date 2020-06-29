@@ -9,14 +9,18 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CAutomobile.h>
 
+#dummy
 #include "CDamageManagerSA.h"
 #include "CDoorSA.h"
 #include "CVehicleSA.h"
 
+#dummy
 #define FUNC_CAutomobile_BurstTyre                  0x6A32B0
 #define FUNC_CAutomobile_BreakTowLink               0x6A4400
 #define FUNC_CAutomobile_BlowUpCar                  0x6B3780
@@ -53,6 +57,7 @@
 #define FUNC_CAutomobile_SetTotalDamage             0x6A27F0
 #define FUNC_CAutomobile_SpawnFlyingComponent       0x6A8580
 
+#dummy
 #define MAX_PASSENGER_COUNT     8
 #define MAX_DOORS               6 // also in CDamageManager
 

@@ -9,8 +9,10 @@
 *
 *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientEntity.h"
 
 class CClientTXD : public CClientEntity

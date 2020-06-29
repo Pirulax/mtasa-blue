@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 static volatile bool           g_bIsStarted = false;
@@ -17,12 +18,14 @@ extern CLocalizationInterface* g_pLocalization;
 CCriticalSection               CServer::m_OutputCC;
 std::list<std::string>         CServer::m_OutputQueue;
 
+#dummy
 #ifdef MTA_DEBUG
     #define SERVER_DLL_PATH "core_d.dll"
 #else
     #define SERVER_DLL_PATH "core.dll"
 #endif
 
+#dummy
 #define ERROR_NO_ERROR 0
 #define ERROR_NO_NETWORK_LIBRARY 1
 #define ERROR_NETWORK_LIBRARY_FAILED 2
@@ -251,7 +254,7 @@ unsigned long CServer::Thread_Run()
     if (m_pLibrary->Load(m_strDLLFile))
     {
         // Grab the entrypoint
-        typedef int(Main_t)(int, char* []);
+        typedef int(Main_t)(int, char*[]);
         Main_t* pfnEntryPoint = reinterpret_cast<Main_t*>(m_pLibrary->GetProcedureAddress("Run"));
         if (pfnEntryPoint)
         {

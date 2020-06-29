@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 #include <Psapi.h>
 #include <game/CGame.h>
@@ -49,6 +50,7 @@ namespace
     template <class T>
     static SString FormatNumberWithCommas(T value, int numberOfDecimalPlaces = 0)
     {
+#dummy
 #if 0
         static std::stringstream ss;
         static bool ss_init = false;
@@ -59,9 +61,11 @@ namespace
 
         ss.precision(numberOfDecimalPlaces);
         ss << std::fixed << value;
+#dummy
 #else
         std::stringstream ss;
         ss << value;
+#dummy
 #endif
         return SString(ss.str());
     }
@@ -662,11 +666,13 @@ void CMemStats::CreateTables()
     //
     // Color setups
     //
+#dummy
     #define YELLOW "#FFFF00"
     #define RED "#FF0000"
     #define BLUE "#0000FF"
     #define WHITE "#FFFFFF"
 
+#dummy
     #define LT_RED "#FF5050"
     #define DK_RED "#CF0000"
     #define GREY "#808080"
@@ -679,6 +685,7 @@ void CMemStats::CreateTables()
     #define LT_CYAN "#00C0F0"
 
     // Table header
+#dummy
     #define HEADER1(text) LT_CYAN text WHITE
 
     // Cell colour depending upon the value

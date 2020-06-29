@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
+#dummy
 #include "CRPCFunctions.h"
 #include "CAudioRPCs.h"
 #include "CBlipRPCs.h"
@@ -99,7 +101,7 @@ void CRPCFunctions::AddHandlers()
     CWeaponRPCs::LoadFunctions();
     CWaterRPCs::LoadFunctions();
     CWorldRPCs::LoadFunctions();
-    CColShapeRPCs::LoadFunctions(); 
+    CColShapeRPCs::LoadFunctions();
 }
 
 void CRPCFunctions::AddHandler(unsigned char ucID, pfnRPCHandler Callback, const char* szName)
@@ -156,10 +158,12 @@ void CRPCFunctions::ProcessPacket(unsigned char ucPacketID, NetBitStreamInterfac
             CClientEntity* pSource = CElementIDs::GetElement(ID);
             if (pSource == NULL)
             {
+#dummy
 #ifdef MTA_DEBUG
                 SString strMessage("FIXME: CRPCFunctions::ProcessPacket - Element doesn't exist on client (%s)", *pElementHandler->strName);
                 OutputDebugLine(SStringX("[RPC] ") + strMessage);
                 CLogger::ErrorPrintf("%s", *strMessage);
+#dummy
 #endif
                 return;
             }

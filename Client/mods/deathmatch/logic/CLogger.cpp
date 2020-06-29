@@ -8,12 +8,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 using namespace std;
 
 FILE* CLogger::m_pLogFile = NULL;
 
+#dummy
 #define MAX_STRING_LENGTH 2048
 void CLogger::LogPrintf(const char* szFormat, ...)
 {
@@ -47,12 +49,14 @@ void CLogger::LogPrintfNoStamp(const char* szFormat, ...)
     HandleLogPrint(false, "", szBuffer, true, true);
 }
 
+#dummy
 #if 0   // Currently unused
 void CLogger::LogPrintNoStamp ( const char* szText )
 {
     // Send to the console and logfile
     HandleLogPrint ( false, "", szText, true, true );
 }
+#dummy
 #endif
 
 void CLogger::ErrorPrintf(const char* szFormat, ...)
@@ -68,9 +72,11 @@ void CLogger::ErrorPrintf(const char* szFormat, ...)
     HandleLogPrint(true, "ERROR: ", szBuffer, true, true);
 }
 
+#dummy
 #if 0   // Currently unused
 void CLogger::DebugPrintf ( const char* szFormat, ... )
 {
+#dummy
     #ifdef MTA_DEBUG
         // Compose the formatted message
         char szBuffer [MAX_STRING_LENGTH];
@@ -81,8 +87,10 @@ void CLogger::DebugPrintf ( const char* szFormat, ... )
 
         // Timestamp and send to the console and logfile
         HandleLogPrint ( true, "DEBUG: ", szBuffer, true, true );
+#dummy
     #endif
 }
+#dummy
 #endif
 
 void CLogger::SetLogFile(const char* szLogFile)

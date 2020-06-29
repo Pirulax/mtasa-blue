@@ -9,10 +9,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 using namespace std;
 
+#dummy
 #define MAX_STRING_LENGTH 2048
 template <>
 CConsoleLogger* CSingleton<CConsoleLogger>::m_pSingleton = NULL;

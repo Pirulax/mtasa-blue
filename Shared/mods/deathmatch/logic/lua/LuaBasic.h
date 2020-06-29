@@ -16,14 +16,12 @@
         T PopPrimitive(L, std::size_t stackIndex)
 */
 
-
 namespace lua
 {
     // PopTrival should read a simple value of type T from the stack without extra type checks
     // If whatever is at that point in the stack is not convertible to T, the behavior is undefined
     template <typename T>
     inline T PopPrimitive(lua_State* L, std::size_t& index);
-
 
     // Push should push a value of type T to the Lua Stack
     // The return value must be the net amount of items pushed to the stack, which should
@@ -90,7 +88,7 @@ namespace lua
             return Push(L, val.value());
         else
             return Push(L, nullptr);
-     }
+    }
 
     template <typename T>
     int Push(lua_State* L, const std::vector<T>&& val)
@@ -124,7 +122,7 @@ namespace lua
     }
 
     // Tuples can be used to return multiple results
-    template<typename... Ts>
+    template <typename... Ts>
     int Push(lua_State* L, const std::tuple<Ts...>&& tuple)
     {
         // Call Push on each element of the tuple
@@ -147,4 +145,4 @@ namespace lua
         return 1;
     }
 
-}
+}            // namespace lua

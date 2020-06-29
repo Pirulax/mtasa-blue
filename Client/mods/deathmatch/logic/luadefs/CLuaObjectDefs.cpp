@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 void CLuaObjectDefs::LoadFunctions()
@@ -232,7 +233,7 @@ int CLuaObjectDefs::GetObjectMass(lua_State* luaVM)
     return 1;
 }
 
-int CLuaObjectDefs::GetObjectProperties (lua_State* luaVM)
+int CLuaObjectDefs::GetObjectProperties(lua_State* luaVM)
 {
     lua_pushstring(luaVM, "all");
     return GetObjectProperty(luaVM);

@@ -9,18 +9,23 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/TaskIK.h>
 
+#dummy
 #include "TaskSA.h"
 
 typedef DWORD IKChain_c;
 
+#dummy
 #define FUNC_CTaskSimpleIKChain__Constructor            0x6339C0
 #define FUNC_CTaskSimpleIKLookAt__Constructor           0x633E00
 #define FUNC_CTaskSimpleIKManager__Constructor          0x6337F0
 
+#dummy
 #define FUNC_CTaskSimpleTriggerLookAt__Constructor      0x634440
 
 // ##############################################################################
@@ -50,8 +55,10 @@ public:
     float m_targetBlend;
     int   m_targetTime;
     int   m_isBlendingOut;
+#dummy
 #ifndef FINAL
     char m_idString[32];
+#dummy
 #endif
 };
 

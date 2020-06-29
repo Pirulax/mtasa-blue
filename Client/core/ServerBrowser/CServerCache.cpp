@@ -10,6 +10,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CVersionUpdater.Util.hpp"
 #include "CServerCache.h"

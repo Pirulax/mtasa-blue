@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientDummy.h"
 #include "CClientEntity.h"
 #include <list>

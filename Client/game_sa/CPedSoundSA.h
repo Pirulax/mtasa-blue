@@ -9,10 +9,13 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPedSound.h>
 
+#dummy
 #define FUNC_CAEPedSound__GetVoice          0x4E3CD0        // 4E3CD0 ; public: static short __cdecl CAEPedSound::GetVoice(char *,short)
 #define FUNC_CAEPedSound__GetAudioPedType   0x4E3C60        // 4E3C60 ; public: static short __cdecl CAEPedSound::GetAudioPedType(char *)
 #define FUNC_CAEPedSound__SetPed            0x4E68D0        // 4E69D0 ; public: void __thiscall CAEPedSound::SetPed(CPedSAInterface *)
@@ -20,14 +23,17 @@
 #define FUNC_CAEPedSound__DisablePedSpeech  0x4e56d0
 #define FUNC_CAEPedSound__IsSpeedDisabled   0x4e34d0
 
+#dummy
 #define VAR_CAEPedSound__VoiceTypeNames     0x8C8108        // Array of 6 pointers to strings
 
+#dummy
 #define VAR_CAEPedSound__VoiceNames_GEN     0x8AE6A8        // 20 bytes per voice name
 #define VAR_CAEPedSound__VoiceNames_EMG     0x8BA0D8
 #define VAR_CAEPedSound__VoiceNames_PLAYER  0x8BBD40
 #define VAR_CAEPedSound__VoiceNames_GANG    0x8BE1A8
 #define VAR_CAEPedSound__VoiceNames_GFD     0x8C4120
 
+#dummy
 #define NUM_PED_VOICE_TYPES 5
 
 enum
@@ -39,6 +45,7 @@ enum
     PED_TYPE_GFD
 };
 
+#dummy
 #define NUM_GEN_VOICES     209
 #define NUM_EMG_VOICES     46
 #define NUM_PLAYER_VOICES  20

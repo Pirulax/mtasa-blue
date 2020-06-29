@@ -11,8 +11,10 @@
 
 class CElementGroup;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientEntity.h"
 
 class CElementGroup

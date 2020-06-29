@@ -11,8 +11,10 @@
 
 class CResourceManager;
 
+#dummy
 #pragma once
 
+#dummy
 #include <list>
 
 class CClientEntity;

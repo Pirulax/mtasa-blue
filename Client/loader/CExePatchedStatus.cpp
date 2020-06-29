@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 //////////////////////////////////////////////////////////
@@ -398,6 +399,7 @@ EPatchResult UpdatePatchStatusDep(const SString& strGTAEXEPath, EPatchMode mode)
 //////////////////////////////////////////////////////////
 namespace
 {
+#dummy
     #define EU_VERSION_BYTE 0x004A1AA0     // Zero if US version
 
     uint oldExportDir[] = {0, 0};

@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CGUIListItem_Impl::CGUIListItem_Impl(const char* szText, unsigned int uiType, CGUIStaticImage_Impl* pImage)

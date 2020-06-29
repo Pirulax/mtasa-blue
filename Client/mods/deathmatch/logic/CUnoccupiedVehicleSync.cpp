@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "net/SyncStructures.h"
 
@@ -16,6 +17,7 @@ using std::list;
 
 extern CClientGame* g_pClientGame;
 
+#dummy
 #define UNOCCUPIED_VEHICLE_SYNC_RATE   ( g_TickRateSettings.iUnoccupiedVehicle )
 
 CUnoccupiedVehicleSync::CUnoccupiedVehicleSync(CClientVehicleManager* pVehicleManager)
@@ -150,10 +152,12 @@ void CUnoccupiedVehicleSync::Packet_UnoccupiedVehicleStartSync(NetBitStreamInter
             // Start syncing it
             AddVehicle(pVehicle);
 
+#dummy
 #ifdef MTA_DEBUG
             pVehicle->m_pLastSyncer = g_pClientGame->GetLocalPlayer();
             pVehicle->m_ulLastSyncTime = GetTickCount32();
             pVehicle->m_szLastSyncType = "unoccupied-start";
+#dummy
 #endif
         }
     }
@@ -200,10 +204,12 @@ void CUnoccupiedVehicleSync::Packet_UnoccupiedVehicleSync(NetBitStreamInterface&
                 pVehicle->SetEngineOn(vehicle.data.bEngineOn);
                 if (pVehicle->GetVehicleType() == CLIENTVEHICLE_TRAIN)
                     pVehicle->SetDerailed(vehicle.data.bDerailed);
+#dummy
 #ifdef MTA_DEBUG
                 pVehicle->m_pLastSyncer = NULL;
                 pVehicle->m_ulLastSyncTime = GetTickCount32();
                 pVehicle->m_szLastSyncType = "unoccupied";
+#dummy
 #endif
             }
         }

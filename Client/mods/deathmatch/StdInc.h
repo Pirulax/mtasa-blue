@@ -1,15 +1,18 @@
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #define MTA_CLIENT
 #define SHARED_UTIL_WITH_FAST_HASH_MAP
 #include "SharedUtil.h"
 
+#dummy
 #include <string.h>
 #include <stdio.h>
 #include <mmsystem.h>
 #include <winsock.h>
 
+#dummy
 #include <algorithm>
 #include <list>
 #include <map>
@@ -21,9 +24,11 @@
 #include <cstdio>
 #include <cstring>
 
+#dummy
 #include <zlib.h>
 
 // SDK includes
+#dummy
 #include <core/CLocalizationInterface.h>
 #include <core/CTrayIconInterface.h>
 #include <core/CDiscordManagerInterface.h>
@@ -51,6 +56,7 @@
 #include "pcrecpp.h"
 
 // Shared logic includes
+#dummy
 #include <Utils.h>
 #include <CClientCommon.h>
 #include <CClientManager.h>
@@ -140,6 +146,7 @@
 #include <CRemoteCalls.h>
 
 // Shared includes
+#dummy
 #include "TInterpolation.h"
 #include "CPositionRotationAnimation.h"
 #include "CLatentTransferManager.h"
@@ -147,6 +154,7 @@
 #include "lua/CLuaShared.h"
 
 // Deathmatch includes
+#dummy
 #include "ClientCommands.h"
 #include "CClient.h"
 #include "CEvents.h"

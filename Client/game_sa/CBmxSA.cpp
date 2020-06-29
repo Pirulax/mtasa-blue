@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CBmxSA::CBmxSA(CBmxSAInterface* bmx)

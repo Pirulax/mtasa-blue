@@ -9,13 +9,17 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Common.h"
 #include <game/CAERadioTrackManager.h>
 
+#dummy
 #ifdef GTASA_30
 
+#dummy
 #define FUNC_GetCurrentRadioStationID   0x4F3E10
 #define FUNC_IsVehicleRadioActive       0x4F5260
 #define FUNC_GetRadioStationName        0x4F3DA0
@@ -24,10 +28,13 @@
 #define FUNC_Reset                      0x4F3900
 #define FUNC_StartRadio                 0x4F6F60
 
+#dummy
 #define CLASS_CAERadioTrackManager      0x93AB00
 
+#dummy
 #else
 
+#dummy
 #define FUNC_GetCurrentRadioStationID   0x4E83F0
 #define FUNC_IsVehicleRadioActive       0x4E9800
 #define FUNC_GetRadioStationName        0x4E9E10
@@ -36,8 +43,10 @@
 #define FUNC_Reset                      0x4E7F80
 #define FUNC_StartRadio                 0x4EB3C0
 
+#dummy
 #define CLASS_CAERadioTrackManager      0x8CB6F8
 
+#dummy
 #endif
 
 class CAERadioTrackManagerSA : public CAERadioTrackManager

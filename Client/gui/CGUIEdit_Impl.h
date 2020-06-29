@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <gui/CGUIEdit.h>
 #include "CGUIElement_Impl.h"
 
@@ -47,6 +49,7 @@ public:
 
     eCGUIType GetType() { return CGUI_EDIT; };
 
+#dummy
     #include "CGUIElement_Inc.h"
 
 protected:

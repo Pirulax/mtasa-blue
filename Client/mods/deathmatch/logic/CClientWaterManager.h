@@ -10,8 +10,10 @@
 
 class CClientWaterManager;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientManager.h"
 #include "CClientWater.h"
 

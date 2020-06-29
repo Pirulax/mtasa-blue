@@ -10,8 +10,10 @@
 
 class CClientRadarMarkerManager;
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientRadarMarker.h"
 #include <list>
 

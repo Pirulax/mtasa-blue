@@ -1,15 +1,18 @@
 
 // Pragmas
+#dummy
 #pragma warning (disable:4995)
 #pragma warning (disable:4244)
 
 //#define WIN32_LEAN_AND_MEAN
+#dummy
 #include <windows.h>
 #define MTA_CLIENT
 #define SHARED_UTIL_WITH_FAST_HASH_MAP
 #define SHARED_UTIL_WITH_SYS_INFO
 #include "SharedUtil.h"
 
+#dummy
 #include <sys/stat.h>
 #include <d3d9.h>
 #include <direct.h>
@@ -22,6 +25,7 @@
 #include <winsock.h>
 #include <conio.h>
 
+#dummy
 #include <list>
 #include <vector>
 #include <map>
@@ -33,22 +37,26 @@
 #include <functional>
 
 // Localization
+#dummy
 #include "../../vendor/tinygettext/tinygettext.hpp"
 #include "CLocalization.h"
 
 // SDK includes
+#dummy
 #include <xml/CXMLNode.h>
 #include <xml/CXMLFile.h>
 #include <xml/CXMLAttribute.h>
 #include <xml/CXMLAttributes.h>
 #include <Common.h>
 
+#dummy
 #include <net/CNet.h>
 #include <multiplayer/CMultiplayer.h>
 #include <game/CGame.h>
 #include <hwbrk.h>
 
 // Core-level includes
+#dummy
 #include "CQueryReceiver.h"
 #include "CrashHandler.h"
 #include "CCore.h"

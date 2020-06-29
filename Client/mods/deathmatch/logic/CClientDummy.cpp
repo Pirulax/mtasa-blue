@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CClientDummy::CClientDummy(CClientManager* pManager, ElementID ID, const char* szTypeName) : ClassInit(this), CClientEntity(ID)

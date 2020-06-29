@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CClientDFFManager::CClientDFFManager(CClientManager* pManager)

@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CBike.h>
 #include "CVehicleSA.h"
 
+#dummy
 #define FUNC_CBike_PlaceOnRoadProperly              0x6BEEB0
 
 class CBikeSAInterface : public CVehicleSAInterface

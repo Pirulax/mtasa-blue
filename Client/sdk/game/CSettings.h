@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #if (!defined(RWFORCEENUMSIZEINT))
 #define RWFORCEENUMSIZEINT ((int)((~((unsigned int)0))>>1))
 #endif /* (!defined(RWFORCEENUMSIZEINT)) */

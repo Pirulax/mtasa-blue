@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 extern CCoreInterface* g_pCore;
 
@@ -50,6 +51,7 @@ void _cdecl OnPreCreateDevice(IDirect3D9* pDirect3D, UINT Adapter, D3DDEVTYPE De
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_PreCreateDevice_US          0x007F675B
 #define HOOKPOS_PreCreateDevice_EU          0x007F679B
 #define HOOKSIZE_PreCreateDevice_US         6
@@ -108,6 +110,7 @@ HRESULT _cdecl OnPostCreateDevice(HRESULT hResult)
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_PostCreateDevice_US         0x07F6784
 #define HOOKPOS_PostCreateDevice_EU         0x07F67C4
 #define HOOKSIZE_PostCreateDevice_US        6

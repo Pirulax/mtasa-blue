@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CResource.h"
 #include "CDownloadableResource.h"
 #include <list>
 
+#dummy
 #ifndef MAX_PATH
 #define MAX_PATH        260
 #endif

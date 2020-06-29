@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 const char* const sNoTaskName = "[NO TASK TYPE]";

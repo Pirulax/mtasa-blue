@@ -11,6 +11,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include <game/RenderWareD3D.h>
 #include "gamesa_renderware.h"

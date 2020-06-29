@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CDamageManager.h>
 #include "Common.h"
 
+#dummy
 #define FUNC_GetEngineStatus        0x6c22c0
 #define FUNC_SetEngineStatus        0x6c22a0
 #define FUNC_GetDoorStatus          0x6c2230
@@ -28,8 +31,10 @@
 #define FUNC_GetAeroplaneCompStatus 0x6C2300
 
 // 006c25d0      public: void __thiscall CDamageManager::FuckCarCompletely(bool)
+#dummy
 #define FUNC_FuckCarCompletely      0x6c25d0
 
+#dummy
 #define MAX_DOORS                   6   // also in CAutomobile
 #define MAX_WHEELS                  4
 

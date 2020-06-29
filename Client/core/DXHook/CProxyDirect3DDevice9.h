@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <d3d9.h>
 #include "CDirect3DData.h"
 
@@ -172,12 +174,14 @@ public:
     const static int D3DSAMP_MAX = 14;
     const static int D3DTS_MAX = 260;
 
+#dummy
     #define DPAD(f,t)   DWORD       pad##f##_##t[(t)-(f)+1]
     #define MPAD(f,t)   D3DMATRIX   pad##f##_##t[(t)-(f)+1]
 
     struct SD3DRenderState
     {
-        union {
+        union
+        {
             DWORD Raw[D3DRS_MAX];
             struct
             {
@@ -312,7 +316,8 @@ public:
 
     struct SD3DStageState
     {
-        union {
+        union
+        {
             DWORD Raw[D3DTSS_MAX];
             struct
             {
@@ -344,7 +349,8 @@ public:
 
     struct SD3DSamplerState
     {
-        union {
+        union
+        {
             DWORD Raw[D3DSAMP_MAX];
             struct
             {
@@ -372,7 +378,8 @@ public:
 
     struct SD3DTransformState
     {
-        union {
+        union
+        {
             struct
             {
                 D3DMATRIX  DUMMY;

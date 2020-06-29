@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientEntity.h"
 #include "CFileReader.h"
 #include "CIFPAnimations.h"

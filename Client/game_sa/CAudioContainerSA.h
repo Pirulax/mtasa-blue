@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CAudioContainer.h>
 #include "CAudioContainerLookupTableSA.h"
 #include <fstream>
 
+#dummy
 #define VALIDATE_BUFFER_SIZE 4096
 #define NUM_BEAT_ENTRIES 1000
 #define NUM_LENGTH_ENTRIES 8

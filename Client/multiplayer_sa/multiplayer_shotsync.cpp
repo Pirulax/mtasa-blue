@@ -9,9 +9,11 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 // These includes have to be fixed!
+#dummy
 #include "../game_sa/CPedSA.h"
 #include "../game_sa/CEventDamageSA.h"
 #include "../game_sa/CColPointSA.h"
@@ -80,6 +82,7 @@ DWORD RETURN_CProjectile__CProjectile = 0x4037B3;
 
 CPools* m_pools = 0;
 
+#dummy
 #define VAR_CWorld_IncludeCarTyres 0xb7cd70 // Used for CWorld_ProcessLineOfSight
 
 void InitFireInstantHit_MidHooks();
@@ -313,12 +316,12 @@ static void Event_BulletImpact()
     }
 }
 
-CPedSAInterface*       pAPed = NULL;
-float                  fTempPosX = 0, fTempPosY = 0, fTempPosZ = 0;
-CPed*                  pATargetingPed = NULL;
-CVector*               pTempVec;
-bool*                  pSkipAim;
-CRemoteDataStorageSA*  pTempRemote;
+CPedSAInterface*      pAPed = NULL;
+float                 fTempPosX = 0, fTempPosY = 0, fTempPosZ = 0;
+CPed*                 pATargetingPed = NULL;
+CVector*              pTempVec;
+bool*                 pSkipAim;
+CRemoteDataStorageSA* pTempRemote;
 
 VOID _declspec(naked) HOOK_CTaskSimpleUsegun_ProcessPed()
 {
@@ -340,7 +343,7 @@ VOID _declspec(naked) HOOK_CTaskSimpleUsegun_ProcessPed()
     }
 }
 
-static CPed * GetTargetingPed()
+static CPed* GetTargetingPed()
 {
     SClientEntity<CPedSA>* pClientEntity = m_pools->GetPed((DWORD*)pAPed);
     return pClientEntity ? pClientEntity->pEntity : nullptr;
@@ -930,7 +933,7 @@ void _declspec(naked) HOOK_CFireManager__StartFire_()
     }
 }
 
-static CEntity* GetProjectileOwner(CPools*  pPools)
+static CEntity* GetProjectileOwner(CPools* pPools)
 {
     CEntity* pOwner = nullptr;
     if (pProjectileOwner)
@@ -960,7 +963,7 @@ static CEntity* GetProjectileOwner(CPools*  pPools)
     return pOwner;
 }
 
-static void GetProjectileTarget(CPools*  pPools)
+static void GetProjectileTarget(CPools* pPools)
 {
     projectileTargetEntity = nullptr;
 
@@ -1012,7 +1015,7 @@ void ProcessProjectile()
     if (m_pProjectileHandler != NULL)
     {
         CPoolsSA* pPools = (CPoolsSA*)pGameInterface->GetPools();
-        CEntity* pOwner = GetProjectileOwner(pPools);
+        CEntity*  pOwner = GetProjectileOwner(pPools);
         GetProjectileTarget(pPools);
 
         CProjectileInfo* projectileInfo = pGameInterface->GetProjectileInfo()->GetProjectileInfo(dwProjectileInfoIndex);
@@ -1164,6 +1167,7 @@ void OnMy_CWeapon_FireInstantHit_Mid(CEntitySAInterface* pEntity, CVector* pvecN
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CWeapon_FireInstantHit_Mid                         0x740B89
 #define HOOKSIZE_CWeapon_FireInstantHit_Mid                        5
 DWORD RETURN_CWeapon_FireInstantHit_Mid = 0x740B8E;
@@ -1245,6 +1249,7 @@ void OnMy_CWeapon_FireSniper_Mid(CEntitySAInterface* pEntity, CVector* pvecEndHi
 }
 
 // Hook info
+#dummy
 #define HOOKPOS_CWeapon_FireSniper_Mid                         0x73AE31
 #define HOOKSIZE_CWeapon_FireSniper_Mid                        5
 DWORD RETURN_CWeapon_FireSniper_Mid = 0x73AE39;
@@ -1536,6 +1541,7 @@ void _declspec(naked) HOOK_CWeapon_FireInstantHit_IsPlayer()
     }
 }
 
+#dummy
 #if false
 VOID _declspec(naked) HOOK_CCamera__Find3rdPersonCamTargetVector()
 {
@@ -1691,6 +1697,7 @@ VOID _declspec(naked) HOOK_CWeapon__FireShotgun()
         jmp     edx
     }
 }
+#dummy
 #endif
 
 CPedSAInterface* CEventVehicleExplosion_pPed;

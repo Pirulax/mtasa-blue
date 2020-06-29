@@ -9,12 +9,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 
+#dummy
 #include <game/CRenderWare.h>
 
+#dummy
 #include "CModelInfoSA.h"
 #include "CColModelSA.h"
 #include "Common.h"

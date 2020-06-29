@@ -9,17 +9,21 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#dummy
 #define     MAX_JUMPCODE_SIZE           20
 
 BOOL  HookInstall(DWORD dwInstallAddress, DWORD dwHookHandler, int iJmpCodeSize);
 BYTE* CreateJump(DWORD dwFrom, DWORD dwTo, BYTE* ByteArray);
 
 // Auto detect requirement of US/EU hook installation
+#dummy
 #define EZHookInstall(type) \
         __if_not_exists( RETURN_##type##_US ) \
         { \
@@ -39,6 +43,7 @@ BYTE* CreateJump(DWORD dwFrom, DWORD dwTo, BYTE* ByteArray);
 
 // US/EU hook installation
 // Includes additional return pointer copies if required
+#dummy
 #define EZHookInstall_HERE(type,CO) \
         HookInstall( HOOKPOS_##type##_##CO##, (DWORD)HOOK_##type, HOOKSIZE_##type##_##CO## ); \
         RETURN_##type##_BOTH = RETURN_##type##_##CO##; \
@@ -63,6 +68,7 @@ struct SHookInfo
     uint  uiSize;
 };
 
+#dummy
 #define MAKE_HOOK_INFO(type)  SHookInfo ( HOOKPOS_##type, HOOK_##type, HOOKSIZE_##type )
 
 // Structure for holding poke info

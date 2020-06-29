@@ -8,16 +8,20 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "net/SyncStructures.h"
 
+#dummy
 #define ARGUMENT_TYPE_INT       9
 #define ARGUMENT_TYPE_FLOAT     10
 
+#dummy
 #ifndef VERIFY_ENTITY
 #define VERIFY_ENTITY(entity) (CStaticFunctionDefinitions::GetRootElement()->IsMyChild(entity,true)&&!entity->IsBeingDeleted())
 #endif
 
+#dummy
 #ifndef VERIFY_RESOURCE
 #define VERIFY_RESOURCE(resource) (g_pClientGame->GetResourceManager()->Exists(resource))
 #endif
@@ -27,6 +31,7 @@ extern CClientGame* g_pClientGame;
 using namespace std;
 
 // Prevent the warning issued when doing unsigned short -> void*
+#dummy
 #pragma warning(disable:4312)
 
 CLuaArgument::CLuaArgument()
@@ -72,10 +77,12 @@ void CLuaArgument::CopyRecursive(const CLuaArgument& Argument, CFastHashMap<CLua
     // Destroy our old tabledata if neccessary
     DeleteTableData();
 
+#dummy
 #ifdef MTA_DEBUG
     // Copy over line and filename too
     m_strFilename = Argument.m_strFilename;
     m_iLine = Argument.m_iLine;
+#dummy
 #endif
 
     // Set our variable equally to the copy class
@@ -204,6 +211,7 @@ bool CLuaArgument::CompareRecursive(const CLuaArgument& Argument, std::set<CLuaA
 void CLuaArgument::Read(lua_State* luaVM, int iArgument, CFastHashMap<const void*, CLuaArguments*>* pKnownTables)
 {
     // Store debug data for later retrieval
+#dummy
 #ifdef MTA_DEBUG
     m_iLine = 0;
     m_strFilename = "";
@@ -215,6 +223,7 @@ void CLuaArgument::Read(lua_State* luaVM, int iArgument, CFastHashMap<const void
         m_strFilename = debugInfo.source;
         m_iLine = debugInfo.currentline;
     }
+#dummy
 #endif
 
     // Eventually delete our previous string
@@ -759,12 +768,14 @@ bool CLuaArgument::WriteToBitStream(NetBitStreamInterface& bitStream, CFastHashM
 
 void CLuaArgument::LogUnableToPacketize(const char* szMessage) const
 {
+#dummy
 #ifdef MTA_DEBUG
     if (m_strFilename.length() > 0)
     {
         g_pClientGame->GetScriptDebugging()->LogWarning(NULL, "%s:%d: %s", ConformResourcePath(m_strFilename.c_str()).c_str(), m_iLine, szMessage);
     }
     else
+#dummy
 #endif
     {
         g_pClientGame->GetScriptDebugging()->LogWarning(NULL, "Unknown: %s", szMessage);

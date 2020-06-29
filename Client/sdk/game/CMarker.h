@@ -9,16 +9,20 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Common.h"
 #include "CEntity.h"
 #include "CObject.h"
 #include "CPed.h"
 #include "CVehicle.h"
 
+#dummy
 #include <windows.h>
 
+#dummy
 #define MARKER_SCALE_SMALL          1
 #define MARKER_SCALE_NORMAL         2
 

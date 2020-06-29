@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 class CJoystickManagerInterface
@@ -48,11 +49,15 @@ CJoystickManagerInterface* NewJoystickManager();
 CJoystickManagerInterface* GetJoystickManager();
 
 // Custom VK_ codes for the joystick buttons - Starts at VK_JOY(1)
+#dummy
 #define VK_JOY(x)       ( 0x100+(x) )
 // Custom VK_ codes for the joystick pov hat - Starts at VK_POV(1)
+#dummy
 #define VK_POV(x)       ( 0x150+(x) )
 // Custom VK_ codes for the joystick axes - Starts at VK_AXIS(1)
+#dummy
 #define VK_AXIS(x)      ( 0x160+(x) )
 
 // Unique numbers for the joystick buttons - Used to identify buttons in the GTA settings
+#dummy
 #define GTA_KEY_JOY(x)  ( 500+(x) )

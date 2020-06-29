@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include "CElementRPCs.h"
 #include "net/SyncStructures.h"
@@ -50,6 +51,7 @@ void CElementRPCs::LoadFunctions()
     AddHandler(SET_PROPAGATE_CALLS_ENABLED, SetCallPropagationEnabled, "setCallPropagationEnabled");
 }
 
+#dummy
 #define RUN_CHILDREN_SERVER(func) \
     if (pSource->CountChildren() && pSource->IsCallPropagationEnabled()) \
     { \
@@ -438,13 +440,13 @@ void CElementRPCs::SetElementModel(CClientEntity* pSource, NetBitStreamInterface
 
     if (!bitStream.Read(usModel))
         return;
-    
+
     switch (pSource->GetType())
     {
         case CCLIENTPED:
         case CCLIENTPLAYER:
         {
-            CClientPed* pPed = static_cast<CClientPed*>(pSource);
+            CClientPed*          pPed = static_cast<CClientPed*>(pSource);
             const unsigned short usCurrentModel = static_cast<ushort>(pPed->GetModel());
 
             if (usCurrentModel != usModel)
@@ -470,7 +472,7 @@ void CElementRPCs::SetElementModel(CClientEntity* pSource, NetBitStreamInterface
                 bitStream.Read(ucVariant2);
             }
 
-            CClientVehicle* pVehicle = static_cast<CClientVehicle*>(pSource);
+            CClientVehicle*      pVehicle = static_cast<CClientVehicle*>(pSource);
             const unsigned short usCurrentModel = pVehicle->GetModel();
 
             if (usCurrentModel != usModel)
@@ -489,9 +491,9 @@ void CElementRPCs::SetElementModel(CClientEntity* pSource, NetBitStreamInterface
         case CCLIENTOBJECT:
         case CCLIENTWEAPON:
         {
-            CClientObject* pObject = static_cast<CClientObject*>(pSource);
+            CClientObject*       pObject = static_cast<CClientObject*>(pSource);
             const unsigned short usCurrentModel = pObject->GetModel();
-            
+
             if (usCurrentModel != usModel)
             {
                 pObject->SetModel(usModel);

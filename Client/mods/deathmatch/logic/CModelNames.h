@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #define CLOTHES_MODEL_ID_FIRST  30000
 #define CLOTHES_MODEL_ID_LAST   30151
 #define CLOTHES_TEX_ID_FIRST    30152

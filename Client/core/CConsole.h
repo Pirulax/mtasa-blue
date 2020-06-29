@@ -11,8 +11,10 @@
 
 class CConsole;
 
+#dummy
 #pragma once
 
+#dummy
 #include <core/CConsoleInterface.h>
 #include "CCore.h"
 #include "CCommands.h"

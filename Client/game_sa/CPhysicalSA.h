@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CPhysical.h>
 #include "CEntitySA.h"
 #include <CVector.h>
 
+#dummy
 #define FUNC_GetMoveSpeed                       0x404460
 #define FUNC_GetTurnSpeed                       0x470030
 #define FUNC_ProcessCollision                   0x54DFB0
@@ -23,6 +26,7 @@
 #define FUNC_CPhysical_AddToMovingList          0x542800
 #define FUNC_CPhysical_RemoveFromMovingList     0x542860
 
+#dummy
 #define PHYSICAL_MAXNOOFCOLLISIONRECORDS        6
 #define PHYSICAL_MAXMASS                        99999.0
 

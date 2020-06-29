@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CEvent* CEventGroupSA::Add(CEvent* pEvent, bool b_1)

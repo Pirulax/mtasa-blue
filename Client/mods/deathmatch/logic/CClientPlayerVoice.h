@@ -9,13 +9,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 /*
+#dummy
 #define VOICE_FREQUENCY                 44100
 #define VOICE_SAMPLE_SIZE               2
 */
 
+#dummy
 #include <mutex>
 #include <speex/speex.h>
 #include <CClientPlayer.h>

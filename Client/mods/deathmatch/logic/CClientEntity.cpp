@@ -8,12 +8,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 using std::list;
 
 extern CClientGame* g_pClientGame;
 
+#dummy
 #pragma warning( disable : 4355 )   // warning C4355: 'this' : used in base member initializer list
 
 CClientEntity::CClientEntity(ElementID ID) : ClassInit(this)
@@ -1357,9 +1359,11 @@ void CClientEntity::AddEntityFromRoot(unsigned int uiTypeHash, CClientEntity* pE
     for (; iter != pEntity->IterEnd(); iter++)
         CClientEntity::AddEntityFromRoot((*iter)->GetTypeHash(), *iter, false);
 
+#dummy
 #if CHECK_ENTITIES_FROM_ROOT
     if (bDebugCheck)
         _CheckEntitiesFromRoot(uiTypeHash);
+#dummy
 #endif
 }
 
@@ -1383,8 +1387,10 @@ void CClientEntity::RemoveEntityFromRoot(unsigned int uiTypeHash, CClientEntity*
 
 void CClientEntity::GetEntitiesFromRoot(unsigned int uiTypeHash, lua_State* luaVM, bool bStreamedIn)
 {
+#dummy
 #if CHECK_ENTITIES_FROM_ROOT
     _CheckEntitiesFromRoot(uiTypeHash);
+#dummy
 #endif
 
     t_mapEntitiesFromRoot::iterator find = ms_mapEntitiesFromRoot.find(uiTypeHash);
@@ -1413,6 +1419,7 @@ void CClientEntity::GetEntitiesFromRoot(unsigned int uiTypeHash, lua_State* luaV
     }
 }
 
+#dummy
 #if CHECK_ENTITIES_FROM_ROOT
 
 //
@@ -1505,6 +1512,7 @@ void CClientEntity::_GetEntitiesFromRoot(unsigned int uiTypeHash, std::map<CClie
     }
 }
 
+#dummy
 #endif
 
 bool CClientEntity::IsCollidableWith(CClientEntity* pEntity)

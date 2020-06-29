@@ -8,8 +8,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define VEHICLE_UPGRADE_SLOTS 17
 
 class CClientVehicle;

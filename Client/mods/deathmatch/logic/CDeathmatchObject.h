@@ -9,19 +9,24 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CClientObject.h"
 
 class CDeathmatchObject : public CClientObject
 {
     DECLARE_CLASS(CDeathmatchObject, CClientObject)
 public:
+#dummy
 #ifdef WITH_OBJECT_SYNC
     CDeathmatchObject(CClientManager* pManager, class CMovingObjectsManager* pMovingObjectsManager, class CObjectSync* pObjectSync, ElementID ID,
                       unsigned short usModel);
+#dummy
 #else
     CDeathmatchObject(CClientManager* pManager, class CMovingObjectsManager* pMovingObjectsManager, ElementID ID, unsigned short usModel, bool bLowLod);
+#dummy
 #endif
     ~CDeathmatchObject();
 
@@ -43,8 +48,10 @@ public:
 
 protected:
     class CMovingObjectsManager* m_pMovingObjectsManager;
+#dummy
 #ifdef WITH_OBJECT_SYNC
     class CObjectSync* m_pObjectSync;
+#dummy
 #endif
     void _StopMovement(bool a_bUnregister);
 

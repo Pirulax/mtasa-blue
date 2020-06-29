@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 CNetworkStats::CNetworkStats(CClientDisplayManager* pDisplayManager)

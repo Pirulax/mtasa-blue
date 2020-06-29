@@ -9,36 +9,46 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CModelInfo.h>
 #include <game/Common.h>
 
+#dummy
 #include "CColModelSA.h"
 #include "CRenderWareSA.h"
 class CPedModelInfoSA;
 class CPedModelInfoSAInterface;
 
+#dummy
 #define     RpGetFrame(__c)                 ((RwFrame*)(((RwObject *)(__c))->parent))
 
+#dummy
 #define     ARRAY_ModelLoaded               0x8E4CD0 // ##SA##
 
+#dummy
 #define     FUNC_CStreaming__HasModelLoaded 0x4044C0
 
 // CModelInfo/ARRAY_ModelInfo __thiscall to load/replace vehicle models
+#dummy
 #define     FUNC_LoadVehicleModel           0x4C95C0
 #define     FUNC_LoadWeaponModel            0x4C9910
 #define     FUNC_LoadPedModel               0x4C7340
 
+#dummy
 #define     DWORD_AtomicsReplacerModelID    0xB71840
 #define     FUNC_AtomicsReplacer            0x537150
 
+#dummy
 #define     ARRAY_ModelInfo                 0xA9B0C8
 #define     CLASS_CText                     0xC1B340
 #define     FUNC_CText_Get                  0x6A0050
 #define     FUNC_GetModelFlags              0x4044E0
 #define     FUNC_GetBoundingBox             0x4082F0
 
+#dummy
 #define     FUNC_RemoveRef                  0x4C4BB0
 #define     FUNC_IsBoatModel                0x4c5a70
 #define     FUNC_IsCarModel                 0x4c5aa0
@@ -53,15 +63,19 @@ class CPedModelInfoSAInterface;
 #define     FUNC_IsTrailerModel             0x4c5c50
 #define     FUNC_IsVehicleModelType         0x4c5c80
 
+#dummy
 #define     FUNC_RemoveModel                0x4089a0
 #define     FUNC_FlushRequestList           0x40E4E0
 
+#dummy
 #define     FUNC_HasVehicleUpgradeLoaded    0x407820
 #define     FUNC_RequestVehicleUpgrade      0x408C70
 
+#dummy
 #define     FUNC_CVehicleModelInfo__GetNumRemaps        0x4C86B0
 #define     FUNC_CVehicleStructure_delete   0x4C9580
 
+#dummy
 #define     FUNC_SetColModel                0x4C4BC0
 #define     FUNC_AddPedModel                0x4c67a0
 #define     VAR_CTempColModels_ModelPed1    0x968DF0

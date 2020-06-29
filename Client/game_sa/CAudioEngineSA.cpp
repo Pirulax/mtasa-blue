@@ -9,12 +9,15 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define HOOKPOS_CAEAmbienceTrackManager_CheckForPause       0x4D6E21
 DWORD RETURN_CAEAmbienceTrackManager_CheckForPause = 0x4D6E27;
 void  HOOK_CAEAmbienceTrackManager_CheckForPause();
 
+#dummy
 #define HOOKPOS_CAESoundManager_RequestNewSound     0x4EFB10
 DWORD RETURN_CAESoundManager_RequestNewSound = 0x4EFB15;
 void  HOOK_CAESoundManager_RequestNewSound();
@@ -485,7 +488,7 @@ bool CAudioEngineSA::OnWorldSound(CAESound* pAESound)
 
         if (!pGameEntity && pAESound->pAudioEntity)
             pGameEntity = pAESound->pAudioEntity->pEntity;
-        
+
         SWorldSoundEvent event = {
             pAESound->usGroup,
             pAESound->usIndex,

@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <windows.h>
 
 // Limits for MTA
+#dummy
 #define MAX_VEHICLES_MTA                    64          // Real limit is 110
 #define MAX_PEDS_MTA                        110         // Real limit is 140
 #define MAX_OBJECTS_MTA                     1000        // Real limit is 1200
@@ -22,6 +25,7 @@
 #define MAX_POINTER_DOUBLE_LINKS_MTA        74000       // Real limit is 74800  ( MAX_OBJECTS_MTA * 72 + 2000 )
 
 // Real limits for GTA
+#dummy
 #define MAX_VEHICLES                        ( MAX_VEHICLES_MTA + 46 )               // 110
 #define MAX_PEDS                            ( MAX_PEDS_MTA + 30 )                   // 140
 #define MAX_OBJECTS                         ( MAX_OBJECTS_MTA + 200 )               // 1200
@@ -35,28 +39,33 @@
  * Flags used to define weapon characteristics
  */
 // aiming options
+#dummy
 #define WEAPONTYPE_CANAIM           (0x000001)  // can auto target to aim
 #define WEAPONTYPE_CANAIMWITHARM    (0x000002)  // only needs arm to aim
 #define WEAPONTYPE_FIRSTPERSON      (0x000004)  // uses 1st person aim
 #define WEAPONTYPE_CANFREEAIM       (0x000008)  // can only use free aiming
 
 // movement options
+#dummy
 #define WEAPONTYPE_MOVEAIM          (0x000010)  // can move and aim at same time
 #define WEAPONTYPE_MOVEFIRE         (0x000020)  // can move and fire at same time
 
 // basic characteristics
+#dummy
 #define WEAPONTYPE_THROW            (0x000100)  // is a throwing weapon
 #define WEAPONTYPE_HEAVY            (0x000200)  // heavy weapon - can't jump
 #define WEAPONTYPE_CONTINUOUS_FIRE  (0x000400)  // fires every frame within loop (ie paint spray)
 #define WEAPONTYPE_TWIN_PISTOLS     (0x000800)  // can use 2x guns at same time
 
 // these are gun anim options
+#dummy
 #define WEAPONTYPE_ANIM_RELOAD      (0x001000)  // weapon has reload anims
 #define WEAPONTYPE_ANIM_CROUCHFIRE  (0x002000)  // weapon has crouching anims
 #define WEAPONTYPE_RELOAD2LOOPSTART (0x004000)  // loop from end of reload to fire loop start
 #define WEAPONTYPE_LONG_RELOAD_TIME (0x008000)  // force a longer reload time!
 
 // these are area effect/shot options
+#dummy
 #define WEAPONTYPE_SLOWS_DOWN       (0x010000)  //
 #define WEAPONTYPE_RANDOM_SPEED     (0x020000)  //
 #define WEAPONTYPE_FORCE_FINISH_ANIM (0x040000)  // force the anim to finish player after aim/fire rather than blending out
@@ -142,6 +151,7 @@ enum eWantedLevelSA
     WANTED_LEVEL6
 };
 
+#dummy
 #define WEAPONTYPE_CHAINGUN WEAPONTYPE_MINIGUN
 
 enum eDoorState
@@ -1611,4 +1621,4 @@ namespace eObjectGroup
         BY_GUN,
         SMASHABLE,
     };
-}
+}            // namespace eObjectGroup

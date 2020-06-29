@@ -9,17 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 void CLuaProjectileDefs::LoadFunctions()
 {
     constexpr static const std::pair<const char*, lua_CFunction> functions[]{
-        {"createProjectile", CreateProjectile},
-        {"getProjectileType", GetProjectileType},
-        {"getProjectileTarget", GetProjectileTarget},
-        {"getProjectileCreator", GetProjectileCreator},
-        {"getProjectileForce", GetProjectileForce},
-        {"setProjectileCounter", SetProjectileCounter},
+        {"createProjectile", CreateProjectile},         {"getProjectileType", GetProjectileType},   {"getProjectileTarget", GetProjectileTarget},
+        {"getProjectileCreator", GetProjectileCreator}, {"getProjectileForce", GetProjectileForce}, {"setProjectileCounter", SetProjectileCounter},
         {"getProjectileCounter", GetProjectileCounter},
     };
 

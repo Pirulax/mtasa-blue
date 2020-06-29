@@ -1,7 +1,9 @@
 
 // Pragmas
+#dummy
 #pragma warning (disable:4250)
 
+#dummy
 #include <windows.h>
 #define MTA_CLIENT
 #define SHARED_UTIL_WITH_HASH_MAP
@@ -11,6 +13,7 @@
 #include "SharedUtil.MemAccess.h"
 #include <stdio.h>
 
+#dummy
 #include <algorithm>
 #include <list>
 #include <map>
@@ -18,6 +21,7 @@
 #include <vector>
 
 // SDK includes
+#dummy
 #include <core/CCoreInterface.h>
 #include <net/CNet.h>
 #include <game/CGame.h>
@@ -26,6 +30,7 @@
 #include <hwbrk.h>
 
 // Multiplayer includes
+#dummy
 #include "multiplayersa_init.h"
 #include "multiplayer_keysync.h"
 #include "multiplayer_hooksystem.h"

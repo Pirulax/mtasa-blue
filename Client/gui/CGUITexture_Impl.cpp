@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CGUITexture_Impl::CGUITexture_Impl(CGUI_Impl* pGUI)

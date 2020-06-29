@@ -17,8 +17,10 @@
 //
 //----------------------------------------------------------
 
+#dummy
 #include "StdInc.h"
 
+#dummy
 #define INTEGER_AT(addr) *(int *)(addr)
 #define FLOAT_AT(addr) *(float *)(addr)
 

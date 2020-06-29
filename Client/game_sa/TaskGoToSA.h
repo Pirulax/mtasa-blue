@@ -9,13 +9,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <game/TaskGoTo.h>
 #include <game/CPathFind.h>
 
+#dummy
 #include "CVehicleSA.h"
 #include "TaskSA.h"
 
@@ -23,9 +26,11 @@
 class CAnimBlendAssociation;
 typedef DWORD CTaskUtilityLineUpPedWithCar;
 
+#dummy
 #define FUNC_CTaskComplexWanderStandard__Constructor            0x48E4F0
 #define FUNC_CTaskComplexWanderStandard__Destructor             0x48E600
 
+#dummy
 #define FUNC_CTaskSimpleCarSetPedOut__PositionPedOutOfCollision     0x6479B0
 
 class TaskComplexWanderVTBL : public TaskComplexVTBL

@@ -2,6 +2,7 @@
 // CRemoteMasterServer.hpp
 //
 
+#dummy
 #include "StdInc.h"
 #include "CServerBrowser.RemoteMasterServer.h"
 
@@ -293,10 +294,12 @@ bool CRemoteMasterServer::ParseListVer0(CServerListItemList& itemList)
     unsigned short usCount = 0;
     stream.Read(usCount);
 
+#dummy
 #if MTA_DEBUG
     uint uiNumServers = usCount;
     uint uiNumServersUpdated = 0;
     uint uiNumServersBefore = itemList.size();
+#dummy
 #endif
 
     while (!stream.AtEnd(6) && usCount--)
@@ -316,8 +319,10 @@ bool CRemoteMasterServer::ParseListVer0(CServerListItemList& itemList)
         if (pItem->ShouldAllowDataQuality(SERVER_INFO_ASE_0))
         {
             pItem->SetDataQuality(SERVER_INFO_ASE_0);
+#dummy
 #if MTA_DEBUG
             uiNumServersUpdated++;
+#dummy
 #endif
         }
     }
@@ -382,6 +387,7 @@ bool CRemoteMasterServer::ParseListVer2(CServerListItemList& itemList)
     uint uiCount = 0;
     stream.Read(uiCount);
 
+#dummy
 #if MTA_DEBUG
     struct SItem
     {
@@ -393,6 +399,7 @@ bool CRemoteMasterServer::ParseListVer2(CServerListItemList& itemList)
     uint uiNumServers = uiCount;
     uint uiNumServersUpdated = 0;
     uint uiNumServersBefore = itemList.size();
+#dummy
 #endif
 
     // Add all servers until we hit the count or run out of data
@@ -497,11 +504,13 @@ bool CRemoteMasterServer::ParseListVer2(CServerListItemList& itemList)
 
             pItem->PostChange();
 
+#dummy
 #if MTA_DEBUG
             uiNumServersUpdated++;
             totalMap[pItem->strVersion].iTotal += 1;
             if (pItem->bMasterServerSaysNoResponse)
                 totalMap[pItem->strVersion].iNoResponse += 1;
+#dummy
 #endif
         }
 
@@ -509,11 +518,13 @@ bool CRemoteMasterServer::ParseListVer2(CServerListItemList& itemList)
         stream.Seek(uiSkipPos);
     }
 
+#dummy
 #if MTA_DEBUG
     OutputDebugLine(
         SString("[Browser] %d servers (%d added, %d updated) from %s", uiNumServers, itemList.size() - uiNumServersBefore, uiNumServersUpdated, *m_strURL));
     for (std::map<SString, SItem>::iterator iter = totalMap.begin(); iter != totalMap.end(); ++iter)
         OutputDebugLine(SString("[Browser] version '%s' - %d total  %d noresponse", *iter->first, iter->second.iTotal, iter->second.iNoResponse));
+#dummy
 #endif
 
     return true;

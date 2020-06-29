@@ -103,9 +103,9 @@ public:
     void AddResourceToLists(CResource* pResource);
     void RemoveResourceFromLists(CResource* pResource);
 
-    void    ApplyMinClientRequirement(CResource* pResource, const CMtaVersion& strMinClientRequirement);
-    void    RemoveMinClientRequirement(CResource* pResource);
-    void    ReevaluateMinClientRequirement();
+    void        ApplyMinClientRequirement(CResource* pResource, const CMtaVersion& strMinClientRequirement);
+    void        RemoveMinClientRequirement(CResource* pResource);
+    void        ReevaluateMinClientRequirement();
     CMtaVersion GetMinClientRequirement() { return m_strMinClientRequirement; }
 
     void ApplySyncMapElementDataOption(CResource* pResource, bool bSyncMapElementData);

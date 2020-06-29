@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "Common.h"
 #include "COffsets.h"
 #include <game/CEntity.h>
@@ -19,18 +21,23 @@
 #include <CVector2D.h>
 #include <CVector.h>
 
+#dummy
 #define FUNC_GetDistanceFromCentreOfMassToBaseOfModel       0x536BE0
 
+#dummy
 #define FUNC_SetRwObjectAlpha                               0x5332C0
 #define FUNC_SetOrientation                                 0x439A80
 
+#dummy
 #define FUNC_CMatrix__ConvertToEulerAngles                  0x59A840
 #define FUNC_CMatrix__ConvertFromEulerAngles                0x59AA40
 
+#dummy
 #define FUNC_IsOnScreen                                     0x534540
 #define FUNC_IsVisible                                      0x536BC0
 
 // not in CEntity really
+#dummy
 #define FUNC_RpAnimBlendClumpGetAssociation                 0x4D6870
 
 class CEntitySAInterfaceVTBL

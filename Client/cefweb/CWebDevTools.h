@@ -7,6 +7,7 @@
  *  PURPOSE:     Web dev tools class
  *
  *****************************************************************************/
+#dummy
 #pragma once
 
 class CWebDevTools

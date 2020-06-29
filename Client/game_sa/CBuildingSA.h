@@ -9,11 +9,14 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <game/CBuilding.h>
 #include "CEntitySA.h"
 
+#dummy
 #define FUNC_CBuilding_operator_new     0x404090
 #define FUNC_CBuilding_Constructor      0x403E00
 

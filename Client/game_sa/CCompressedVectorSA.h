@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #pragma pack(push)
 #pragma pack(1)
 typedef struct
@@ -20,4 +22,5 @@ typedef struct
     short z;
 } CCompressedVectorSA;
 
+#dummy
 #pragma pack(pop)

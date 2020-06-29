@@ -9,15 +9,19 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #define VOICE_BUFFER_LENGTH             200000
 #define VOICE_FREQUENCY                 44100
 #define VOICE_SAMPLE_SIZE               2
 
+#dummy
 #define FRAME_OUTGOING_BUFFER_COUNT 100
 #define FRAME_INCOMING_BUFFER_COUNT 100
 
+#dummy
 #include <mutex>
 #include <speex/speex.h>
 #include <speex/speex_preprocess.h>

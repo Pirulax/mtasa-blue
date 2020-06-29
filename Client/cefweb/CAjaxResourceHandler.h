@@ -8,8 +8,10 @@
  *  Multi Theft Auto is available from http://www.multitheftauto.com/
  *
  *****************************************************************************/
+#dummy
 #pragma once
 
+#dummy
 #include <core/CAjaxResourceHandlerInterface.h>
 #include <cef3/include/cef_resource_handler.h>
 #include <SString.h>

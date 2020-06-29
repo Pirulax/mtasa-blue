@@ -9,6 +9,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 #include <net/SyncStructures.h>
 #include "game/CAnimBlendAssocGroup.h"
@@ -30,6 +31,7 @@ using std::list;
 using std::vector;
 
 // Hide the "conversion from 'unsigned long' to 'DWORD*' of greater size" warning
+#dummy
 #pragma warning(disable:4312)
 
 // Used within this file by the packet handler to grab the this pointer of CClientGame
@@ -42,6 +44,7 @@ bool                g_bBulletFireVectorsValid;
 CVector             g_vecBulletFireStartPosition;
 CVector             g_vecBulletFireEndPosition;
 
+#dummy
 #define DEFAULT_GRAVITY              0.008f
 #define DEFAULT_GAME_SPEED           1.0f
 #define DEFAULT_BLUR_LEVEL           36
@@ -210,8 +213,10 @@ CClientGame::CClientGame(bool bLocalPlay) : m_ServerInfo(new CServerInfo())
     // Our management classes
     m_pUnoccupiedVehicleSync = new CUnoccupiedVehicleSync(m_pVehicleManager);
     m_pPedSync = new CPedSync(m_pPedManager);
+#dummy
 #ifdef WITH_OBJECT_SYNC
     m_pObjectSync = new CObjectSync(m_pObjectManager);
+#dummy
 #endif
     m_pNametags = new CNametags(m_pManager);
     m_pRadarMap = new CRadarMap(m_pManager);
@@ -320,16 +325,20 @@ CClientGame::CClientGame(bool bLocalPlay) : m_ServerInfo(new CServerInfo())
 
     m_bBeingDeleted = false;
 
+#dummy
     #if defined (MTA_DEBUG) || defined (MTA_BETA)
     m_bShowSyncingInfo = false;
+#dummy
     #endif
 
+#dummy
     #ifdef MTA_DEBUG
     m_pShowPlayer = m_pShowPlayerTasks = NULL;
     m_bMimicLag = false;
     m_ulLastMimicLag = 0;
     m_bDoPaintballs = false;
     m_bShowInterpolation = false;
+#dummy
     #endif
 
     // Add our lua events
@@ -379,6 +388,7 @@ CClientGame::~CClientGame()
     g_pCore->GetGUI()->ClearInputHandlers(INPUT_MOD);
 
     // Destroy mimics
+#dummy
     #ifdef MTA_DEBUG
     list<CClientPlayer*>::const_iterator iterMimics = m_Mimics.begin();
     for (; iterMimics != m_Mimics.end(); iterMimics++)
@@ -390,6 +400,7 @@ CClientGame::~CClientGame()
 
         delete pPlayer;
     }
+#dummy
     #endif
 
     // Hide the transfer box incase it is showing
@@ -478,8 +489,10 @@ CClientGame::~CClientGame()
     SAFE_DELETE(m_pRPCFunctions);
     SAFE_DELETE(m_pUnoccupiedVehicleSync);
     SAFE_DELETE(m_pPedSync);
+#dummy
 #ifdef WITH_OBJECT_SYNC
     SAFE_DELETE(m_pObjectSync);
+#dummy
 #endif
     SAFE_DELETE(m_pBlendedWeather);
     SAFE_DELETE(m_pMovingObjectsManager);
@@ -536,6 +549,7 @@ bool CClientGame::StartGame ( void ) // for an offline game (e.g. editor)
 }
 */
 
+#dummy
 #include <crtdbg.h>
 //#define _CRTDBG_CHECK_EVERY_16_DF   0x00100000  /* check heap every 16 heap ops */
 //#define _CRTDBG_CHECK_EVERY_128_DF  0x00800000  /* check heap every 128 heap ops */
@@ -773,6 +787,7 @@ void CClientGame::DoPulsePreHUDRender(bool bDidUnminimize, bool bDidRecreateRend
 void CClientGame::DoPulsePostFrame()
 {
     TIMING_CHECKPOINT("+CClientGame::DoPulsePostFrame");
+#dummy
     #ifdef DEBUG_KEYSTATES
     // Get the controller state
     CControllerState cs;
@@ -811,6 +826,7 @@ void CClientGame::DoPulsePostFrame()
         cs.m_bVehicleMouseLook, cs.LeftStickX, cs.LeftStickY, cs.RightStickX, cs.RightStickY);
 
     g_pCore->GetGraphics()->DrawTextTTF(300, 320, 1280, 800, 0xFFFFFFFF, strBuffer, 1.0f, 0);
+#dummy
     #endif
 
     UpdateModuleTickCount64();
@@ -880,6 +896,7 @@ void CClientGame::DoPulsePostFrame()
             g_pMultiplayer->GetLimits()->SetStreamingMemory(iStreamingMemoryBytes);
 
             // If we're in debug mode and are supposed to show task data, do it
+#dummy
         #ifdef MTA_DEBUG
         if (m_pShowPlayerTasks)
         {
@@ -898,8 +915,10 @@ void CClientGame::DoPulsePostFrame()
             if (pPlayer->IsStreamedIn() && pPlayer->IsShowingWepdata())
                 DrawWeaponsyncData(pPlayer);
         }
+#dummy
         #endif
 
+#dummy
         #if defined (MTA_DEBUG) || defined (MTA_BETA)
         if (m_bShowSyncingInfo)
         {
@@ -920,6 +939,7 @@ void CClientGame::DoPulsePostFrame()
                 m_pDisplayManager->DrawText2D(strBuffer, vecPosition, 1.0f, 0xFFFFFFFF);
             }
         }
+#dummy
         #endif
         // Heli Clear time
         if (m_LastClearTime.Get() > HeliKill_List_Clear_Rate)
@@ -1041,8 +1061,10 @@ void CClientGame::DoPulses()
 
     m_pUnoccupiedVehicleSync->DoPulse();
     m_pPedSync->DoPulse();
+#dummy
 #ifdef WITH_OBJECT_SYNC
     m_pObjectSync->DoPulse();
+#dummy
 #endif
     m_pLatentTransferManager->DoPulse();
     m_pLuaManager->DoPulse();
@@ -1050,8 +1072,10 @@ void CClientGame::DoPulses()
 
     GetModelCacheManager()->DoPulse();
 
+#dummy
     #ifdef MTA_DEBUG
     UpdateMimics();
+#dummy
     #endif
 
     // Grab the current time
@@ -1280,7 +1304,7 @@ void CClientGame::DoPulses()
         UpdateVehicleInOut();
         UpdatePlayerTarget();
         UpdatePlayerWeapons();
-        UpdateTrailers (); // Test: Does it always work without this check?
+        UpdateTrailers();            // Test: Does it always work without this check?
         UpdateStunts();
         // Clear last damager if more than 2 seconds old
         if (CClientTime::GetTime() - m_ulDamageTime > 2000)
@@ -1462,6 +1486,7 @@ void CClientGame::ShowEaeg(bool)
         m_pLocalPlayer->SetStat(0x2329, 1.0f);
 }
 
+#dummy
 #ifdef MTA_WEPSYNCDBG
 void CClientGame::ShowWepdata(const char* szNick)
 {
@@ -1471,8 +1496,10 @@ void CClientGame::ShowWepdata(const char* szNick)
         pPlayer->SetShowingWepdata(!pPlayer->IsShowingWepdata());
     }
 }
+#dummy
 #endif
 
+#dummy
 #ifdef MTA_DEBUG
 
 void CClientGame::ShowWepdata(const char* szNick)
@@ -1521,6 +1548,7 @@ void CClientGame::SetMimic(unsigned int uiMimicCount)
     }
 }
 
+#dummy
 #endif
 
 void CClientGame::DoVehicleInKeyCheck()
@@ -1608,8 +1636,10 @@ void CClientGame::UpdateVehicleInOut()
                     m_bNoNewVehicleTask = true;
                     m_NoNewVehicleTaskReasonID = ReasonVehicleID;
 
+#dummy
 #ifdef MTA_DEBUG
                     g_pCore->GetConsole()->Printf("* Sent_InOut: vehicle_notify_out");
+#dummy
 #endif
                 }
                 // Are we still inside the car?
@@ -1642,15 +1672,19 @@ void CClientGame::UpdateVehicleInOut()
                         if (m_bIsJackingVehicle)
                         {
                             ucAction = static_cast<unsigned char>(VEHICLE_NOTIFY_JACK);
+#dummy
 #ifdef MTA_DEBUG
                             g_pCore->GetConsole()->Printf("* Sent_InOut: vehicle_notify_jack");
+#dummy
 #endif
                         }
                         else
                         {
                             ucAction = static_cast<unsigned char>(VEHICLE_NOTIFY_IN);
+#dummy
 #ifdef MTA_DEBUG
                             g_pCore->GetConsole()->Printf("* Sent_InOut: vehicle_notify_in");
+#dummy
 #endif
                         }
                         pBitStream->WriteBits(&ucAction, 4);
@@ -1714,8 +1748,10 @@ void CClientGame::UpdateVehicleInOut()
                             }
                             pBitStream->WriteBit(bAlreadyStartedJacking);
 
+#dummy
 #ifdef MTA_DEBUG
                             g_pCore->GetConsole()->Printf("* Sent_InOut: vehicle_notify_jack_abort");
+#dummy
 #endif
                         }
                         else
@@ -1732,8 +1768,10 @@ void CClientGame::UpdateVehicleInOut()
                                 pBitStream->Write(&door);
                             }
 
+#dummy
 #ifdef MTA_DEBUG
                             g_pCore->GetConsole()->Printf("* Sent_InOut: vehicle_notify_in_abort");
+#dummy
 #endif
                         }
 
@@ -1837,8 +1875,10 @@ void CClientGame::UpdateVehicleInOut()
                     }
                     */
 
+#dummy
 #ifdef MTA_DEBUG
                     g_pCore->GetConsole()->Printf("* Sent_InOut: vehicle_notify_fell_off");
+#dummy
 #endif
                 }
             }
@@ -2944,6 +2984,7 @@ void CClientGame::DrawFPS()
     m_pDisplayManager->DrawText2D(strBuffer, CVector(0.76f, 0.23f, 0), 1.0f, 0xFFFFFFFF);
 }
 
+#dummy
 #ifdef MTA_DEBUG
 
 void CClientGame::DrawTasks(CClientPlayer* pPlayer)
@@ -3051,8 +3092,8 @@ void CClientGame::DrawPlayerDetails(CClientPlayer* pPlayer)
 
     float fAimX, fAimY;
     pPlayer->GetAim(fAimX, fAimY);
-    const CVector& vecAimSource = pPlayer->GetAimSource();
-    const CVector& vecAimTarget = pPlayer->GetAimTarget();
+    const CVector&       vecAimSource = pPlayer->GetAimSource();
+    const CVector&       vecAimTarget = pPlayer->GetAimTarget();
     eVehicleAimDirection ucDrivebyAim = pPlayer->GetVehicleAimAnim();
 
     g_pCore->GetGraphics()->DrawLine3DQueued(vecAimSource, vecAimTarget, 1.0f, 0x10DE1212, true);
@@ -3220,10 +3261,10 @@ void CClientGame::UpdateMimics()
             CShotSyncData* pShotSync = g_pMultiplayer->GetLocalShotSyncData();
             CVector        vecOrigin, vecTarget;
             m_pLocalPlayer->GetShotData(&vecOrigin, &vecTarget);
-            float fAimX = pShotSync->m_fArmDirectionX;
-            float fAimY = pShotSync->m_fArmDirectionY;
+            float                fAimX = pShotSync->m_fArmDirectionX;
+            float                fAimY = pShotSync->m_fArmDirectionY;
             eVehicleAimDirection cVehicleAimDirection = pShotSync->m_cInVehicleAimDirection;
-            bool  bAkimboUp = g_pMultiplayer->GetAkimboTargetUp();
+            bool                 bAkimboUp = g_pMultiplayer->GetAkimboTargetUp();
 
             /*
             static CClientMarker *pOriginCorona = NULL, *pTargetCorona = NULL;
@@ -3480,6 +3521,7 @@ void CClientGame::DoPaintballs()
     }
 }
 
+#dummy
 #endif
 
 void CClientGame::QuitPlayer(CClientPlayer* pPlayer, eQuitReason Reason)
@@ -3507,11 +3549,13 @@ void CClientGame::QuitPlayer(CClientPlayer* pPlayer, eQuitReason Reason)
     }
 
         // In debug, make sure we don't look at this player's details
+#dummy
 #ifdef MTA_DEBUG
     if (m_pShowPlayer == pPlayer)
     {
         m_pShowPlayer = NULL;
     }
+#dummy
 #endif
 
     // Call our onClientPlayerQuit event
@@ -3631,7 +3675,7 @@ void CClientGame::SetupGlobalLuaEvents()
         CWebViewInterface* pFocusedBrowser = g_pCore->IsWebCoreLoaded() ? g_pCore->GetWebCore()->GetFocusedWebView() : nullptr;
         if (pFocusedBrowser && !pFocusedBrowser->IsLocal())
             return;
-        
+
         // Call event now
         CLuaArguments args;
         args.PushString(clipboardText);
@@ -4076,8 +4120,7 @@ bool CClientGame::AssocGroupCopyAnimationHandler(CAnimBlendAssociationSAInterfac
                 if (iGroupID == eAnimGroup::ANIM_GROUP_DEFAULT ||
                     (iGroupID >= eAnimGroup::ANIM_GROUP_PLAYER && iGroupID <= eAnimGroup::ANIM_GROUP_PLAYERJETPACK) || iGroupID >= eAnimGroup::ANIM_GROUP_MAN)
                 {
-                    auto pDuckAnimStaticAssoc =
-                        pAnimationManager->GetAnimStaticAssociation(eAnimGroup::ANIM_GROUP_DEFAULT, eAnimID::ANIM_ID_WEAPON_CROUCH);
+                    auto pDuckAnimStaticAssoc = pAnimationManager->GetAnimStaticAssociation(eAnimGroup::ANIM_GROUP_DEFAULT, eAnimID::ANIM_ID_WEAPON_CROUCH);
                     pAnimHierarchy = pAnimationManager->GetCustomAnimBlendHierarchy(pDuckAnimStaticAssoc->GetAnimHierachyInterface());
                     isCustomAnimationToPlay = true;
                 }
@@ -4200,12 +4243,14 @@ bool CClientGame::ProcessCollisionHandler(CEntitySAInterface* pThisInterface, CE
 
                 if (pEntity && pColEntity)
                 {
+#dummy
                     #if MTA_DEBUG
                     CClientEntity* ppThisEntity2 = iter1->second;
                     CClientEntity* ppOtherEntity2 = iter2->second;
                     // These should match, but its not essential.
                     assert(ppThisEntity2 == pEntity);
                     assert(ppOtherEntity2 == pColEntity);
+#dummy
                     #endif
                     if (!pEntity->IsCollidableWith(pColEntity))
                         return false;
@@ -5147,8 +5192,10 @@ void CClientGame::ProcessVehicleInOutKey(bool bPassenger)
         m_bIsGettingOutOfVehicle = true;
         m_ulLastVehicleInOutTime = CClientTime::GetTime();
 
+#dummy
 #ifdef MTA_DEBUG
         g_pCore->GetConsole()->Printf("* Sent_InOut: vehicle_request_out");
+#dummy
 #endif
         return;
     }
@@ -5266,8 +5313,10 @@ void CClientGame::ProcessVehicleInOutKey(bool bPassenger)
     m_bIsGettingIntoVehicle = true;
     m_ulLastVehicleInOutTime = CClientTime::GetTime();
 
+#dummy
 #ifdef MTA_DEBUG
     g_pCore->GetConsole()->Printf("* Sent_InOut: vehicle_request_in");
+#dummy
 #endif
 }
 
@@ -5441,11 +5490,13 @@ void CClientGame::PostWeaponFire()
                     pPed->CallEvent("onClientPedWeaponFire", Arguments, true);
             }
             pPed->PostWeaponFire();
+#dummy
 #ifdef MTA_DEBUG
             if (pPed->IsLocalPlayer() && g_pClientGame->m_bDoPaintballs)
             {
                 g_pClientGame->DoPaintballs();
             }
+#dummy
 #endif
         }
     }
@@ -5569,12 +5620,14 @@ void CClientGame::SendExplosionSync(const CVector& vecPosition, eExplosionType T
 
 void CClientGame::SendFireSync(CFire* pFire)
 {
+#dummy
 #ifdef MTA_DEBUG
     CVector* vecPos = pFire->GetPosition();
     if (vecPos)
         g_pCore->GetConsole()->Printf("we're sending fire: %f %f %f %f", pFire->GetStrength(), vecPos->fX, vecPos->fY, vecPos->fZ);
     else
         g_pCore->GetConsole()->Printf("we're sending a fire!");
+#dummy
 #endif
 }
 
@@ -5801,10 +5854,13 @@ void CClientGame::ResetMapInfo()
     g_pMultiplayer->SetLocalStatsStatic(true);
 
     // Restore blur
+#dummy
 #ifdef MTA_DEBUG
     g_pGame->SetBlurLevel(0);
+#dummy
 #else
     g_pGame->SetBlurLevel(DEFAULT_BLUR_LEVEL);
+#dummy
 #endif
 
     // Close all garages
@@ -6325,6 +6381,7 @@ bool CClientGame::GetBirdsEnabled()
     return m_bBirdsEnabled;
 }
 
+#dummy
 #pragma code_seg(".text")
 bool CClientGame::VerifySADataFiles(int iEnableClientChecks)
 {
@@ -7115,8 +7172,8 @@ void CClientGame::VehicleWeaponHitHandler(SVehicleWeaponHitEvent& event)
 void CClientGame::UpdateDiscordState()
 {
     // Set discord state to players[/slot] count
-    uint playerCount = g_pClientGame->GetPlayerManager()->Count();
-    uint playerSlot = g_pClientGame->GetServerInfo()->GetMaxPlayers();
+    uint    playerCount = g_pClientGame->GetPlayerManager()->Count();
+    uint    playerSlot = g_pClientGame->GetServerInfo()->GetMaxPlayers();
     SString state(std::to_string(playerCount));
 
     if (g_pCore->GetNetwork()->GetServerBitStreamVersion() >= 0x06E)

@@ -9,10 +9,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 class CRPCFunctions;
 
+#dummy
 #define DECLARE_RPC(a) static void a ( class NetBitStreamInterface& bitStream );
 #define DECLARE_ELEMENT_RPC(a) static void a ( CClientEntity* pSourceEntity, NetBitStreamInterface& bitStream );
 
@@ -66,6 +68,7 @@ protected:
 
 protected:
     // Include the RPC functions enum
+#dummy
     #include "net/rpc_enums.h"
 
     static SFixedArray<SRPCHandler, NUM_RPC_FUNCS>        m_RPCHandlers;

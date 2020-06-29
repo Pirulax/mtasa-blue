@@ -9,10 +9,12 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 using std::list;
 
+#dummy
 #define MELEE_VISIBLE_RANGE         60.0f
 #define AIM_VISIBLE_RANGE           300.0f
 #define SNIPER_AIM_VISIBLE_RANGE    300.0f
@@ -22,6 +24,7 @@ using std::list;
 #define NAMETAG_FONT_SIZE           0.8f
 #define MAX_ALPHA                   180.0f // max value is 255
 
+#dummy
 #define DEFAULT_VIEW_RANGE          45.0f
 #define DEFAULT_VIEW_RANGE_EXP      ((DEFAULT_VIEW_RANGE)*(DEFAULT_VIEW_RANGE))
 
@@ -313,6 +316,7 @@ void CNametags::DrawTagForPlayer(CClientPlayer* pPlayer, unsigned char ucAlpha)
 
             unsigned char ucArmorAlpha = (unsigned char)(255.0f * fArmorAlpha);
 
+#dummy
             #define ARMOR_BORDER_COLOR COLOR_ABGR(ucArmorAlpha,167,177,179)
 
             // Base rectangle

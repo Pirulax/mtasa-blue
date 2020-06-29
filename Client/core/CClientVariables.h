@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include <string>
 #include "CSingleton.h"
 #include <core/CCVarsInterface.h>
@@ -21,6 +23,7 @@
 #include "CChat.h"
 
 // Macros
+#dummy
 #define CVARS_GET       CClientVariables::GetSingleton().Get
 #define CVARS_SET       CClientVariables::GetSingleton().Set
 #define CVARS_GET_VALUE CClientVariables::GetSingleton().GetValue
@@ -28,6 +31,7 @@
 class CClientVariables : public CCVarsInterface, public CSingleton<CClientVariables>
 {
     // Sanity macros   << Who ever did this is idiot
+#dummy
     #define SAN     if(!m_pStorage) return
     #define SANGET  if(!Node(strVariable)) return false
 

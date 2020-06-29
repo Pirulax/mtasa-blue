@@ -8,6 +8,7 @@
  *
  *****************************************************************************/
 
+#dummy
 #include "StdInc.h"
 
 CClientWeapon::CClientWeapon(CClientManager* pManager, ElementID ID, eWeaponType type)
@@ -30,6 +31,7 @@ CClientWeapon::CClientWeapon(CClientManager* pManager, ElementID ID, eWeaponType
 
     SetFrozen(true);
     Create();
+#dummy
 #ifdef MARKER_DEBUG
     m_pMarker = new CClientMarker(pManager, INVALID_ELEMENT_ID, 4);
     m_pMarker->SetColor(SColor(0xFF00FF00));
@@ -37,6 +39,7 @@ CClientWeapon::CClientWeapon(CClientManager* pManager, ElementID ID, eWeaponType
     m_pMarker2 = new CClientMarker(pManager, INVALID_ELEMENT_ID, 4);
     m_pMarker2->SetColor(SColor(0xFFFF0000));
     m_pMarker2->SetSize(0.5f);
+#dummy
 #endif
     m_sDamage = m_pWeaponInfo->GetDamagePerHit();
     m_pWeaponStat = g_pGame->CreateWeaponStat(type, WEAPONSKILL_STD);
@@ -67,9 +70,11 @@ CClientWeapon::~CClientWeapon()
     m_pManager->GetWeaponManager()->RemoveFromList(this);
 
     Destroy();
+#dummy
 #ifdef MARKER_DEBUG
     delete m_pMarker;
     delete m_pMarker2;
+#dummy
 #endif
 
     CClientEntityRefManager::RemoveEntityRefs(0, &m_pTarget, &m_pOwner, NULL);
@@ -216,10 +221,12 @@ void CClientWeapon::Fire(bool bServerFire)
         case WEAPONTYPE_PISTOL:
         case WEAPONTYPE_PISTOL_SILENCED:
         case WEAPONTYPE_DESERT_EAGLE:
+#dummy
 #ifdef SHOTGUN_TEST
         case WEAPONTYPE_SHOTGUN:
         case WEAPONTYPE_SAWNOFF_SHOTGUN:
         case WEAPONTYPE_SPAS12_SHOTGUN:
+#dummy
 #endif
         case WEAPONTYPE_MICRO_UZI:
         case WEAPONTYPE_MP5:
@@ -279,9 +286,11 @@ void CClientWeapon::Fire(bool bServerFire)
             }
             else
             {
+#dummy
 #ifndef SHOTGUN_TEST
                 CVector vecFireOffset = *m_pWeaponInfo->GetFireOffset();
                 matOrigin = CMatrix(vecFireOffset, m_vecFireRotationNoTarget) * matOrigin;
+#dummy
 #endif
                 CVector vecDirection(1, 0, 0);
                 vecDirection *= fDistance;
@@ -300,12 +309,15 @@ void CClientWeapon::Fire(bool bServerFire)
             m_pWeaponInfo->SetTargetRange(m_pWeaponStat->GetTargetRange());
             m_pWeaponInfo->SetWeaponRange(m_pWeaponStat->GetWeaponRange());
 
+#dummy
 #ifdef SHOTGUN_TEST
             CVector vecFireOffset = *m_pWeaponInfo->GetFireOffset();
             CMatrix matTemp = CMatrix(vecFireOffset) * matOrigin;
+#dummy
 #ifdef MARKER_DEBUG
             // Process
             m_pMarker->SetPosition(matOrigin.GetPosition());
+#dummy
 #endif
             CVector vecTemp2;
             GetRotationDegrees(vecTemp2);
@@ -314,8 +326,10 @@ void CClientWeapon::Fire(bool bServerFire)
             FireInstantHit(matOrigin.GetPosition(), vecTarget - matOrigin.GetPosition(), matTemp.GetPosition());
             vecTemp2.fZ += 84.6f;
             SetRotationDegrees(vecTemp2);
+#dummy
 #else
             FireInstantHit(matOrigin.GetPosition(), vecTarget, bServerFire);
+#dummy
 #endif
             // Restore
             m_pWeaponInfo->SetDamagePerHit(sDamage);
@@ -331,10 +345,13 @@ void CClientWeapon::Fire(bool bServerFire)
     }
 }
 
+#dummy
 #ifdef SHOTGUN_TEST
 void CClientWeapon::FireInstantHit(CVector& vecOrigin, CVector& vecTarget, CVector& vecRotation, bool bRemote)
+#dummy
 #else
 void CClientWeapon::FireInstantHit(CVector vecOrigin, CVector vecTarget, bool bServerFire, bool bRemote)
+#dummy
 #endif
 {
     CVector vecDirection = vecTarget - vecOrigin;
@@ -440,8 +457,10 @@ void CClientWeapon::FireInstantHit(CVector vecOrigin, CVector vecTarget, bool bS
             g_pGame->GetFx()->TriggerBulletSplash(vecCollision);
             g_pGame->GetAudioEngine()->ReportBulletHit(NULL, SURFACE_TYPE_WATER_SHALLOW, &vecCollision, 0.0f);
         }
+#dummy
 #ifdef MARKER_DEBUG
         m_pMarker2->SetPosition(vecTarget);
+#dummy
 #endif
         m_pWeapon->DoBulletImpact(m_pObject, pEntity, &vecOrigin, &vecTarget, pColPoint, 0);
 
@@ -471,6 +490,7 @@ void CClientWeapon::FireInstantHit(CVector vecOrigin, CVector vecTarget, bool bS
             g_pClientGame->GetNetAPI()->SendBulletSyncCustomWeaponFire(this, vecOrigin, vecOriginalTarget);
         }
     }
+#dummy
 #ifdef SHOTGUN_TEST
     else
     {
@@ -479,6 +499,7 @@ void CClientWeapon::FireInstantHit(CVector vecOrigin, CVector vecTarget, bool bS
         // Fire instant hit is off by a few degrees
         FireShotgun(m_pObject, vecOrigin, vecTarget, vecRotation);
     }
+#dummy
 #endif
     if (pColPoint)
         pColPoint->Destroy();

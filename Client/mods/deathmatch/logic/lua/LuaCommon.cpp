@@ -9,13 +9,16 @@
  *
  *****************************************************************************/
 
+#dummy
 #include <StdInc.h>
 
 // Temporary until we change these funcs:
+#dummy
 #include "../luadefs/CLuaDefs.h"
 // End of temporary
 
 // Prevent the warning issued when doing unsigned short -> void*
+#dummy
 #pragma warning(disable:4312)
 
 CClientEntity* lua_toelement(lua_State* luaVM, int iArgument)

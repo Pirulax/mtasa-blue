@@ -9,16 +9,21 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
 // 00722c40      public: static class CCheckpoint * __cdecl CCheckpoints::PlaceMarker(unsigned int,unsigned short,class CVector &,class CVector &,float,unsigned
 // char,unsigned char,unsigned char,unsigned char,unsigned short,float,short)
+#dummy
 #define FUNC_CCheckpoints__PlaceMarker  0x722c40 // ##SA##
 
+#dummy
 #define MAX_CHECKPOINTS         32
 
+#dummy
 #define ARRAY_CHECKPOINTS       0xC7F158
 
+#dummy
 #include <game/CCheckpoints.h>
 #include "CCheckpointSA.h"
 

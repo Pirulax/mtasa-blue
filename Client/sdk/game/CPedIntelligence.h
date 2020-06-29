@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CTaskManager.h"
 #include "CVehicleScanner.h"
 #include "CEvent.h"

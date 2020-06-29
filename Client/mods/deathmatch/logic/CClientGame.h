@@ -9,8 +9,10 @@
  *
  *****************************************************************************/
 
+#dummy
 #pragma once
 
+#dummy
 #include "CPacketHandler.h"
 #include <CClientCommon.h>
 #include <CClientManager.h>
@@ -45,6 +47,7 @@
 #include "CSingularFileDownloadManager.h"
 #include "CObjectRespawner.h"
 
+#dummy
 #define HeliKill_List_Clear_Rate 500
 #define MIN_PUSH_ANTISPAM_RATE 1500
 #define INVALID_DOWNLOAD_PRIORITY_GROUP (INT_MIN)
@@ -295,8 +298,10 @@ public:
 
     CUnoccupiedVehicleSync* GetUnoccupiedVehicleSync() { return m_pUnoccupiedVehicleSync; }
     CPedSync*               GetPedSync() { return m_pPedSync; }
+#dummy
 #ifdef WITH_OBJECT_SYNC
     CObjectSync* GetObjectSync() { return m_pObjectSync; }
+#dummy
 #endif
     CLatentTransferManager*   GetLatentTransferManager() { return m_pLatentTransferManager; }
     CClientModelCacheManager* GetModelCacheManager() { return m_pModelCacheManager; }
@@ -314,14 +319,19 @@ public:
     void ShowEaeg(bool bShow);
     void ShowFPS(bool bShow) { m_bShowFPS = bShow; };
 
+#dummy
     #if defined (MTA_DEBUG) || defined (MTA_BETA)
     void ShowSyncingInfo(bool bShow) { m_bShowSyncingInfo = bShow; };
+#dummy
     #endif
 
+#dummy
 #ifdef MTA_WEPSYNCDBG
     void ShowWepdata(const char* szNick);
+#dummy
 #endif
 
+#dummy
     #ifdef MTA_DEBUG
     void ShowWepdata(const char* szNick);
     void ShowTasks(const char* szNick);
@@ -331,6 +341,7 @@ public:
     void SetDoPaintballs(bool bDoPaintballs) { m_bDoPaintballs = bDoPaintballs; }
     void ShowInterpolation(bool bShow) { m_bShowInterpolation = bShow; }
     bool IsShowingInterpolation() const { return m_bShowInterpolation; }
+#dummy
     #endif
 
     CEntity*       GetTargetedGameEntity() { return m_pTargetedGameEntity; }
@@ -475,16 +486,20 @@ private:
 
     void DrawFPS();
 
+#dummy
     #ifdef MTA_DEBUG
     void DrawTasks(CClientPlayer* pPlayer);
     void DrawPlayerDetails(CClientPlayer* pPlayer);
     void UpdateMimics();
     void DoPaintballs();
     void DrawWeaponsyncData(CClientPlayer* pPlayer);
+#dummy
     #endif
 
+#dummy
     #ifdef MTA_WEPSYNCDBG
     void DrawWeaponsyncData(CClientPlayer* pPlayer);
+#dummy
     #endif
 
     void DownloadSingularResourceFiles();
@@ -666,8 +681,10 @@ private:
     CRPCFunctions*             m_pRPCFunctions;
     CUnoccupiedVehicleSync*    m_pUnoccupiedVehicleSync;
     CPedSync*                  m_pPedSync;
+#dummy
 #ifdef WITH_OBJECT_SYNC
     CObjectSync* m_pObjectSync;
+#dummy
 #endif
     CMovingObjectsManager* m_pMovingObjectsManager;
     CNametags*             m_pNametags;
@@ -797,10 +814,13 @@ private:
     std::map<CEntitySAInterface*, CClientEntity*> m_CachedCollisionMap;
     bool                                          m_BuiltCollisionMapThisFrame;
 
+#dummy
     #if defined (MTA_DEBUG) || defined (MTA_BETA)
     bool m_bShowSyncingInfo;
+#dummy
     #endif
 
+#dummy
     #ifdef MTA_DEBUG
     CClientPlayer*            m_pShowPlayerTasks;
     CClientPlayer*            m_pShowPlayer;
@@ -813,6 +833,7 @@ private:
     CVector                   m_vecLastMimicRot;
     bool                      m_bDoPaintballs;
     bool                      m_bShowInterpolation;
+#dummy
     #endif
     bool m_bDevelopmentMode;
     bool m_bShowCollision;
@@ -821,7 +842,7 @@ private:
     // Debug class. Empty in release.
 public:
     CFoo m_Foo;
-    void UpdateDiscordState(); // If netc allows this function not to be here it would be better
+    void UpdateDiscordState();            // If netc allows this function not to be here it would be better
 
 private:
     CEvents                                     m_Events;
