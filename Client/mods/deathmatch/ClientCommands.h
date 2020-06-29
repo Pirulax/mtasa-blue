@@ -48,7 +48,7 @@ void COMMAND_ServerInfo(const char* szCmdLine);
 #dummy
 #ifdef MTA_DEBUG
 void COMMAND_ShowSyncData(const char* szCmdLine);
-    // void COMMAND_DumpPlayers            ( const char* szCmdLine );
+// void COMMAND_DumpPlayers            ( const char* szCmdLine );
 #dummy
 #endif
 

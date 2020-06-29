@@ -59,10 +59,10 @@ CDuplicateLineFilter<SReportLine> ms_ReportLineFilter;
     #include <../../Client/version.h>
 #endif
 
-    //
-    // Output a UTF8 encoded messagebox
-    // Used in the Win32 Client only
-    //
+//
+// Output a UTF8 encoded messagebox
+// Used in the Win32 Client only
+//
 #ifdef _WINDOWS_ //Only for modules that use windows.h
 int SharedUtil::MessageBoxUTF8(HWND hWnd, SString lpText, SString lpCaption, UINT uType)
 {
