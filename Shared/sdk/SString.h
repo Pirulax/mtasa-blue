@@ -17,6 +17,9 @@
 // Adds some functionality to the std::string class
 //
 #include <stdarg.h>
+#ifdef __cpp_lib_string_view
+#include <string_view>
+#endif
 
 #ifdef WIN32
 #ifndef va_copy
@@ -72,6 +75,10 @@ public:
     // Assignment
                 operator const char*() const { return c_str(); }            // Auto assign to const char* without using c_str()
     const char* operator*()const { return c_str(); }
+
+#ifdef __cpp_lib_string_view
+    operator std::string_view() const { return { data(), size() }; }
+#endif
 
     // Functions
     void           Split(const SString& strDelim, std::vector<SString>& outResult, unsigned int uiMaxAmount = 0, unsigned int uiMinAmount = 0) const;

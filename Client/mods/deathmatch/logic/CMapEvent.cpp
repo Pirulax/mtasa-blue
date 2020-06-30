@@ -10,25 +10,20 @@
 
 #include <StdInc.h>
 
-CMapEvent::CMapEvent(CLuaMain* pMain, const char* szName, const CLuaFunctionRef& iLuaFunction, bool bPropagated, EEventPriorityType eventPriority,
-                     float fPriorityMod)
-{
+CMapEvent::CMapEvent(CLuaMain* pMain, std::string_view name, const CLuaFunctionRef& iLuaFunction, bool bPropagated, EEventPriorityType eventPriority,
+                     float fPriorityMod) :
     // Init
-    m_pMain = pMain;
-    m_bDestroyFunction = false;
-    m_iLuaFunction = iLuaFunction;
-    m_bPropagated = bPropagated;
-    m_bBeingDestroyed = false;
-    m_eventPriority = eventPriority;
-    m_fPriorityMod = fPriorityMod;
-    m_strName.AssignLeft(szName, MAPEVENT_MAX_LENGTH_NAME);
-    // Only allow dxSetAspectRatioAdjustmentEnabled during these events
-    m_bAllowAspectRatioAdjustment = (m_strName == "onClientRender") || (m_strName == "onClientPreRender") || (m_strName == "onClientHUDRender");
-    // Force aspect ratio adjustment for 'customblips' resource
-    m_bForceAspectRatioAdjustment = m_bAllowAspectRatioAdjustment && SStringX(pMain->GetScriptName()) == "customblips";
-}
+    m_pMain(pMain),
+    m_iLuaFunction(iLuaFunction),
+    m_bPropagated(bPropagated),
+    m_eventPriority(eventPriority),
+    m_fPriorityMod(fPriorityMod),
 
-CMapEvent::~CMapEvent()
+    // Only allow dxSetAspectRatioAdjustmentEnabled during these events
+    m_bAllowAspectRatioAdjustment((name == "onClientRender") || (name == "onClientPreRender") || (name == "onClientHUDRender")),
+
+    // Force aspect ratio adjustment for 'customblips' resource
+    m_bForceAspectRatioAdjustment(m_bAllowAspectRatioAdjustment && (pMain->GetScriptName() == std::string_view("customblips")))
 {
 }
 
@@ -39,9 +34,4 @@ void CMapEvent::Call(const CLuaArguments& Arguments)
         // Call our function with the given arguments
         Arguments.Call(m_pMain, m_iLuaFunction);
     }
-}
-
-bool CMapEvent::IsHigherPriorityThan(const CMapEvent* pOther)
-{
-    return m_eventPriority > pOther->m_eventPriority || (m_eventPriority == pOther->m_eventPriority && m_fPriorityMod > pOther->m_fPriorityMod);
 }

@@ -112,21 +112,10 @@ bool CStaticFunctionDefinitions::AddEventHandler(CLuaMain& LuaMain, const char* 
     return false;
 }
 
-bool CStaticFunctionDefinitions::RemoveEventHandler(CLuaMain& LuaMain, const char* szName, CClientEntity& Entity, const CLuaFunctionRef& iLuaFunction)
+bool CStaticFunctionDefinitions::RemoveEventHandler(CLuaMain& LuaMain, std::string_view name, CClientEntity& Entity, const CLuaFunctionRef& iLuaFunction)
 {
-    assert(szName);
-
-    // We got an event and handler with that name?
-    if (m_pEvents->Exists(szName))
-    {
-        // ACHTUNG: CHECK WHETHER THE LUA FUNCTION REF IS CORRECTLY FOUND
-        if (Entity.DeleteEvent(&LuaMain, szName, iLuaFunction))
-        {
-            return true;
-        }
-    }
-
-    return false;
+    // ACHTUNG: CHECK WHETHER THE LUA FUNCTION REF IS CORRECTLY FOUND
+    return Entity.DeleteEvent(&LuaMain, name, iLuaFunction);
 }
 
 bool CStaticFunctionDefinitions::TriggerEvent(const char* szName, CClientEntity& Entity, const CLuaArguments& Arguments, bool& bWasCancelled)

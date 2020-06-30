@@ -12,7 +12,8 @@
 
 #include "lua/CLuaArguments.h"
 #include "CMapEvent.h"
-#include <list>
+#include <memory>
+#include <string_view>
 
 class CMapEventManager
 {
@@ -20,27 +21,31 @@ public:
     CMapEventManager();
     ~CMapEventManager();
 
-    bool Add(CLuaMain* pLuaMain, const char* szName, const CLuaFunctionRef& iLuaFunction, bool bPropagated, EEventPriorityType eventPriority,
+    bool Add(CLuaMain* pLuaMain, const std::string& eventName, const CLuaFunctionRef& iLuaFunction, bool bPropagated, EEventPriorityType eventPriority,
              float fPriorityMod);
-    bool Delete(CLuaMain* pLuaMain, const char* szName = NULL, const CLuaFunctionRef& iLuaFunction = CLuaFunctionRef());
-    void DeleteAll();
-    bool HandleExists(CLuaMain* pLuaMain, const char* szName, const CLuaFunctionRef& iLuaFunction);
-    bool HasEvents() const { return m_bHasEvents; }
-    void GetHandles(CLuaMain* pLuaMain, const char* szName, lua_State* luaVM);
+    bool Delete(CLuaMain* pLuaMain, std::string_view name, const CLuaFunctionRef& iLuaFunction);
+    bool Delete(CLuaMain* pLuaMain);
+    void DeleteAll() { m_EventsMap.clear(); }
+    bool HandleExists(CLuaMain* pLuaMain, std::string_view eventName, const CLuaFunctionRef& iLuaFunction) const;
+    bool HasEvents() const { return !m_EventsMap.empty(); }
+    void GetHandles(CLuaMain* pLuaMain, std::string_view eventName, lua_State* luaVM) const;
 
-    bool Call(const char* szName, const CLuaArguments& Arguments, class CClientEntity* pSource, class CClientEntity* pThis);
+    bool Call(std::string_view eventName, const CLuaArguments& Arguments, class CClientEntity* pSource, class CClientEntity* pThis);
 
 private:
-    void TakeOutTheTrash();
-    void AddInternal(CMapEvent* pEvent);
-
-    bool                               m_bHasEvents;
-    bool                               m_bIteratingList;
-    std::multimap<SString, CMapEvent*> m_EventsMap;
-    std::list<CMapEvent*>              m_TrashCan;
-
     // Types for m_EventsMap access
-    typedef std::multimap<SString, CMapEvent*>::const_iterator EventsConstIter;
-    typedef std::multimap<SString, CMapEvent*>::iterator       EventsIter;
-    typedef std::pair<EventsIter, EventsIter>                  EventsIterPair;
+
+    // std::vector is sorted by event priority (highest at the beginning)
+    // the same priorities are sorted by insertion time(most recent is the first)
+    using EventsMap = std::map<std::string, std::vector<CMapEvent>, std::less<>>;
+    using EventsIter = EventsMap::iterator;
+private:
+    inline bool IsIterating() const { return m_currIterEvent != m_EventsMap.end(); }
+    inline const std::string& GetIteratedEventName() const { return m_currIterEvent->first; } // ACHTUNG: Only call if IsIterating() is true!
+
+    EventsMap  m_EventsMap;
+    EventsIter m_currIterEvent = m_EventsMap.end(); // If not iterating anything the value is m_EventsMap.end()
+    size_t     m_currIterHandlerIndex = -1; // Contains the currently processed CMapEvent's index the the matching std::vector
+
+    bool m_deleteCurrHandlerAfterFinished = false;
 };

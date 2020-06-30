@@ -245,7 +245,7 @@ public:
     bool CallEvent(const char* szName, const CLuaArguments& Arguments, bool bCallOnChildren);
     void CallEventNoParent(const char* szName, const CLuaArguments& Arguments, CClientEntity* pSource);
     void CallParentEvent(const char* szName, const CLuaArguments& Arguments, CClientEntity* pSource);
-    bool DeleteEvent(CLuaMain* pLuaMain, const char* szName, const CLuaFunctionRef& iLuaFunction);
+    bool DeleteEvent(CLuaMain* pLuaMain, std::string_view name, const CLuaFunctionRef& iLuaFunction);
     void DeleteEvents(CLuaMain* pLuaMain, bool bRecursive);
     void DeleteAllEvents();
 

@@ -799,9 +799,9 @@ void CClientEntity::CallParentEvent(const char* szName, const CLuaArguments& Arg
     }
 }
 
-bool CClientEntity::DeleteEvent(CLuaMain* pLuaMain, const char* szName, const CLuaFunctionRef& iLuaFunction)
+bool CClientEntity::DeleteEvent(CLuaMain* pLuaMain, std::string_view name, const CLuaFunctionRef& iLuaFunction)
 {
-    return m_pEventManager->Delete(pLuaMain, szName, iLuaFunction);
+    return m_pEventManager->Delete(pLuaMain, name, iLuaFunction);
 }
 
 void CClientEntity::DeleteEvents(CLuaMain* pLuaMain, bool bRecursive)
