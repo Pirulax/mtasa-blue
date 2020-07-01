@@ -8,37 +8,74 @@
  *
  *****************************************************************************/
 
+#include "lua/CLuaArgument.h"
 #include "StdInc.h"
 
 bool g_bAllowAspectRatioAdjustment = false;
+#define MAPEVENT_MAX_NAME_LENGTH 100
 
-CMapEventManager::CMapEventManager()
+/* Code readability helpers, only used here */
+static CLuaArgument LuaPopGlobal(lua_State* const luaVM, const char* const name)
 {
+    lua_getglobal(luaVM, name);
+    CLuaArgument arg(luaVM, -1);
+    lua_pop(luaVM, 1);
+    return arg;
 }
 
-CMapEventManager::~CMapEventManager()
+static void LuaSetGlobalValue(lua_State* luaVM, const char* name, const CLuaArgument& value)
 {
-    assert(!IsIterating()); // Make sure we weren't iterating
+    value.Push(luaVM);
+    lua_setglobal(luaVM, name);
+}
+
+static void LuaSetGlobalValue(lua_State* luaVM, const char* name, const std::string& value)
+{
+    lua_pushlstring(luaVM, value.data(), value.length());
+    lua_setglobal(luaVM, name);
+}
+
+static void LuaSetGlobalValue(lua_State* luaVM, const char* name, CElement* value)
+{
+    lua_pushelement(luaVM, value); // Checks for nullptr
+    lua_setglobal(luaVM, name);
+}
+
+static void LuaSetGlobalValue(lua_State* luaVM, const char* name, CResource* value)
+{
+    if (!value)
+        return;
+
+    lua_pushresource(luaVM, value);
+    lua_setglobal(luaVM, name);
+}
+
+static void LuaSetGlobalValue(lua_State* luaVM, const char* name, nullptr_t)
+{
+    lua_pushnil(luaVM);
+    lua_setglobal(luaVM, name);
 }
 
 bool CMapEventManager::Add(CLuaMain* pLuaMain, const std::string& eventName, const CLuaFunctionRef& iLuaFunction, bool bPropagated, EEventPriorityType eventPriority,
                            float fPriorityMod)
 {
-    if (eventName.length() > MAPEVENT_MAX_LENGTH_NAME)
+    if (eventName.length() > MAPEVENT_MAX_NAME_LENGTH)
         return false;
 
-    auto& handlers = m_EventsMap[eventName]; // Grab handlers of this event
+    // Grab handlers of this event
+    auto& handlers = m_EventsMap[eventName];
     handlers.reserve(4);
 
     // Create handler here, so we can check priorities
     CMapEvent handler(pLuaMain, eventName, iLuaFunction, bPropagated, eventPriority, fPriorityMod);
 
     // Find position to insert(by priority)
+    // See the header for more info
     auto insertAt = handlers.begin();
     for (; insertAt != handlers.end(); insertAt++)
     {
         if (handler > *insertAt)
-            break; // `event` has higher priority than `it`
+            break;
     }
 
     // Might cause a reallocation (But our deep hope is it wont't)
@@ -47,13 +84,14 @@ bool CMapEventManager::Add(CLuaMain* pLuaMain, const std::string& eventName, con
     // Check if we're iterating thru this event's handlers
     if (IsIterating() && GetIteratedEventName() == eventName)
     {
-        // Skip newly inserted event - as per old behaviour
-        insertedIter->SetShouldBeSkipped(true);
-
         const size_t thisEventsIndex = std::distance(handlers.begin(), insertedIter); // Grab index where this event is inserted
-        if (m_currIterHandlerIndex >= thisEventsIndex) // Iteration index higher than the inserted event?
+        if (m_currIterHandlerIndex >= thisEventsIndex) // Were past or at this event?
             m_currIterHandlerIndex++; // Move index to point at the same handler as before
+        else
+            insertedIter->SetShouldBeSkipped(true); // Make sure newly inserted event doesn't get called in this iteration
     }
+
+    return true;
 }
 
 bool CMapEventManager::Delete(CLuaMain* luaMain, std::string_view eventName, const CLuaFunctionRef& luaFunction)
@@ -66,11 +104,11 @@ bool CMapEventManager::Delete(CLuaMain* luaMain, std::string_view eventName, con
     const bool isThisEventIterated = IsIterating() && GetIteratedEventName() == eventName;
 
     bool hasRemovedAny = false;
-    for (size_t i = 0; i < handlers.size(); i++) // Use indices, as iterators get invalidated when erasing
+    for (size_t i = 0; i < handlers.size(); i++)
     {
-        CMapEvent& event = handlers[i];
+        const CMapEvent& event = handlers[i];
 
-        if (event.GetVM() != luaMain)
+        if (event.GetLuaMain() != luaMain)
             continue;
 
         if (event.GetLuaFunction() != luaFunction)
@@ -78,18 +116,19 @@ bool CMapEventManager::Delete(CLuaMain* luaMain, std::string_view eventName, con
 
         if (isThisEventIterated)
         {
-            if (i == m_currIterHandlerIndex) // Is it the currently iterated event?
+            if (m_currIterHandlerIndex > i) // Is the index past this handler?
+                m_currIterHandlerIndex--; // Make sure index will point at the same handler as before deleting this
+
+            else if (i == m_currIterHandlerIndex)
             {
-                // Don't delete it now
-                m_deleteCurrHandlerAfterFinished = true;
+                // Don't delete it now, because we're iterating thru it
+                m_deleteCurrentHandlerAfterFinished = true;
                 continue;
             }
-
-            else if (i < m_currIterHandlerIndex)
-                m_currIterHandlerIndex--; // Make sure index will point at the correct handler
+            assert(m_currIterHandlerIndex >= handlers.size());
         }
 
-        handlers.erase(handlers.begin() + i); // Delete it
+        handlers.erase(handlers.begin() + i); // Note: The `event` reference might be invalid after this
         i--; // Make sure in the next iteration we check the next handler
         hasRemovedAny = true;
     }
@@ -105,77 +144,61 @@ bool CMapEventManager::Delete(CLuaMain* luaMain)
     {
         const bool isThisEventIterated = IsIterating() && GetIteratedEventName() == eventName;
 
-        for (size_t i = 0; i < handlers.size(); i++) // Use indices, as iterators get invalidated when erasing
+        for (size_t i = handlers.size() - 1; i != -1; i--) // Back -> front
         {
-            CMapEvent& event = handlers[i];
+            const CMapEvent& event = handlers[i];
 
-            if (event.GetVM() != luaMain)
+            if (event.GetLuaMain() != luaMain)
                 continue;
-
 
             if (isThisEventIterated)
             {
-                if (i == m_currIterHandlerIndex) // Is it the currently iterated event?
+                if (m_currIterHandlerIndex > i) // Is the index past this handler?
+                    m_currIterHandlerIndex--; // Make sure index will point at the same handler as before deleting this
+
+                else if (i == m_currIterHandlerIndex)
                 {
-                    // Don't delete it now
-                    m_deleteCurrHandlerAfterFinished = true;
+                    // Delete it after we're done iteratin thru it
+                    m_deleteCurrentHandlerAfterFinished = true;
                     continue;
                 }
-
-                else if (i < m_currIterHandlerIndex)
-                    m_currIterHandlerIndex--; // Make sure index will point at the correct handler
+                assert(m_currIterHandlerIndex >= handlers.size());
             }
 
-            handlers.erase(handlers.begin() + i); // Delete it
-            i--; // Make sure in the next iteration we check the next handler
+            handlers.erase(handlers.begin() + i); // Note: The `event` reference might be invalid after this
             hasRemovedAny = true;
         }
     }
     return hasRemovedAny;
 }
 
-bool CMapEventManager::Call(std::string_view inEventName, const CLuaArguments& Arguments, class CClientEntity* pSource, class CClientEntity* pThis)
+bool CMapEventManager::Call(std::string_view viewEventName, const CLuaArguments& Arguments, CClientEntity* pSource, CClientEntity* pThis)
 {
-    if (!HasEvents())
-        return false;
-
-    TIMEUS startTimeUs = GetTimeUs();
-
-    m_currIterEvent = m_EventsMap.find(inEventName);
-    if (m_currIterEvent == m_EventsMap.end())
-        return false; // This even't doesn't exist
-
-    // Most of the time this isn't filled, so its cheaper to heap allocate it if needed
-    // We're going for performance here, so every tiny bit is important
-    std::unique_ptr<SString> status = nullptr;
-
     // Check for multi-threading slipups
     assert(IsMainThread());
 
-    // inEventName and eventName are the same strin, but
-    // eventName is std::string, thus guaranteed to be null terminated
-    // so we use that
+    if (!HasEvents())
+        return false;
+
+    const auto iterStarTimeUs = GetTimeUs();
+
+    m_currIterEvent = m_EventsMap.find(viewEventName);
+    if (m_currIterEvent == m_EventsMap.end())
+        return false; // This even't doesn't exist
+
+    SString status;
+
     auto& [eventName, handlers] = *m_currIterEvent;
 
     bool hasCalledAny = false;
     for (m_currIterHandlerIndex = 0; m_currIterHandlerIndex < handlers.size(); m_currIterHandlerIndex++)
     {
-        // Maybe delete last event handler from the list
-        if (m_deleteCurrHandlerAfterFinished)
-        {
-            m_currIterHandlerIndex--; // Make sure index will point at the current element after erasing the last handler
-            handlers.erase(handlers.begin() + m_currIterHandlerIndex); // Erase last event
-
-            m_deleteCurrHandlerAfterFinished = false;
-        }
-
         CMapEvent* handler = &handlers[m_currIterHandlerIndex];
 
-        // Call if propagated?
-        if (pSource != pThis && ! handler->IsPropagated())
+        if (pSource != pThis && !handler->IsPropagated()) // Call if propagated, but this handler doesnt allow such?
             continue;
 
-        if (handler->ShouldBeSkipped())
+        if (handler->ShouldBeSkipped()) // Newly inserted, and should be skipped?
         {
             handler->SetShouldBeSkipped(false);
             continue;
@@ -184,110 +207,72 @@ bool CMapEventManager::Call(std::string_view inEventName, const CLuaArguments& A
         hasCalledAny = true;
 
         // Grab the current VM
-        lua_State* handlerLuaVM = handler->GetVM()->GetVM();
-
-        LUA_CHECKSTACK(handlerLuaVM, 1);            // Ensure some room
+        lua_State* const handlerLuaVM = handler->GetLuaMain()->GetVM();
+        LUA_CHECKSTACK(handlerLuaVM, 1);
 
 #if MTA_DEBUG
-        int luaStackPointer = lua_gettop(handlerLuaVM);
+        const int handlerVMExpectedStackPointer = lua_gettop(handlerLuaVM);
 #endif
 
-        TIMEUS startTime = GetTimeUs();
+        const auto handlerStartTimeUs = GetTimeUs();
 
-        // Aspect ratio adjustment bodges
+        // Maybe allow aspect ratio?
         if (handler->ShouldAllowAspectRatioAdjustment())
         {
             g_bAllowAspectRatioAdjustment = true;
-            if (handler->ShouldForceAspectRatioAdjustment())
+            if (handler->ShouldForceAspectRatioAdjustment()) // Maybe force it as well?
                 g_pCore->GetGraphics()->SetAspectRatioAdjustmentEnabled(true);
         }
 
-        // Record event for the crash dump writer
-        static bool bEnabled = (g_pCore->GetDiagnosticDebug() == EDiagnosticDebug::LUA_TRACE_0000);
-        if (bEnabled)
-            g_pCore->LogEvent(0, "Lua Event",   handler->GetVM()->GetScriptName(), eventName.c_str());
+        // Maybe record event for the crash dump writer
+        {
+            static const bool bEnabled = g_pCore->GetDiagnosticDebug() == EDiagnosticDebug::LUA_TRACE_0000;
+            if (bEnabled)
+                g_pCore->LogEvent(0, "Lua Event", handler->GetLuaMain()->GetScriptName(), eventName.c_str());
+        }
 
         if (!g_pClientGame->GetDebugHookManager()->OnPreEventFunction(eventName.c_str(), Arguments, pSource, nullptr, handler))
             continue;
 
-        // Store the current values of the globals
-        lua_getglobal(handlerLuaVM, "source");
-        CLuaArgument OldSource(handlerLuaVM, -1);
-        lua_pop(handlerLuaVM, 1);
-
-        lua_getglobal(handlerLuaVM, "this");
-        CLuaArgument OldThis(handlerLuaVM, -1);
-        lua_pop(handlerLuaVM, 1);
-
-        lua_getglobal(handlerLuaVM, "sourceResource");
-        CLuaArgument OldResource(handlerLuaVM, -1);
-        lua_pop(handlerLuaVM, 1);
-
-        lua_getglobal(handlerLuaVM, "sourceResourceRoot");
-        CLuaArgument OldResourceRoot(handlerLuaVM, -1);
-        lua_pop(handlerLuaVM, 1);
-
-        lua_getglobal(handlerLuaVM, "eventName");
-        CLuaArgument OldEventName(handlerLuaVM, -1);
-        lua_pop(handlerLuaVM, 1);
-
-        // Set the "source", "this", "sourceResource" and the "sourceResourceRoot" globals on that VM
+        // Save the current values of globals in the handler's VM
+        const auto oldSource = LuaPopGlobal(handlerLuaVM, "source");
+        const auto oldThis = LuaPopGlobal(handlerLuaVM, "this");
+        const auto oldResource = LuaPopGlobal(handlerLuaVM, "sourceResource");
+        const auto oldResourceRoot = LuaPopGlobal(handlerLuaVM, "sourceResourceRoot");
+        const auto oldEventName = LuaPopGlobal(handlerLuaVM, "eventName");
+        
+        // Set the "source", "this", "sourceResource" and the "sourceResourceRoot", "eventName" globals on the handler's VM
         {
-            lua_pushelement(handlerLuaVM, pSource);
-            lua_setglobal(handlerLuaVM, "source");
+            LuaSetGlobalValue(handlerLuaVM, "source", pSource);
+            LuaSetGlobalValue(handlerLuaVM, "this", pThis);
 
-            lua_pushelement(handlerLuaVM, pThis);
-            lua_setglobal(handlerLuaVM, "this");
+            auto luaMain = g_pClientGame->GetScriptDebugging()->GetTopLuaMain();
+            auto sourceResource = luaMain ? luaMain->GetResource() : nullptr;
 
-            CLuaMain* pLuaMain = g_pClientGame->GetScriptDebugging()->GetTopLuaMain();
-            CResource* pSourceResource = pLuaMain ? pLuaMain->GetResource() : nullptr;
-            if (pSourceResource)
-            {
-                lua_pushresource(handlerLuaVM, pSourceResource);
-                lua_setglobal(handlerLuaVM, "sourceResource");
+            LuaSetGlobalValue(handlerLuaVM, "sourceResource", sourceResource);
+            LuaSetGlobalValue(handlerLuaVM, "sourceResourceRoot", sourceResource ? sourceResource->GetResourceDynamicEntity() : nullptr);
 
-                lua_pushelement(handlerLuaVM, pSourceResource->GetResourceDynamicEntity());
-                lua_setglobal(handlerLuaVM, "sourceResourceRoot");
-            }
-            else
-            {
-                lua_pushnil(handlerLuaVM);
-                lua_setglobal(handlerLuaVM, "sourceResource");
-
-                lua_pushnil(handlerLuaVM);
-                lua_setglobal(handlerLuaVM, "sourceResourceRoot");
-            }
+            LuaSetGlobalValue(handlerLuaVM, "eventName", eventName);
         }
 
-        lua_pushlstring(handlerLuaVM, eventName.c_str(), eventName.length());
-        lua_setglobal(handlerLuaVM, "eventName");
-
-        // Call it
+        // Call the Lua handler function
         handler->Call(Arguments);
 
-        // The called function might have removed / added handlers,
-        // thus the vector might got reallocated, so get the pointer again
+        // The call to the Lua function might have caused one or more handlers to be removed
+        // Make sure the pointer remains valid
+        assert(m_currIterHandlerIndex >= handlers.size());
         handler = &handlers[m_currIterHandlerIndex];
 
         g_pClientGame->GetDebugHookManager()->OnPostEventFunction(eventName.c_str(), Arguments, pSource, nullptr, handler);
 
-        // Reset the globals on that VM
-        OldSource.Push(handlerLuaVM);
-        lua_setglobal(handlerLuaVM, "source");
+        // Reset the globals on the handler's VM
+        LuaSetGlobalValue(handlerLuaVM, "source", oldSource);
+        LuaSetGlobalValue(handlerLuaVM, "this", oldThis);
+        LuaSetGlobalValue(handlerLuaVM, "sourceResource", oldResource);
+        LuaSetGlobalValue(handlerLuaVM, "sourceResourceRoot", oldResourceRoot);
+        LuaSetGlobalValue(handlerLuaVM, "eventName", oldEventName);
 
-        OldThis.Push(handlerLuaVM);
-        lua_setglobal(handlerLuaVM, "this");
-
-        OldResource.Push(handlerLuaVM);
-        lua_setglobal(handlerLuaVM, "sourceResource");
-
-        OldResourceRoot.Push(handlerLuaVM);
-        lua_setglobal(handlerLuaVM, "sourceResourceRoot");
-
-        OldEventName.Push(handlerLuaVM);
-        lua_setglobal(handlerLuaVM, "eventName");
-
-        dassert(lua_gettop(handlerLuaVM) == luaStackPointer);
+        dassert(lua_gettop(handlerLuaVM) == handlerVMExpectedStackPointer);
 
         // Aspect ratio adjustment bodges
         if (handler->ShouldAllowAspectRatioAdjustment())
@@ -296,26 +281,31 @@ bool CMapEventManager::Call(std::string_view inEventName, const CLuaArguments& A
             g_bAllowAspectRatioAdjustment = false;
         }
 
-        TIMEUS deltaTimeUs = GetTimeUs() - startTimeUs;
-        if (IS_TIMING_CHECKPOINTS() && deltaTimeUs > 3000)
-        {      
-            if (!status) // Make sure we have a string acutally
-                status = std::make_unique<SString>();
-            *status += SString(" (%s %d ms)", handler->GetVM()->GetScriptName(), deltaTimeUs / 1000);      
+        // Do timing and performance things
+        {
+            const auto deltaTimeUs = GetTimeUs() - handlerStartTimeUs;
+            if (deltaTimeUs > 3000 && IS_TIMING_CHECKPOINTS())
+                status += SString(" (%s %d ms)", handler->GetLuaMain()->GetScriptName(), deltaTimeUs / 1000);
+
+            CClientPerfStatLuaTiming::GetSingleton()->UpdateLuaTiming(handler->GetLuaMain(), eventName.c_str(), deltaTimeUs);
         }
-        CClientPerfStatLuaTiming::GetSingleton()->UpdateLuaTiming(handler->GetVM(), eventName.c_str(), deltaTimeUs);
+
+        // Maybe delete this handler from the list
+        if (m_deleteCurrentHandlerAfterFinished)
+        {
+            m_currIterHandlerIndex--; // Make sure index will point at the current element after erasing the last handler
+            handlers.erase(handlers.begin() + m_currIterHandlerIndex); // Erase last event
+
+            m_deleteCurrentHandlerAfterFinished = false;
+        }       
     }
 
     if (IS_TIMING_CHECKPOINTS())
     {
-        TIMEUS deltaTimeUs = GetTimeUs() - startTimeUs;
+        const auto deltaTimeUs = GetTimeUs() - iterStarTimeUs;
         if (deltaTimeUs > 5000)
-        {
-            if (status)
-                TIMING_DETAIL(SString("CMapEventManager::Call ( %s, ... ) took %d ms ( %s )", eventName.c_str(), deltaTimeUs / 1000, (*status).c_str()));
-            else
-                TIMING_DETAIL(SString("CMapEventManager::Call ( %s, ... ) took %d ms", eventName.c_str(), deltaTimeUs / 1000));
-        }
+            TIMING_DETAIL(SString("CMapEventManager::Call ( %s, ... ) took %d ms ( %s )", eventName.c_str(), deltaTimeUs / 1000, status.c_str()));
+        
     }
 
     m_currIterEvent = m_EventsMap.end();
@@ -331,14 +321,14 @@ bool CMapEventManager::HandleExists(CLuaMain* pLuaMain, std::string_view eventNa
     const auto& handlers = iter->second;
     for (const auto& handler : handlers)
     {
-        if (handler.GetVM() != pLuaMain)
+        if (handler.GetLuaMain() != pLuaMain)
             continue;
 
         if (handler.GetLuaFunction() != iLuaFunction)
             continue;
 
         // Make sure this isn't the currently processed handler, and will be deleted
-        if (IsIterating() && m_deleteCurrHandlerAfterFinished && &handlers[m_currIterHandlerIndex] == &handler)
+        if (IsIterating() && m_deleteCurrentHandlerAfterFinished && &handlers[m_currIterHandlerIndex] == &handler)
             continue;
 
         return true;
@@ -356,11 +346,11 @@ void CMapEventManager::GetHandles(CLuaMain* pLuaMain, std::string_view eventName
     const auto& handlers = iter->second;
     for (const auto& handler : handlers)
     {
-        if (handler.GetVM() != pLuaMain)
+        if (handler.GetLuaMain() != pLuaMain)
             continue;
 
         // Make sure this isn't the currently processed handler, and will be deleted
-        if (IsIterating() && m_deleteCurrHandlerAfterFinished && &handlers[m_currIterHandlerIndex] == &handler)
+        if (IsIterating() && m_deleteCurrentHandlerAfterFinished && &handlers[m_currIterHandlerIndex] == &handler)
             continue;
 
         lua_pushnumber(luaVM, ++luaTblIndex);
@@ -368,4 +358,3 @@ void CMapEventManager::GetHandles(CLuaMain* pLuaMain, std::string_view eventName
         lua_settable(luaVM, -3);
     }
 }
-

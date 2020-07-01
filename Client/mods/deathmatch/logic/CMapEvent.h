@@ -10,51 +10,74 @@
 
 #pragma once
 
-#define MAPEVENT_MAX_LENGTH_NAME 100
-
 #include <string>
+#include "lua/CLuaFunctionRef.h"
+#include "lua/CLuaArgument.h"
+#include "Enums.h"
+
+class CLuaMain;
+
+class SMapEventPriority
+{
+public:
+    SMapEventPriority(EEventPriorityType eventPriority, float fPriorityMod) : m_eventPriority(eventPriority), m_fPriorityMod(fPriorityMod) {}
+
+    bool operator>(const SMapEventPriority& rhs) const
+    {
+        return m_eventPriority > rhs.m_eventPriority || (m_eventPriority == rhs.m_eventPriority && m_fPriorityMod > rhs.m_fPriorityMod);
+    }
+
+    bool operator<(const SMapEventPriority& rhs) const { return !(*this > rhs); }
+    bool operator>=(const SMapEventPriority& rhs) const { return !(*this < rhs); }
+    bool operator<=(const SMapEventPriority& rhs) const { return !(*this > rhs); }
+
+private:
+    EEventPriorityType m_eventPriority = EEventPriorityType::LOW;
+    float              m_fPriorityMod = 0.0f;
+};
 
 class CMapEvent
 {
 public:
-    CMapEvent(class CLuaMain* pMain, std::string_view name, const CLuaFunctionRef& iLuaFunction, bool bPropagated, EEventPriorityType eventPriority,
-        float fPriorityMod);
-    CMapEvent() = default;
+    CMapEvent(CLuaMain* pMain, std::string_view name, const CLuaFunctionRef& iLuaFunction, bool bPropagated, SMapEventPriority priority);
+    CMapEvent() noexcept = default;
 
     ~CMapEvent() = default;
 
     CMapEvent(const CMapEvent&) = default;
-    CMapEvent(CMapEvent&&) = default;
+    CMapEvent(CMapEvent&&) noexcept = default;
 
-    class CLuaMain* GetVM() const { return m_pMain; };
+    class CLuaMain* GetLuaMain() const { return m_pLuaMain; };
     CLuaFunctionRef GetLuaFunction() const { return m_iLuaFunction; };
     bool            IsPropagated() const { return m_bPropagated; }
 
     bool            ShouldAllowAspectRatioAdjustment() const { return m_bAllowAspectRatioAdjustment; }
     bool            ShouldForceAspectRatioAdjustment() const { return m_bForceAspectRatioAdjustment; }
 
-    bool            ShouldBeSkipped() const { return m_bShouldBeSkipped; }
+    bool            ShouldBeSkipped() const { return m_bShouldBeSkipped || m_bShouldBeDeleted; }
     void            SetShouldBeSkipped(bool bSkip) { m_bShouldBeSkipped = bSkip; }
 
-    void            Call(const class CLuaArguments& Arguments);
+    bool            ShouldBeDeleted() const { return m_bShouldBeDeleted; }
+    void            SetShouldBeDeleted(bool bDelete) { m_bShouldBeDeleted = bDelete; }
 
-    bool operator>(const CMapEvent& rhs) const
-    { return m_eventPriority > rhs.m_eventPriority || (m_eventPriority == rhs.m_eventPriority && m_fPriorityMod > rhs.m_fPriorityMod); }
-    bool operator<(const CMapEvent& rhs) const { return !(*this > rhs); }
+    void            Call(const CLuaArguments& Arguments) const { if (m_pLuaMain) { Arguments.Call(m_pLuaMain, m_iLuaFunction); } }
+
+
+    const SMapEventPriority& GetPriority() const { return m_priority; }
 
     CMapEvent& operator=(const CMapEvent&) = default;
-    CMapEvent& operator=(CMapEvent&&) = default;
+    CMapEvent& operator=(CMapEvent&&) noexcept = default;
 
 private:
-    class CLuaMain* m_pMain = nullptr;
+    CLuaMain*       m_pLuaMain = nullptr;
     CLuaFunctionRef m_iLuaFunction = {};
 
     bool m_bPropagated = false;
 
     bool m_bShouldBeSkipped = false;
+    bool m_bShouldBeDeleted = false;
 
-    EEventPriorityType m_eventPriority = EEventPriorityType::LOW;
-    float              m_fPriorityMod = 0.0f;
+    SMapEventPriority m_priority;
 
     bool m_bAllowAspectRatioAdjustment = false;
     bool m_bForceAspectRatioAdjustment = false;

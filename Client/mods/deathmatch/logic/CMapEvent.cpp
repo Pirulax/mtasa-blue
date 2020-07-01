@@ -10,14 +10,11 @@
 
 #include <StdInc.h>
 
-CMapEvent::CMapEvent(CLuaMain* pMain, std::string_view name, const CLuaFunctionRef& iLuaFunction, bool bPropagated, EEventPriorityType eventPriority,
-                     float fPriorityMod) :
-    // Init
-    m_pMain(pMain),
+CMapEvent::CMapEvent(CLuaMain* pMain, std::string_view name, const CLuaFunctionRef& iLuaFunction, bool bPropagated, SMapEventPriority priority) :
+    m_pLuaMain(pMain),
     m_iLuaFunction(iLuaFunction),
     m_bPropagated(bPropagated),
-    m_eventPriority(eventPriority),
-    m_fPriorityMod(fPriorityMod),
+    m_priority(priority),
 
     // Only allow dxSetAspectRatioAdjustmentEnabled during these events
     m_bAllowAspectRatioAdjustment((name == "onClientRender") || (name == "onClientPreRender") || (name == "onClientHUDRender")),
@@ -25,13 +22,4 @@ CMapEvent::CMapEvent(CLuaMain* pMain, std::string_view name, const CLuaFunctionR
     // Force aspect ratio adjustment for 'customblips' resource
     m_bForceAspectRatioAdjustment(m_bAllowAspectRatioAdjustment && (pMain->GetScriptName() == std::string_view("customblips")))
 {
-}
-
-void CMapEvent::Call(const CLuaArguments& Arguments)
-{
-    if (m_pMain)
-    {
-        // Call our function with the given arguments
-        Arguments.Call(m_pMain, m_iLuaFunction);
-    }
 }

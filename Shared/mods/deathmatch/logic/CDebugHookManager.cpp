@@ -204,7 +204,7 @@ void GetDebugInfo(lua_State* luaVM, lua_Debug& debugInfo, const char*& szFilenam
 ///////////////////////////////////////////////////////////////
 void GetMapEventDebugInfo(CMapEvent* pMapEvent, const char*& szFilename, int& iLineNumber)
 {
-    CLuaMain* pLuaMain = pMapEvent->GetVM();
+    CLuaMain* pLuaMain = pMapEvent->GetLuaMain();
 
     if (!pLuaMain)
         return;
@@ -483,7 +483,7 @@ void CDebugHookManager::GetEventFunctionCallHookArguments(CLuaArguments& NewArgu
     int         iFunctionLineNumber = 0;
     GetMapEventDebugInfo(pMapEvent, szFunctionFilename, iFunctionLineNumber);
 
-    CLuaMain*  pFunctionLuaMain = pMapEvent->GetVM();
+    CLuaMain*  pFunctionLuaMain = pMapEvent->GetLuaMain();
     CResource* pFunctionResource = pFunctionLuaMain ? pFunctionLuaMain->GetResource() : NULL;
 
     // resource eventResource, string eventName, element eventSource, element eventClient, string eventFilename, int eventLineNumber,

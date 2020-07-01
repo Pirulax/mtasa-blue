@@ -223,6 +223,9 @@ void CClientPerfStatLuaTimingImpl::OnLuaMainDestroy(CLuaMain* pLuaMain)
 ///////////////////////////////////////////////////////////////
 void CClientPerfStatLuaTimingImpl::UpdateLuaTiming(CLuaMain* pLuaMain, const char* szEventName, TIMEUS timeUs)
 {
+    assert(pLuaMain);
+    assert(szEventName);
+
     CLuaMainTiming* pLuaMainTiming = MapFind(AllLuaTiming.LuaMainTimingMap, pLuaMain);
     if (!pLuaMainTiming)
     {
