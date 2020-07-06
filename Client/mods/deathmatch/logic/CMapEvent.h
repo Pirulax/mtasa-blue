@@ -60,8 +60,9 @@ public:
     bool            ShouldBeDeleted() const { return m_bShouldBeDeleted; }
     void            SetShouldBeDeleted(bool bDelete) { m_bShouldBeDeleted = bDelete; }
 
-    void            Call(const CLuaArguments& Arguments) const { if (m_pLuaMain) { Arguments.Call(m_pLuaMain, m_iLuaFunction); } }
+    auto            GetCreationTimepoint() const { return m_creationTime; }
 
+    void            Call(const CLuaArguments& Arguments) const { Arguments.Call(m_pLuaMain, m_iLuaFunction); }
 
     const SMapEventPriority& GetPriority() const { return m_priority; }
 
@@ -72,12 +73,14 @@ private:
     CLuaMain*       m_pLuaMain = nullptr;
     CLuaFunctionRef m_iLuaFunction = {};
 
+    SMapEventPriority m_priority;
+
+    std::chrono::steady_clock::time_point m_creationTime = std::chrono::steady_clock::now();
+
     bool m_bPropagated = false;
 
     bool m_bShouldBeSkipped = false;
     bool m_bShouldBeDeleted = false;
-
-    SMapEventPriority m_priority;
 
     bool m_bAllowAspectRatioAdjustment = false;
     bool m_bForceAspectRatioAdjustment = false;
