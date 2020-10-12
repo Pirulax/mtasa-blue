@@ -13,6 +13,7 @@
 
 // Temporary until we change these funcs:
 #include "../luadefs/CLuaDefs.h"
+#include <lua/CLuaUserData.h>
 // End of temporary
 
 // Prevent the warning issued when doing unsigned short -> void*
@@ -20,24 +21,24 @@
 
 CClientEntity* lua_toelement(lua_State* luaVM, int iArgument)
 {
-    if (lua_type(luaVM, iArgument) == LUA_TLIGHTUSERDATA)
+    switch (lua_type(luaVM, iArgument))
+    {
+    case LUA_TLIGHTUSERDATA:
     {
         ElementID      ID = TO_ELEMENTID(lua_touserdata(luaVM, iArgument));
         CClientEntity* pEntity = CElementIDs::GetElement(ID);
         if (!pEntity || pEntity->IsBeingDeleted())
-            return NULL;
+            return nullptr;
         return pEntity;
     }
-    else if (lua_type(luaVM, iArgument) == LUA_TUSERDATA)
+    case LUA_TUSERDATA:
     {
-        ElementID      ID = TO_ELEMENTID(*((void**)lua_touserdata(luaVM, iArgument)));
-        CClientEntity* pEntity = CElementIDs::GetElement(ID);
-        if (!pEntity || pEntity->IsBeingDeleted())
-            return NULL;
-        return pEntity;
+        auto userdata = (CLuaUserData*)lua_touserdata(luaVM, iArgument);
+        if (auto pElementUData = dynamic_cast<CLuaUserDataElement*>(userdata))
+            return (CClientEntity*)pElementUData;
     }
-
-    return NULL;
+    }
+    return nullptr;
 }
 
 void lua_pushelement(lua_State* luaVM, CClientEntity* pElement)
@@ -50,15 +51,13 @@ void lua_pushelement(lua_State* luaVM, CClientEntity* pElement)
             return;
         }
 
-        ElementID ID = pElement->GetID();
-        if (ID != INVALID_ELEMENT_ID)
+        if (ElementID ID = pElement->GetID(); ID != INVALID_ELEMENT_ID)
         {
-            const char* szClass = NULL;
-            CLuaMain*   pLuaMain = g_pClientGame->GetLuaManager()->GetVirtualMachine(luaVM);
-            if (pLuaMain->IsOOPEnabled())
+            const char* szClass = nullptr;
+            if (g_pClientGame->GetLuaManager()->GetVirtualMachine(luaVM)->IsOOPEnabled())
                 szClass = CLuaClassDefs::GetEntityClass(pElement);
+            lua_pushobject(luaVM, szClass, CLuaUserDataElement(ID));
 
-            lua_pushobject(luaVM, szClass, (void*)reinterpret_cast<unsigned int*>(ID.Value()));
             return;
         }
     }
@@ -118,18 +117,20 @@ void lua_pushuserdata(lua_State* luaVM, void* pData)
     lua_pushobject(luaVM, NULL, pData);
 }
 
-void lua_pushobject(lua_State* luaVM, const char* szClass, void* pObject, bool bSkipCache)
+template<class T>
+void lua_pushobject(lua_State* luaVM, const char* szClass, T userdata, bool bSkipCache)
 {
-    if (szClass == nullptr)
+    if (!szClass)
     {
-        lua_pushlightuserdata(luaVM, pObject);
+        lua_pushlightuserdata(luaVM, userdata.Value());
         return;
     }
 
+    auto newUserData = [] { *((T*)lua_newuserdata(luaVM, sizeof(T)) = userdata; };
+
     if (bSkipCache)
-    {
-        *(void**)lua_newuserdata(luaVM, sizeof(void*)) = pObject;
-    }
+        newUserData();
+
     else
     {
         // Lookup the userdata in the cache table
@@ -139,7 +140,7 @@ void lua_pushobject(lua_State* luaVM, const char* szClass, void* pObject, bool b
         assert(lua_istable(luaVM, -1));
 
         // First we want to check if we have a userdata for this already
-        lua_pushlightuserdata(luaVM, pObject);
+        lua_pushlightuserdata(luaVM, userdata.Value());
         lua_rawget(luaVM, -2);
 
         if (lua_isnil(luaVM, -1))
@@ -147,7 +148,7 @@ void lua_pushobject(lua_State* luaVM, const char* szClass, void* pObject, bool b
             lua_pop(luaVM, 1);
 
             // we don't have it, create it
-            *(void**)lua_newuserdata(luaVM, sizeof(void*)) = pObject;
+            newUserData();
 
             // save in ud table
             lua_pushlightuserdata(luaVM, pObject);
@@ -173,9 +174,11 @@ void lua_pushvector(lua_State* luaVM, const CVector4D& vector)
 
 void lua_pushvector(lua_State* luaVM, const CVector& vector)
 {
-    CLuaVector3D* pVector = new CLuaVector3D(vector);
-    lua_pushobject(luaVM, "Vector3", (void*)reinterpret_cast<unsigned int*>(pVector->GetScriptID()), true);
-    lua_addtotalbytes(luaVM, LUA_GC_EXTRA_BYTES);
+    //CLuaVector3D* pVector = new CLuaVector3D(vector);
+    //lua_pushobject(luaVM, "Vector3", (void*)reinterpret_cast<unsigned int*>(pVector->GetScriptID()), true);
+    //lua_addtotalbytes(luaVM, LUA_GC_EXTRA_BYTES);
+
+
 }
 
 void lua_pushvector(lua_State* luaVM, const CVector2D& vector)
