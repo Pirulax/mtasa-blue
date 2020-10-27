@@ -11,19 +11,8 @@
 
 #pragma once
 
-class CLuaVector3D : public CVector
+class CLuaVector3D : public CVector, public ScriptObject::Entity<CLuaVector3D>
 {
 public:
-    CLuaVector3D();
-    CLuaVector3D(const CVector& vector);
-    CLuaVector3D(float fX, float fY, float fZ);
-
-    ~CLuaVector3D();
-
-    unsigned int GetScriptID() const { return m_uiScriptID; }
-
-    static CLuaVector3D* GetFromScriptID(unsigned int uiScriptID);
-
-private:
-    unsigned int m_uiScriptID;
+    CLuaVector3D::CLuaVector3D(const CVector& value = {}) : CVector(value) {}
 };

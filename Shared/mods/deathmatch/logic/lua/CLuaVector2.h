@@ -11,19 +11,8 @@
 
 #pragma once
 
-class CLuaVector2D : public CVector2D
+class CLuaVector2D : public CVector2D, public ScriptObject::AutoGUID<CLuaVector2D>
 {
 public:
-    CLuaVector2D();
-    CLuaVector2D(const CVector2D& vector);
-    CLuaVector2D(float fX, float fY);
-
-    ~CLuaVector2D();
-
-    unsigned int GetScriptID() const { return m_uiScriptID; }
-
-    static CLuaVector2D* GetFromScriptID(unsigned int uiScriptID);
-
-private:
-    unsigned int m_uiScriptID;
+    CLuaVector2D::CLuaVector2D(const CVector2D& value = {}) : CVector2D(value) {}
 };
