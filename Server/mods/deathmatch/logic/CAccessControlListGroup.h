@@ -48,7 +48,7 @@ private:
     SString     m_strKey;
 };
 
-class CAccessControlListGroup
+class CAccessControlListGroup : public ScriptObject::AutoGUID<CAccessControlListGroup>
 {
 public:
     CAccessControlListGroup(const char* szGroupName);
@@ -71,8 +71,6 @@ public:
     list<class CAccessControlListGroupObject*>::iterator IterEndObjects() { return m_Objects.end(); };
 
     void WriteToXMLNode(CXMLNode* pNode);
-    uint GetScriptID() const { return m_uiScriptID; }
-
 private:
     void OnChange();
 
@@ -88,5 +86,4 @@ private:
 
     ObjectList m_Objects;
     ObjectMap  m_ObjectsById;
-    uint       m_uiScriptID;
 };

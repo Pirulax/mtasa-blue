@@ -13,13 +13,11 @@
 
 CAccessControlListGroup::CAccessControlListGroup(const char* szGroupName)
 {
-    m_uiScriptID = CIdArray::PopUniqueId(this, EIdClass::ACL_GROUP);
     m_strGroupName = szGroupName;
 }
 
 CAccessControlListGroup::~CAccessControlListGroup()
 {
-    CIdArray::PushUniqueId(this, EIdClass::ACL_GROUP, m_uiScriptID);
     ObjectList::iterator iter = m_Objects.begin();
     for (; iter != m_Objects.end(); iter++)
     {
