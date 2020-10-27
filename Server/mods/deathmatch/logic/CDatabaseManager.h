@@ -81,14 +81,13 @@ public:
 //
 // All data realating to a database job
 //
-class CDbJobData
+class CDbJobData : public ScriptObject::AutoGUID<CDbJobData>
 {
 public:
     ZERO_ON_NEW
 
     CDbJobData();
     ~CDbJobData();
-    SDbJobId           GetId() { return id; }
     bool               SetCallback(PFN_DBRESULT pfnDbResult, void* pContext);
     bool               HasCallback();
     void               ProcessCallback();
@@ -97,7 +96,6 @@ public:
     SString            GetCommandStringForLog();
 
     EJobStageType stage;
-    SDbJobId      id;
     SLuaDebugInfo m_LuaDebugInfo;
 
     struct
