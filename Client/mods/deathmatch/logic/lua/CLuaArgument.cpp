@@ -34,7 +34,7 @@ CLuaArgument::CLuaArgument()
     m_iType = LUA_TNIL;
     m_iIndex = -1;
     m_pTableData = NULL;
-    m_pUserData = NULL;
+    m_UserData = ScriptObject::INVALID_GUID;
 }
 
 CLuaArgument::CLuaArgument(const CLuaArgument& Argument, CFastHashMap<CLuaArguments*, CLuaArguments*>* pKnownTables)
@@ -91,7 +91,7 @@ void CLuaArgument::CopyRecursive(const CLuaArgument& Argument, CFastHashMap<CLua
         case LUA_TUSERDATA:
         case LUA_TLIGHTUSERDATA:
         {
-            m_pUserData = Argument.m_pUserData;
+            m_UserData = Argument.m_UserData;
             break;
         }
 
@@ -163,7 +163,7 @@ bool CLuaArgument::CompareRecursive(const CLuaArgument& Argument, std::set<CLuaA
         case LUA_TUSERDATA:
         case LUA_TLIGHTUSERDATA:
         {
-            return m_pUserData == Argument.m_pUserData;
+            return m_UserData == Argument.m_UserData;
         }
 
         case LUA_TNUMBER:
@@ -255,16 +255,15 @@ void CLuaArgument::Read(lua_State* luaVM, int iArgument, CFastHashMap<const void
 
             case LUA_TLIGHTUSERDATA:
             {
-                m_pUserData = lua_touserdata(luaVM, iArgument);
+                m_UserData = ScriptObject::GUID::FromLightUserData(lua_touserdata(luaVM, iArgument));
                 break;
             }
 
             case LUA_TUSERDATA:
             {
-                m_pUserData = *((void**)lua_touserdata(luaVM, iArgument));
+                m_UserData = ScriptObject::GUID::FromFullUserData(lua_touserdata(luaVM, iArgument));
                 break;
             }
-
             case LUA_TNUMBER:
             {
                 m_Number = lua_tonumber(luaVM, iArgument);
@@ -327,12 +326,12 @@ void CLuaArgument::ReadString(const std::string& strString)
     m_strString = strString;
 }
 
-void CLuaArgument::ReadScriptID(uint uiScriptID)
+void CLuaArgument::ReadScriptID(ScriptObject::GUID guid)
 {
     m_strString = "";
     DeleteTableData();
     m_iType = LUA_TUSERDATA;
-    m_pUserData = reinterpret_cast<void*>(uiScriptID);
+    m_UserData = guid;
 }
 
 void CLuaArgument::ReadElement(CClientEntity* pElement)
@@ -342,7 +341,7 @@ void CLuaArgument::ReadElement(CClientEntity* pElement)
     if (pElement)
     {
         m_iType = LUA_TUSERDATA;
-        m_pUserData = (void*)reinterpret_cast<unsigned int*>(pElement->GetID().Value());
+        m_UserData = ScriptObject::GUID(pElement->GetID());
     }
     else
         m_iType = LUA_TNIL;
@@ -353,7 +352,7 @@ void CLuaArgument::ReadElementID(ElementID ID)
     m_strString = "";
     DeleteTableData();
     m_iType = LUA_TUSERDATA;
-    m_pUserData = (void*)reinterpret_cast<unsigned int*>(ID.Value());
+    m_UserData = ScriptObject::GUID(ID);
 }
 
 void CLuaArgument::ReadTable(CLuaArguments* table)
@@ -363,12 +362,6 @@ void CLuaArgument::ReadTable(CLuaArguments* table)
     m_pTableData = new CLuaArguments(*table);
     m_bWeakTableRef = false;
     m_iType = LUA_TTABLE;
-}
-
-CClientEntity* CLuaArgument::GetElement() const
-{
-    ElementID ID = TO_ELEMENTID(m_pUserData);
-    return CElementIDs::GetElement(ID);
 }
 
 void CLuaArgument::Push(lua_State* luaVM, CFastHashMap<CLuaArguments*, int>* pKnownTables) const
@@ -400,7 +393,7 @@ void CLuaArgument::Push(lua_State* luaVM, CFastHashMap<CLuaArguments*, int>* pKn
             case LUA_TUSERDATA:
             case LUA_TLIGHTUSERDATA:
             {
-                lua_pushuserdata(luaVM, m_pUserData);
+                lua_pushuserdata(luaVM, m_UserData);
                 break;
             }
 
@@ -844,7 +837,7 @@ json_object* CLuaArgument::WriteToJSONObject(bool bSerialize, CFastHashMap<CLuaA
         case LUA_TLIGHTUSERDATA:
         {
             CClientEntity* pElement = GetElement();
-            CResource*     pResource = g_pClientGame->GetResourceManager()->GetResourceFromScriptID(reinterpret_cast<unsigned long>(GetUserData()));
+            CResource*     pResource = GetResource();
 
             // Elements are dynamic, so storing them is potentially unsafe
             if (pElement && bSerialize)
@@ -940,7 +933,7 @@ char* CLuaArgument::WriteToString(char* szBuffer, int length)
         case LUA_TUSERDATA:
         {
             CClientEntity* pElement = GetElement();
-            CResource*     pResource = reinterpret_cast<CResource*>(GetUserData());
+            CResource*     pResource = GetResource();
             if (pElement)
             {
                 snprintf(szBuffer, length, "#E#%d", (int)pElement->GetID().Value());
@@ -1035,7 +1028,7 @@ bool CLuaArgument::ReadFromJSONObject(json_object* object, std::vector<CLuaArgum
                             CResource* resource = g_pClientGame->GetResourceManager()->GetResource(strString.c_str() + 3);
                             if (resource)
                             {
-                                ReadScriptID(resource->GetScriptID());
+                                ReadScriptID(resource->GetScriptObjectGUID());
                             }
                             else
                             {

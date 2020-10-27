@@ -42,7 +42,7 @@ public:
     void ReadNumber(double dNumber);
     void ReadString(const std::string& strString);
     void ReadElement(CClientEntity* pElement);
-    void ReadScriptID(uint uiScriptID);
+    void ReadScriptID(ScriptObject::GUID guid);
     void ReadElementID(ElementID ID);
     void ReadTable(class CLuaArguments* table);
 
@@ -54,8 +54,8 @@ public:
     bool           GetBoolean() const { return m_bBoolean; };
     lua_Number     GetNumber() const { return m_Number; };
     const SString& GetString() { return m_strString; };
-    void*          GetUserData() const { return m_pUserData; };
-    CClientEntity* GetElement() const;
+    CClientEntity* GetElement() const { return ScriptObject::GUIDManager::Get<CClientEntity>(m_UserData); }
+    CResource*     GetResource() const { return ScriptObject::GUIDManager::Get<CResource>(m_UserData); }
 
     bool         ReadFromBitStream(NetBitStreamInterface& bitStream, std::vector<CLuaArguments*>* pKnownTables = NULL);
     bool         WriteToBitStream(NetBitStreamInterface& bitStream, CFastHashMap<CLuaArguments*, unsigned long>* pKnownTables = NULL) const;
@@ -66,14 +66,14 @@ public:
 private:
     void LogUnableToPacketize(const char* szMessage) const;
 
-    int            m_iType;
-    int            m_iIndex;
-    bool           m_bBoolean;
-    lua_Number     m_Number;
-    SString        m_strString;
-    void*          m_pUserData;
-    CLuaArguments* m_pTableData;
-    bool           m_bWeakTableRef;
+    int                 m_iType;
+    int                 m_iIndex;
+    bool                m_bBoolean;
+    lua_Number          m_Number;
+    SString             m_strString;
+    ScriptObject::GUID  m_UserData;
+    CLuaArguments*      m_pTableData;
+    bool                m_bWeakTableRef;
 
 #ifdef MTA_DEBUG
     std::string m_strFilename;

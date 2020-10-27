@@ -46,7 +46,7 @@ public:
     void ReadString(const std::string& strString);
     void ReadElement(CElement* pElement);
     void ReadElementID(ElementID ID);
-    void ReadScriptID(uint uiScriptID);
+    void ReadScriptID(ScriptObject::GUID guid);
     void ReadTable(class CLuaArguments* table);
 
     int GetType() const { return m_iType; };
@@ -54,11 +54,11 @@ public:
     bool               GetBoolean() const { return m_bBoolean; };
     lua_Number         GetNumber() const { return m_Number; };
     const std::string& GetString() { return m_strString; };
-    void*              GetUserData() const { return m_pUserData; };
-    CElement*          GetElement() const;
+    ScriptObject::GUID GetUserData() const { return m_UserData; };
+    CElement*          GetElement() const { return m_UserData.Get<CElement>(); }
+    CResource*         GetResource() const { return m_UserData.Get<CResource>(); }
     bool               GetAsString(SString& strBuffer);
 
-    
     bool         ReadFromBitStream(NetBitStreamInterface& bitStream, std::vector<CLuaArguments*>* pKnownTables = NULL);
     bool         WriteToBitStream(NetBitStreamInterface& bitStream, CFastHashMap<CLuaArguments*, unsigned long>* pKnownTables = NULL) const;
     json_object* WriteToJSONObject(bool bSerialize = false, CFastHashMap<CLuaArguments*, unsigned long>* pKnownTables = NULL);
@@ -68,13 +68,13 @@ public:
 private:
     void LogUnableToPacketize(const char* szMessage) const;
 
-    int            m_iType;
-    bool           m_bBoolean;
-    lua_Number     m_Number;
-    std::string    m_strString;
-    void*          m_pUserData;
-    CLuaArguments* m_pTableData;
-    bool           m_bWeakTableRef;
+    int                 m_iType;
+    bool                m_bBoolean;
+    lua_Number          m_Number;
+    std::string         m_strString;
+    ScriptObject::GUID  m_UserData;
+    CLuaArguments*      m_pTableData;
+    bool                m_bWeakTableRef;
 
 #ifdef MTA_DEBUG
     std::string m_strFilename;

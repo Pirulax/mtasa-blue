@@ -23,7 +23,7 @@ CLuaArgument::CLuaArgument()
 {
     m_iType = LUA_TNIL;
     m_pTableData = NULL;
-    m_pUserData = NULL;
+    m_UserData = ScriptObject::INVALID_GUID;
 }
 
 CLuaArgument::CLuaArgument(const CLuaArgument& Argument, CFastHashMap<CLuaArguments*, CLuaArguments*>* pKnownTables)
@@ -73,7 +73,7 @@ void CLuaArgument::CopyRecursive(const CLuaArgument& Argument, CFastHashMap<CLua
         case LUA_TLIGHTUSERDATA:
         case LUA_TUSERDATA:
         {
-            m_pUserData = Argument.m_pUserData;
+            m_UserData = Argument.m_UserData;
             break;
         }
 
@@ -145,7 +145,7 @@ bool CLuaArgument::CompareRecursive(const CLuaArgument& Argument, std::set<CLuaA
         case LUA_TUSERDATA:
         case LUA_TLIGHTUSERDATA:
         {
-            return m_pUserData == Argument.m_pUserData;
+            return m_UserData == Argument.m_UserData;
         }
 
         case LUA_TNUMBER:
@@ -237,13 +237,13 @@ void CLuaArgument::Read(lua_State* luaVM, int iArgument, CFastHashMap<const void
 
             case LUA_TLIGHTUSERDATA:
             {
-                m_pUserData = lua_touserdata(luaVM, iArgument);
+                m_UserData = ScriptObject::GUID::FromLightUserData(lua_touserdata(luaVM, iArgument));
                 break;
             }
 
             case LUA_TUSERDATA:
             {
-                m_pUserData = *((void**)lua_touserdata(luaVM, iArgument));
+                m_UserData = ScriptObject::GUID::FromFullUserData(lua_touserdata(luaVM, iArgument));
                 break;
             }
 
@@ -312,7 +312,7 @@ void CLuaArgument::Push(lua_State* luaVM, CFastHashMap<CLuaArguments*, int>* pKn
             case LUA_TLIGHTUSERDATA:
             case LUA_TUSERDATA:
             {
-                lua_pushuserdata(luaVM, m_pUserData);
+                lua_pushuserdata(luaVM, m_UserData);
                 break;
             }
 
@@ -387,7 +387,7 @@ void CLuaArgument::ReadElement(CElement* pElement)
     if (pElement)
     {
         m_iType = LUA_TUSERDATA;
-        m_pUserData = reinterpret_cast<void*>(pElement->GetID().Value());
+        m_UserData = ScriptObject::GUID(pElement->GetID());
     }
     else
         m_iType = LUA_TNIL;
@@ -398,21 +398,15 @@ void CLuaArgument::ReadElementID(ElementID ID)
     m_strString = "";
     DeleteTableData();
     m_iType = LUA_TUSERDATA;
-    m_pUserData = (void*)reinterpret_cast<unsigned int*>(ID.Value());
+    m_UserData = ScriptObject::GUID(ID);
 }
 
-void CLuaArgument::ReadScriptID(uint uiScriptID)
+void CLuaArgument::ReadScriptID(ScriptObject::GUID guid)
 {
     m_strString = "";
     DeleteTableData();
     m_iType = LUA_TUSERDATA;
-    m_pUserData = reinterpret_cast<void*>(uiScriptID);
-}
-
-CElement* CLuaArgument::GetElement() const
-{
-    ElementID ID = TO_ELEMENTID(m_pUserData);
-    return CElementIDs::GetElement(ID);
+    m_UserData = guid;
 }
 
 bool CLuaArgument::GetAsString(SString& strBuffer)
@@ -858,7 +852,7 @@ json_object* CLuaArgument::WriteToJSONObject(bool bSerialize, CFastHashMap<CLuaA
         case LUA_TUSERDATA:
         {
             CElement*  pElement = GetElement();
-            CResource* pResource = g_pGame->GetResourceManager()->GetResourceFromScriptID(reinterpret_cast<unsigned long>(GetUserData()));
+            CResource* pResource = GetResource();
 
             // Elements are dynamic, so storing them is potentially unsafe
             if (pElement && bSerialize)
@@ -955,7 +949,7 @@ char* CLuaArgument::WriteToString(char* szBuffer, int length)
         case LUA_TUSERDATA:
         {
             CElement*  pElement = GetElement();
-            CResource* pResource = g_pGame->GetResourceManager()->GetResourceFromScriptID(reinterpret_cast<unsigned long>(GetUserData()));
+            CResource* pResource = GetResource();
             if (pElement)
             {
                 snprintf(szBuffer, length, "#E#%d", (int)pElement->GetID().Value());
@@ -1050,7 +1044,7 @@ bool CLuaArgument::ReadFromJSONObject(json_object* object, std::vector<CLuaArgum
                             CResource* resource = g_pGame->GetResourceManager()->GetResource(strString.c_str() + 3);
                             if (resource)
                             {
-                                ReadScriptID(resource->GetScriptID());
+                                ReadScriptID(resource->GetScriptObjectGUID());
                             }
                             else
                             {
