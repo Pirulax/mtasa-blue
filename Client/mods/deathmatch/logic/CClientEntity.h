@@ -193,8 +193,12 @@ public:
     CChildListType ::const_iterator IterEnd() { return m_Children.end(); }
     CElementListSnapshot*           GetChildrenListSnapshot();
 
-    ElementID GetID() { return m_ID; };
+    // CElementIDs entry things
+    ElementID GetID() const { return m_ID; };
     void      SetID(ElementID ID);
+
+    // This one is used for the scripting API, see ScriptObject for more info (and LuaCommon.cpp as well maybe)
+    auto GetScriptObjectGUID() const { return ScriptObject::GUID(GetID()); }
 
     CCustomData*  GetCustomDataPointer() { return m_pCustomData; }
     CLuaArgument* GetCustomData(const char* szName, bool bInheritData, bool* pbIsSynced = nullptr);

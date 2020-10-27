@@ -94,7 +94,10 @@ public:
     void         SetIsBeingDeleted(bool bBeingDeleted) { m_bIsBeingDeleted = bBeingDeleted; };
     virtual void Unlink() = 0;
 
-    ElementID GetID() { return m_ID; };
+    ElementID GetID() const { return m_ID; };
+
+    // This one is used for the scripting API, see ScriptObject for more info (and LuaCommon.cpp as well maybe)
+    auto GetScriptObjectGUID() const { return ScriptObject::GUID(GetID()); }
 
     virtual const CVector& GetPosition();
     virtual void           SetPosition(const CVector& vecPosition);
