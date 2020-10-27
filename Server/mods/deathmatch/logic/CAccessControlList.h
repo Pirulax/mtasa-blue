@@ -19,7 +19,7 @@ class CAccessControlList;
 
 #define MAX_ACL_NAME_LENGTH 256
 
-class CAccessControlList
+class CAccessControlList : public ScriptObject::AutoGUID<CAccessControlList>
 {
 public:
     CAccessControlList(const char* szACLName, class CAccessControlListManager* pACLManager);
@@ -37,7 +37,6 @@ public:
     list<CAccessControlListRight*>::const_iterator IterEnd() { return m_Rights.end(); };
 
     bool CanBeModifiedByScript();
-    uint GetScriptID() const { return m_uiScriptID; }
 
 private:
     void OnChange();
@@ -46,5 +45,4 @@ private:
     list<CAccessControlListRight*> m_Rights;
 
     class CAccessControlListManager* m_pACLManager;
-    uint                             m_uiScriptID;
 };

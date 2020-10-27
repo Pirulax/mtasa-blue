@@ -13,14 +13,12 @@
 
 CAccessControlList::CAccessControlList(const char* szACLName, CAccessControlListManager* pACLManager)
 {
-    m_uiScriptID = CIdArray::PopUniqueId(this, EIdClass::ACL);
     m_strACLName = szACLName;
     m_pACLManager = pACLManager;
 }
 
 CAccessControlList::~CAccessControlList()
 {
-    CIdArray::PushUniqueId(this, EIdClass::ACL, m_uiScriptID);
     list<CAccessControlListRight*>::iterator iter = m_Rights.begin();
     for (; iter != m_Rights.end(); iter++)
     {
