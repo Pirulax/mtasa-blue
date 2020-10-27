@@ -45,7 +45,7 @@ struct SPendingFileDownload
     double  dDownloadSize;
 };
 
-class CResource
+class CResource : public ScriptObject::AutoGUID<CResource>
 {
 public:
     CResource(unsigned short usNetID, const char* szResourceName, CClientEntity* pResourceEntity, CClientEntity* pResourceDynamicEntity,
@@ -53,7 +53,6 @@ public:
     ~CResource();
 
     unsigned short GetNetID() { return m_usNetID; };
-    uint           GetScriptID() const { return m_uiScriptID; };
     const char*    GetName() { return m_strResourceName; };
     CLuaMain*      GetVM() { return m_pLuaVM; };
     bool           IsActive() { return m_bActive; };
@@ -112,7 +111,6 @@ public:
 
 private:
     unsigned short       m_usNetID;
-    uint                 m_uiScriptID;
     SString              m_strResourceName;
     CLuaMain*            m_pLuaVM;
     CLuaManager*         m_pLuaManager;

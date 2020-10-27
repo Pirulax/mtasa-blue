@@ -143,7 +143,7 @@ struct SResourceStartOptions
 // A resource is either a directory with files or a ZIP file which contains the content of such directory.
 // The directory or ZIP file must contain a meta.xml file, which describes the required content by the resource.
 // It's a process-like environment for scripts, maps, images and other files.
-class CResource : public EHS
+class CResource : public EHS, public ScriptObject::AutoGUID<CResource>
 {
     using KeyValueMap = CFastHashMap<SString, SString>;
 
