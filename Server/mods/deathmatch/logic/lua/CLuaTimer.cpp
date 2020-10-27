@@ -13,6 +13,7 @@
 
 CLuaTimer::CLuaTimer(const CLuaFunctionRef& iLuaFunction, const CLuaArguments& Arguments)
 {
+    m_uiScriptID = CIdArray::PopUniqueId(this, EIdClass::TIMER);
     m_uiRepeats = 1;
     m_iLuaFunction = iLuaFunction;
     m_Arguments = Arguments;
@@ -20,6 +21,16 @@ CLuaTimer::CLuaTimer(const CLuaFunctionRef& iLuaFunction, const CLuaArguments& A
 
 CLuaTimer::~CLuaTimer()
 {
+    RemoveScriptID();
+}
+
+void CLuaTimer::RemoveScriptID()
+{
+    if (m_uiScriptID != INVALID_ARRAY_ID)
+    {
+        CIdArray::PushUniqueId(this, EIdClass::TIMER, m_uiScriptID);
+        m_uiScriptID = INVALID_ARRAY_ID;
+    }
 }
 
 void CLuaTimer::ExecuteTimer(CLuaMain* pLuaMain)
