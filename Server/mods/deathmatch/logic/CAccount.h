@@ -103,7 +103,6 @@ public:
 
     void SetChanged(bool bChanged) { m_bChanged = bChanged; }
     bool HasChanged() { return m_bChanged; }
-    uint GetScriptID() const { return m_uiScriptID; }
 
     std::shared_ptr<CLuaArgument>             GetData(const std::string& strKey);
     bool                                      SetData(const std::string& strKey, const std::string& strValue, int iType);
@@ -130,7 +129,6 @@ protected:
     bool m_bChanged;
 
     class CClient* m_pClient;
-    uint           m_uiScriptID;
 
     std::map<SString, CAccountData> m_Data;
 };

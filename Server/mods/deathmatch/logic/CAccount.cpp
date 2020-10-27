@@ -14,7 +14,6 @@
 CAccount::CAccount(CAccountManager* pManager, EAccountType accountType, const std::string& strName, const std::string& strPassword, int iUserID,
                    const std::string& strIP, const std::string& strSerial, const SString& strHttpPassAppend)
 {
-    m_uiScriptID = CIdArray::PopUniqueId(this, EIdClass::ACCOUNT);
     m_pClient = NULL;
 
     m_bChanged = false;
@@ -34,7 +33,6 @@ CAccount::CAccount(CAccountManager* pManager, EAccountType accountType, const st
 
 CAccount::~CAccount()
 {
-    CIdArray::PushUniqueId(this, EIdClass::ACCOUNT, m_uiScriptID);
     if (m_pClient)
         m_pClient->SetAccount(NULL);
 
