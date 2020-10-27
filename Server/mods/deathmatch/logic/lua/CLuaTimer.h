@@ -19,13 +19,11 @@ class CLuaTimer;
 
 #define LUA_TIMER_MIN_INTERVAL 0
 
-class CLuaTimer
+class CLuaTimer : public ScriptObject::AutoGUID<CLuaTimer>
 {
 public:
     CLuaTimer(const CLuaFunctionRef& iLuaFunction, const CLuaArguments& Arguments);
     ~CLuaTimer();
-
-    void RemoveScriptID();
 
     CTickCount GetStartTime() const { return m_llStartTime; };
     void       SetStartTime(CTickCount llStartTime) { m_llStartTime = llStartTime; };
@@ -40,16 +38,13 @@ public:
 
     CTickCount GetTimeLeft();
 
-    uint                 GetScriptID() const { return m_uiScriptID; }
     const SLuaDebugInfo& GetLuaDebugInfo() { return m_LuaDebugInfo; }
     void                 SetLuaDebugInfo(const SLuaDebugInfo& luaDebugInfo) { m_LuaDebugInfo = luaDebugInfo; }
-
 private:
     CLuaFunctionRef m_iLuaFunction;
     CLuaArguments   m_Arguments;
     CTickCount      m_llStartTime;
     CTickCount      m_llDelay;
     unsigned int    m_uiRepeats;
-    uint            m_uiScriptID;
     SLuaDebugInfo   m_LuaDebugInfo;
 };
