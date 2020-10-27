@@ -13,7 +13,6 @@
 
 CBan::CBan()
 {
-    m_uiScriptID = CIdArray::PopUniqueId(this, EIdClass::BAN);
     m_tTimeOfBan = 0;
     m_tTimeOfUnban = 0;
     m_bBeingDeleted = false;
@@ -22,7 +21,6 @@ CBan::CBan()
 
 CBan::~CBan()
 {
-    CIdArray::PushUniqueId(this, EIdClass::BAN, m_uiScriptID);
     CBanManager::SetBansModified();
 }
 

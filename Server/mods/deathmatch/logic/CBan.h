@@ -14,7 +14,7 @@
 #include "CCommon.h"
 #include <string>
 
-class CBan
+class CBan : public ScriptObject::AutoGUID<CBan>
 {
 public:
     CBan();
@@ -79,7 +79,6 @@ public:
     time_t  GetBanTimeRemaining();
     SString GetDurationDesc();
     SString GetReasonText() const;
-    uint    GetScriptID() const { return m_uiScriptID; }
     bool    IsBeingDeleted() const { return m_bBeingDeleted; }
     void    SetBeingDeleted() { m_bBeingDeleted = true; }
 
@@ -92,6 +91,5 @@ private:
     std::string m_strAccount;
     time_t      m_tTimeOfBan;
     time_t      m_tTimeOfUnban;
-    uint        m_uiScriptID;
     bool        m_bBeingDeleted;
 };
