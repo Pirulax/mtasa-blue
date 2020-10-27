@@ -24,7 +24,7 @@ enum eTextPriority
     PRIORITY_HIGH
 };
 
-class CTextItem
+class CTextItem : public ScriptObject::AutoGUID<CTextItem>
 {
     friend class CTextDisplay;
     friend class CPlayerTextManager;
@@ -57,7 +57,6 @@ public:
 
     unsigned long GetUniqueID() { return m_ulUniqueId; };
     bool          IsBeingDeleted() { return m_bDeletable; };
-    uint          GetScriptID() const { return m_uiScriptID; }
 
 private:
     SString       m_strText;
@@ -69,7 +68,6 @@ private:
     unsigned long m_ulUniqueId;
     eTextPriority m_Priority;
     bool          m_bDeletable;
-    uint          m_uiScriptID;
 
     std::list<CTextDisplay*> m_Observers;
 
