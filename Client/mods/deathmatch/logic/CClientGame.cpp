@@ -293,6 +293,7 @@ CClientGame::CClientGame(bool bLocalPlay) : m_ServerInfo(new CServerInfo())
     g_pCore->GetKeyBinds()->SetCharacterKeyHandler(CClientGame::StaticCharacterKeyHandler);
     g_pNet->RegisterPacketHandler(CClientGame::StaticProcessPacket);
 
+    ScriptObject::MainManager::Initialize(); // Allocate script object GUID manager before Lua manager
     m_pLuaManager = new CLuaManager(this);
     m_pScriptDebugging = new CScriptDebugging(m_pLuaManager);
     m_pScriptDebugging->SetLogfile(CalcMTASAPath("mta\\logs\\clientscript.log"), 3);
@@ -488,6 +489,8 @@ CClientGame::~CClientGame()
     SAFE_DELETE(m_pLuaManager);
     SAFE_DELETE(m_pLatentTransferManager);
     SAFE_DELETE(m_pResourceFileDownloadManager);
+
+    ScriptObject::MainManager::Deinitialize(); // Deinit after Lua
 
     SAFE_DELETE(m_pRootEntity);
 
