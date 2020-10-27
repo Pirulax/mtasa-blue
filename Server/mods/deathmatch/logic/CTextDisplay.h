@@ -17,7 +17,7 @@ class CTextDisplay;
 #include "CPlayer.h"
 #include "CTextItem.h"
 
-class CTextDisplay
+class CTextDisplay : public ScriptObject::AutoGUID<CTextDisplay>
 {
 public:
     CTextDisplay();
@@ -33,10 +33,8 @@ public:
 
     void Add(CTextItem* pTextItem);
     void Remove(CTextItem* pTextItem, bool bRemoveFromList = true);
-    uint GetScriptID() { return m_uiScriptID; }
 
 private:
     std::list<CPlayerTextManager*> m_observers;
     std::list<CTextItem*>          m_contents;
-    uint                           m_uiScriptID;
 };

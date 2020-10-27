@@ -13,12 +13,10 @@
 
 CTextDisplay::CTextDisplay()
 {
-    m_uiScriptID = CIdArray::PopUniqueId(this, EIdClass::TEXT_DISPLAY);
 }
 
 CTextDisplay::~CTextDisplay()
 {
-    CIdArray::PushUniqueId(this, EIdClass::TEXT_DISPLAY, m_uiScriptID);
     // Delete all our text items
     list<CTextItem*>::iterator iter = m_contents.begin();
     for (; iter != m_contents.end(); iter++)
