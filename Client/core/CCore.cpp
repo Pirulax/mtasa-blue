@@ -1794,6 +1794,7 @@ void CCore::ApplyFrameRateLimit(uint uiOverrideRate)
 //
 void CCore::ApplyQueuedFrameRateLimit()
 {
+    return;
     if (m_bQueuedFrameRateValid)
     {
         m_bQueuedFrameRateValid = false;
