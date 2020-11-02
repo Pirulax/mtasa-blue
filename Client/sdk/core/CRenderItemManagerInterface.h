@@ -209,6 +209,17 @@ struct SShaderTransform
 
     CVector2D vecPersCenOffset;
     bool      bPersCenOffsetOriginIsScreen;
+
+    bool operator==(const SShaderTransform& rhs) const noexcept
+    {
+        return rhs.bRotCenOffsetOriginIsScreen == bRotCenOffsetOriginIsScreen &&
+               rhs.bPersCenOffsetOriginIsScreen == bPersCenOffsetOriginIsScreen &&
+               rhs.vecRot == vecRot &&
+               rhs.vecRotCenOffset == vecRotCenOffset &&
+               rhs.vecPersCenOffset == vecPersCenOffset;
+
+    }
+    bool operator!=(const SShaderTransform& rhs) const noexcept { return !(*this == rhs); }
 };
 
 ////////////////////////////////////////////////////////////////
