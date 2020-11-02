@@ -232,7 +232,7 @@ void CShaderItem::SetTessellation(uint uiTessellationX, uint uiTessellationY)
 void CShaderItem::SetTransform(const SShaderTransform& transform)
 {
     // Check if value is changing
-    if (memcmp(&m_pShaderInstance->m_Transform, &transform, sizeof(transform)) != 0)
+    if (m_pShaderInstance->m_Transform != transform)
     {
         // Check if we need a new shader instance
         MaybeRenewShaderInstance();
