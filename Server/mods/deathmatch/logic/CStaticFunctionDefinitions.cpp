@@ -11590,11 +11590,8 @@ CBan* CStaticFunctionDefinitions::AddBan(SString strIP, SString strUsername, SSt
         bool bNickSet = false;
 
         // Loop through players to see if we should kick anyone
-        list<CPlayer*>::const_iterator iter = m_pPlayerManager->IterBegin();
-        for (; iter != m_pPlayerManager->IterEnd(); iter++)
+        for (CPlayer* const pPlayer : m_pPlayerManager->GetAllPlayers())
         {
-            CPlayer* const pPlayer = *iter;
-
             // Default to not banning; if the IP, serial and username don't match, we don't want to kick the guy out
             bool bBan = false;
 
