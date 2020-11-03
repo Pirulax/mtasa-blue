@@ -1192,8 +1192,8 @@ bool CStaticFunctionDefinitions::SetElementPosition(CElement* pElement, const CV
     // Tell only the relevant clients about this elements new position
     if (IS_PERPLAYER_ENTITY(pElement))
     {
-        m_pPlayerManager->Broadcast(CElementRPCPacket(pElement, SET_ELEMENT_POSITION, *BitStream.pBitStream),
-                                    static_cast<CPerPlayerEntity*>(pElement)->GetPlayersList());
+        static_cast<CPerPlayerEntity*>(pElement)->BroadcastOnlyVisible(
+            CElementRPCPacket(pElement, SET_ELEMENT_POSITION, *BitStream.pBitStream));
     }
     // Tell all clients about its new position
     else

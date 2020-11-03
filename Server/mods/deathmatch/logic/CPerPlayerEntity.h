@@ -40,17 +40,13 @@ public:
 
     bool IsVisibleToPlayer(CPlayer& Player);
 
-    const std::set<CPlayer*>& GetPlayersList() { return m_Players; }
-
     static void StaticOnPlayerDelete(CPlayer* pPlayer);
     void        OnPlayerDelete(CPlayer* pPlayer);
 
+    void BroadcastOnlyVisible(const CPacket& Packet, bool bCheckIsSynced = false) const;
 protected:
     virtual void CreateEntity(CPlayer* pPlayer);
     virtual void DestroyEntity(CPlayer* pPlayer);
-
-    void BroadcastOnlyVisible(const CPacket& Packet);
-
 private:
     void RemoveIdenticalEntries(std::set<class CPlayer*>& List1, std::set<class CPlayer*>& List2);
 

@@ -74,7 +74,6 @@ void CPerPlayerEntity::UpdatePerPlayer()
     for (CPlayer* v : m_PlayersRemoved)
         DestroyEntity(v);
 
-
     // Add us for every player in our added list
     for (CPlayer* v : m_PlayersAdded)
         CreateEntity(v);
@@ -217,10 +216,10 @@ void CPerPlayerEntity::DestroyEntity(CPlayer* pPlayer)
 }
 
 // Broadcast a packet to players we reference (only if we're synced)
-void CPerPlayerEntity::BroadcastOnlyVisible(const CPacket& Packet)
+void CPerPlayerEntity::BroadcastOnlyVisible(const CPacket& Packet, bool bCheckIsSynced) const
 {
     // Are we synced? (if not we're not visible to anybody)
-    if (m_bIsSynced)
+    if (!bCheckIsSynced || m_bIsSynced)
     {
         // Send it to all players we're visible to
         CPlayerManager::Broadcast(Packet, m_VisibleTo);
