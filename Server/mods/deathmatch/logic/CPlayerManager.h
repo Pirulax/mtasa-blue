@@ -13,7 +13,6 @@ class CPlayerManager;
 
 #pragma once
 
-#include "CCommon.h"
 #include "packets/CPacket.h"
 #include "CPlayer.h"
 #include "../Config.h"
