@@ -141,6 +141,7 @@ private:
 
             if (Packet.Write(*pBitStream))
             {
+                extern CGame* g_pGame;
                 g_pGame->SendPacketBatchBegin(Packet.GetPacketID(), pBitStream);
 
                 for (CPlayer* pPlayer : players)
