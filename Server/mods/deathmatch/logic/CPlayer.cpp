@@ -269,41 +269,6 @@ uint CPlayer::Send(const CPacket& Packet)
     if (!CNetBufferWatchDog::CanSendPacket(Packet.GetPacketID()))
         return 0;
 
-    // Use the flags to determine how to send it
-    NetServerPacketReliability Reliability;
-    unsigned long              ulFlags = Packet.GetFlags();
-    if (ulFlags & PACKET_RELIABLE)
-    {
-        if (ulFlags & PACKET_SEQUENCED)
-        {
-            Reliability = PACKET_RELIABILITY_RELIABLE_ORDERED;
-        }
-        else
-        {
-            Reliability = PACKET_RELIABILITY_RELIABLE;
-        }
-    }
-    else
-    {
-        if (ulFlags & PACKET_SEQUENCED)
-        {
-            Reliability = PACKET_RELIABILITY_UNRELIABLE_SEQUENCED;
-        }
-        else
-        {
-            Reliability = PACKET_RELIABILITY_UNRELIABLE;
-        }
-    }
-    NetServerPacketPriority packetPriority = PACKET_PRIORITY_MEDIUM;
-    if (ulFlags & PACKET_HIGH_PRIORITY)
-    {
-        packetPriority = PACKET_PRIORITY_HIGH;
-    }
-    else if (ulFlags & PACKET_LOW_PRIORITY)
-    {
-        packetPriority = PACKET_PRIORITY_LOW;
-    }
-
     uint uiBitsSent = 0;
     // Allocate a bitstream for it
     NetBitStreamInterface* pBitStream = g_pNetServer->AllocateNetServerBitStream(GetBitStreamVersion());
@@ -313,7 +278,8 @@ uint CPlayer::Send(const CPacket& Packet)
         if (Packet.Write(*pBitStream))
         {
             uiBitsSent = pBitStream->GetNumberOfBitsUsed();
-            g_pGame->SendPacket(Packet.GetPacketID(), m_PlayerSocket, pBitStream, FALSE, packetPriority, Reliability, Packet.GetPacketOrdering());
+            g_pGame->SendPacket(Packet.GetPacketID(), m_PlayerSocket, pBitStream, FALSE,
+                Packet.GetNetServerPriority(), Packet.GetNetServerReliability(), Packet.GetPacketOrdering());
         }
 
         // Destroy the bitstream
