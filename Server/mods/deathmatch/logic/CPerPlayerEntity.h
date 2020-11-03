@@ -36,7 +36,7 @@ public:
     bool AddVisibleToReference(CElement* pElement);
     bool RemoveVisibleToReference(CElement* pElement);
     void ClearVisibleToReferences();
-    bool IsVisibleToReferenced(CElement* pSearchedFor);
+    bool IsVisibleToReferenced(CElement* pElement);
 
     bool IsVisibleToPlayer(CPlayer& Player);
 
@@ -68,5 +68,6 @@ protected:
 private:
     std::set<CPlayer*> m_PlayersAdded;
     std::set<CPlayer*> m_PlayersRemoved;
-    std::set<CPlayer*> m_Players;
+
+    CSendList m_VisibleTo;
 };

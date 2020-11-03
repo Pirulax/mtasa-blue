@@ -155,7 +155,7 @@ bool CPerPlayerEntity::IsVisibleToReferenced(CElement* pElement)
 // Return true if we're visible to the given player
 bool CPerPlayerEntity::IsVisibleToPlayer(CPlayer& Player)
 {
-    return MapContains(m_Players, &Player);
+    return m_VisibleTo.contains_player(&Player);
 }
 
 // Send EntityAddPacket
@@ -222,15 +222,8 @@ void CPerPlayerEntity::BroadcastOnlyVisible(const CPacket& Packet)
     // Are we synced? (if not we're not visible to anybody)
     if (m_bIsSynced)
     {
-        // Todo: Check if this is still needed.. Probably not..
-        CPlayerManager* pPlayerManager = g_pGame->GetPlayerManager();
-        m_Players.erase(std::remove_if(m_Players.begin(), m_Players.end(), [=](CPlayer* pPlayer) {
-            // Why does this happen?
-            return !pPlayerManager->Exists(pPlayer);
-        }), m_Players.end());
-
         // Send it to all players we're visible to
-        CPlayerManager::Broadcast(Packet, m_Players);
+        CPlayerManager::Broadcast(Packet, m_VisibleTo);
     }
 }
 
@@ -312,7 +305,7 @@ void CPerPlayerEntity::RemovePlayersBelow(CElement* pElement, std::set<CPlayer*>
 void CPerPlayerEntity::AddPlayerReference(CPlayer* pPlayer)
 {
     if (g_pGame->GetPlayerManager()->Exists(pPlayer))
-        MapInsert(m_Players, pPlayer);
+        m_VisibleTo.push_back(pPlayer);
     else
         CLogger::ErrorPrintf("CPerPlayerEntity tried to add reference for non existing player: %08x\n", pPlayer);
 }
@@ -320,7 +313,7 @@ void CPerPlayerEntity::AddPlayerReference(CPlayer* pPlayer)
 // Remove reference to a player
 void CPerPlayerEntity::RemovePlayerReference(CPlayer* pPlayer)
 {
-    MapRemove(m_Players, pPlayer);
+    m_VisibleTo.erase_player(pPlayer);
 }
 
 //
@@ -336,11 +329,7 @@ void CPerPlayerEntity::OnPlayerDelete(CPlayer* pPlayer)
 {
     /* Caz - Debug code disabled because it is being fixed by removing them from the map and the error is misleading users*/
     // SString strStatus;
-    if (MapContains(m_Players, pPlayer))
-    {
-        // strStatus += "m_Players ";
-        MapRemove(m_Players, pPlayer);
-    }
+    m_VisibleTo.erase_player(pPlayer);
 
     if (MapContains(m_PlayersAdded, pPlayer))
     {
