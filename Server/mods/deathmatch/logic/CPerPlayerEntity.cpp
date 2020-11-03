@@ -16,7 +16,6 @@ static std::unordered_set<CPerPlayerEntity*> s_AllPerPlayerEntities;
 CPerPlayerEntity::CPerPlayerEntity(CElement* pParent) : CElement(pParent)
 {
     s_AllPerPlayerEntities.insert(this);
-    m_bIsSynced = false;
     AddVisibleToReference(g_pGame->GetMapManager()->GetRootElement());
 };
 
