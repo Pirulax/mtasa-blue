@@ -50,9 +50,6 @@ protected:
 private:
     void RemoveIdenticalEntries(std::set<class CPlayer*>& List1, std::set<class CPlayer*>& List2);
 
-    void AddPlayersBelow(CElement* pElement, std::set<class CPlayer*>& Added);
-    void RemovePlayersBelow(CElement* pElement, std::set<class CPlayer*>& Removed);
-
     void AddPlayerReference(class CPlayer* pPlayer);
     void RemovePlayerReference(class CPlayer* pPlayer);
 

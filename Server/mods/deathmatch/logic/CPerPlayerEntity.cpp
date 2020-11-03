@@ -46,22 +46,6 @@ bool CPerPlayerEntity::Sync(bool bSync)
     return true;
 }
 
-void CPerPlayerEntity::OnReferencedSubtreeAdd(CElement* pElement)
-{
-    assert(pElement);
-
-    // Add all players below that item to our list
-    AddPlayersBelow(pElement, m_PlayersAdded);
-}
-
-void CPerPlayerEntity::OnReferencedSubtreeRemove(CElement* pElement)
-{
-    assert(pElement);
-
-    // Remove all players below that item from our list
-    RemovePlayersBelow(pElement, m_PlayersRemoved);
-}
-
 void CPerPlayerEntity::UpdatePerPlayer()
 {
     if (m_PlayersAdded.empty() && m_PlayersRemoved.empty())            // This check reduces cpu usage when loading large maps (due to recursion)
@@ -245,7 +229,7 @@ void CPerPlayerEntity::RemoveIdenticalEntries(std::set<CPlayer*>& List1, std::se
 }
 
 // Add all (including pElement if its one) player type children elements of pElement to our reference list
-void CPerPlayerEntity::AddPlayersBelow(CElement* pElement, std::set<CPlayer*>& Added)
+void CPerPlayerEntity::OnReferencedSubtreeAdd(CElement* pElement)
 {
     assert(pElement);
 
@@ -256,7 +240,7 @@ void CPerPlayerEntity::AddPlayersBelow(CElement* pElement, std::set<CPlayer*>& A
         CPlayer* pPlayer = static_cast<CPlayer*>(pElement);
         if (!IsVisibleToPlayer(*pPlayer))
         {
-            MapInsert(Added, pPlayer);
+            //MapInsert(Added, pPlayer);
         }
 
         // Add it to our reference list
@@ -268,12 +252,12 @@ void CPerPlayerEntity::AddPlayersBelow(CElement* pElement, std::set<CPlayer*>& A
     {
         CElement* pElement = *itChildren;
         if (pElement->CountChildren() || IS_PLAYER(pElement))            // This check reduces cpu usage when loading large maps (due to recursion)
-            AddPlayersBelow(pElement, Added);
+            OnReferencedSubtreeAdd(pElement);
     }
 }
 
 // Remove all (including pElement if its one) player type children elements of pElement to our reference list
-void CPerPlayerEntity::RemovePlayersBelow(CElement* pElement, std::set<CPlayer*>& Removed)
+void CPerPlayerEntity::OnReferencedSubtreeRemove(CElement* pElement)
 {
     assert(pElement);
 
@@ -287,7 +271,7 @@ void CPerPlayerEntity::RemovePlayersBelow(CElement* pElement, std::set<CPlayer*>
         // Did we just loose the last reference to that player? Add him to the list over removed players.
         if (!IsVisibleToPlayer(*pPlayer))
         {
-            MapInsert(Removed, pPlayer);
+            //MapInsert(Removed, pPlayer);
         }
     }
 
@@ -296,7 +280,7 @@ void CPerPlayerEntity::RemovePlayersBelow(CElement* pElement, std::set<CPlayer*>
     {
         CElement* pElement = *itChildren;
         if (pElement->CountChildren() || IS_PLAYER(pElement))            // This check reduces cpu usage when unloading large maps (due to recursion)
-            RemovePlayersBelow(pElement, Removed);
+            OnReferencedSubtreeRemove(pElement);
     }
 }
 
