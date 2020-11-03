@@ -327,24 +327,7 @@ void CPerPlayerEntity::StaticOnPlayerDelete(CPlayer* pPlayer)
 
 void CPerPlayerEntity::OnPlayerDelete(CPlayer* pPlayer)
 {
-    /* Caz - Debug code disabled because it is being fixed by removing them from the map and the error is misleading users*/
-    // SString strStatus;
     m_VisibleTo.erase_player(pPlayer);
-
-    if (MapContains(m_PlayersAdded, pPlayer))
-    {
-        // strStatus += "m_PlayersAdded ";
-        MapRemove(m_PlayersAdded, pPlayer);
-    }
-
-    if (MapContains(m_PlayersRemoved, pPlayer))
-    {
-        // strStatus += "m_PlayersRemoved ";
-        MapRemove(m_PlayersRemoved, pPlayer);
-    }
-
-    /*if ( !strStatus.empty() )
-    {
-        CLogger::ErrorPrintf( "CPerPlayerEntity problem: %s\n", *strStatus );
-    }*/
+    m_PlayersAdded.erase(pPlayer);
+    m_PlayersRemoved.erase(pPlayer);
 }
