@@ -140,6 +140,27 @@ class CSendList : public std::unordered_map<ushort, std::vector<CPlayer*>>
 {
 public:
     void push_back(CPlayer* pPlayer) { (*this)[pPlayer->GetBitStreamVersion()].push_back(pPlayer); }
+
+    std::vector<CPlayer*>* get_group_by_bitstream(unsigned short bsver)
+    {
+        return MapFind(*this, bsver);
+    }
+
+    auto get_player_group(CPlayer* pPlayer) { return get_group_by_bitstream(pPlayer->GetBitStreamVersion()); }
+
+    bool contains_player(CPlayer* pPlayer) const
+    {
+        if (const auto group = MapFind(*this, pPlayer->GetBitStreamVersion())) // Get their group by bitstream version
+            return ListContains(*group, pPlayer);
+        return false;
+    }
+
+    bool erase_player(CPlayer* pPlayer)
+    {
+        if (const auto group = get_player_group(pPlayer))
+            return ListRemoveFirst(*group, pPlayer);
+        return false;
+    }
 };
 
 class CGame
