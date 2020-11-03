@@ -23,14 +23,11 @@ CPerPlayerEntity::CPerPlayerEntity(CElement* pParent) : CElement(pParent)
 CPerPlayerEntity::~CPerPlayerEntity()
 {
     // Unsync us from everyone
-    // Sync ( false );
 
     // Unreference us from what we're referencing
-    list<CElement*>::const_iterator iter = m_ElementReferences.begin();
-    for (; iter != m_ElementReferences.end(); iter++)
-    {
-        (*iter)->m_ElementReferenced.remove(this);
-    }
+    for (CElement* pElement : m_ElementReferences)
+        pElement->m_ElementReferenced.remove(this);
+
     s_AllPerPlayerEntities.erase(this);
 }
 
@@ -80,18 +77,13 @@ void CPerPlayerEntity::UpdatePerPlayer()
     RemoveIdenticalEntries(m_PlayersAdded, m_PlayersRemoved);
 
     // Delete us for every player in our deleted list
-    std::set<CPlayer*>::const_iterator iter = m_PlayersRemoved.begin();
-    for (; iter != m_PlayersRemoved.end(); iter++)
-    {
-        DestroyEntity(*iter);
-    }
+    for (CPlayer* v : m_PlayersRemoved)
+        DestroyEntity(v);
+
 
     // Add us for every player in our added list
-    iter = m_PlayersAdded.begin();
-    for (; iter != m_PlayersAdded.end(); iter++)
-    {
-        CreateEntity(*iter);
-    }
+    for (CPlayer* v : m_PlayersAdded)
+        CreateEntity(v);
 
     // Clear both lists
     m_PlayersAdded.clear();
@@ -141,15 +133,14 @@ bool CPerPlayerEntity::RemoveVisibleToReference(CElement* pElement)
 void CPerPlayerEntity::ClearVisibleToReferences()
 {
     // For each reference in our list
-    bool                            bCleared = false;
-    list<CElement*>::const_iterator iter = m_ElementReferences.begin();
-    for (; iter != m_ElementReferences.end(); iter++)
+    bool bCleared = false;
+    for (CElement* pElement : m_ElementReferences)
     {
-        // Unreference us from it
-        (*iter)->m_ElementReferenced.remove(this);
+        // Unreference us from them
+        pElement->m_ElementReferenced.remove(this);
 
-        // Notify our inherits that he was removed
-        OnReferencedSubtreeRemove(*iter);
+        // Remove them, and their children, from our visible to list
+        OnReferencedSubtreeRemove(pElement);
         bCleared = true;
     }
 
@@ -164,16 +155,7 @@ void CPerPlayerEntity::ClearVisibleToReferences()
 // Are we visible to a referenced element? Not a player, but an element!
 bool CPerPlayerEntity::IsVisibleToReferenced(CElement* pElement)
 {
-    list<CElement*>::const_iterator iter = m_ElementReferences.begin();
-    for (; iter != m_ElementReferences.end(); iter++)
-    {
-        if (*iter == pElement)
-        {
-            return true;
-        }
-    }
-
-    return false;
+    return std::find(m_ElementReferences.begin(), m_ElementReferences.end(), pElement) != m_ElementReferences.end();
 }
 
 // Return true if we're visible to the given player
@@ -246,18 +228,12 @@ void CPerPlayerEntity::BroadcastOnlyVisible(const CPacket& Packet)
     // Are we synced? (if not we're not visible to anybody)
     if (m_bIsSynced)
     {
+        // Todo: Check if this is still needed.. Probably not..
         CPlayerManager* pPlayerManager = g_pGame->GetPlayerManager();
-        for (std::set<CPlayer*>::iterator iter = m_Players.begin(); iter != m_Players.end();)
-        {
-            if (!pPlayerManager->Exists(*iter))
-            {
-                // Why does this happen?
-                // CLogger::ErrorPrintf( "CPerPlayerEntity removed invalid player from list: %08x", *iter );
-                m_Players.erase(iter++);
-            }
-            else
-                ++iter;
-        }
+        m_Players.erase(std::remove_if(m_Players.begin(), m_Players.end(), [=](CPlayer* pPlayer) {
+            // Why does this happen?
+            return !pPlayerManager->Exists(pPlayer);
+        }), m_Players.end());
 
         // Send it to all players we're visible to
         CPlayerManager::Broadcast(Packet, m_Players);
@@ -302,10 +278,9 @@ void CPerPlayerEntity::AddPlayersBelow(CElement* pElement, std::set<CPlayer*>& A
     }
 
     // Call ourself on all its children elements
-    CChildListType ::const_iterator iterChildren = pElement->IterBegin();
-    for (; iterChildren != pElement->IterEnd(); iterChildren++)
+    for (auto itChildren = pElement->IterBegin(); itChildren != IterEnd(); itChildren++)
     {
-        CElement* pElement = *iterChildren;
+        CElement* pElement = *itChildren;
         if (pElement->CountChildren() || IS_PLAYER(pElement))            // This check reduces cpu usage when loading large maps (due to recursion)
             AddPlayersBelow(pElement, Added);
     }
@@ -331,10 +306,9 @@ void CPerPlayerEntity::RemovePlayersBelow(CElement* pElement, std::set<CPlayer*>
     }
 
     // Call ourself on all our children
-    CChildListType ::const_iterator iterChildren = pElement->IterBegin();
-    for (; iterChildren != pElement->IterEnd(); iterChildren++)
+    for (auto itChildren = pElement->IterBegin(); itChildren != IterEnd(); itChildren++)
     {
-        CElement* pElement = *iterChildren;
+        CElement* pElement = *itChildren;
         if (pElement->CountChildren() || IS_PLAYER(pElement))            // This check reduces cpu usage when unloading large maps (due to recursion)
             RemovePlayersBelow(pElement, Removed);
     }

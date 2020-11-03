@@ -36,7 +36,7 @@ public:
     bool AddVisibleToReference(CElement* pElement);
     bool RemoveVisibleToReference(CElement* pElement);
     void ClearVisibleToReferences();
-    bool IsVisibleToReferenced(CElement* pElement);
+    bool IsVisibleToReferenced(CElement* pSearchedFor);
 
     bool IsVisibleToPlayer(CPlayer& Player);
 
