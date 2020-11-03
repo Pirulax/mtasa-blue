@@ -155,7 +155,7 @@ void CPlayerManager::OnPlayerJoin(CPlayer* pPlayer)
         m_LowestJoinedPlayerVersion = pPlayer->GetPlayerVersion();
     g_pGame->CalculateMinClientRequirement();
 
-    m_JoinedPlayersMap[pPlayer->GetBitStreamVersion()].push_back(pPlayer);
+    m_JoinedByBitStreamVer[pPlayer->GetBitStreamVersion()].push_back(pPlayer);
 }
 
 void CPlayerManager::AddToList(CPlayer* pPlayer)
@@ -184,7 +184,7 @@ void CPlayerManager::RemoveFromList(CPlayer* pPlayer)
     m_SocketPlayerMap.erase(pPlayer->GetSocket());
     dassert(m_Players.size() == m_SocketPlayerMap.size());
 
-    if (auto* players = MapFind(m_JoinedPlayersMap, pPlayer->GetBitStreamVersion()))
+    if (auto* players = MapFind(m_JoinedByBitStreamVer, pPlayer->GetBitStreamVersion()))
         ListRemoveFirst(*players, pPlayer);
 
     for (CPlayer* itPlayer : m_Players)
