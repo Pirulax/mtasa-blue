@@ -66,6 +66,4 @@ private:
     std::set<CPlayer*> m_PlayersAdded;
     std::set<CPlayer*> m_PlayersRemoved;
     std::set<CPlayer*> m_Players;
-
-    static std::set<CPerPlayerEntity*> ms_AllPerPlayerEntityMap;
 };

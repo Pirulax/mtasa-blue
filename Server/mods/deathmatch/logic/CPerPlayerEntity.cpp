@@ -11,11 +11,11 @@
 
 #include "StdInc.h"
 
-std::set<CPerPlayerEntity*> CPerPlayerEntity::ms_AllPerPlayerEntityMap;
+static std::unordered_set<CPerPlayerEntity*> s_AllPerPlayerEntities;
 
 CPerPlayerEntity::CPerPlayerEntity(CElement* pParent) : CElement(pParent)
 {
-    MapInsert(ms_AllPerPlayerEntityMap, this);
+    s_AllPerPlayerEntities.insert(this);
     m_bIsSynced = false;
     AddVisibleToReference(g_pGame->GetMapManager()->GetRootElement());
 };
@@ -31,7 +31,7 @@ CPerPlayerEntity::~CPerPlayerEntity()
     {
         (*iter)->m_ElementReferenced.remove(this);
     }
-    MapRemove(ms_AllPerPlayerEntityMap, this);
+    s_AllPerPlayerEntities.erase(this);
 }
 
 bool CPerPlayerEntity::Sync(bool bSync)
@@ -347,10 +347,8 @@ void CPerPlayerEntity::RemovePlayerReference(CPlayer* pPlayer)
 //
 void CPerPlayerEntity::StaticOnPlayerDelete(CPlayer* pPlayer)
 {
-    for (std::set<CPerPlayerEntity*>::iterator iter = ms_AllPerPlayerEntityMap.begin(); iter != ms_AllPerPlayerEntityMap.end(); ++iter)
-    {
-        (*iter)->OnPlayerDelete(pPlayer);
-    }
+    for (CPerPlayerEntity* pEntity : s_AllPerPlayerEntities)
+        pEntity->OnPlayerDelete(pPlayer);
 }
 
 void CPerPlayerEntity::OnPlayerDelete(CPlayer* pPlayer)
