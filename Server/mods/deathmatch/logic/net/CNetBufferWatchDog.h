@@ -8,6 +8,9 @@
  *****************************************************************************/
 
 class CNetServerBuffer;
+class CThreadHandle;
+class CComboMutex;
+
 
 //
 // Info about a queue
