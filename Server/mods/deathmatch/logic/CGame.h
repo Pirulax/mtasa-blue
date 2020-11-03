@@ -136,10 +136,10 @@ typedef SFixedArray<bool, MAX_GARAGES> SGarageStates;
 
 // CSendList - Can be used like a std::list of players for sending packets.
 //             Used to construct an optimized list of players for CGame::Broadcast
-class CSendList : public std::multimap<ushort, CPlayer*>
+class CSendList : public std::unordered_map<ushort, std::vector<CPlayer*>>
 {
 public:
-    void push_back(CPlayer* pPlayer) { MapInsert(*this, pPlayer->GetBitStreamVersion(), pPlayer); }
+    void push_back(CPlayer* pPlayer) { (*this)[pPlayer->GetBitStreamVersion()].push_back(pPlayer); }
 };
 
 class CGame
