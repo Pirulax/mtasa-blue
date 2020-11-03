@@ -9,7 +9,10 @@
 
 class CNetServerBuffer;
 class CThreadHandle;
-class CComboMutex;
+
+#pragma once
+
+#include <SharedUtil.Thread.h>
 
 
 //
