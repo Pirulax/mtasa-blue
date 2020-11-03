@@ -32,20 +32,15 @@ CPerPlayerEntity::~CPerPlayerEntity()
 
 bool CPerPlayerEntity::Sync(bool bSync)
 {
-    // Are we getting synced but not already synced or vice versa?
+    // Sync state changing?
     if (bSync != m_bIsSynced)
     {
-        // Create it for everyone we're visible if it's synced, otherwise destroy
+        // Create / destroy this entity at every player we're visible to
         if (bSync)
-        {
-            m_bIsSynced = true;
             CreateEntity(NULL);
-        }
         else
-        {
             DestroyEntity(NULL);
-            m_bIsSynced = false;
-        }
+        m_bIsSynced = bSync;
     }
 
     return true;
