@@ -98,6 +98,7 @@ void CPerPlayerEntity::UpdatePerPlayer()
     m_PlayersRemoved.clear();
 }
 
+// Add us to pElement's reference list, and them to ours
 bool CPerPlayerEntity::AddVisibleToReference(CElement* pElement)
 {
     // If he isn't already referencing this element
@@ -117,6 +118,7 @@ bool CPerPlayerEntity::AddVisibleToReference(CElement* pElement)
     return false;
 }
 
+// Remove us from pElement's reference list, and from ours
 bool CPerPlayerEntity::RemoveVisibleToReference(CElement* pElement)
 {
     // We reference this element?
@@ -159,6 +161,7 @@ void CPerPlayerEntity::ClearVisibleToReferences()
     }
 }
 
+// Are we visible to a referenced element? Not a player, but an element!
 bool CPerPlayerEntity::IsVisibleToReferenced(CElement* pElement)
 {
     list<CElement*>::const_iterator iter = m_ElementReferences.begin();
@@ -173,12 +176,14 @@ bool CPerPlayerEntity::IsVisibleToReferenced(CElement* pElement)
     return false;
 }
 
+// Return true if we're visible to the given player
 bool CPerPlayerEntity::IsVisibleToPlayer(CPlayer& Player)
 {
-    // Return true if we're visible to the given player
     return MapContains(m_Players, &Player);
 }
 
+// Send EntityAddPacket
+// If pPlayer is specified the packet is only sent to them, otherwise BroadcastOnlyVisible
 void CPerPlayerEntity::CreateEntity(CPlayer* pPlayer)
 {
     // Are we visible?
@@ -206,6 +211,8 @@ void CPerPlayerEntity::CreateEntity(CPlayer* pPlayer)
     }
 }
 
+// Send EntityRemovePacket
+// If pPlayer is specified the packet is only sent to them, BroadcastOnlyVisible
 void CPerPlayerEntity::DestroyEntity(CPlayer* pPlayer)
 {
     // Are we visible?
@@ -233,6 +240,7 @@ void CPerPlayerEntity::DestroyEntity(CPlayer* pPlayer)
     }
 }
 
+// Broadcast a packet to players we reference (only if we're synced)
 void CPerPlayerEntity::BroadcastOnlyVisible(const CPacket& Packet)
 {
     // Are we synced? (if not we're not visible to anybody)
@@ -256,6 +264,7 @@ void CPerPlayerEntity::BroadcastOnlyVisible(const CPacket& Packet)
     }
 }
 
+// Filter out identical entities in 2 sets
 void CPerPlayerEntity::RemoveIdenticalEntries(std::set<CPlayer*>& List1, std::set<CPlayer*>& List2)
 {
     std::vector<CPlayer*> dupList;
@@ -273,6 +282,7 @@ void CPerPlayerEntity::RemoveIdenticalEntries(std::set<CPlayer*>& List1, std::se
     }
 }
 
+// Add all (including pElement if its one) player type children elements of pElement to our reference list
 void CPerPlayerEntity::AddPlayersBelow(CElement* pElement, std::set<CPlayer*>& Added)
 {
     assert(pElement);
@@ -301,6 +311,7 @@ void CPerPlayerEntity::AddPlayersBelow(CElement* pElement, std::set<CPlayer*>& A
     }
 }
 
+// Remove all (including pElement if its one) player type children elements of pElement to our reference list
 void CPerPlayerEntity::RemovePlayersBelow(CElement* pElement, std::set<CPlayer*>& Removed)
 {
     assert(pElement);
@@ -329,6 +340,7 @@ void CPerPlayerEntity::RemovePlayersBelow(CElement* pElement, std::set<CPlayer*>
     }
 }
 
+// Check if they actually exist, then reference to a player
 void CPerPlayerEntity::AddPlayerReference(CPlayer* pPlayer)
 {
     if (g_pGame->GetPlayerManager()->Exists(pPlayer))
@@ -337,6 +349,7 @@ void CPerPlayerEntity::AddPlayerReference(CPlayer* pPlayer)
         CLogger::ErrorPrintf("CPerPlayerEntity tried to add reference for non existing player: %08x\n", pPlayer);
 }
 
+// Remove reference to a player
 void CPerPlayerEntity::RemovePlayerReference(CPlayer* pPlayer)
 {
     MapRemove(m_Players, pPlayer);
