@@ -50,9 +50,6 @@ protected:
     virtual void DestroyEntity(CPlayer* pPlayer);
 
     void BroadcastOnlyVisible(const CPacket& Packet);
-    bool m_bIsSynced;
-
-    list<CElement*> m_ElementReferences;
 
 private:
     void RemoveIdenticalEntries(std::set<class CPlayer*>& List1, std::set<class CPlayer*>& List2);
@@ -63,6 +60,12 @@ private:
     void AddPlayerReference(class CPlayer* pPlayer);
     void RemovePlayerReference(class CPlayer* pPlayer);
 
+    // Member variables
+protected:
+    bool m_bIsSynced = false;
+
+    list<CElement*> m_ElementReferences;
+private:
     std::set<CPlayer*> m_PlayersAdded;
     std::set<CPlayer*> m_PlayersRemoved;
     std::set<CPlayer*> m_Players;
