@@ -21,7 +21,7 @@ class CPlayer;
 class CSendList
 {
 public:
-    void Insert(CPlayer* pPlayer);
+    bool Insert(CPlayer* pPlayer, bool bCheckForReInsert = false);
 
     bool Contains(CPlayer* pPlayer) const
     {

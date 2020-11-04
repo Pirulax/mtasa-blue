@@ -13,9 +13,15 @@
 #include <CSendList.h>
 #include "CPlayer.h"
 
-void CSendList::Insert(CPlayer* pPlayer)
+bool CSendList::Insert(CPlayer* pPlayer, bool bCheckForReInsert)
 {
-    m_cont[pPlayer->GetBitStreamVersion()].push_back(pPlayer);
+    const auto& group = m_cont[pPlayer->GetBitStreamVersion()];
+    if (bCheckForReinsert)
+        if (std::find(group->begin(), group->end(), pPlayer) != group->end())
+            return false;
+
+    group.push_back(pPlayer);
+    return true;
 }
 
 auto CSendList::GetAPlayersGroup(CPlayer* pPlayer) -> std::vector<CPlayer*>*
