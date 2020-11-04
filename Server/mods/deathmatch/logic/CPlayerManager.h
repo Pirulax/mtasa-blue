@@ -14,6 +14,7 @@ class CPlayerManager;
 #pragma once
 
 #include "packets/CPacket.h"
+#include "CSendList.h"
 #include "CPlayer.h"
 #include "../Config.h"
 #include <net/CNetBufferWatchDog.h>

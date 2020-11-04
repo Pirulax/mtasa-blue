@@ -16,6 +16,7 @@
 #include "../utils/CFunctionUseLogger.h"
 #include "net/SimHeaders.h"
 #include <signal.h>
+#include "CSendList.h"
 
 #define MAX_BULLETSYNC_DISTANCE 400.0f
 #define MAX_EXPLOSION_SYNC_DISTANCE 400.0f
@@ -2067,7 +2068,7 @@ void CGame::RelayPlayerPuresync(CPacket& Packet)
             SViewerInfo& nearInfo = it->second;
 
             nearInfo.llLastUpdateTime = llTickCountNow;
-            sendList.push_back(pSendPlayer);
+            sendList.Insert(pSendPlayer);
         }
     }
 
@@ -2111,7 +2112,7 @@ void CGame::RelayPlayerPuresync(CPacket& Packet)
                 {
                     // Standard sending
                     if (bTimeForSync)
-                        sendList.push_back(pSendPlayer);
+                        sendList.Insert(pSendPlayer);
                 }
                 else
                 {
@@ -2128,7 +2129,7 @@ void CGame::RelayPlayerPuresync(CPacket& Packet)
                         {
                             // If not in sim list, do send here
                             if (bTimeForSync)
-                                sendList.push_back(pSendPlayer);
+                                sendList.Insert(pSendPlayer);
                         }
                         else if (nearInfo.bInPureSyncSimSendList)
                         {
@@ -2148,7 +2149,7 @@ void CGame::RelayPlayerPuresync(CPacket& Packet)
                         {
                             // If not in sim list yet, do send here
                             if (bTimeForSync)
-                                sendList.push_back(pSendPlayer);
+                                sendList.Insert(pSendPlayer);
 
                             // and add it to sim list for next time
                             MapInsert(pPlayer->m_PureSyncSimSendList, pSendPlayer);
@@ -2169,7 +2170,7 @@ void CGame::RelayPlayerPuresync(CPacket& Packet)
     }
 
     // Relay packet
-    if (!sendList.empty())
+    if (!sendList.Empty())
     {
         CLOCK("RelayPlayerPuresync", "Broadcast");
         CPlayerManager::Broadcast(Packet, sendList);
@@ -2416,7 +2417,7 @@ void CGame::RelayNearbyPacket(CPacket& Packet)
             if (!bUseSimSendList)
             {
                 // Standard sending
-                sendList.push_back(pSendPlayer);
+                sendList.Insert(pSendPlayer);
             }
             else
             {
@@ -2426,14 +2427,14 @@ void CGame::RelayNearbyPacket(CPacket& Packet)
                 if (!nearInfo.bInPureSyncSimSendList)
                 {
                     // If not in sim send list, do send here
-                    sendList.push_back(pSendPlayer);
+                    sendList.Insert(pSendPlayer);
                 }
             }
         }
     }
 
     // Relay packet
-    if (!sendList.empty())
+    if (!sendList.Empty())
         CPlayerManager::Broadcast(Packet, sendList);
 }
 

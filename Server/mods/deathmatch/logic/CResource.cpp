@@ -692,14 +692,20 @@ bool CResource::GetCompatibilityStatus(SString& strOutStatus)
 
     // See if any connected client are below min requirements
     {
-        uint uiNumIncompatiblePlayers = 0;
-        for (std::list<CPlayer*>::const_iterator iter = g_pGame->GetPlayerManager()->IterBegin(); iter != g_pGame->GetPlayerManager()->IterEnd(); iter++)
-            if ((*iter)->IsJoined() && m_strMinClientRequirement > (*iter)->GetPlayerVersion() && !(*iter)->ShouldIgnoreMinClientVersionChecks())
-                uiNumIncompatiblePlayers++;
+        const auto& allPlayers = g_pGame->GetPlayerManager()->GetAllPlayers();
+        const auto numIncompatiblePlayers = std::count_if(allPlayers.begin(), allPlayers.end(), [&](CPlayer* pPlayer) {
+            if (!pPlayer->IsJoined())
+                return false;
 
-        if (uiNumIncompatiblePlayers > 0)
+            if (pPlayer->ShouldIgnoreMinClientVersionChecks())
+                return false;
+
+            return m_strMinClientRequirement >= pPlayer->GetPlayerVersion();
+        });
+
+        if (numIncompatiblePlayers > 0)
         {
-            strOutStatus = SString("%d connected player(s) below required client version %s", uiNumIncompatiblePlayers, *m_strMinClientRequirement);
+            strOutStatus = SString("%d connected player(s) below required client version %s", numIncompatiblePlayers, *m_strMinClientRequirement);
             return false;
         }
     }
@@ -1112,15 +1118,9 @@ bool CResource::CreateVM(bool bEnableOOP)
 bool CResource::DestroyVM()
 {
     // Remove all player keybinds on this VM
-    list<CPlayer*>::const_iterator iter = g_pGame->GetPlayerManager()->IterBegin();
-
-    for (; iter != g_pGame->GetPlayerManager()->IterEnd(); iter++)
-    {
-        CKeyBinds* pBinds = (*iter)->GetKeyBinds();
-
-        if (pBinds)
+    for (CPlayer* pPlayer : g_pGame->GetPlayerManager()->GetAllPlayers())
+        if (auto pBinds = pPlayer->GetKeyBinds())
             pBinds->RemoveAllKeys(m_pVM);
-    }
 
     // Delete the events on this VM
     m_pRootElement->DeleteEvents(m_pVM, true);
@@ -2835,50 +2835,22 @@ void CResource::SendNoClientCacheScripts(CPlayer* pPlayer)
     if (!IsClientScriptsOn())
         return;
 
-    std::vector<CPlayer*> vecPlayers;
+    // Create the packet
+    CResourceClientScriptsPacket Packet(this);
+    for (CResourceFile* pResourceFile : m_ResourceFiles)
+    {
+        if (pResourceFile->GetType() != CResourceFile::RESOURCE_FILE_TYPE_CLIENT_SCRIPT)
+            continue;
 
-    // Send it to either a single player or all the players in the server.
+        auto pClientScript = static_cast<CResourceClientScriptItem*>(pResourceFile);
+        if (pClientScript->IsNoClientCache())
+            Packet.AddItem(pClientScript);
+    }
+
     if (pPlayer)
-        vecPlayers.push_back(pPlayer);
+        pPlayer->Send(Packet); // Send to specified player only
     else
-    {
-        std::list<CPlayer*>::const_iterator iter = g_pGame->GetPlayerManager()->IterBegin();
-
-        for (; iter != g_pGame->GetPlayerManager()->IterEnd(); ++iter)
-        {
-            vecPlayers.push_back(*iter);
-        }
-    }
-
-    if (!vecPlayers.empty())
-    {
-        // Decide what scripts to send
-        CResourceClientScriptsPacket Packet(this);
-        bool                         bEmptyPacket = true;
-
-        for (CResourceFile* pResourceFile : m_ResourceFiles)
-        {
-            if (pResourceFile->GetType() == CResourceFile::RESOURCE_FILE_TYPE_CLIENT_SCRIPT)
-            {
-                CResourceClientScriptItem* pClientScript = static_cast<CResourceClientScriptItem*>(pResourceFile);
-
-                if (pClientScript->IsNoClientCache() == true)
-                {
-                    Packet.AddItem(pClientScript);
-                    bEmptyPacket = false;
-                }
-            }
-        }
-
-        // Send them!
-        if (!bEmptyPacket)
-        {
-            for (std::vector<CPlayer*>::iterator iter = vecPlayers.begin(); iter != vecPlayers.end(); ++iter)
-            {
-                (*iter)->Send(Packet);
-            }
-        }
-    }
+        CPlayerManager::Broadcast(Packet, g_pGame->GetPlayerManager()->GetAllPlayers()); // Send to everyone
 }
 
 bool CResource::UnzipResource()
