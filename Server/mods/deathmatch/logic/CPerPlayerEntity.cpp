@@ -288,7 +288,7 @@ void CPerPlayerEntity::OnReferencedSubtreeRemove(CElement* pElement)
 void CPerPlayerEntity::AddPlayerReference(CPlayer* pPlayer)
 {
     if (g_pGame->GetPlayerManager()->Exists(pPlayer))
-        m_VisibleTo.push_back(pPlayer);
+        m_VisibleTo.Insert(pPlayer);
     else
         CLogger::ErrorPrintf("CPerPlayerEntity tried to add reference for non existing player: %08x\n", pPlayer);
 }
@@ -296,7 +296,7 @@ void CPerPlayerEntity::AddPlayerReference(CPlayer* pPlayer)
 // Remove reference to a player
 void CPerPlayerEntity::RemovePlayerReference(CPlayer* pPlayer)
 {
-    m_VisibleTo.erase_player(pPlayer);
+    m_VisibleTo.Erase(pPlayer);
 }
 
 //
@@ -310,7 +310,7 @@ void CPerPlayerEntity::StaticOnPlayerDelete(CPlayer* pPlayer)
 
 void CPerPlayerEntity::OnPlayerDelete(CPlayer* pPlayer)
 {
-    m_VisibleTo.erase_player(pPlayer);
+    m_VisibleTo.Erase(pPlayer);
     m_PlayersAdded.erase(pPlayer);
     m_PlayersRemoved.erase(pPlayer);
 }
