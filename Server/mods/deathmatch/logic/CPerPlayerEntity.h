@@ -51,8 +51,8 @@ protected:
 private:
     void RemoveIdenticalEntries(std::set<class CPlayer*>& List1, std::set<class CPlayer*>& List2);
 
-    void AddPlayerReference(class CPlayer* pPlayer);
-    void RemovePlayerReference(class CPlayer* pPlayer);
+    bool AddPlayerReference(class CPlayer* pPlayer);
+    bool RemovePlayerReference(class CPlayer* pPlayer);
 
     // Member variables
 protected:
@@ -60,8 +60,10 @@ protected:
 
     list<CElement*> m_ElementReferences;
 private:
-    std::set<CPlayer*> m_PlayersAdded;
-    std::set<CPlayer*> m_PlayersRemoved;
+    // Players changed since last UpdatePerPlayer() call
+    // If true the played got added to m_VisibleTo.
+    // Otherwise (if false) he got erased from it.
+    CFastHashMap<CPlayer*, bool> m_PlayersChanged;
 
     CSendList m_VisibleTo;
 };

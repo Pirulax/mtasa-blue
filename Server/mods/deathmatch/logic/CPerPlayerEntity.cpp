@@ -48,23 +48,16 @@ bool CPerPlayerEntity::Sync(bool bSync)
 
 void CPerPlayerEntity::UpdatePerPlayer()
 {
-    if (m_PlayersAdded.empty() && m_PlayersRemoved.empty())            // This check reduces cpu usage when loading large maps (due to recursion)
-        return;
-
-    // Remove entries that match in both added and removed lists
-    RemoveIdenticalEntries(m_PlayersAdded, m_PlayersRemoved);
-
-    // Delete us for every player in our deleted list
-    for (CPlayer* v : m_PlayersRemoved)
-        DestroyEntity(v);
-
-    // Add us for every player in our added list
-    for (CPlayer* v : m_PlayersAdded)
-        CreateEntity(v);
+    for (auto&& [player, wasAdded] : m_PlayersChanged)
+    {
+        if (wasAdded) // Got newly added?
+            CreateEntity(player); // Sync him this entity
+        else
+            DestroyEntity(player); // Delete this entity for him
+    }
 
     // Clear both lists
-    m_PlayersAdded.clear();
-    m_PlayersRemoved.clear();
+    m_PlayersChanged.clear();
 }
 
 // Add us to pElement's reference list, and them to ours
@@ -138,7 +131,7 @@ bool CPerPlayerEntity::IsVisibleToReferenced(CElement* pElement)
 // Return true if we're visible to the given player
 bool CPerPlayerEntity::IsVisibleToPlayer(CPlayer& Player)
 {
-    return m_VisibleTo.contains_player(&Player);
+    return m_VisibleTo.Contains(&Player);
 }
 
 // Send EntityAddPacket
@@ -231,20 +224,14 @@ void CPerPlayerEntity::RemoveIdenticalEntries(std::set<CPlayer*>& List1, std::se
 // Add all (including pElement if its one) player type children elements of pElement to our reference list
 void CPerPlayerEntity::OnReferencedSubtreeAdd(CElement* pElement)
 {
-    assert(pElement);
+    dassert(pElement);
 
     // Is this a player?
     if (IS_PLAYER(pElement))
     {
-        // Are we not already visible to that player? Add it to the list
         CPlayer* pPlayer = static_cast<CPlayer*>(pElement);
-        if (!IsVisibleToPlayer(*pPlayer))
-        {
-            //MapInsert(Added, pPlayer);
-        }
-
-        // Add it to our reference list
-        AddPlayerReference(pPlayer);
+        if (AddPlayerReference(pPlayer)) // Only if we've actually added them
+            m_PlayersChanged[pPlayer] = true; // Mark player as added
     }
 
     // Call ourself on all its children elements
@@ -259,20 +246,15 @@ void CPerPlayerEntity::OnReferencedSubtreeAdd(CElement* pElement)
 // Remove all (including pElement if its one) player type children elements of pElement to our reference list
 void CPerPlayerEntity::OnReferencedSubtreeRemove(CElement* pElement)
 {
-    assert(pElement);
+    dassert(pElement);
 
     // Is this a player?
     if (IS_PLAYER(pElement))
     {
         // Remove the reference
         CPlayer* pPlayer = static_cast<CPlayer*>(pElement);
-        RemovePlayerReference(pPlayer);
-
-        // Did we just loose the last reference to that player? Add him to the list over removed players.
-        if (!IsVisibleToPlayer(*pPlayer))
-        {
-            //MapInsert(Removed, pPlayer);
-        }
+        if (RemovePlayerReference(pPlayer)) // Only if we've actually removed them
+            m_PlayersChanged[pPlayer] = false; // Mark player as removed
     }
 
     // Call ourself on all our children
@@ -285,18 +267,21 @@ void CPerPlayerEntity::OnReferencedSubtreeRemove(CElement* pElement)
 }
 
 // Check if they actually exist, then reference to a player
-void CPerPlayerEntity::AddPlayerReference(CPlayer* pPlayer)
+// Returns true if they werent in m_VisibleTo already
+bool CPerPlayerEntity::AddPlayerReference(CPlayer* pPlayer)
 {
     if (g_pGame->GetPlayerManager()->Exists(pPlayer))
-        m_VisibleTo.Insert(pPlayer);
+        return m_VisibleTo.Insert(pPlayer, true); 
     else
         CLogger::ErrorPrintf("CPerPlayerEntity tried to add reference for non existing player: %08x\n", pPlayer);
+    return false;
 }
 
 // Remove reference to a player
-void CPerPlayerEntity::RemovePlayerReference(CPlayer* pPlayer)
+// Retruns true if they weren in m_VisibleTo
+bool CPerPlayerEntity::RemovePlayerReference(CPlayer* pPlayer)
 {
-    m_VisibleTo.Erase(pPlayer);
+    return m_VisibleTo.Erase(pPlayer);
 }
 
 //
@@ -311,6 +296,5 @@ void CPerPlayerEntity::StaticOnPlayerDelete(CPlayer* pPlayer)
 void CPerPlayerEntity::OnPlayerDelete(CPlayer* pPlayer)
 {
     m_VisibleTo.Erase(pPlayer);
-    m_PlayersAdded.erase(pPlayer);
-    m_PlayersRemoved.erase(pPlayer);
+    m_PlayersChanged.erase(pPlayer);
 }
