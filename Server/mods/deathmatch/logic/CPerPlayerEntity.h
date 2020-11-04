@@ -12,6 +12,7 @@
 #pragma once
 
 #include "CElement.h"
+#include "CSendList.h"
 #include "packets/CPacket.h"
 
 class CPerPlayerEntity : public CElement
