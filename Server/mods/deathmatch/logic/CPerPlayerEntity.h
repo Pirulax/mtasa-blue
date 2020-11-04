@@ -58,7 +58,7 @@ private:
 protected:
     bool m_bIsSynced = false;
 
-    list<CElement*> m_ElementReferences;
+    std::vector<CElement*> m_ElementReferences;
 private:
     // Players changed since last UpdatePerPlayer() call
     // If true the played got added to m_VisibleTo.

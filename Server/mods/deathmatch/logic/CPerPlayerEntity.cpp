@@ -87,7 +87,8 @@ bool CPerPlayerEntity::RemoveVisibleToReference(CElement* pElement)
     if (IsVisibleToReferenced(pElement))
     {
         // Remove him from our list and unreference us from his list
-        m_ElementReferences.remove(pElement);
+        m_ElementReferences.erase(
+            std::remove(m_ElementReferences.begin(), m_ElementReferences.end(), pElement), m_ElementReferences.end());
         pElement->m_ElementReferenced.remove(this);
 
         // Update the players
@@ -96,7 +97,6 @@ bool CPerPlayerEntity::RemoveVisibleToReference(CElement* pElement)
 
         return true;
     }
-
     return false;
 }
 
