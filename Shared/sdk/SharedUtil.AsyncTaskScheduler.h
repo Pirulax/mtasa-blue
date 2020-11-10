@@ -20,6 +20,8 @@ namespace SharedUtil
         struct SBaseTask
         {
             virtual ~SBaseTask() {}
+
+            // Executes the passed in time consuming function
             virtual void Execute() = 0;
 
             // Should be called from the main thread to avoid threading issues
