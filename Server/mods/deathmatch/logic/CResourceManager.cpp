@@ -713,12 +713,8 @@ void CResourceManager::QueueResource(CResource* pResource, eResourceQueue eQueue
 void CResourceManager::ProcessQueue()
 {
     // While we have queuestuff to process
-    while (m_resourceQueue.size() > 0)
+    for (const sResourceQueue& sItem : m_resourceQueue)
     {
-        // Pop the first item
-        sResourceQueue sItem = m_resourceQueue.front();
-        m_resourceQueue.pop_front();
-
         // Supposed to stop it?
         if (sItem.eQueue == QUEUE_STOP)
         {
@@ -776,9 +772,9 @@ void CResourceManager::ProcessQueue()
         else if (sItem.eQueue == QUEUE_RESTART2)
         {
             list<CResource*> resourceListCopy;
-            for (vector<SString>::iterator it = sItem.dependents.begin(); it != sItem.dependents.end(); ++it)
+            for (const auto& depResName : sItem.dependents)
             {
-                CResource* pResource = GetResource(*it);
+                CResource* pResource = GetResource(depResName);
                 if (pResource)
                     resourceListCopy.push_back(pResource);
             }
@@ -805,16 +801,10 @@ void CResourceManager::ProcessQueue()
 
 void CResourceManager::RemoveFromQueue(CResource* pResource)
 {
-    // Loop through our resourcequeue
-    std::list<sResourceQueue>::iterator iter = m_resourceQueue.begin();
-    while (iter != m_resourceQueue.end())
-    {
-        // Matching resource, erase it. Otherwize just increase the iterator
-        if (iter->pResource == pResource)
-            iter = m_resourceQueue.erase(iter);
-        else
-            iter++;
-    }
+    // Delete all entries with whose pResource == our pResource
+    m_resourceQueue.erase(std::remove_if(m_resourceQueue.begin(), m_resourceQueue.end(), [pResource](const auto& item) {
+        return item.pResource == pResource;
+    }));
 }
 
 /////////////////////////////////

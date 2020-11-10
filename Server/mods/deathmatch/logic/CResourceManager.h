@@ -41,7 +41,7 @@ private:
         CResource*            pResource;
         eResourceQueue        eQueue;
         SResourceStartOptions StartOptions;
-        vector<SString>       dependents;
+        std::vector<SString>  dependents; // Resouce names
     };
 
 public:
@@ -132,7 +132,7 @@ private:
     CFastHashMap<SString, CResource*>    m_NameResourceMap;
     std::map<ushort, CResource*>         m_NetIdResourceMap;
 
-    list<sResourceQueue> m_resourceQueue;
+    std::vector<sResourceQueue>          m_resourceQueue;
 
     CMtaVersion                           m_strMinClientRequirement;
     CFastHashMap<CResource*, CMtaVersion> m_MinClientRequirementMap;
