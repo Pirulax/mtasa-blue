@@ -25,7 +25,7 @@ namespace SharedUtil
         };
 
         template <typename ResultType>
-        struct STask : public SBaseTask
+        struct STask final : public SBaseTask
         {
             using TaskFunction_t = std::function<ResultType()>;
             using ReadyFunction_t = std::function<void(const ResultType&)>;
