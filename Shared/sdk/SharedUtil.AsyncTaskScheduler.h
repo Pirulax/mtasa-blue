@@ -84,13 +84,18 @@ namespace SharedUtil
         void DoWork();
 
     private:
+        using TaskList_t          = std::queue<std::unique_ptr<SBaseTask>>;
+        using ProcessedTaskList_t = std::vector<std::unique_ptr<SBaseTask>>;
+
         std::vector<std::thread> m_Workers;
         bool                     m_Running = true;
 
-        std::queue<std::unique_ptr<SBaseTask>> m_Tasks;
-        std::mutex                             m_TasksMutex;
+        std::condition_variable  m_SignalCV;
 
-        std::vector<std::unique_ptr<SBaseTask>> m_TaskResults;
-        std::mutex                              m_TaskResultsMutex;
+        TaskList_t m_Tasks;
+        std::mutex m_TasksMutex;
+
+        ProcessedTaskList_t m_TaskResults;
+        std::mutex          m_TaskResultsMutex;
     };
 }            // namespace SharedUtil
