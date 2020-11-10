@@ -21,6 +21,8 @@ namespace SharedUtil
         {
             virtual ~SBaseTask() {}
             virtual void Execute() = 0;
+
+            // Should be called from the main thread to avoid threading issues
             virtual void ProcessResult() = 0;
         };
 
