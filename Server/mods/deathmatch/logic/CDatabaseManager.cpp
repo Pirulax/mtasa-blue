@@ -45,7 +45,7 @@ public:
     virtual CDbJobData*       GetQueryFromId(SDbJobId id);
     virtual const SString&    GetLastErrorMessage() { return m_strLastErrorMessage; }
     virtual bool              IsLastErrorSuppressed() { return m_bLastErrorSuppressed; }
-    virtual bool              QueryWithResultf(SConnectionHandle hConnection, CRegistryResultData* pResult, const char* szQuery, ...);
+    virtual bool              QueryWithResultf(SConnectionHandle hConnection, CRegistryResultData& pResult, const char* szQuery, ...);
     virtual bool              QueryWithCallback(SConnectionHandle hConnection, PFN_DBRESULT pfnDbResult, void* pCallbackContext, const SString& strQuery,
                                                 CLuaArguments* pArgs = nullptr);
     virtual bool              QueryWithCallbackf(SConnectionHandle hConnection, PFN_DBRESULT pfnDbResult, void* pCallbackContext, const char* szQuery, ...);
@@ -387,7 +387,7 @@ CDbJobData* CDatabaseManagerImpl::QueryStartf(SConnectionHandle hConnection, con
 // Start a query and wait for the result
 //
 ///////////////////////////////////////////////////////////////
-bool CDatabaseManagerImpl::QueryWithResultf(SConnectionHandle hConnection, CRegistryResultData* pResult, const char* szQuery, ...)
+bool CDatabaseManagerImpl::QueryWithResultf(SConnectionHandle hConnection, CRegistryResultData& result, const char* szQuery, ...)
 {
     va_list vl;
     va_start(vl, szQuery);
@@ -418,14 +418,12 @@ bool CDatabaseManagerImpl::QueryWithResultf(SConnectionHandle hConnection, CRegi
     // Process result
     if (pJobData->result.status == EJobResult::FAIL)
     {
-        if (pResult)
-            *pResult = CRegistryResultData();
+        result = {}; // Clear result
         return false;
     }
     else
     {
-        if (pResult)
-            *pResult = pJobData->result.registryResult;
+        result = std::move(pJobData->result.registryResult);
         return true;
     }
 }
