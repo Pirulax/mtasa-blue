@@ -74,9 +74,9 @@ bool CRegistry::IntegrityCheck()
 
         // Get result as a string
         SString strResult;
-        if (result->nRows && result->nColumns)
+        if (result.nRows && result.nColumns)
         {
-            CRegistryResultCell& cell = result->Data.front()[0];
+            CRegistryResultCell& cell = result.Data.front()[0];
             if (cell.nType == SQLITE_TEXT)
                 strResult = std::string((const char*)cell.pVal, cell.nLength - 1);
         }
@@ -104,9 +104,9 @@ bool CRegistry::IntegrityCheck()
 
         // Get result as a string
         SString strResult;
-        if (result->nRows && result->nColumns)
+        if (result.nRows && result.nColumns)
         {
-            CRegistryResultCell& cell = result->Data.front()[0];
+            CRegistryResultCell& cell = result.Data.front()[0];
             if (cell.nType == SQLITE_TEXT)
                 strResult = std::string((const char*)cell.pVal, cell.nLength - 1);
         }
@@ -206,7 +206,7 @@ bool CRegistry::QueryInternal(const char* szQuery, CRegistryResultData& result)
         return false;
     }
 
-    CRegistryResult& pResult = *ppResult;
+    CRegistryResultData& pResult = *ppResult;
     // Get column names
     pResult->nColumns = sqlite3_column_count(pStmt);
     pResult->ColNames.clear();
