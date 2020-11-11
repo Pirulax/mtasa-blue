@@ -52,7 +52,7 @@ protected:
     bool Exec(const std::string& strQuery);
     bool ExecInternal(const char* szQuery);
     bool Query(CRegistryResult* pResult, const char* szQuery, va_list vl);
-    bool QueryInternal(const char* szQuery, CRegistryResult* pResult);
+    bool QueryInternal(const char* szQuery, CRegistryResult& result);
     void BeginAutomaticTransaction();
     void EndAutomaticTransaction();
 

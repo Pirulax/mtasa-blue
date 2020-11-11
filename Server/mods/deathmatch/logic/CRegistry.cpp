@@ -194,7 +194,7 @@ bool CRegistry::ExecInternal(const char* szQuery)
     return true;
 }
 
-bool CRegistry::QueryInternal(const char* szQuery, CRegistryResult* ppResult)
+bool CRegistry::QueryInternal(const char* szQuery, CRegistryResult& result)
 {
     TIMEUS startTime = GetTimeUs();
 
@@ -206,24 +206,23 @@ bool CRegistry::QueryInternal(const char* szQuery, CRegistryResult* ppResult)
         return false;
     }
 
-    CRegistryResult& pResult = *ppResult;
     // Get column names
-    pResult->nColumns = sqlite3_column_count(pStmt);
-    pResult->ColNames.clear();
+    result.nColumns = sqlite3_column_count(pStmt);
+    result.ColNames.clear();
     for (int i = 0; i < pResult->nColumns; i++)
     {
         pResult->ColNames.push_back(sqlite3_column_name(pStmt, i));
     }
 
     // Fetch the rows
-    pResult->nRows = 0;
-    pResult->Data.clear();
+    result.nRows = 0;
+    result.Data.clear();
     int status;
     while ((status = sqlite3_step(pStmt)) == SQLITE_ROW)
     {
-        pResult->Data.push_back(vector<CRegistryResultCell>(pResult->nColumns));
-        vector<CRegistryResultCell>& row = pResult->Data.back();
-        for (int i = 0; i < pResult->nColumns; i++)
+        result.Data.push_back(vector<CRegistryResultCell>(result.nColumns));
+        vector<CRegistryResultCell>& row = result.Data.back();
+        for (int i = 0; i < result.nColumns; i++)
         {
             CRegistryResultCell& cell = row[i];
             cell.nType = sqlite3_column_type(pStmt, i);
@@ -256,7 +255,7 @@ bool CRegistry::QueryInternal(const char* szQuery, CRegistryResult* ppResult)
                     break;
             }
         }
-        pResult->nRows++;
+        result.nRows++;
     }
 
     // Did we leave the fetching loop because of an error?
