@@ -273,7 +273,7 @@ bool CRegistry::QueryInternal(const char* szQuery, CRegistryResultData& result)
     return true;
 }
 
-bool CRegistry::Query(const std::string& strQuery, CLuaArguments* pArgs, CRegistryResultData* pResult)
+bool CRegistry::Query(const std::string& strQuery, CLuaArguments* pArgs, CRegistryResultData& result)
 {
     std::string strParsedQuery = "";
 
@@ -355,7 +355,7 @@ bool CRegistry::Query(const std::string& strQuery, CLuaArguments* pArgs, CRegist
     }
 
     BeginAutomaticTransaction();
-    return QueryInternal(strParsedQuery.c_str(), pResult);
+    return QueryInternal(strParsedQuery.c_str(), result);
 }
 
 bool CRegistry::Select(const std::string& strColumns, const std::string& strTable, const std::string& strWhere, unsigned int uiLimit, CRegistryResultData* pResult)
@@ -389,7 +389,7 @@ void CRegistry::BeginAutomaticTransaction()
 
         m_bInAutomaticTransaction = true;
         CRegistryResultData dummy;
-        QueryInternal("BEGIN TRANSACTION", &dummy);
+        QueryInternal("BEGIN TRANSACTION", dummy);
     }
 }
 
@@ -399,7 +399,7 @@ void CRegistry::EndAutomaticTransaction()
     {
         m_bInAutomaticTransaction = false;
         CRegistryResultData dummy;
-        QueryInternal("END TRANSACTION", &dummy);
+        QueryInternal("END TRANSACTION", dummy);
     }
 }
 
@@ -408,21 +408,20 @@ bool CRegistry::Query(const char* szQuery, ...)
     CRegistryResultData dummy;
     va_list         vl;
     va_start(vl, szQuery);
-    return Query(&dummy, szQuery, vl);
+    return Query(dummy, szQuery, vl);
 }
 
-bool CRegistry::Query(CRegistryResultData* pResult, const char* szQuery, ...)
+bool CRegistry::Query(CRegistryResultData& result, const char* szQuery, ...)
 {
     va_list vl;
     va_start(vl, szQuery);
-    return Query(pResult, szQuery, vl);
+    return Query(result, szQuery, vl);
 }
 
-bool CRegistry::Query(CRegistryResultData* pResult, const char* szQuery, va_list vl)
+bool CRegistry::Query(CRegistryResultData& result, const char* szQuery, va_list vl)
 {
     // Clear result
-    if (pResult)
-        *pResult = CRegistryResultData();
+    result = {};
 
     if (m_bOpened == false)
     {
@@ -495,5 +494,5 @@ bool CRegistry::Query(CRegistryResultData* pResult, const char* szQuery, va_list
         EndAutomaticTransaction();
     else
         BeginAutomaticTransaction();
-    return QueryInternal(strParsedQuery.c_str(), pResult);
+    return QueryInternal(strParsedQuery.c_str(), result);
 }
