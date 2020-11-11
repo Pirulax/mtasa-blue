@@ -70,7 +70,7 @@ bool CRegistry::IntegrityCheck()
     // Check database integrity
     {
         CRegistryResultData result;
-        bool            bOk = Query(&result, "PRAGMA integrity_check");
+        bool            bOk = Query(result, "PRAGMA integrity_check");
 
         // Get result as a string
         SString strResult;
@@ -100,7 +100,7 @@ bool CRegistry::IntegrityCheck()
         CLogger::LogPrintf("Compacting database '%s' ...\n", *ExtractFilename(PathConform(m_strFileName)));
 
         CRegistryResultData result;
-        bool            bOk = Query(&result, "VACUUM");
+        bool            bOk = Query(result, "VACUUM");
 
         // Get result as a string
         SString strResult;
