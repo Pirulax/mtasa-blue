@@ -11,6 +11,8 @@
 
 struct CRegistryResultData;
 
+typedef std::shared_ptr<CRegistryResultData> CRegistryResultDataRef;
+constexpr static auto MakeRegistryResultDataRef = std::make_shared<CRegistryResultData>;
 
 #pragma once
 
