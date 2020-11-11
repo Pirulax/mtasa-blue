@@ -13,6 +13,7 @@ namespace SharedUtil
     CAsyncTaskScheduler::~CAsyncTaskScheduler()
     {
         m_Running = false;
+        m_SignalCV.notify_all(); // Stop them all
 
         // Wait for all threads to end
         for (auto& thread : m_Workers)
@@ -37,30 +38,27 @@ namespace SharedUtil
     {
         while (m_Running)
         {
-            m_TasksMutex.lock();
+            std::unique_ptr<SBaseTask> task;
 
-            // Sleep a bit if there are no tasks
-            if (m_Tasks.empty())
+            // Grab a task...
             {
-                m_TasksMutex.unlock();
-                std::this_thread::sleep_for(std::chrono::milliseconds(4));
-                continue;
+                std::unique_lock lock(m_TasksMutex);
+
+                m_SignalCV.wait(lock); // Wait for a task...
+                if (m_Tasks.empty()) // Make sure we actually have a task..
+                    continue;
+
+                task = std::move(m_Tasks.front());
+                m_Tasks.pop();
             }
 
-            // Get task and remove from front
-            std::unique_ptr<SBaseTask> pTask = std::move(m_Tasks.front());
-            m_Tasks.pop();
-
-            m_TasksMutex.unlock();
-
             // Execute time-consuming task
-            pTask->Execute();
+            task->Execute();
 
             // Put into result queue
             {
-                std::lock_guard<std::mutex> lock{m_TaskResultsMutex};
-
-                m_TaskResults.push_back(std::move(pTask));
+                std::lock_guard lock{ m_TaskResultsMutex };
+                m_TaskResults.push_back(std::move(task));
             }
         }
     }

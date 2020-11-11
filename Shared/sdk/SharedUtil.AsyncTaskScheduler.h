@@ -69,8 +69,12 @@ namespace SharedUtil
         {
             std::unique_ptr<SBaseTask> pTask{new STask<ResultType>{taskFunc, readyFunc}};
 
-            std::lock_guard<std::mutex> lock{m_TasksMutex};
-            m_Tasks.push(std::move(pTask));
+            // push task into the queue
+            {
+                std::lock_guard lock{ m_TasksMutex };
+                m_Tasks.push(std::move(task));
+            }
+            m_SignalCV.notify_one();
         }
 
         //
