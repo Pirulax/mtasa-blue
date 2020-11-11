@@ -44,9 +44,9 @@ public:
     bool Select(const std::string& strColumns, const std::string& strTable, const std::string& strWhere, unsigned int uiLimit, CRegistryResultData* pResult);
     bool Update(const std::string& strTable, const std::string& strSet, const std::string& strWhere);
 
-    bool Query(const std::string& strQuery, class CLuaArguments* pArgs, CRegistryResultData* pResult);
+    bool Query(const std::string& strQuery, class CLuaArguments* pArgs, CRegistryResultData& result);
     bool Query(const char* szQuery, ...);
-    bool Query(CRegistryResultData* pResult, const char* szQuery, ...);
+    bool Query(CRegistryResultData& result, const char* szQuery, ...);
 
     const SString& GetLastError() { return m_strLastErrorMessage; }
 
@@ -54,7 +54,7 @@ protected:
     bool SetLastErrorMessage(const std::string& strLastErrorMessage, const std::string& strQuery);
     bool Exec(const std::string& strQuery);
     bool ExecInternal(const char* szQuery);
-    bool Query(CRegistryResultData* pResult, const char* szQuery, va_list vl);
+    bool Query(CRegistryResultData& result, const char* szQuery, va_list vl);
     bool QueryInternal(const char* szQuery, CRegistryResultData& result);
     void BeginAutomaticTransaction();
     void EndAutomaticTransaction();
@@ -68,7 +68,11 @@ protected:
     SString   m_strFileName;
 
 private:
-    bool Query(const char* szQuery, CRegistryResultData* pResult);            // Not defined to catch incorrect usage
+    // Hack: Since we use a va_list, one might just pass in the result ref
+    // before the query, and expect it to work, but it wont: it'll crash
+    // so declare (but not define!) this function to catch incorrect usage
+    // and avoid headaches
+    bool Query(const char* szQuery, CRegistryResultData& result);
 };
 
 struct CRegistryResultCell
