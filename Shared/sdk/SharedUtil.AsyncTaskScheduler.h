@@ -28,17 +28,16 @@ namespace SharedUtil
             virtual void ProcessResult() = 0;
         };
 
-        template <typename ResultType>
+        template <typename TaskFunction_t, typename ReadyFunction_t>
         struct STask final : public SBaseTask
         {
-            using TaskFunction_t = std::function<ResultType()>;
-            using ReadyFunction_t = std::function<void(const ResultType&)>;
+            using Result_t = std::invoke_result_t<TaskFunction_t>;
 
             TaskFunction_t  m_TaskFunction;
             ReadyFunction_t m_ReadyFunction;
-            ResultType      m_Result;
+            Result_t        m_Result;
 
-            STask(const TaskFunction_t& taskFunc, const ReadyFunction_t& readyFunc) : m_TaskFunction(taskFunc), m_ReadyFunction(readyFunc) {}
+            STask(TaskFunction_t&& taskFunc, ReadyFunction_t&& readyFunc) : m_TaskFunction(taskFunc), m_ReadyFunction(readyFunc) {}
 
             void Execute() override { m_Result = std::move(m_TaskFunction()); }
 
@@ -58,16 +57,19 @@ namespace SharedUtil
         ~CAsyncTaskScheduler();
 
         //
-        // Pushes a new task for execution once a worker is free
-        // (Template Parameter) ResultType: The type of the result
+        // Pushes a new task into the queue.
         //
         // taskFunc: Time-consuming function that is executed on the secondary thread (be aware of thread safety!)
         // readyFunc: Function that is called once the result is ready (called on the main thread)
         //
-        template <typename ResultType>
-        void PushTask(const std::function<ResultType()>& taskFunc, const std::function<void(const ResultType&)>& readyFunc)
+        // Note: If you don't need a `ready function` consider using `SharedUtil::async` instead
+        // (Ctrl + T, type in `async`, press enter)
+        //
+        template <typename TaskFunction_t, typename ReadyFunction_t>
+        void PushTask(TaskFunction_t&& taskFunc, ReadyFunction_t&& readyFunc)
         {
-            std::unique_ptr<SBaseTask> pTask{new STask<ResultType>{taskFunc, readyFunc}};
+            // Forward arguments..
+            auto task = std::make_unique<STask>(std::forward<TaskFunction_t>(taskFunc), std::forward<ReadyFunction_t>(readyFunc));
 
             // push task into the queue
             {
