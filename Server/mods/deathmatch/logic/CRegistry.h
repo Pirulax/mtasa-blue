@@ -9,7 +9,8 @@
  *
  *****************************************************************************/
 
-typedef CAutoRefedPointer<struct CRegistryResultData> CRegistryResult;
+struct CRegistryResultData;
+
 
 #pragma once
 
@@ -38,12 +39,12 @@ public:
 
     bool Delete(const std::string& strTable, const std::string& strWhere);
     bool Insert(const std::string& strTable, const std::string& strValues, const std::string& strColumns);
-    bool Select(const std::string& strColumns, const std::string& strTable, const std::string& strWhere, unsigned int uiLimit, CRegistryResult* pResult);
+    bool Select(const std::string& strColumns, const std::string& strTable, const std::string& strWhere, unsigned int uiLimit, CRegistryResultData* pResult);
     bool Update(const std::string& strTable, const std::string& strSet, const std::string& strWhere);
 
-    bool Query(const std::string& strQuery, class CLuaArguments* pArgs, CRegistryResult* pResult);
+    bool Query(const std::string& strQuery, class CLuaArguments* pArgs, CRegistryResultData* pResult);
     bool Query(const char* szQuery, ...);
-    bool Query(CRegistryResult* pResult, const char* szQuery, ...);
+    bool Query(CRegistryResultData* pResult, const char* szQuery, ...);
 
     const SString& GetLastError() { return m_strLastErrorMessage; }
 
@@ -51,8 +52,8 @@ protected:
     bool SetLastErrorMessage(const std::string& strLastErrorMessage, const std::string& strQuery);
     bool Exec(const std::string& strQuery);
     bool ExecInternal(const char* szQuery);
-    bool Query(CRegistryResult* pResult, const char* szQuery, va_list vl);
-    bool QueryInternal(const char* szQuery, CRegistryResult* pResult);
+    bool Query(CRegistryResultData* pResult, const char* szQuery, va_list vl);
+    bool QueryInternal(const char* szQuery, CRegistryResultData& result);
     void BeginAutomaticTransaction();
     void EndAutomaticTransaction();
 
@@ -65,7 +66,7 @@ protected:
     SString   m_strFileName;
 
 private:
-    bool Query(const char* szQuery, CRegistryResult* pResult);            // Not defined to catch incorrect usage
+    bool Query(const char* szQuery, CRegistryResultData* pResult);            // Not defined to catch incorrect usage
 };
 
 struct CRegistryResultCell

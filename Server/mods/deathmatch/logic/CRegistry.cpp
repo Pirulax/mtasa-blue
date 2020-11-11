@@ -69,7 +69,7 @@ bool CRegistry::IntegrityCheck()
 {
     // Check database integrity
     {
-        CRegistryResult result;
+        CRegistryResultData result;
         bool            bOk = Query(&result, "PRAGMA integrity_check");
 
         // Get result as a string
@@ -99,7 +99,7 @@ bool CRegistry::IntegrityCheck()
     {
         CLogger::LogPrintf("Compacting database '%s' ...\n", *ExtractFilename(PathConform(m_strFileName)));
 
-        CRegistryResult result;
+        CRegistryResultData result;
         bool            bOk = Query(&result, "VACUUM");
 
         // Get result as a string
@@ -194,7 +194,7 @@ bool CRegistry::ExecInternal(const char* szQuery)
     return true;
 }
 
-bool CRegistry::QueryInternal(const char* szQuery, CRegistryResult* ppResult)
+bool CRegistry::QueryInternal(const char* szQuery, CRegistryResultData& result)
 {
     TIMEUS startTime = GetTimeUs();
 
@@ -274,7 +274,7 @@ bool CRegistry::QueryInternal(const char* szQuery, CRegistryResult* ppResult)
     return true;
 }
 
-bool CRegistry::Query(const std::string& strQuery, CLuaArguments* pArgs, CRegistryResult* pResult)
+bool CRegistry::Query(const std::string& strQuery, CLuaArguments* pArgs, CRegistryResultData* pResult)
 {
     std::string strParsedQuery = "";
 
@@ -359,7 +359,7 @@ bool CRegistry::Query(const std::string& strQuery, CLuaArguments* pArgs, CRegist
     return QueryInternal(strParsedQuery.c_str(), pResult);
 }
 
-bool CRegistry::Select(const std::string& strColumns, const std::string& strTable, const std::string& strWhere, unsigned int uiLimit, CRegistryResult* pResult)
+bool CRegistry::Select(const std::string& strColumns, const std::string& strTable, const std::string& strWhere, unsigned int uiLimit, CRegistryResultData* pResult)
 {
     std::string strQuery = "SELECT " + strColumns + " FROM " + strTable;
     if (!strWhere.empty())
@@ -389,7 +389,7 @@ void CRegistry::BeginAutomaticTransaction()
         }
 
         m_bInAutomaticTransaction = true;
-        CRegistryResult dummy;
+        CRegistryResultData dummy;
         QueryInternal("BEGIN TRANSACTION", &dummy);
     }
 }
@@ -399,31 +399,31 @@ void CRegistry::EndAutomaticTransaction()
     if (m_bInAutomaticTransaction)
     {
         m_bInAutomaticTransaction = false;
-        CRegistryResult dummy;
+        CRegistryResultData dummy;
         QueryInternal("END TRANSACTION", &dummy);
     }
 }
 
 bool CRegistry::Query(const char* szQuery, ...)
 {
-    CRegistryResult dummy;
+    CRegistryResultData dummy;
     va_list         vl;
     va_start(vl, szQuery);
     return Query(&dummy, szQuery, vl);
 }
 
-bool CRegistry::Query(CRegistryResult* pResult, const char* szQuery, ...)
+bool CRegistry::Query(CRegistryResultData* pResult, const char* szQuery, ...)
 {
     va_list vl;
     va_start(vl, szQuery);
     return Query(pResult, szQuery, vl);
 }
 
-bool CRegistry::Query(CRegistryResult* pResult, const char* szQuery, va_list vl)
+bool CRegistry::Query(CRegistryResultData* pResult, const char* szQuery, va_list vl)
 {
     // Clear result
     if (pResult)
-        *pResult = CRegistryResult();
+        *pResult = CRegistryResultData();
 
     if (m_bOpened == false)
     {

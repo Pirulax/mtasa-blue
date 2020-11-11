@@ -1314,7 +1314,7 @@ void CResourceManager::LoadBlockedFileReasons()
 
     CDbJobData* pJobData = pDatabaseManager->QueryStartf(hDbConnection, "SELECT `hash`,`reason` from " BLOCKED_DB_TABLE_NAME);
     pDatabaseManager->QueryPoll(pJobData, -1);
-    CRegistryResult& result = pJobData->result.registryResult;
+    CRegistryResultData& result = pJobData->result.registryResult;
 
     if (result->nRows > 0 && result->nColumns >= 2)
     {

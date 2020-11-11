@@ -230,7 +230,7 @@ void CPerfStatBandwidthUsageImpl::LoadStats()
     CDbJobData* pJobData = pDatabaseManager->QueryStartf(
         m_DatabaseConnection, "SELECT `type`,`idx`,`GameRecv`,`GameSent`,`HttpSent`,`GameRecvBlocked`,`GameResent` from " BW_STATS_TABLE_NAME);
     pDatabaseManager->QueryPoll(pJobData, -1);
-    CRegistryResult result = pJobData->result.registryResult;
+    CRegistryResultData result = pJobData->result.registryResult;
 
     // If data set is empty, try loading old data
     if (result->nRows == 0)
