@@ -68,7 +68,11 @@ protected:
     SString   m_strFileName;
 
 private:
-    bool Query(const char* szQuery, CRegistryResultData& pResult);            // Not defined to catch incorrect usage
+    // Hack: Since we use a va_list, one might just pass in the result ref
+    // before the query, and expect it to work, but it wont: it'll crash
+    // so declare (but not define!) this function to catch incorrect usage
+    // and avoid headaches
+    bool Query(const char* szQuery, CRegistryResultData& pResult);
 };
 
 struct CRegistryResultCell
