@@ -11071,7 +11071,7 @@ void CStaticFunctionDefinitions::ExecuteSQLCreateTable(const std::string& strTab
     m_pRegistry->CreateTable(strTable, strDefinition);
 }
 
-bool CStaticFunctionDefinitions::ExecuteSQLQuery(const std::string& strQuery, CLuaArguments* pArgs, CRegistryResult* pResult)
+bool CStaticFunctionDefinitions::ExecuteSQLQuery(const std::string& strQuery, CLuaArguments* pArgs, CRegistryResultData* pResult)
 {
     return m_pRegistry->Query(strQuery, pArgs, pResult);
 }
@@ -11097,7 +11097,7 @@ bool CStaticFunctionDefinitions::ExecuteSQLInsert(const std::string& strTable, c
 }
 
 bool CStaticFunctionDefinitions::ExecuteSQLSelect(const std::string& strTable, const std::string& strColumns, const std::string& strWhere, unsigned int uiLimit,
-                                                  CRegistryResult* pResult)
+                                                  CRegistryResultData* pResult)
 {
     return m_pRegistry->Select(strColumns, strTable, strWhere, uiLimit, pResult);
 }

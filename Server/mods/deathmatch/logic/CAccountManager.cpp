@@ -25,7 +25,7 @@ CAccountManager::CAccountManager(const SString& strDbPathFilename)
     ReconnectToDatabase();
 
     // Check if new installation
-    CRegistryResult result;
+    CRegistryResultData result;
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, &result, "SELECT name FROM sqlite_master WHERE type='table' AND name='accounts'");
     bool bNewInstallation = (result->nRows == 0);
 
@@ -143,7 +143,7 @@ void CAccountManager::DoPulse()
 bool CAccountManager::Load()
 {
     // Create a registry result
-    CRegistryResult result;
+    CRegistryResultData result;
     // Select all our required information from the accounts database
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, &result, "SELECT id,name,password,ip,serial,httppass from accounts");
 
@@ -312,7 +312,7 @@ bool CAccountManager::IntegrityCheck()
 {
     // Check database integrity
     {
-        CRegistryResult result;
+        CRegistryResultData result;
         bool            bOk = m_pDatabaseManager->QueryWithResultf(m_hDbConnection, &result, "PRAGMA integrity_check");
 
         // Get result as a string
@@ -360,7 +360,7 @@ bool CAccountManager::IntegrityCheck()
     {
         CLogger::LogPrintf("Compacting accounts database '%s' ...\n", *ExtractFilename(PathConform("internal.db")));
 
-        CRegistryResult result;
+        CRegistryResultData result;
         bool            bOk = m_pDatabaseManager->QueryWithResultf(m_hDbConnection, &result, "VACUUM");
 
         // Get result as a string
@@ -662,7 +662,7 @@ std::shared_ptr<CLuaArgument> CAccountManager::GetAccountData(CAccount* pAccount
     // Get the user ID
     int iUserID = pAccount->GetID();
     // create a new registry result for the query return
-    CRegistryResult result;
+    CRegistryResultData result;
 
     // Select the value and type from the database where the user is our user and the key is the required key
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, &result, "SELECT value,type from userdata where userid=? and key=? LIMIT 1", SQLITE_INTEGER, iUserID,
@@ -771,7 +771,7 @@ bool CAccountManager::CopyAccountData(CAccount* pFromAccount, CAccount* pToAccou
         // Get the user ID of the from account
         int iUserID = pFromAccount->GetID();
         // create a new registry result for the from account query return value
-        CRegistryResult result;
+        CRegistryResultData result;
 
         m_pDatabaseManager->QueryWithResultf(m_hDbConnection, &result, "SELECT key,value,type from userdata where userid=?", SQLITE_INTEGER, iUserID);
 
@@ -804,7 +804,7 @@ bool CAccountManager::CopyAccountData(CAccount* pFromAccount, CAccount* pToAccou
             }
             else            // store to database
             {
-                CRegistryResult subResult;
+                CRegistryResultData subResult;
 
                 m_pDatabaseManager->QueryWithResultf(m_hDbConnection, &subResult, "SELECT id,userid from userdata where userid=? and key=? LIMIT 1",
                                                      SQLITE_INTEGER, pToAccount->GetID(), SQLITE_TEXT, iter->second.GetKey().c_str());
@@ -863,7 +863,7 @@ bool CAccountManager::GetAllAccountData(CAccount* pAccount, lua_State* pLua)
     // Get the user ID
     int iUserID = pAccount->GetID();
     // create a new registry result for the query return
-    CRegistryResult result;
+    CRegistryResultData result;
     SString         strKey;
 
     // Select the value and type from the database where the user is our user and the key is the required key
@@ -915,7 +915,7 @@ bool CAccountManager::GetAllAccountData(CAccount* pAccount, lua_State* pLua)
 void CAccountManager::GetAccountsBySerial(const SString& strSerial, std::vector<CAccount*>& outAccounts)
 {
     Save();
-    CRegistryResult result;
+    CRegistryResultData result;
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, &result, "SELECT name FROM accounts WHERE serial = ?", SQLITE_TEXT, strSerial.c_str());
 
     for (CRegistryResultIterator iter = result->begin(); iter != result->end(); ++iter)
@@ -931,7 +931,7 @@ void CAccountManager::GetAccountsBySerial(const SString& strSerial, std::vector<
 void CAccountManager::GetAccountsByIP(const SString& strIP, std::vector<CAccount*>& outAccounts)
 {
     Save();
-    CRegistryResult result;
+    CRegistryResultData result;
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, &result, "SELECT name FROM accounts WHERE ip = ?", SQLITE_TEXT, strIP.c_str());
 
     for (CRegistryResultIterator iter = result->begin(); iter != result->end(); ++iter)
@@ -946,7 +946,7 @@ void CAccountManager::GetAccountsByIP(const SString& strIP, std::vector<CAccount
 
 CAccount* CAccountManager::GetAccountByID(int ID)
 {
-    CRegistryResult result;
+    CRegistryResultData result;
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, &result, "SELECT name FROM accounts WHERE id = ?", SQLITE_INTEGER, ID);
 
     for (CRegistryResultIterator iter = result->begin(); iter != result->end(); ++iter)
@@ -962,7 +962,7 @@ CAccount* CAccountManager::GetAccountByID(int ID)
 void CAccountManager::GetAccountsByData(const SString& dataName, const SString& value, std::vector<CAccount*>& outAccounts)
 {
     Save();
-    CRegistryResult result;
+    CRegistryResultData result;
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, &result,
                                          "SELECT acc.name FROM accounts acc, userdata dat WHERE dat.key = ? AND dat.value = ? AND dat.userid = acc.id",
                                          SQLITE_TEXT, dataName.c_str(), SQLITE_TEXT, value.c_str());
@@ -1137,7 +1137,7 @@ void CAccountManager::LoadAccountSerialUsage(CAccount* pAccount)
     auto& outSerialUsageList = pAccount->GetSerialUsageList();
     outSerialUsageList.clear();
 
-    CRegistryResult result;
+    CRegistryResultData result;
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, &result,
                                          "SELECT "
                                          " serial"

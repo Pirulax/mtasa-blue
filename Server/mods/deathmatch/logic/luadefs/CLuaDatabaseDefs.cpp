@@ -668,7 +668,7 @@ int CLuaDatabaseDefs::ExecuteSQLQuery(lua_State* luaVM)
     if (!argStream.HasErrors())
     {
         CLuaArguments   Args;
-        CRegistryResult Result;
+        CRegistryResultData Result;
 
         Args.ReadArguments(luaVM, 2);
 
@@ -749,7 +749,7 @@ int CLuaDatabaseDefs::ExecuteSQLSelect(lua_State* luaVM)
 
     if (!argStream.HasErrors())
     {
-        CRegistryResult Result;
+        CRegistryResultData Result;
         CPerfStatSqliteTiming::GetSingleton()->SetCurrentResource(luaVM);
         if (CStaticFunctionDefinitions::ExecuteSQLSelect(strTable, strColumns, strWhere, uiLimit, &Result))
         {

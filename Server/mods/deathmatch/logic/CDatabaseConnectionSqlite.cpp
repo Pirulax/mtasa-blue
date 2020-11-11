@@ -31,13 +31,13 @@ public:
     virtual uint           GetLastErrorCode();
     virtual void           AddRef();
     virtual void           Release();
-    virtual bool           Query(const SString& strQuery, CRegistryResult& registryResult);
+    virtual bool           Query(const SString& strQuery, CRegistryResultData& registryResult);
     virtual void           Flush();
     virtual int            GetShareCount() { return m_iRefCount; }
 
     // CDatabaseConnectionSqlite
     void SetLastError(uint uiCode, const SString& strMessage);
-    bool QueryInternal(const SString& strQuery, CRegistryResult& registryResult);
+    bool QueryInternal(const SString& strQuery, CRegistryResultData& registryResult);
     void BeginAutomaticTransaction();
     void EndAutomaticTransaction();
 
@@ -193,7 +193,7 @@ void CDatabaseConnectionSqlite::SetLastError(uint uiCode, const SString& strMess
 //
 //
 ///////////////////////////////////////////////////////////////
-bool CDatabaseConnectionSqlite::Query(const SString& strQuery, CRegistryResult& registryResult)
+bool CDatabaseConnectionSqlite::Query(const SString& strQuery, CRegistryResultData& registryResult)
 {
     // VACUUM query does not work with transactions
     if (strQuery.BeginsWithI("VACUUM"))
@@ -211,7 +211,7 @@ bool CDatabaseConnectionSqlite::Query(const SString& strQuery, CRegistryResult& 
 // Return true with datum in registryResult on success
 //
 ///////////////////////////////////////////////////////////////
-bool CDatabaseConnectionSqlite::QueryInternal(const SString& strQuery, CRegistryResult& registryResult)
+bool CDatabaseConnectionSqlite::QueryInternal(const SString& strQuery, CRegistryResultData& registryResult)
 {
     const char*          szQuery = strQuery;
     CRegistryResultData* pResult = registryResult->GetThis();
@@ -325,7 +325,7 @@ void CDatabaseConnectionSqlite::BeginAutomaticTransaction()
     {
         m_bInAutomaticTransaction = true;
         m_AutomaticTransactionStartTime = CTickCount::Now();
-        CRegistryResult dummy;
+        CRegistryResultData dummy;
         QueryInternal("BEGIN TRANSACTION", dummy);
     }
 }
@@ -342,7 +342,7 @@ void CDatabaseConnectionSqlite::EndAutomaticTransaction()
     if (m_bInAutomaticTransaction)
     {
         m_bInAutomaticTransaction = false;
-        CRegistryResult dummy;
+        CRegistryResultData dummy;
         QueryInternal("END TRANSACTION", dummy);
     }
 }
