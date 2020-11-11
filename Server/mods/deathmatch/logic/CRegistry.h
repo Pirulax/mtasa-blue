@@ -72,7 +72,7 @@ private:
     // before the query, and expect it to work, but it wont: it'll crash
     // so declare (but not define!) this function to catch incorrect usage
     // and avoid headaches
-    bool Query(const char* szQuery, CRegistryResultData& pResult);
+    bool Query(const char* szQuery, CRegistryResultData& result);
 };
 
 struct CRegistryResultCell
