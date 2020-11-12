@@ -1641,68 +1641,6 @@ namespace SharedUtil
 
         std::map<uint, uint> m_StartLastMap;
     };
-
-    //
-    // Pointer with reference count.
-    //
-    template <typename T>
-    class CRefedPointer : public CRefCountable
-    {
-    private:
-        T* pData;            // Target
-
-        virtual ~CRefedPointer() { SAFE_DELETE(pData); }
-        CRefedPointer(const CRefedPointer<T>& other);
-        CRefedPointer<T>& operator=(const CRefedPointer<T>& other);
-
-    public:
-        CRefedPointer() { pData = new T(); }
-
-        T* GetData() { return pData; }
-    };
-
-    //
-    // Smart pointer with reference count.
-    //
-    template <typename T>
-    class CAutoRefedPointer
-    {
-    private:
-        CRefedPointer<T>* pPointer;
-
-    public:
-        CAutoRefedPointer() { pPointer = new CRefedPointer<T>(); }
-
-        CAutoRefedPointer(const CAutoRefedPointer<T>& other)
-        {
-            pPointer = other.pPointer;
-            pPointer->AddRef();
-        }
-
-        ~CAutoRefedPointer() { pPointer->Release(); }
-
-        CAutoRefedPointer<T>& operator=(const CAutoRefedPointer<T>& other)
-        {
-            // Assignment operator
-            if (this != &other)            // Avoid self assignment
-            {
-                CRefedPointer<T>* pOldPointer = pPointer;
-
-                // Copy the data and reference pointer
-                // and increment the reference count
-                pPointer = other.pPointer;
-                pPointer->AddRef();
-
-                // Decrement the old reference count
-                pOldPointer->Release();
-            }
-            return *this;
-        }
-
-        T* operator->() { return pPointer->GetData(); }
-
-        const T* operator->() const { return pPointer->GetData(); }
-    };
 };            // namespace SharedUtil
 
 using namespace SharedUtil;
