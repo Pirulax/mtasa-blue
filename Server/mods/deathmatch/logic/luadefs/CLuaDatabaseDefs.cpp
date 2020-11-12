@@ -584,35 +584,35 @@ int CLuaDatabaseDefs::DbPoll(lua_State* luaVM)
             return 3;
         }
 
-        const CRegistryResultData* Result = pJobData->result.registryResult->GetThis();
+        CRegistryResultData* pResult = &pJobData->result.registryResult;
 
         if (!bMultipleResults)
         {
             // Single result (from first statement)
-            PushRegistryResultTable(luaVM, Result);
-            lua_pushnumber(luaVM, Result->uiNumAffectedRows);
-            lua_pushnumber(luaVM, static_cast<double>(Result->ullLastInsertId));
+            PushRegistryResultTable(luaVM, pResult);
+            lua_pushnumber(luaVM, pResult->uiNumAffectedRows);
+            lua_pushnumber(luaVM, static_cast<lua_Number>(pResult->ullLastInsertId));
             return 3;
         }
         else
         {
             // One or more results (from multiple statements)
             lua_newtable(luaVM);
-            for (int i = 0; Result; Result = Result->pNextResult, i++)
+            for (lua_Number i = 1; pResult; pResult = pResult->pNextResult.get(), i++)
             {
-                lua_pushnumber(luaVM, i + 1);
-                lua_newtable(luaVM);
+                lua_pushnumber(luaVM, i);
+                lua_createtable(luaVM, 3, 0);
                 {
                     lua_pushnumber(luaVM, 1);            // [1] - table of result rows
-                    PushRegistryResultTable(luaVM, Result);
+                    PushRegistryResultTable(luaVM, pResult);
                     lua_settable(luaVM, -3);
 
                     lua_pushnumber(luaVM, 2);            // [2] - NumAffectedRows
-                    lua_pushnumber(luaVM, Result->uiNumAffectedRows);
+                    lua_pushnumber(luaVM, pResult->uiNumAffectedRows);
                     lua_settable(luaVM, -3);
 
                     lua_pushnumber(luaVM, 3);            // [3] - LastInsertId
-                    lua_pushnumber(luaVM, static_cast<double>(Result->ullLastInsertId));
+                    lua_pushnumber(luaVM, static_cast<lua_Number>(pResult->ullLastInsertId));
                     lua_settable(luaVM, -3);
                 }
                 lua_settable(luaVM, -3);
