@@ -27,7 +27,7 @@ CAccountManager::CAccountManager(const SString& strDbPathFilename)
     // Check if new installation
     CRegistryResultData result;
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, result, "SELECT name FROM sqlite_master WHERE type='table' AND name='accounts'");
-    bool bNewInstallation = (result->nRows == 0);
+    bool bNewInstallation = (result.nRows == 0);
 
     // Create all our tables (Don't echo the results)
     m_pDatabaseManager->Execf(m_hDbConnection, "CREATE TABLE IF NOT EXISTS accounts (id INTEGER PRIMARY KEY, name TEXT, password TEXT, ip TEXT, serial TEXT)");
@@ -48,7 +48,7 @@ CAccountManager::CAccountManager(const SString& strDbPathFilename)
 
     // Check if unique index on accounts exists
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, result, "SELECT name FROM sqlite_master WHERE type='index' AND name='IDX_ACCOUNTS_NAME_U'");
-    if (result->nRows == 0)
+    if (result.nRows == 0)
     {
         // Need to add unique index on accounts
         if (!bNewInstallation)
@@ -70,7 +70,7 @@ CAccountManager::CAccountManager(const SString& strDbPathFilename)
 
     // Check if unique index on userdata exists
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, result, "SELECT name FROM sqlite_master WHERE type='index' AND name='IDX_USERDATA_USERID_KEY_U'");
-    if (result->nRows == 0)
+    if (result.nRows == 0)
     {
         // Need to add unique index on userdata
         if (!bNewInstallation)
@@ -97,7 +97,7 @@ CAccountManager::CAccountManager(const SString& strDbPathFilename)
 
     // Check if httppass has been added yet
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, result, "PRAGMA table_info(accounts)");
-    if (ListContains(result->ColNames, "httppass") == false)
+    if (ListContains(result.ColNames, "httppass") == false)
     {
         m_pDatabaseManager->Execf(m_hDbConnection, "ALTER TABLE accounts ADD COLUMN httppass TEXT");
     }
@@ -152,7 +152,7 @@ bool CAccountManager::Load()
     bool         bNeedsVacuum = false;
     CElapsedTime activityTimer;
     bool         bOutputFeedback = false;
-    for (CRegistryResultIterator iter = result->begin(); iter != result->end(); ++iter)
+    for (CRegistryResultIterator iter = result.begin(); iter != result.end(); ++iter)
     {
         const CRegistryResultRow& row = *iter;
         // Fill User ID, Name & Password (Required data)
@@ -209,7 +209,7 @@ bool CAccountManager::Load()
         {
             activityTimer.Reset();
             bOutputFeedback = true;
-            CLogger::LogPrintf("Reading accounts %d/%d\n", m_List.size(), result->nRows);
+            CLogger::LogPrintf("Reading accounts %d/%d\n", m_List.size(), result.nRows);
         }
     }
     if (bOutputFeedback)
@@ -317,9 +317,9 @@ bool CAccountManager::IntegrityCheck()
 
         // Get result as a string
         SString strResult;
-        if (result->nRows && result->nColumns)
+        if (result.nRows && result.nColumns)
         {
-            CRegistryResultCell& cell = result->Data.front()[0];
+            CRegistryResultCell& cell = result.Data.front()[0];
             if (cell.nType == SQLITE_TEXT)
                 strResult = std::string((const char*)cell.pVal, cell.nLength - 1);
         }
@@ -364,9 +364,9 @@ bool CAccountManager::IntegrityCheck()
 
         // Get result as a string
         SString strResult;
-        if (result->nRows && result->nColumns)
+        if (result.nRows && result.nColumns)
         {
-            CRegistryResultCell& cell = result->Data.front()[0];
+            CRegistryResultCell& cell = result.Data.front()[0];
             if (cell.nType == SQLITE_TEXT)
                 strResult = std::string((const char*)cell.pVal, cell.nLength - 1);
         }
@@ -671,9 +671,9 @@ std::shared_ptr<CLuaArgument> CAccountManager::GetAccountData(CAccount* pAccount
     auto pResult = std::make_shared<CLuaArgument>();
 
     // Do we have any results?
-    if (result->nRows > 0)
+    if (result.nRows > 0)
     {
-        const CRegistryResultRow& row = result->Data.front();
+        const CRegistryResultRow& row = result.Data.front();
 
         const auto type = static_cast<int>(row[1].nVal);
         const auto value = (const char*)row[0].pVal;
@@ -685,18 +685,18 @@ std::shared_ptr<CLuaArgument> CAccountManager::GetAccountData(CAccount* pAccount
         switch (type)
         {
         case LUA_TBOOLEAN:
-            pResult->ReadBool(strcmp(value, "true") == 0);
+            presult.ReadBool(strcmp(value, "true") == 0);
             break;
 
         case LUA_TNUMBER:
-            pResult->ReadNumber(strtod(value, NULL));
+            presult.ReadNumber(strtod(value, NULL));
             break;
 
         case LUA_TNIL:
             break;
 
         case LUA_TSTRING:
-            pResult->ReadString(value);
+            presult.ReadString(value);
             break;
 
         default:
@@ -707,7 +707,7 @@ std::shared_ptr<CLuaArgument> CAccountManager::GetAccountData(CAccount* pAccount
     else
     {
         // No results
-        pResult->ReadBool(false);
+        presult.ReadBool(false);
     }
 
     return pResult;
@@ -775,9 +775,9 @@ bool CAccountManager::CopyAccountData(CAccount* pFromAccount, CAccount* pToAccou
         m_pDatabaseManager->QueryWithResultf(m_hDbConnection, result, "SELECT key,value,type from userdata where userid=?", SQLITE_INTEGER, iUserID);
 
         // Do we have any results?
-        if (result->nRows > 0)
+        if (result.nRows > 0)
         {
-            for (CRegistryResultIterator iter = result->begin(); iter != result->end(); ++iter)
+            for (CRegistryResultIterator iter = result.begin(); iter != result.end(); ++iter)
             {
                 const CRegistryResultRow& row = *iter;
                 // Get our key
@@ -869,10 +869,10 @@ bool CAccountManager::GetAllAccountData(CAccount* pAccount, lua_State* pLua)
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, result, "SELECT key,value,type from userdata where userid=?", SQLITE_INTEGER, iUserID);
 
     // Do we have any results?
-    if (result->nRows > 0)
+    if (result.nRows > 0)
     {
         // Loop through until i is the same as the number of rows
-        for (CRegistryResultIterator iter = result->begin(); iter != result->end(); ++iter)
+        for (CRegistryResultIterator iter = result.begin(); iter != result.end(); ++iter)
         {
             const CRegistryResultRow& row = *iter;
             // Get our key
@@ -917,7 +917,7 @@ void CAccountManager::GetAccountsBySerial(const SString& strSerial, std::vector<
     CRegistryResultData result;
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, result, "SELECT name FROM accounts WHERE serial = ?", SQLITE_TEXT, strSerial.c_str());
 
-    for (CRegistryResultIterator iter = result->begin(); iter != result->end(); ++iter)
+    for (CRegistryResultIterator iter = result.begin(); iter != result.end(); ++iter)
     {
         const CRegistryResultRow& row = *iter;
 
@@ -933,7 +933,7 @@ void CAccountManager::GetAccountsByIP(const SString& strIP, std::vector<CAccount
     CRegistryResultData result;
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, result, "SELECT name FROM accounts WHERE ip = ?", SQLITE_TEXT, strIP.c_str());
 
-    for (CRegistryResultIterator iter = result->begin(); iter != result->end(); ++iter)
+    for (CRegistryResultIterator iter = result.begin(); iter != result.end(); ++iter)
     {
         const CRegistryResultRow& row = *iter;
 
@@ -948,7 +948,7 @@ CAccount* CAccountManager::GetAccountByID(int ID)
     CRegistryResultData result;
     m_pDatabaseManager->QueryWithResultf(m_hDbConnection, result, "SELECT name FROM accounts WHERE id = ?", SQLITE_INTEGER, ID);
 
-    for (CRegistryResultIterator iter = result->begin(); iter != result->end(); ++iter)
+    for (CRegistryResultIterator iter = result.begin(); iter != result.end(); ++iter)
     {
         const auto& row = *iter;
 
@@ -966,7 +966,7 @@ void CAccountManager::GetAccountsByData(const SString& dataName, const SString& 
                                          "SELECT acc.name FROM accounts acc, userdata dat WHERE dat.key = ? AND dat.value = ? AND dat.userid = acc.id",
                                          SQLITE_TEXT, dataName.c_str(), SQLITE_TEXT, value.c_str());
 
-    for (CRegistryResultIterator iter = result->begin(); iter != result->end(); ++iter)
+    for (CRegistryResultIterator iter = result.begin(); iter != result.end(); ++iter)
     {
         const CRegistryResultRow& row = *iter;
 
@@ -1151,7 +1151,7 @@ void CAccountManager::LoadAccountSerialUsage(CAccount* pAccount)
                                          " WHERE userid=?",
                                          SQLITE_INTEGER, pAccount->GetID());
 
-    for (CRegistryResultIterator iter = result->begin(); iter != result->end(); ++iter)
+    for (CRegistryResultIterator iter = result.begin(); iter != result.end(); ++iter)
     {
         const CRegistryResultRow& row = *iter;
         outSerialUsageList.push_back(CAccount::SSerialUsage());
