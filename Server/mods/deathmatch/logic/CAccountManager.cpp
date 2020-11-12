@@ -342,8 +342,7 @@ bool CAccountManager::IntegrityCheck()
         m_pDatabaseManager->Execf(m_hDbConnection, "DROP TABLE IF EXISTS write_test");
         m_pDatabaseManager->Execf(m_hDbConnection, "CREATE TABLE IF NOT EXISTS write_test (id INTEGER PRIMARY KEY, value INTEGER)");
         m_pDatabaseManager->Execf(m_hDbConnection, "INSERT OR IGNORE INTO write_test (id, value) VALUES(1,2)");
-        bool bOk = m_pDatabaseManager->QueryWithResultf(m_hDbConnection, NULL, "UPDATE write_test SET value=3 WHERE id=1");
-        if (!bOk)
+        if (!m_pDatabaseManager->QueryWithFailedCheckf(m_hDbConnection, "UPDATE write_test SET value=3 WHERE id=1"))
         {
             CLogger::ErrorPrintf("%s\n", *m_pDatabaseManager->GetLastErrorMessage());
             CLogger::ErrorPrintf("Errors were encountered updating '%s' database\n", *ExtractFilename(PathConform("internal.db")));
@@ -806,10 +805,10 @@ bool CAccountManager::CopyAccountData(CAccount* pFromAccount, CAccount* pToAccou
             {
                 CRegistryResultData subResult;
 
-                m_pDatabaseManager->QueryWithResultf(m_hDbConnection, &subResult, "SELECT id,userid from userdata where userid=? and key=? LIMIT 1",
+                m_pDatabaseManager->QueryWithResultf(m_hDbConnection, subResult, "SELECT id,userid from userdata where userid=? and key=? LIMIT 1",
                                                      SQLITE_INTEGER, pToAccount->GetID(), SQLITE_TEXT, iter->second.GetKey().c_str());
                 // If there is a key with this value update it otherwise insert it and store the return value in bRetVal
-                if (subResult->nRows > 0)
+                if (subResult.nRows > 0)
                     m_pDatabaseManager->Execf(m_hDbConnection, "UPDATE userdata SET value=?, type=? WHERE userid=? AND key=?", SQLITE_TEXT,
                                               iter->second.GetStrValue().c_str(), SQLITE_INTEGER, iter->second.GetType(), SQLITE_INTEGER, pToAccount->GetID(),
                                               SQLITE_TEXT, iter->second.GetKey().c_str());

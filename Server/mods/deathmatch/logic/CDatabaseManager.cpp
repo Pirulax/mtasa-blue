@@ -46,6 +46,7 @@ public:
     virtual const SString&    GetLastErrorMessage() { return m_strLastErrorMessage; }
     virtual bool              IsLastErrorSuppressed() { return m_bLastErrorSuppressed; }
     virtual bool              QueryWithResultf(SConnectionHandle hConnection, CRegistryResultData& pResult, const char* szQuery, ...);
+    virtual bool              QueryWithFailedCheck(SConnectionHandle hConnection, const char* szQuery, ...);
     virtual bool              QueryWithCallback(SConnectionHandle hConnection, PFN_DBRESULT pfnDbResult, void* pCallbackContext, const SString& strQuery,
                                                 CLuaArguments* pArgs = nullptr);
     virtual bool              QueryWithCallbackf(SConnectionHandle hConnection, PFN_DBRESULT pfnDbResult, void* pCallbackContext, const char* szQuery, ...);
@@ -161,7 +162,7 @@ SConnectionHandle CDatabaseManagerImpl::Connect(const SString& strType, const SS
 //
 //
 ///////////////////////////////////////////////////////////////
-bool CDatabaseManagerImpl::Disconnect(uint hConnection)
+bool CDatabaseManagerImpl::Disconnect(SConnectionHandle hConnection)
 {
     ClearLastErrorMessage();
 
@@ -426,6 +427,45 @@ bool CDatabaseManagerImpl::QueryWithResultf(SConnectionHandle hConnection, CRegi
         result = std::move(pJobData->result.registryResult);
         return true;
     }
+}
+
+///////////////////////////////////////////////////////////////
+//
+// CDatabaseManagerImpl::QueryWithResultf
+//
+// Start a query and wait for the result, and
+// return whenever it has succeeded or not
+//
+///////////////////////////////////////////////////////////////
+bool CDatabaseManagerImpl::QueryWithFailedCheck(SConnectionHandle hConnection, const char* szQuery, ...)
+{
+    va_list vl;
+    va_start(vl, szQuery);
+
+    ClearLastErrorMessage();
+
+    // Check connection
+    if (!MapContains(m_ConnectionTypeMap, hConnection))
+    {
+        SetLastErrorMessage("Invalid connection");
+        return false;
+    }
+
+    // Insert arguments with correct escapement
+    SString strEscapedQuery = RestoreQuestionMark(InsertQueryArguments(hConnection, szQuery, vl));
+
+    // Start query
+    CDbJobData* pJobData = m_JobQueue->AddCommand(EJobCommand::QUERY, hConnection, strEscapedQuery);
+    if (!pJobData)
+    {
+        SetLastErrorMessage("Invalid connection");
+        return false;
+    }
+
+    // Wait for result
+    QueryPoll(pJobData, -1);
+
+    return pJobData->result.status == EJobResult::SUCCESS;
 }
 
 ///////////////////////////////////////////////////////////////
