@@ -221,15 +221,15 @@ ADD_ENUM1(UPDATE_COLPOLYGON_POINT)
 ADD_ENUM1(SET_DISCORD_JOIN_PARAMETERS)
 IMPLEMENT_ENUM_END("eElementRPCFunctions")
 
-DECLARE_ENUM_CLASS(CRPCFunctions::FunctionID);
-IMPLEMENT_ENUM_CLASS_BEGIN(CRPCFunctions::FunctionID)
-ADD_ENUM1(CRPCFunctions::FunctionID::PLAYER_INGAME_NOTICE)
-ADD_ENUM1(CRPCFunctions::FunctionID::INITIAL_DATA_STREAM)
-ADD_ENUM1(CRPCFunctions::FunctionID::PLAYER_TARGET)
-ADD_ENUM1(CRPCFunctions::FunctionID::PLAYER_WEAPON)
-ADD_ENUM1(CRPCFunctions::FunctionID::KEY_BIND)
-ADD_ENUM1(CRPCFunctions::FunctionID::CURSOR_EVENT)
-ADD_ENUM1(CRPCFunctions::FunctionID::REQUEST_STEALTH_KILL)
+DECLARE_ENUM_CLASS(CRPCFunctions::RPCFunction);
+IMPLEMENT_ENUM_CLASS_BEGIN(CRPCFunctions::RPCFunction)
+ADD_ENUM1(CRPCFunctions::RPCFunction::PLAYER_INGAME_NOTICE)
+ADD_ENUM1(CRPCFunctions::RPCFunction::INITIAL_DATA_STREAM)
+ADD_ENUM1(CRPCFunctions::RPCFunction::PLAYER_TARGET)
+ADD_ENUM1(CRPCFunctions::RPCFunction::PLAYER_WEAPON)
+ADD_ENUM1(CRPCFunctions::RPCFunction::KEY_BIND)
+ADD_ENUM1(CRPCFunctions::RPCFunction::CURSOR_EVENT)
+ADD_ENUM1(CRPCFunctions::RPCFunction::REQUEST_STEALTH_KILL)
 IMPLEMENT_ENUM_END("eRPCFunctions") // Kept old name for whatever backwards compatibility issues that might arise
 
 struct SRPCPacketStat
@@ -494,7 +494,7 @@ void CPerfStatRPCPacketUsageImpl::GetStats(CPerfStatResult* pResult, const std::
 
         int c = 0;
         // Turn "CRPCFunctions::PLAYER_WEAPON" into "64_Player_weapon"
-        SString strPacketDesc = EnumToString((CRPCFunctions::eRPCFunctions)i).SplitRight("CRPCFunctions::", NULL, -1).ToLower();
+        SString strPacketDesc = EnumToString((CRPCFunctions::RPCFunction)i).SplitRight("CRPCFunctions::", NULL, -1).ToLower();
         row[c++] = SString("%d_", i) + strPacketDesc.Left(1).ToUpper() + strPacketDesc.SubStr(1);
 
         if (statInDelta.iCount)

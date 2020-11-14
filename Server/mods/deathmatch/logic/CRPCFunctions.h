@@ -23,41 +23,11 @@ class CGame;
 
 class CRPCFunctions
 {
-protected:
-    //    enum eRPCFunctions;
-
-private:
-    typedef void (*pfnRPCHandler)(NetBitStreamInterface& bitStream);
-    struct SRPCHandler
-    {
-        unsigned char ID;
-        pfnRPCHandler Callback;
-    };
+public:
+    static void  ProcessPacket(const NetServerPlayerID& Socket, NetBitStreamInterface& bitStream);
 
 public:
-    CRPCFunctions();
-    virtual ~CRPCFunctions();
-
-    void        AddHandlers();
-    static void AddHandler(unsigned char ucID, pfnRPCHandler Callback);
-    void        ProcessPacket(const NetServerPlayerID& Socket, NetBitStreamInterface& bitStream);
-
-protected:
-    DECLARE_RPC(PlayerInGameNotice);
-    DECLARE_RPC(InitialDataStream);
-    DECLARE_RPC(PlayerTarget);
-    DECLARE_RPC(PlayerWeapon);
-    DECLARE_RPC(KeyBind);
-    DECLARE_RPC(CursorEvent);
-    DECLARE_RPC(RequestStealthKill);
-
-protected:
-    static CPlayer* m_pSourcePlayer;
-
-    std::vector<SRPCHandler*> m_RPCHandlers;
-
-public:
-    enum class FunctionID
+    enum class RPCFunction
     {
         PLAYER_INGAME_NOTICE,
         INITIAL_DATA_STREAM,
