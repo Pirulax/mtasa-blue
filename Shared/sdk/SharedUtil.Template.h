@@ -1,5 +1,10 @@
 #pragma once
 
+#include <type_traits>
+#include <array>
+#include <utility>
+
+
 /**
     is_Nspecialization
 
@@ -245,3 +250,78 @@ struct pad_func_with_func<Func, FuncB> : pad_func_with_func_impl<Func, typename 
                                                                                         std::max(sizeof...(Args), sizeof...(ArgsB)) - sizeof...(Args) == 0>::type>
 {
 };
+
+/*
+* Switch case like function jump table generator
+* useful for example in CRPCFunctions where you need to
+* translate an enum to a function run time.
+*
+* The 'normal' way would be to use a big switch case, but
+* who wants to do that? Its really boresome! Here, I've spent
+* 6 hours to make this work, so you better use it..
+*
+* Note: I could've used a recursive templte, yes, but GCC and MSVC
+* are unable to optimize it into a jmptbl. clang is able to, and
+* usually makes a jumptable out of anything (you'd be suprised)
+*
+*/
+namespace detail
+{
+    template<typename Enum_t, bool checkIsValueValid, size_t begin, typename Callable_t, size_t... EnumValues>
+    auto EnumToFunctionDispatchImpl(size_t rtvalue, Callable_t&& getFunctionPtr, std::index_sequence<EnumValues...> seq)
+    {
+        /*
+        * Get common return types. This produces the function pointer
+        * This is a check as well, because if one of the function calls
+        * returns something that doesnt match the other function calls return value
+        * it'll error (well, it'll blow up, and throw like 300 syntax errors, but you got the point)
+        */
+        using Pfn_t = std::common_type_t<
+            std::invoke_result_t<Callable_t,
+            std::integral_constant<Enum_t, Enum_t(begin + EnumValues)>>...
+            >;
+
+        if (checkIsValueValid && (rtvalue < begin || (rtvalue - begin) >= seq.size()))
+            return Pfn_t{ nullptr };
+
+        /*
+        * An inline function pointer table obtained with calling
+        * getFunctionPtr with the whole index_sequence
+        */
+        return std::array<Pfn_t, seq.size()>{ // Initalize a value -> function pointer table
+            std::invoke(std::forward<Callable_t>(getFunctionPtr),
+                std::integral_constant<Enum_t, Enum_t(begin + EnumValues)>{})... // Invoke function ptr getter with the index sequence
+        } [size_t(rtvalue)] ; // Actually map the given runtime value to a function pointer
+    }
+};
+
+/*
+*  Use it like: EnumToFunction(<runtime enum value>, [](const enumconst) { return EnumTemplatedFunction<enumconst()> })(Templated function args...);
+*  See CRPCFunctions for actual usage
+*
+*  rtvalue - runtime enum value
+*  getFunctionPtr - its first argument is an integral_constant<Enum_t, <Enum_t value>. You can use this
+*                   as the template parameter for your templated function (I mean it's value)
+*
+*  FUCKING IMPORTNAT NOTE(prevents brain cancer)::: Enum_t MUST HAVE ::BEGIN AND ::END!!!
+*  OTHERWISE THE FUCKING TEMPLATE DEDUCTION FAILS AND YOU'LL GET BRAIN CANCER LIKE ME
+*/
+template<bool checkIsValueValid = true, class Enum_t, Enum_t eBegin = Enum_t::BEGIN, Enum_t eEnd = Enum_t::END, class Callable_t>
+auto EnumToFunction(Enum_t eRTValue, Callable_t&& getFunctionPtr)
+{
+    constexpr auto len = size_t(eEnd) - size_t(eBegin);
+    return detail::EnumToFunctionDispatchImpl<Enum_t, checkIsValueValid, size_t(eBegin)>(
+        size_t(eRTValue), std::forward<Callable_t>(getFunctionPtr), std::make_index_sequence<len>{});
+}
+
+/*
+* Same as above, but calls the function with the given args, and returns the called functions return value
+*/
+template<class Enum_t, bool checkIsValueValid = true, Enum_t eBegin = Enum_t::BEGIN, Enum_t eEnd = Enum_t::END, class Callable_t, typename... Args_t>
+auto EnumToFunctionDispatch(Enum_t eRTValue, Callable_t&& getFunctionPtr, Args_t&&... args)
+{
+    const auto pfn = EnumToFunction<checkIsValueValid, Enum_t, eBegin, eEnd>(eRTValue, std::forward<Callable_t>(getFunctionPtr));
+    using Ret_t = std::invoke_result_t<decltype(pfn), Args_t...>;
+
+    return pfn ? pfn(std::forward<Args_t>(args)...) : Ret_t{};
+}
