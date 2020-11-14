@@ -257,46 +257,41 @@ template<>
 void ProcessRPC<CRPCFunctions::RPCFunction::REQUEST_STEALTH_KILL>(NetBitStreamInterface& bitStream, CPlayer* pSource)
 {
     CLOCK("NetServerPulse::RPC", "RequestStealthKill");
+
     ElementID ID;
     bitStream.Read(ID);
-    CElement* pElement = CElementIDs::GetElement(ID);
-    if (pElement)
-    {
-        int elementType = pElement->GetType();
-        if (elementType == CElement::PLAYER || elementType == CElement::PED)
-        {
-            CPed* pTarget = static_cast<CPed*>(pElement);
 
-            // Are they both alive?
-            if (!pSource->IsDead() && !pTarget->IsDead())
+    CPed* pTargetPed = dynamic_cast<CPed*>(CElementIDs::GetElement(ID));
+    if (!pTargetPed)
+        return; 
+
+    if (pSource->IsDead() || pTargetPed->IsDead())
+        return;  // They should be dead
+
+     // Do we have any record of the killer currently having a knife?
+    if (pSource->GetWeaponType(1) == 4)
+    {
+        // Are they close enough?
+        if (DistanceBetweenPoints3D(pSource->GetPosition(), pTargetPed->GetPosition()) <= STEALTH_KILL_RANGE)
+        {
+            CLuaArguments Arguments;
+            Arguments.PushElement(pTargetPed);
+            if (pSource->CallEvent("onPlayerStealthKill", Arguments))
             {
-                // Do we have any record of the killer currently having a knife?
-                if (pSource->GetWeaponType(1) == 4)
-                {
-                    // Are they close enough?
-                    if (DistanceBetweenPoints3D(pSource->GetPosition(), pTarget->GetPosition()) <= STEALTH_KILL_RANGE)
-                    {
-                        CLuaArguments Arguments;
-                        Arguments.PushElement(pTarget);
-                        if (pSource->CallEvent("onPlayerStealthKill", Arguments))
-                        {
-                            // Start the stealth kill
-                            CStaticFunctionDefinitions::KillPed(pTarget, pSource, 4 /*WEAPONTYPE_KNIFE*/, 9 /*BODYPART_HEAD*/, true);
-                        }
-                    }
-                }
-                else
-                {
-                    // You shouldn't be able to get here without cheating to get a knife.
-                    if (!g_pGame->GetConfig()->IsDisableAC("2"))
-                    {
-                        // Kick disabled as sometimes causing false positives due weapon slot sync problems
-#if 0
-                        CStaticFunctionDefinitions::KickPlayer(pSource, NULL, "AC #2: You were kicked from the game");
-#endif
-                    }
-                }
+                // Start the stealth kill
+                CStaticFunctionDefinitions::KillPed(pTargetPed, pSource, 4 /*WEAPONTYPE_KNIFE*/, 9 /*BODYPART_HEAD*/, true);
             }
+        }
+    }
+    else
+    {
+        // You shouldn't be able to get here without cheating to get a knife.
+        if (!g_pGame->GetConfig()->IsDisableAC("2"))
+        {
+            // Kick disabled as sometimes causing false positives due weapon slot sync problems
+#if 0
+            CStaticFunctionDefinitions::KickPlayer(pSource, NULL, "AC #2: You were kicked from the game");
+#endif
         }
     }
     UNCLOCK("NetServerPulse::RPC", "RequestStealthKill");
