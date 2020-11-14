@@ -57,7 +57,7 @@ protected:
     std::vector<SRPCHandler*> m_RPCHandlers;
 
 public:
-    enum eRPCFunctions
+    enum class FunctionID
     {
         PLAYER_INGAME_NOTICE,
         INITIAL_DATA_STREAM,
