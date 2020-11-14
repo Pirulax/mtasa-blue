@@ -11,113 +11,53 @@
 
 #include "StdInc.h"
 #include "net/SyncStructures.h"
+#include "SharedUtil.Template.h"
 
-CRPCFunctions* g_pRPCFunctions = NULL;
 extern CGame*  g_pGame;
 
-CPlayer* CRPCFunctions::m_pSourcePlayer;
 
-static CPlayerManager* m_pPlayerManager;
+template<CRPCFunctions::RPCFunction>
+void ProcessRPC(NetBitStreamInterface& bitStream, CPlayer* pSource);
 
-CRPCFunctions::CRPCFunctions()
-{
-    g_pRPCFunctions = this;
-
-    m_pPlayerManager = g_pGame->GetPlayerManager();
-    AddHandlers();
-}
-
-CRPCFunctions::~CRPCFunctions()
-{
-    vector<SRPCHandler*>::iterator iter = m_RPCHandlers.begin();
-    for (; iter != m_RPCHandlers.end(); iter++)
-    {
-        delete *iter;
-    }
-    m_RPCHandlers.clear();
-
-    g_pRPCFunctions = NULL;
-}
-
-void CRPCFunctions::AddHandlers()
-{
-    AddHandler(PLAYER_INGAME_NOTICE, PlayerInGameNotice);
-    AddHandler(INITIAL_DATA_STREAM, InitialDataStream);
-    AddHandler(PLAYER_TARGET, PlayerTarget);
-    AddHandler(PLAYER_WEAPON, PlayerWeapon);
-    AddHandler(KEY_BIND, KeyBind);
-    AddHandler(CURSOR_EVENT, CursorEvent);
-    AddHandler(REQUEST_STEALTH_KILL, RequestStealthKill);
-}
-
-void CRPCFunctions::AddHandler(unsigned char ucID, pfnRPCHandler Callback)
-{
-    SRPCHandler* pHandler = new SRPCHandler;
-    pHandler->ID = ucID;
-    pHandler->Callback = Callback;
-    g_pRPCFunctions->m_RPCHandlers.push_back(pHandler);
-}
-
-void CRPCFunctions::ProcessPacket(const NetServerPlayerID& Socket, NetBitStreamInterface& bitStream)
-{
-    m_pSourcePlayer = m_pPlayerManager->Get(Socket);
-    if (m_pSourcePlayer && !m_pSourcePlayer->IsBeingDeleted())
-    {
-        unsigned char ucFunctionID = 255;
-        bitStream.Read(ucFunctionID);
-
-        CPerfStatRPCPacketUsage::GetSingleton()->UpdatePacketUsageIn(ucFunctionID, bitStream.GetNumberOfBytesUsed());
-
-        SRPCHandler*                   pHandler;
-        vector<SRPCHandler*>::iterator iter = m_RPCHandlers.begin();
-        for (; iter != m_RPCHandlers.end(); iter++)
-        {
-            pHandler = *iter;
-            if (pHandler->ID == ucFunctionID)
-            {
-                (pHandler->Callback)(bitStream);
-                break;
-            }
-        }
-    }
-}
-
-void CRPCFunctions::PlayerInGameNotice(NetBitStreamInterface& bitStream)
+template<>
+void ProcessRPC<CRPCFunctions::RPCFunction::PLAYER_INGAME_NOTICE>(NetBitStreamInterface& bitStream, CPlayer* pSource)
 {
     CLOCK("NetServerPulse::RPC", "PlayerInGameNotice");
     // Already ingame? Protocol error
-    if (m_pSourcePlayer->IsJoined())
+    if (pSource->IsJoined())
     {
-        DisconnectPlayer(g_pGame, *m_pSourcePlayer, "Protocol error: Already ingame");
+        DisconnectPlayer(g_pGame, *pSource, "Protocol error: Already ingame");
     }
     else
     {
         // Join him to the game
-        g_pGame->JoinPlayer(*m_pSourcePlayer);
+        g_pGame->JoinPlayer(*pSource);
     }
     UNCLOCK("NetServerPulse::RPC", "PlayerInGameNotice");
 }
 
-void CRPCFunctions::InitialDataStream(NetBitStreamInterface& bitStream)
+template<>
+void ProcessRPC<CRPCFunctions::RPCFunction::INITIAL_DATA_STREAM>(NetBitStreamInterface& bitStream, CPlayer* pSource)
 {
     CLOCK("NetServerPulse::RPC", "InitialDataStream");
     // Already sent initial stuff? Protocol error
-    if (m_pSourcePlayer->IsJoined())
+    if (pSource->IsJoined())
     {
-        DisconnectPlayer(g_pGame, *m_pSourcePlayer, "Protocol error: Already joined");
+        DisconnectPlayer(g_pGame, *pSource, "Protocol error: Already joined");
     }
     else
     {
         // Send him the initial stuff
-        g_pGame->InitialDataStream(*m_pSourcePlayer);
+        g_pGame->InitialDataStream(*pSource);
     }
     UNCLOCK("NetServerPulse::RPC", "InitialDataStream");
 }
 
-void CRPCFunctions::PlayerTarget(NetBitStreamInterface& bitStream)
+template<>
+void ProcessRPC<CRPCFunctions::RPCFunction::PLAYER_TARGET>(NetBitStreamInterface& bitStream, CPlayer* pSource)
 {
     CLOCK("NetServerPulse::RPC", "PlayerTarget");
-    if (m_pSourcePlayer->IsJoined())
+    if (pSource->IsJoined())
     {
         ElementID TargetID;
         bitStream.Read(TargetID);
@@ -125,7 +65,7 @@ void CRPCFunctions::PlayerTarget(NetBitStreamInterface& bitStream)
         CElement* pTarget = NULL;
         if (TargetID != INVALID_ELEMENT_ID)
             pTarget = CElementIDs::GetElement(TargetID);
-        m_pSourcePlayer->SetTargetedElement(pTarget);
+        pSource->SetTargetedElement(pTarget);
 
         // Call our script event
         CLuaArguments Arguments;
@@ -134,25 +74,26 @@ void CRPCFunctions::PlayerTarget(NetBitStreamInterface& bitStream)
         else
             Arguments.PushBoolean(false);
 
-        m_pSourcePlayer->CallEvent("onPlayerTarget", Arguments);
+        pSource->CallEvent("onPlayerTarget", Arguments);
     }
     UNCLOCK("NetServerPulse::RPC", "PlayerTarget");
 }
 
-void CRPCFunctions::PlayerWeapon(NetBitStreamInterface& bitStream)
+template<>
+void ProcessRPC<CRPCFunctions::RPCFunction::PLAYER_WEAPON>(NetBitStreamInterface& bitStream, CPlayer* pSource)
 {
     CLOCK("NetServerPulse::RPC", "PlayerWeapon");
-    if (m_pSourcePlayer->IsJoined() && m_pSourcePlayer->IsSpawned())
+    if (pSource->IsJoined() && pSource->IsSpawned())
     {
-        unsigned char ucPrevSlot = m_pSourcePlayer->GetWeaponSlot();
+        unsigned char ucPrevSlot = pSource->GetWeaponSlot();
 
         // We don't get the puresync packet containing totalAmmo = 0 for slot 8 (THROWN), slot 7 (HEAVY) and slot 9 (SPECIAL)
         if ((bitStream.Version() >= 0x44 && ucPrevSlot == WEAPONSLOT_TYPE_THROWN) || bitStream.Version() >= 0x4D)
         {
             if (bitStream.ReadBit() && (ucPrevSlot == WEAPONSLOT_TYPE_THROWN ||
-                                        (bitStream.Version() >= 0x5A && (ucPrevSlot == WEAPONSLOT_TYPE_HEAVY || ucPrevSlot == WEAPONSLOT_TYPE_SPECIAL))))
+                (bitStream.Version() >= 0x5A && (ucPrevSlot == WEAPONSLOT_TYPE_HEAVY || ucPrevSlot == WEAPONSLOT_TYPE_SPECIAL))))
             {
-                CWeapon* pPrevWeapon = m_pSourcePlayer->GetWeapon(ucPrevSlot);
+                CWeapon* pPrevWeapon = pSource->GetWeapon(ucPrevSlot);
                 pPrevWeapon->usAmmo = 0;
                 pPrevWeapon->usAmmoInClip = 0;
             }
@@ -165,14 +106,14 @@ void CRPCFunctions::PlayerWeapon(NetBitStreamInterface& bitStream)
         if (uiSlot != ucPrevSlot)
         {
             CLuaArguments Arguments;
-            Arguments.PushNumber(m_pSourcePlayer->GetWeaponType(ucPrevSlot));
-            Arguments.PushNumber(m_pSourcePlayer->GetWeaponType(uiSlot));
+            Arguments.PushNumber(pSource->GetWeaponType(ucPrevSlot));
+            Arguments.PushNumber(pSource->GetWeaponType(uiSlot));
 
-            m_pSourcePlayer->CallEvent("onPlayerWeaponSwitch", Arguments);
+            pSource->CallEvent("onPlayerWeaponSwitch", Arguments);
         }
 
-        m_pSourcePlayer->SetWeaponSlot(uiSlot);
-        CWeapon* pWeapon = m_pSourcePlayer->GetWeapon(uiSlot);
+        pSource->SetWeaponSlot(uiSlot);
+        CWeapon* pWeapon = pSource->GetWeapon(uiSlot);
 
         if (CWeaponNames::DoesSlotHaveAmmo(uiSlot))
         {
@@ -192,13 +133,14 @@ void CRPCFunctions::PlayerWeapon(NetBitStreamInterface& bitStream)
             // Keep the server synced with the client (GTASA gives the client a detonator when they shoot so if they changed to slot 12 they obviously have one)
             if (uiSlot == 12)
                 // Give them the detonator
-                CStaticFunctionDefinitions::GiveWeapon(m_pSourcePlayer, 40, 1, true);
+                CStaticFunctionDefinitions::GiveWeapon(pSource, 40, 1, true);
         }
     }
     UNCLOCK("NetServerPulse::RPC", "PlayerWeapon");
 }
 
-void CRPCFunctions::KeyBind(NetBitStreamInterface& bitStream)
+template<>
+void ProcessRPC<CRPCFunctions::RPCFunction::KEY_BIND>(NetBitStreamInterface& bitStream, CPlayer* pSource)
 {
     CLOCK("NetServerPulse::RPC", "KeyBind");
 
@@ -216,12 +158,13 @@ void CRPCFunctions::KeyBind(NetBitStreamInterface& bitStream)
     bitStream.Read(szKey, ucKeyLength);
     szKey[ucKeyLength] = 0;
 
-    m_pSourcePlayer->GetKeyBinds()->ProcessKey(szKey, bHitState, (eKeyBindType)ucType);
+    pSource->GetKeyBinds()->ProcessKey(szKey, bHitState, (eKeyBindType)ucType);
 
     UNCLOCK("NetServerPulse::RPC", "KeyBind");
 }
 
-void CRPCFunctions::CursorEvent(NetBitStreamInterface& bitStream)
+template<>
+void ProcessRPC<CRPCFunctions::RPCFunction::CURSOR_EVENT>(NetBitStreamInterface& bitStream, CPlayer* pSource)
 {
     CLOCK("NetServerPulse::RPC", "CursorEvent");
 
@@ -241,37 +184,37 @@ void CRPCFunctions::CursorEvent(NetBitStreamInterface& bitStream)
         if (!bHasCollisionElement)
             elementID = INVALID_ELEMENT_ID;
 
-        if (m_pSourcePlayer->IsJoined())
+        if (pSource->IsJoined())
         {
             // Get the button and state
             const char* szButton = NULL;
             const char* szState = NULL;
             switch (ucButton)
             {
-                case 0:
-                    szButton = "left";
-                    szState = "down";
-                    break;
-                case 1:
-                    szButton = "left";
-                    szState = "up";
-                    break;
-                case 2:
-                    szButton = "middle";
-                    szState = "down";
-                    break;
-                case 3:
-                    szButton = "middle";
-                    szState = "up";
-                    break;
-                case 4:
-                    szButton = "right";
-                    szState = "down";
-                    break;
-                case 5:
-                    szButton = "right";
-                    szState = "up";
-                    break;
+            case 0:
+                szButton = "left";
+                szState = "down";
+                break;
+            case 1:
+                szButton = "left";
+                szState = "up";
+                break;
+            case 2:
+                szButton = "middle";
+                szState = "down";
+                break;
+            case 3:
+                szButton = "middle";
+                szState = "up";
+                break;
+            case 4:
+                szButton = "right";
+                szState = "down";
+                break;
+            case 5:
+                szButton = "right";
+                szState = "up";
+                break;
             }
             if (szButton && szState)
             {
@@ -282,7 +225,7 @@ void CRPCFunctions::CursorEvent(NetBitStreamInterface& bitStream)
                     CLuaArguments Arguments;
                     Arguments.PushString(szButton);
                     Arguments.PushString(szState);
-                    Arguments.PushElement(m_pSourcePlayer);
+                    Arguments.PushElement(pSource);
                     Arguments.PushNumber(vecPosition.fX);
                     Arguments.PushNumber(vecPosition.fY);
                     Arguments.PushNumber(vecPosition.fZ);
@@ -301,7 +244,7 @@ void CRPCFunctions::CursorEvent(NetBitStreamInterface& bitStream)
                 Arguments.PushNumber(vecPosition.fZ);
                 Arguments.PushNumber(vecCursorPosition.fX);
                 Arguments.PushNumber(vecCursorPosition.fY);
-                m_pSourcePlayer->CallEvent("onPlayerClick", Arguments);
+                pSource->CallEvent("onPlayerClick", Arguments);
 
                 // TODO: iterate server-side element managers for the click events, eg: colshapes
             }
@@ -310,7 +253,8 @@ void CRPCFunctions::CursorEvent(NetBitStreamInterface& bitStream)
     UNCLOCK("NetServerPulse::RPC", "CursorEvent");
 }
 
-void CRPCFunctions::RequestStealthKill(NetBitStreamInterface& bitStream)
+template<>
+void ProcessRPC<CRPCFunctions::RPCFunction::REQUEST_STEALTH_KILL>(NetBitStreamInterface& bitStream, CPlayer* pSource)
 {
     CLOCK("NetServerPulse::RPC", "RequestStealthKill");
     ElementID ID;
@@ -324,20 +268,20 @@ void CRPCFunctions::RequestStealthKill(NetBitStreamInterface& bitStream)
             CPed* pTarget = static_cast<CPed*>(pElement);
 
             // Are they both alive?
-            if (!m_pSourcePlayer->IsDead() && !pTarget->IsDead())
+            if (!pSource->IsDead() && !pTarget->IsDead())
             {
                 // Do we have any record of the killer currently having a knife?
-                if (m_pSourcePlayer->GetWeaponType(1) == 4)
+                if (pSource->GetWeaponType(1) == 4)
                 {
                     // Are they close enough?
-                    if (DistanceBetweenPoints3D(m_pSourcePlayer->GetPosition(), pTarget->GetPosition()) <= STEALTH_KILL_RANGE)
+                    if (DistanceBetweenPoints3D(pSource->GetPosition(), pTarget->GetPosition()) <= STEALTH_KILL_RANGE)
                     {
                         CLuaArguments Arguments;
                         Arguments.PushElement(pTarget);
-                        if (m_pSourcePlayer->CallEvent("onPlayerStealthKill", Arguments))
+                        if (pSource->CallEvent("onPlayerStealthKill", Arguments))
                         {
                             // Start the stealth kill
-                            CStaticFunctionDefinitions::KillPed(pTarget, m_pSourcePlayer, 4 /*WEAPONTYPE_KNIFE*/, 9 /*BODYPART_HEAD*/, true);
+                            CStaticFunctionDefinitions::KillPed(pTarget, pSource, 4 /*WEAPONTYPE_KNIFE*/, 9 /*BODYPART_HEAD*/, true);
                         }
                     }
                 }
@@ -347,13 +291,28 @@ void CRPCFunctions::RequestStealthKill(NetBitStreamInterface& bitStream)
                     if (!g_pGame->GetConfig()->IsDisableAC("2"))
                     {
                         // Kick disabled as sometimes causing false positives due weapon slot sync problems
-                        #if 0
-                        CStaticFunctionDefinitions::KickPlayer ( m_pSourcePlayer, NULL, "AC #2: You were kicked from the game" );
-                        #endif
+#if 0
+                        CStaticFunctionDefinitions::KickPlayer(pSource, NULL, "AC #2: You were kicked from the game");
+#endif
                     }
                 }
             }
         }
     }
     UNCLOCK("NetServerPulse::RPC", "RequestStealthKill");
+}
+
+// Must be at the bottom otherwise the template magic refuses to work
+void CRPCFunctions::ProcessPacket(const NetServerPlayerID& Socket, NetBitStreamInterface& bitStream)
+{
+    CPlayer* pSource = g_pGame->GetPlayerManager()->Get(Socket);
+    if (!pSource || pSource->IsBeingDeleted())
+        return;
+
+    // Read function ID as a unsigned char
+    RPCFunction rpcfn;
+    bitStream.Read(reinterpret_cast<unsigned char&>(rpcfn));
+
+    EnumToFunctionDispatch(rpcfn,
+        [](auto rpcfn) { return &ProcessRPC<(RPCFunction)rpcfn>; }, bitStream, pSource);
 }

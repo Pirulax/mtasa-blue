@@ -19,8 +19,6 @@
 class CPlayer;
 class CGame;
 
-#define DECLARE_RPC(a) static void a ( NetBitStreamInterface& bitStream );
-
 class CRPCFunctions
 {
 public:
@@ -36,5 +34,8 @@ public:
         KEY_BIND,
         CURSOR_EVENT,
         REQUEST_STEALTH_KILL,
+
+        END,
+        BEGIN = PLAYER_INGAME_NOTICE
     };
 };
