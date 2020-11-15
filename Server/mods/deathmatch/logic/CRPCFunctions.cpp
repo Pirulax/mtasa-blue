@@ -173,16 +173,26 @@ void ProcessRPC<CRPCFunctions::RPCFunction::CURSOR_EVENT>(NetBitStreamInterface&
     unsigned short   usY;
     SPositionSync    position(false);
     bool             bHasCollisionElement;
-    ElementID        elementID;
+    ElementID        collidedElementID;
+
+    if (!bitStream.Read(&button) ||
+        !bitStream.ReadCompressed(usX) ||
+        !bitStream.ReadCompressed(usY) ||
+        !bitStream.Read(&position))
+        return;
+
+    if (!bitStream.ReadBit(bHasCollisionElement) ||
+        (bHasCollisionElement && !bitStream.Read(collidedElementID)))
+        return;
 
     if (bitStream.Read(&button) && bitStream.ReadCompressed(usX) && bitStream.ReadCompressed(usY) && bitStream.Read(&position) &&
-        bitStream.ReadBit(bHasCollisionElement) && (!bHasCollisionElement || bitStream.Read(elementID)))
+        bitStream.ReadBit(bHasCollisionElement) && (!bHasCollisionElement || bitStream.Read(collidedElementID)))
     {
         unsigned char ucButton = button.data.ucButton;
         CVector2D     vecCursorPosition(static_cast<float>(usX), static_cast<float>(usY));
         CVector       vecPosition = position.data.vecPosition;
         if (!bHasCollisionElement)
-            elementID = INVALID_ELEMENT_ID;
+            collidedElementID = INVALID_ELEMENT_ID;
 
         if (pSource->IsJoined())
         {
@@ -218,8 +228,8 @@ void ProcessRPC<CRPCFunctions::RPCFunction::CURSOR_EVENT>(NetBitStreamInterface&
             }
             if (szButton && szState)
             {
-                CElement* pElement = CElementIDs::GetElement(elementID);
-                if (pElement)
+                CElement* pCollidedElement = CElementIDs::GetElement(collidedElementID);
+                if (pCollidedElement)
                 {
                     // Call the onElementClicked event
                     CLuaArguments Arguments;
@@ -229,14 +239,14 @@ void ProcessRPC<CRPCFunctions::RPCFunction::CURSOR_EVENT>(NetBitStreamInterface&
                     Arguments.PushNumber(vecPosition.fX);
                     Arguments.PushNumber(vecPosition.fY);
                     Arguments.PushNumber(vecPosition.fZ);
-                    pElement->CallEvent("onElementClicked", Arguments);
+                    pCollidedElement->CallEvent("onElementClicked", Arguments);
                 }
                 // Call the onPlayerClick event
                 CLuaArguments Arguments;
                 Arguments.PushString(szButton);
                 Arguments.PushString(szState);
-                if (pElement)
-                    Arguments.PushElement(pElement);
+                if (pCollidedElement)
+                    Arguments.PushElement(pCollidedElement);
                 else
                     Arguments.PushNil();
                 Arguments.PushNumber(vecPosition.fX);
