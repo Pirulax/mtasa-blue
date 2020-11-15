@@ -549,7 +549,6 @@ private:
     CZoneNames*                m_pZoneNames;
     ASE*                       m_pASE;
     CHandlingManager*          m_pHandlingManager;
-    CRPCFunctions*             m_pRPCFunctions;
     CLanBroadcast*             m_pLanBroadcast;
     CWaterManager*             m_pWaterManager;
 

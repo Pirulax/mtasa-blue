@@ -133,7 +133,6 @@ CGame::CGame() : m_FloodProtect(4, 30000, 30000)            // Max of 4 connecti
     m_pGroups = NULL;
     m_pSettings = NULL;
     m_pRemoteCalls = NULL;
-    m_pRPCFunctions = NULL;
     m_pLanBroadcast = NULL;
     m_pPedSync = NULL;
     m_pWaterManager = NULL;
@@ -318,7 +317,6 @@ CGame::~CGame()
     SAFE_DELETE(m_pZoneNames);
     SAFE_DELETE(m_pASE);
     SAFE_DELETE(m_pSettings);
-    SAFE_DELETE(m_pRPCFunctions);
     SAFE_DELETE(m_pWaterManager);
     SAFE_DELETE(m_pWeaponStatsManager);
     SAFE_DELETE(m_pBuildingRemovalManager);
@@ -524,7 +522,6 @@ bool CGame::Start(int iArgumentCount, char* szArguments[])
     m_pConsole = new CConsole(m_pBlipManager, m_pMapManager, m_pPlayerManager, m_pRegisteredCommands, m_pVehicleManager, m_pLuaManager,
                               m_pBanManager, m_pACLManager);
     m_pMainConfig = new CMainConfig(m_pConsole, m_pLuaManager);
-    m_pRPCFunctions = new CRPCFunctions;
 
     m_pWeaponStatsManager = new CWeaponStatManager();
 
@@ -991,7 +988,7 @@ bool CGame::StaticProcessPacket(unsigned char ucPacketID, const NetServerPlayerI
     // Is it an rpc call?
     if (ucPacketID == PACKET_ID_RPC)
     {
-        g_pGame->m_pRPCFunctions->ProcessPacket(Socket, *pBitStream);
+        CRPCFunctions::ProcessPacket(Socket, *pBitStream);
         return true;
     }
 
