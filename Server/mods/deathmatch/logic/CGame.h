@@ -52,8 +52,6 @@ class CGame;
 #include "packets/CPlayerACInfoPacket.h"
 #include "packets/CPlayerScreenShotPacket.h"
 
-#include "CRPCFunctions.h"
-
 #include "lua/CLuaManager.h"
 
 #include "CLightsyncManager.h"
