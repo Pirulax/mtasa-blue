@@ -101,7 +101,7 @@ bool CLuaTimer::Pulse(CTickCount timeNow, CLuaMain* pLuaMain)
     return true;
 }
 
-void CLuaTimer::PushDetailsToLua(lua_State* luaVM, CTickCount now = CTickCount::Now()) const noexcept
+void CLuaTimer::PushDetailsToLua(lua_State* luaVM, CTickCount now) const noexcept
 {
     lua_pushnumber(luaVM, GetTimeLeft(now).ToDouble());
     lua_pushnumber(luaVM, (double)m_uiRepeats);
