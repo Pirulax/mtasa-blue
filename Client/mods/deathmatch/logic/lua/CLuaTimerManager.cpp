@@ -97,7 +97,7 @@ void CLuaTimerManager::DoPulse(CLuaMain* pLuaMain)
 bool CLuaTimerManager::IsValidTimer(CLuaTimer* pLuaTimer) const noexcept
 {
     if (!pLuaTimer)
-        return;
+        return false;
 
     // See if pLuaTimer is a pointer to any of the objects in the list
     const auto it = std::find_if(m_TimerList.begin(), m_TimerList.end(), [pLuaTimer](const CLuaTimer& timer) {
