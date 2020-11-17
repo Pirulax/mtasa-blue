@@ -76,7 +76,7 @@ void lua_pushresource(lua_State* luaVM, CResource* pResource)
     lua_pushobject(luaVM, szClass, (void*)reinterpret_cast<unsigned int*>(pResource->GetScriptID()));
 }
 
-void lua_pushtimer(lua_State* luaVM, CLuaTimer* pTimer)
+void lua_pushtimer(lua_State* luaVM, const CLuaTimer* pTimer)
 {
     const char* szClass = NULL;
     CLuaMain*   pLuaMain = g_pClientGame->GetLuaManager()->GetVirtualMachine(luaVM);

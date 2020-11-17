@@ -49,7 +49,6 @@ public:
     void                 SetLuaDebugInfo(const SLuaDebugInfo& luaDebugInfo) { m_LuaDebugInfo = luaDebugInfo; }
 
     CTickCount GetNextPulseTick() const noexcept { return m_NextPulseTick; }
-    CTickCount GetTimeLeft() const noexcept { return m_NextPulseTick - CTickCount::Now(); }
     CTickCount GetDelay() const noexcept { return m_PulseInterval; }
 
     CTickCount GetTimeLeft(CTickCount now = CTickCount::Now()) const noexcept { return m_NextPulseTick - now; }

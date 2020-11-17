@@ -160,20 +160,17 @@ int CLuaTimerDefs::GetTimers(lua_State* luaVM)
 
             // Add all the timers with less than ulTime left
             CLuaTimerManager*                     pLuaTimerManager = pLuaMain->GetTimerManager();
-            CTickCount                            llCurrentTime = CTickCount::Now();
+            CTickCount                            ticksNow = CTickCount::Now();
             unsigned int                          uiIndex = 0;
-            CFastList<CLuaTimer*>::const_iterator iter = pLuaTimerManager->IterBegin();
-            for (; iter != pLuaTimerManager->IterEnd(); iter++)
-            {
-                CLuaTimer* pLuaTimer = *iter;
 
+            for (const CLuaTimer& timer : pLuaTimerManager->GetAllTimers())
+            {
                 // If the time left is less than the time specified, or the time specifed is 0
-                CTickCount llTimeLeft = (pLuaTimer->GetStartTime() + pLuaTimer->GetDelay()) - llCurrentTime;
-                if (dTime == 0 || llTimeLeft.ToDouble() <= dTime)
+                if (dTime == 0 || timer.GetTimeLeft(ticksNow).ToDouble() <= dTime)
                 {
                     // Add it to the table
                     lua_pushnumber(luaVM, ++uiIndex);
-                    lua_pushtimer(luaVM, pLuaTimer);
+                    lua_pushtimer(luaVM, &timer);
                     lua_settable(luaVM, -3);
                 }
             }

@@ -33,7 +33,7 @@ public:
 
     static const char* GetObjectClass(void* pObject);
     static const char* GetResourceClass(CResource* pResource);
-    static const char* GetTimerClass(CLuaTimer* pTimer);
+    static const char* GetTimerClass(const CLuaTimer* pTimer);
     static const char* GetXmlNodeClass(CXMLNode* pXmlNode);
     static const char* GetEntityClass(CClientEntity* pEntity);
 };

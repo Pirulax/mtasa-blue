@@ -41,6 +41,8 @@ public:
 
     void ResetTimer(CLuaTimer* pLuaTimer);
 
+    const auto& GetAllTimers() { return m_TimerList; }
+
 private:
     using TimerList_t = std::forward_list<CLuaTimer>;
 private:

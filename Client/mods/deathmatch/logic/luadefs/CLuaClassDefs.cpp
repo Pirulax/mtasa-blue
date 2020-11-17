@@ -264,7 +264,7 @@ const char* CLuaClassDefs::GetResourceClass(CResource* pResource)
     return "Resource";
 }
 
-const char* CLuaClassDefs::GetTimerClass(CLuaTimer* pTimer)
+const char* CLuaClassDefs::GetTimerClass(const CLuaTimer* pTimer)
 {
     return "Timer";
 }
