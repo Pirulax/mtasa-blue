@@ -215,9 +215,7 @@ int CLuaTimerDefs::GetTimerDetails(lua_State* luaVM)
 
     if (!argStream.HasErrors())
     {
-        lua_pushnumber(luaVM, pLuaTimer->GetTimeLeft().ToDouble());
-        lua_pushnumber(luaVM, pLuaTimer->GetRepeats());
-        lua_pushnumber(luaVM, pLuaTimer->GetDelay().ToDouble());
+        pLuaTimer->PushDetailsToLua(luaVM);
         return 3;
     }
     else

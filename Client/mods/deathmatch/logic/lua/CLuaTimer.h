@@ -61,6 +61,8 @@ public:
 
     bool Pulse(CTickCount timeNow, class CLuaMain* pLuaMain);
 
+    void PushDetailsToLua(lua_State* luaVM, CTickCount now = CTickCount::Now()) const noexcept;
+
     void Reset() noexcept
     {
         if(!IsPendingDelete())
