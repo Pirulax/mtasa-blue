@@ -37,6 +37,8 @@ public:
     CLuaArguments(NetBitStreamInterface& bitStream, std::vector<CLuaArguments*>* pKnownTables = NULL);
     ~CLuaArguments() { DeleteArguments(); };
 
+    CLuaArguments(CLuaArguments&& other) = default;
+
     void CopyRecursive(const CLuaArguments& Arguments, CFastHashMap<CLuaArguments*, CLuaArguments*>* pKnownTables = NULL);
 
     const CLuaArguments& operator=(const CLuaArguments& Arguments);
