@@ -48,13 +48,13 @@ int CLuaTimerDefs::SetTimer(lua_State* luaVM)
     //  timer setTimer ( function theFunction, int timeInterval, int timesToExecute, [ var arguments... ] )
     CLuaFunctionRef iLuaFunction;
     double          dTimeInterval;
-    uint            uiTimesToExecute;
+    size_t          Repeats;
     CLuaArguments   Arguments;
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadFunction(iLuaFunction);
     argStream.ReadNumber(dTimeInterval);
-    argStream.ReadNumber(uiTimesToExecute);
+    argStream.ReadNumber(Repeats);
     argStream.ReadLuaArguments(Arguments);
     argStream.ReadFunctionComplete();
 
@@ -70,7 +70,7 @@ int CLuaTimerDefs::SetTimer(lua_State* luaVM)
             }
             else
             {
-                CLuaTimer* pLuaTimer = luaMain->GetTimerManager()->AddTimer(iLuaFunction, CTickCount(dTimeInterval), uiTimesToExecute, std::move(Arguments));
+                CLuaTimer* pLuaTimer = luaMain->GetTimerManager()->AddTimer(iLuaFunction, CTickCount(dTimeInterval), Repeats, std::move(Arguments));
                 if (pLuaTimer)
                 {
                     // Set our timer debug info (in case we don't have any debug info which is usually when you do setTimer(destroyElement, 50, 1) or such)

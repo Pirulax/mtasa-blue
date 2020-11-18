@@ -29,7 +29,7 @@ public:
     CLuaTimer* GetTimerFromScriptID(uint uiScriptID) const;
 
     [[nodiscard]]
-    CLuaTimer*    AddTimer(const CLuaFunctionRef& iLuaFunction, CTickCount llTimeDelay, unsigned int uiRepeats, CLuaArguments Arguments);
+    CLuaTimer*    AddTimer(const CLuaFunctionRef& iLuaFunction, CTickCount llTimeDelay, size_t uiRepeats, CLuaArguments Arguments);
     void          RemoveTimer(CLuaTimer* pLuaTimer);
     void          RemoveAllTimers();
 
