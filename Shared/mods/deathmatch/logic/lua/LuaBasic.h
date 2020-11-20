@@ -191,13 +191,15 @@ namespace lua
         return 1;
     }
 
-    // Tuples can be used to return multiple results
+    // Tuples can be used to return multiple results or
+    // if used as an array value, its values will be packed into an array
+    // (Note: The packing of values into an array is done in `PushAsSingleValue`)
     template<typename... Ts>
-    int Push(lua_State* L, const std::tuple<Ts...>&& tuple)
+    int Push(lua_State* L, const std::tuple<Ts...>& tuple)
     {
         // Call Push on each element of the tuple
-        std::apply([L](const auto&... value) { (Push(L, value), ...); }, tuple);
-        return sizeof...(Ts);
+        // Returns how many values in total have been pushed onto the stack
+        return std::apply([L](const auto&... value) { return (Push(L, value) + ...); }, tuple);
     }
 
     // Overload for enum types only
