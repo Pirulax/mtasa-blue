@@ -61,6 +61,26 @@ namespace lua
     // The return value must be the net amount of items pushed to the stack, which should
     // be 1 for most types (e.g. Push<int>) but may be any number for special cases
     // like tuples, in order to allow returning multiple values from a function
+    // or pushing table values of different types
+
+
+    // Forward-declare functions which may depend on each other
+    template <typename... Ts>
+    int Push(lua_State* L, const std::variant<Ts...>& val);
+
+    template <typename T>
+    int Push(lua_State* L, const std::vector<T>& val);
+
+    template <typename T, size_t N>
+    int Push(lua_State* L, const std::array<T, N>& val);
+
+    template <typename K, typename V>
+    int Push(lua_State* L, const std::unordered_map<K, V>& val);
+
+    template<typename... Ts>
+    int Push(lua_State* L, const std::tuple<Ts...>& tuple);
+
+    // Feel free to add single return value functions here
     inline int Push(lua_State* L, int value)
     {
         lua_pushnumber(L, value);
