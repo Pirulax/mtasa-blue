@@ -115,21 +115,6 @@ namespace lua
         return 1;
     }
 
-    template <typename... Ts>
-    int Push(lua_State* L, const std::variant<Ts...>&& val)
-    {
-        return std::visit([L](auto&& value) -> int { return Push(L, std::move(value)); }, val);
-    }
-
-    template <typename T>
-    int Push(lua_State* L, const std::optional<T>&& val)
-    {
-        if (val.has_value())
-            return Push(L, val.value());
-        else
-            return Push(L, nullptr);
-     }
-
     inline int Push(lua_State* L, const CVector2D& value)
     {
         lua_pushvector(L, value);
@@ -155,7 +140,22 @@ namespace lua
     }
 
     template <typename T>
-    int Push(lua_State* L, const std::vector<T>&& val)
+
+    template <typename T>
+    int Push(lua_State* L, const std::optional<T>& val)
+    {
+        if (val.has_value())
+            return Push(L, val.value());
+        else
+            return Push(L, nullptr);
+    }
+
+    template <typename... Ts>
+    int Push(lua_State* L, const std::variant<Ts...>& val)
+    {
+        return std::visit([L](const auto& value) { return Push(L, value); }, val);
+    }
+
     {
         lua_newtable(L);
         int i = 1;
