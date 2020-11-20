@@ -22,6 +22,35 @@ class CVector4D;
 
 namespace lua
 {
+    // Implementation details, not to be used from outside `namespace lua`
+    namespace detail
+    {
+        // Pack n values from the top of the stack into an array
+        inline int PackValuesIntoArray(lua_State* L, int n)
+        {
+            const int t = lua_gettop(L) - n + 1;
+            lua_createtable(L, n, 0);   // Push array on top
+            lua_insert(L, t);           // Insert table below the values (because Lua pops from the top)
+
+            // Pack values into array
+            // This loop is reversed, because the top of the 
+            // stack needs to be the last value in the array
+            for (int i = n; i >= 1; i--)
+                lua_rawseti(L, t, i);
+
+            return 1;
+        }
+
+        // Ensures T will be a single value on the stack
+        template<typename T>
+        inline int PushAsSingleValue(lua_State* L, const T& v)
+        {
+            if (Push(L, v) > 1)
+                PackValuesIntoArray(L, n);
+            return 1;
+        }
+    }
+
     // PopTrival should read a simple value of type T from the stack without extra type checks
     // If whatever is at that point in the stack is not convertible to T, the behavior is undefined
     template <typename T>
