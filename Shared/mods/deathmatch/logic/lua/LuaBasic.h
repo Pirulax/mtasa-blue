@@ -162,29 +162,47 @@ namespace lua
         return std::visit([L](const auto& value) { return Push(L, value); }, val);
     }
 
+    template <typename T>
+    int Push(lua_State* L, const std::vector<T>& val)
     {
-        lua_newtable(L);
+        lua_createtable(L, val.size(), 0);
+
         int i = 1;
-        for (auto&& v : val)
+        for (const T& v : val)
         {
-            Push(L, i++);
-            Push(L, v);
-            lua_settable(L, -3);
+            detail::PushAsSingleValue(L, v);
+            lua_rawseti(L, -2, i++);
         }
 
         // Only the table remains on the stack
         return 1;
     }
 
-    template <typename K, typename V>
-    int Push(lua_State* L, const std::unordered_map<K, V>&& val)
+    template <typename T, size_t N>
+    int Push(lua_State* L, const std::array<T, N>& val)
     {
-        lua_newtable(L);
-        for (auto&& [k, v] : val)
+        lua_createtable(L, N, 0);
+
+        int i = 1;
+        for (const T& v : val)
         {
-            Push(L, k);
-            Push(L, v);
-            lua_settable(L, -3);
+            detail::PushAsSingleValue(L, v);
+            lua_rawseti(L, -2, i++);
+        }
+
+        return 1;
+    }
+
+    template <typename K, typename V>
+    int Push(lua_State* L, const std::unordered_map<K, V>& val)
+    {
+        lua_createtable(L, 0, val.size());
+
+        for (const auto& [k, v] : val)
+        {
+            detail::PushAsSingleValue(L, k); // Use this if for any reason someone uses tuple as the key
+            detail::PushAsSingleValue(L, v);
+            lua_rawset(L, -3);
         }
 
         // Only the table remains on the stack
