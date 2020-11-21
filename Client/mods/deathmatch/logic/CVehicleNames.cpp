@@ -251,8 +251,17 @@ bool CVehicleNames::IsValidModel(unsigned long ulModel)
 bool CVehicleNames::IsModelTrailer(unsigned long ulModel)
 {
     // IsValidModel excludes trailers, so we need the ability to check separately if it is a trailer
-    return (ulModel == 435 || ulModel == 450 || ulModel == 591 || ulModel == 606 || ulModel == 607 || ulModel == 584 || ulModel == 608 || ulModel == 610 ||
-            ulModel == 611);
+    if (ulModel == 435 || ulModel == 450 ||
+        ulModel == 591 || ulModel == 606 ||
+        ulModel == 607 || ulModel == 584 ||
+        ulModel == 608 || ulModel == 610 ||
+        ulModel == 611)
+        return true;
+
+    if (const auto pModelInfo = g_pGame->GetModelInfo(ulModel))
+        return pModelInfo->IsTrailer();
+
+    return false;
 }
 
 const char* CVehicleNames::GetVehicleName(unsigned long ulModel)
