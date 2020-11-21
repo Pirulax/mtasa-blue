@@ -264,6 +264,9 @@ const char* CVehicleNames::GetVehicleName(unsigned long ulModel)
         return VehicleNames[ulModel - 400].szName;
     }
 
+    if (const auto pModelInfo = g_pGame->GetModelInfo(ulModel))
+        return pModelInfo->GetNameIfVehicle();
+
     return szVehicleNameEmpty;
 }
 
