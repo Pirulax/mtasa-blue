@@ -245,7 +245,13 @@ static const SFixedArray<unsigned char, 212> ucVehicleTypes = {
 
 bool CVehicleNames::IsValidModel(unsigned long ulModel)
 {
-    return ulModel >= 400 && ulModel <= 611;
+    if (ulModel >= 400 && ulModel <= 611)
+        return true;
+
+    if (const auto pModel = g_pClientGame->GetManager()->GetModelManager()->FindModelByID(ulModel)) // Check custom models
+        return pModel->GetModelType() == eClientModelType::VEHICLE;
+
+    return false;
 }
 
 bool CVehicleNames::IsModelTrailer(unsigned long ulModel)
