@@ -213,13 +213,9 @@ public:
         {
             if (!CanReadNumberOfBytes(uiLength))
                 return false;
-            // Read the data
-            std::vector<char> bufferArray;
-            bufferArray.resize(uiLength);
-            char* buffer = &bufferArray[0];
-            if (!Read(buffer, uiLength))
+            result.resize(uiLength);
+            if (!Read(result.data(), uiLength))
                 return false;
-            result = std::string(buffer, uiLength);
         }
         return true;
     }
