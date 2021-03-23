@@ -410,6 +410,13 @@ static int luaB_tostring (lua_State *L) {
     case LUA_TNIL:
       lua_pushliteral(L, "nil");
       break;
+    /* LUA-VEC */
+    case LUA_TVEC:
+    {
+      const float* v = lua_tovec(L, 1);
+      lua_pushfstring(L, "vector: { x = %f, y = %f, z = %f, w = %f }", v[0], v[1], v[2], v[3]);
+    }
+    break;
     default:
       lua_pushfstring(L, "%s: %p", luaL_typename(L, 1), lua_topointer(L, 1));
       break;

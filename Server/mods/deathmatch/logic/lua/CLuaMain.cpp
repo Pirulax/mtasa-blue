@@ -186,6 +186,7 @@ void CLuaMain::InitVM()
     luaopen_debug(m_luaVM);
     luaopen_utf8(m_luaVM);
     luaopen_os(m_luaVM);
+    luaopen_vec(m_luaVM);
 
     // Initialize security restrictions. Very important to prevent lua trojans and viruses!
     InitSecurity();
