@@ -33,7 +33,7 @@ public:
 
     CResource* Add(unsigned short usNetID, const char* szResourceName, CClientEntity* pResourceEntity, CClientEntity* pResourceDynamicEntity,
                    const CMtaVersion& strMinServerReq, const CMtaVersion& strMinClientReq, bool bEnableOOP);
-    CResource* GetResource(const char* szResourceName);
+    CResource* GetResource(std::string_view view);
     CResource* GetResourceFromNetID(unsigned short usNetID);
     CResource* GetResourceFromScriptID(uint uiScriptID);
     CResource* GetResourceFromLuaState(struct lua_State* luaVM);

@@ -2243,6 +2243,9 @@ struct SLuaTypeSync : public ISyncStructure
         BITCOUNT = 4
     };
 
+    SLuaTypeSync() = default;
+    SLuaTypeSync(unsigned char type) : data{type} {}
+
     bool Read(NetBitStreamInterface& bitStream) { return bitStream.ReadBits(reinterpret_cast<char*>(&data), BITCOUNT); }
     void Write(NetBitStreamInterface& bitStream) const { bitStream.WriteBits(reinterpret_cast<const char*>(&data), BITCOUNT); }
 

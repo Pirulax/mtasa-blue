@@ -69,37 +69,31 @@ namespace SharedUtil
         }
     }
 
-    enum EDataType
+    /*
+     * Compress a given number into a possibly smaller datatype
+     * might be lossy, as it might be rounded to an int.
+     * Calls `visitor` with the "value" type
+     */
+    template<typename Visitor>
+    inline void CompressArithmetic(double value, Visitor visitor)
     {
-        DATA_TYPE_INT,
-        DATA_TYPE_FLOAT,
-        DATA_TYPE_DOUBLE,
-    };
-
-    // Determine if value would be better as an int, float or double.
-    inline EDataType GetDataTypeToUse(double dValue, int* piNumber, float* pfNumber, double* pdNumber)
-    {
-        if (dValue > -0x1000000 && dValue < 0x1000000)
+        if (value > -0x1000000 && value < 0x1000000) /* float / int */
         {
-            // float more accurate than int with this range, but check if we can use int as it is better for compressing
-            *piNumber = static_cast<int>(dValue);
-            if (dValue == *piNumber)
-                return DATA_TYPE_INT;
-
-            *pfNumber = static_cast<float>(dValue);
-            return DATA_TYPE_FLOAT;
+            /* float more accurate in this range than int
+             * but check if we can use int, as it's better for compressing
+             */
+            if (int iValue{ static_cast<int>(value) }; iValue == value)
+                visitor(iValue);
+            else
+                visitor(static_cast<float>(value));
         }
-        else if (dValue >= -0x7FFFFFFF && dValue <= 0x7FFFFFFF)
+        else if (value >= -0x7FFFFFFF && value <= 0x7FFFFFFF) /* int */
         {
-            // int more accurate than float with this range
-            *piNumber = Round(dValue);
-            return DATA_TYPE_INT;
+            visistor(static_cast<int>(value));
         }
-        else
+        else /* double */
         {
-            // Use double (rounded for consistency with previous range)
-            *pdNumber = std::floor(dValue + 0.5);
-            return DATA_TYPE_DOUBLE;
+            visitor(std::floor(dValue + 0.5)); /* rounded for consistency with previous range */
         }
     }
 

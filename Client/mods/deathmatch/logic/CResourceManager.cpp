@@ -83,15 +83,20 @@ SString CResourceManager::GetResourceName(lua_State* luaVM)
     return "";
 }
 
-CResource* CResourceManager::GetResource(const char* szResourceName)
+CResource* CResourceManager::GetResource(std::string_view name)
 {
-    list<CResource*>::const_iterator iter = m_resources.begin();
-    for (; iter != m_resources.end(); ++iter)
+    for (CResource* res : m_resources)
     {
-        if (stricmp((*iter)->GetName(), szResourceName) == 0)
-            return (*iter);
+        // c++ doesn't have standardized case insensitive compare with non c style strings
+        const auto Check = [name](std::string_view o) {
+            return std::equal(name.begin(), name.end(), o.begin(), o.end(), [](char a, char b) {
+                return tolower(a) == tolower(b);
+            });
+        };
+        if (Check(res->GetName()))
+            return res;
     }
-    return NULL;
+    return nullptr;
 }
 
 void CResourceManager::OnDownloadGroupFinished()

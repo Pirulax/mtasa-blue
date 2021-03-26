@@ -623,10 +623,10 @@ bool CLuaArgument::WriteToBitStream(NetBitStreamInterface& bitStream, CFastHashM
                 bitStream.Write(fNumber);
             }
             else
-            {
-                bitStream.WriteBit(true);
+            {bitStream.WriteBit(true);
                 bitStream.WriteBit(true);
                 bitStream.Write(dNumber);
+                
             }
             break;
         }
@@ -823,11 +823,11 @@ json_object* CLuaArgument::WriteToJSONObject(bool bSerialize, CFastHashMap<CLuaA
                 if (pElement)            // eg toJSON() with valid element
                     g_pGame->GetScriptDebugging()->LogError(NULL, "Couldn't convert userdata argument to JSON, elements not allowed for this function.");
                 else if (!bSerialize)            // eg toJSON() with invalid element
-                    g_pGame->GetScriptDebugging()->LogError(
-                        NULL, "Couldn't convert userdata argument to JSON, only valid resources can be included for this function.");
+                    g_pGame->GetScriptDebugging()->LogError(NULL,
+                        "Couldn't convert userdata argument to JSON, only valid resources can be included for this function.");
                 else
                     g_pGame->GetScriptDebugging()->LogError(NULL,
-                                                            "Couldn't convert userdata argument to JSON, only valid elements or resources can be included.");
+                        "Couldn't convert userdata argument to JSON, only valid elements or resources can be included.");
                 return NULL;
             }
             break;

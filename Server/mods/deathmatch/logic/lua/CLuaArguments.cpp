@@ -672,6 +672,7 @@ json_object* CLuaArguments::WriteTableToJSONObject(bool bSerialize, CFastHashMap
 
             if (object)
             {
+                
                 json_object_object_add(my_object, szKey, object);
             }
             else
