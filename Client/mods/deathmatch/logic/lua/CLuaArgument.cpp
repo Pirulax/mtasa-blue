@@ -12,7 +12,9 @@
 #include "net/SyncStructures.h"
 #include "CResource.h"
 #include <lua/LuaBasic.h>
+#include <lua/CLuaStackChecker.h>
 #include <charconv>
+#include <logic/CClientPerfStatModule.h>
 
 #ifdef snprintf
 #undef snprintf
@@ -61,7 +63,7 @@ void LogUnableToPacketize(const char* szMessage)
 namespace lua
 {
 
-void CValue::Read(lua_State* L, int idx, LuaCopiedValuesMap* copiedTables)
+void CValue::Read(lua_State* L, int idx, LuaCopiedValuesMap& copiedTables)
 {
     switch (lua_type(L, idx))
     {
@@ -69,7 +71,9 @@ void CValue::Read(lua_State* L, int idx, LuaCopiedValuesMap* copiedTables)
         m_value.emplace<Number>(lua_tonumber(L, idx));
         break;
     case LUA_TSTRING:
-        m_value.emplace<String>(std::string_view{ lua_tostring(L, idx), lua_objlen(L, idx) });
+        size_t len;
+        const char* value = lua_tolstring(L, idx, &len);
+        m_value.emplace<String>(value, len);
         break;
     case LUA_TBOOLEAN:
         m_value.emplace<Bool>(lua_toboolean(L, idx));
@@ -86,18 +90,18 @@ void CValue::Read(lua_State* L, int idx, LuaCopiedValuesMap* copiedTables)
             if (const auto it = copiedTables->find(lua_topointer(L, idx)); it == copiedTables->end()) /* copied yet? */
             {
                 /* no, so copy and store it */
-
                 LUA_CHECKSTACK(L, 2);
+
                 lua_pushnil(L); /* first key */
                 if (idx < 0) /* correct the table index (because of the above push) */
                     idx--;
-
+                /* TODO: Preallocate table to the exact size of the Lua one (hash + array part combined) */
                 Table& table = m_value.emplace<Table>();
-                (*copiedTables)[lua_topointer(L, idx)] = &table; /* Mark as copied before copying others */
+                (*copiedTables)[lua_topointer(L, idx)] = table; /* Mark as copied before copying others */
                 while (lua_next(L, idx))
                 {
                     /* emplace 2 values: key (at index -2) & value at index -1) */
-                    table.push_back({ {L, -2, copiedTables}, {L, -1, copiedTables} });
+                    table->push_back({ {L, -2, copiedTables}, {L, -1, copiedTables} });
 
                     /* removes 'value'; keeps 'key' for next iteration */
                     lua_pop(L, 1);
@@ -132,7 +136,7 @@ void CValue::Read(lua_State* L, int idx, LuaCopiedValuesMap* copiedTables)
     }
 }
 
-void CValue::Write(lua_State* L, TableToRefIDMap* copiedTables) const
+void CValue::Write(lua_State* L, LuaRefList& refs) const
 {
     std::visit([&, this](const auto& value) {
         using T = std::decay_t<decltype(value)>;
@@ -162,59 +166,55 @@ void CValue::Write(lua_State* L, TableToRefIDMap* copiedTables) const
             * 
             * 
             */      
-            Number last = 0, empty = 0; /* last must be 0, otherwise `emptyBetween` will be -1 at first iter */
-            size_t i;
-            for (size_t end = value.size(); i < end; i++)
+            //Number last = 0, empty = 0; /* last must be 0, otherwise `emptyBetween` will be -1 at first iter */
+            //size_t i;
+            //for (size_t end = value.size(); i < end; i++)
+            //{
+            //    const bool stop = std::visit([&](const auto& k) mutable {
+            //        /* `n` (in the docs above) is `k` here */
+            //        if constexpr (std::is_same_v<std::decay_t<decltype(k)>, Number>)
+            //        {
+            //            if (std::trunc(k) != k) /* check is int */
+            //                return true;
+
+            //            /* if equal with last key, we're in the hash part already.
+            //             * this also handles < 0 check, since is last is always >= 0 */
+            //            if (k <= last)
+            //                return true;
+
+            //            empty += k - last - 1;
+            //            if (empty / 2 > k)
+            //                return true; /* more than half of the slots are empty */
+
+            //            if (last < k / 2 + 1)
+            //                return true; /* no used slot between k / 2 + 1 and k */
+
+            //            last = k;
+
+            //            return false;
+            //        }
+            //        return true; /* non-numeric key found */
+            //    }, value[i].first.m_value);
+            //    if (stop)
+            //        break;
+            //}
+
+            ///* `last` is the highest key in the array part. Add 1 for safety */
+            //const int narr = static_cast<int>(last + 1);
+            //const int nrec = static_cast<int>(value->size() - i + 1);
+            lua_createtable(L, value->GetArrKeysCount(), value->GetRecKeysCount());
+            value->SetRef(refs.Add());
+
+            for (const auto& [k, v] : *value)
             {
-                const bool stop = std::visit([&](const auto& k) mutable {
-                    /* `n` (in the docs above) is `k` here */
-                    if constexpr (std::is_same_v<std::decay_t<decltype(k)>, Number>)
-                    {
-                        if (std::trunc(k) != k) /* check is int */
-                            return true;
-
-                        /* if equal with last key, we're in the hash part already.
-                         * this also handles < 0 check, since is last is always >= 0 */
-                        if (k <= last)
-                            return true;
-
-                        empty += k - last - 1;
-                        if (empty / 2 > k)
-                            return true; /* more than half of the slots are empty */
-
-                        if (last < k / 2 + 1)
-                            return true; /* no used slot between k / 2 + 1 and k */
-
-                        last = k;
-
-                        return false;
-                    }
-                    return true; /* non-numeric key found */
-                }, value[i].first.m_value);
-                if (stop)
-                    break;
-            }
-
-            /* `last` is the highest key in the array part. Add 1 for safety */
-            const int narr = static_cast<int>(last + 1);
-            const int nrec = static_cast<int>(value.size() - i + 1);
-            lua_createtable(L, last + 1, value.size() - i + 1);
-
-            lua_pushvalue(L, -1); /* make copy of table as lua_ref pops it */
-            (*copiedTables)[&value] = luaL_ref(L, LUA_REGISTRYINDEX);
-
-            /* table can't be referenced before it's created, therefore no checks needed */
-            for (const auto& [k, v] : value)
-            {
-                k.Write(L, copiedTables);
-                v.Write(L, copiedTables);
+                k.Write(L, refs);
+                v.Write(L, refs);
                 lua_rawset(L, -3);
             }
         }
         else if constexpr (std::is_same_v<T, TableRef>)
         {
-            dassert(MapContains(*copiedTables, value));
-            lua_rawgeti(L, LUA_REGISTRYINDEX, (*copiedTables)[value]);
+            refs.Get(value->GetRef());
             dassert(lua_type(L, -1) == LUA_TTABLE);
         }
         else if constexpr (!std::is_same_v<T, None>) /* can't push None */
@@ -310,10 +310,11 @@ bool CValue::Read(NetBitStreamInterface& bitStream, TableList* tables)
             if (unsigned int nvals; bitStream.ReadCompressed(nvals))
             {
                 Table& table = m_value.emplace<Table>();
-                tables->push_back(&table);
+                table->reserve(nvals);
+                tables->emplace_back(table);
                 dassert(nvals % 2 == 0); /* number of all elements must be even because a pair is 2 values */
                 for (size_t i = 0; i < nvals; i += 2) /* originally it read k and v in separate iterations, thus i += 2 since we read both / iteration */
-                    table.push_back({ { bitStream, tables }, { bitStream, tables } }); /* Read k and v at the same time */
+                    table->push_back({ { bitStream, tables }, { bitStream, tables } }); /* Read k and v at the same time */
             }
         };
 
@@ -356,7 +357,7 @@ bool CValue::Read(NetBitStreamInterface& bitStream, TableList* tables)
     }
 }
 
-bool CValue::Write(NetBitStreamInterface& bitStream, TableToRefIDMap* tables) const
+bool CValue::Write(NetBitStreamInterface& bitStream, size_t& lastTableRef) const
 {
     return std::visit([&, this](auto& value) -> bool {
         using T = std::decay_t<decltype(value)>;
@@ -420,38 +421,23 @@ bool CValue::Write(NetBitStreamInterface& bitStream, TableToRefIDMap* tables) co
         }
         else if constexpr (std::is_same_v<T, Table>)
         {
+            
             WriteType(LUA_TTABLE);
+            bitStream.WriteCompressed(static_cast<unsigned int>(value->size() * 2)); /* write the number of all values (as per old behaviour) */
+            if (bitStream.Can(eBitStreamVersion::CValueNArr)) /* todo: add to read as well */
+                bitStream.WriteCompressed(value->GetArrKeysCount());
+            value->SetRef(lastTableRef++);
 
-            const auto DoWrite = [&](TableToRefIDMap* tables) {
-                /* we're the owner of the table, so theres no chance we're already in the table */
-                dassert(!MapContains(*tables, &value)); /* make sure my theory is right */
-
-                (*tables)[&value] = tables->size(); /* store as possible ref */
-                bitStream.WriteCompressed(static_cast<unsigned int>(tables->size() * 2)); /* write the number of all values (as per old behaviour) */
-
-                for (const auto& [k, v] : value)
-                {
-                    k.Write(bitStream, tables);
-                    v.Write(bitStream, tables);
-                }
-            };
-
-            if (tables)
-                DoWrite(tables);
-            else
+            for (const auto& [k, v] : *value)
             {
-                TableToRefIDMap map;
-                DoWrite(&map);
+                k.Write(bitStream, lastTableRef);
+                v.Write(bitStream, lastTableRef);
             }
         }
         else if constexpr (std::is_same_v<T, TableRef>)
         {
-            /* Table ref must be in the map, since it coudln't possibly
-             * exist before the referenced table is created
-             */
-            dassert(MapContains(*tables, value)); /* ... but I might not be right. */
             WriteType(LUA_TTABLEREF);
-            bitStream.WriteCompressed(tables->find(value)->second); /* write table ref id */
+            bitStream.WriteCompressed(value->GetRef()); /* write table ref */
         }
         else if constexpr (std::is_same_v<T, Nil>)
         {
@@ -502,9 +488,11 @@ bool CValue::Read(json_object* jobj, TableList& tables)
                 size_t ref;
                 if (auto [p, c] = ReadNumber(ref); c == std::errc())
                 {
-                    if (ref < tables.size())
-                        m_value.emplace<TableRef>(tables[ref]);
-                    else
+                    try
+                    {
+                        m_value.emplace<TableRef>(tables.at(ref));
+                    }
+                    catch (std::out_of_range)
                     {
                         GetScriptDebugging()->LogError(nullptr,
                             "Invalid table reference specified in JSON string '%.*s'.", value.length(), value.data());
@@ -556,12 +544,12 @@ bool CValue::Read(json_object* jobj, TableList& tables)
     case json_type_array:
     {
         Table& table = m_value.emplace<Table>();
-        tables.push_back(&table);
+        tables.emplace_back(table);
         size_t len = json_object_array_length(jobj);
-        table.reserve(len);
+        table->reserve(len);
         for (size_t i = 0; i < len; i++)
         {
-            table.push_back({
+            table->push_back({
                 { static_cast<Number>(i) }, /* key */
                 { json_object_array_get_idx(jobj, i), tables } /* value */
             });
@@ -571,11 +559,11 @@ bool CValue::Read(json_object* jobj, TableList& tables)
     case json_type_object:
     {
         Table& table = m_value.emplace<Table>();
-        tables.push_back(&table);
-        table.reserve(json_object_object_length(jobj));
+        tables.emplace_back(&table);
+        table->reserve(json_object_object_length(jobj));
         json_object_object_foreach(jobj, k, v)
         {
-            table.push_back({ { k }, { v, tables }});
+            table->push_back({ { k }, { v, tables }});
         }
         break;
     }
@@ -588,7 +576,7 @@ bool CValue::Read(json_object* jobj, TableList& tables)
 
 }
 
-json_object* CValue::Write(bool serialize, TableToRefIDMap& tableToRef) const
+json_object* CValue::Write(bool serialize, size_t& nextRef) const
 {
     return std::visit([&, this](const auto& value) -> json_object* {
         using T = std::decay_t<decltype(value)>;
@@ -673,7 +661,7 @@ json_object* CValue::Write(bool serialize, TableToRefIDMap& tableToRef) const
         else if constexpr (std::is_same_v<T, Table>)
         {
             /* check if consequent keys are exactly 1 apart */
-            const auto invalidArrayKeyIt = std::find_if(value.begin(), value.end(), [expected = Number(0)](const auto& kv) mutable {
+            const auto invalidArrayKeyIt = std::find_if(value->begin(), value->end(), [expected = Number(0)](const auto& kv) mutable {
                 std::visit([&, this](auto& value) {
                     if constexpr (std::is_same_v<std::decay_t<decltype(value)>, Number>)
                     {
@@ -688,15 +676,15 @@ json_object* CValue::Write(bool serialize, TableToRefIDMap& tableToRef) const
             });
 
             /* insert before write */
-            tableToRef[&value] = tableToRef.size();
+            value->SetRef(nextRef++);
 
-            if (invalidArrayKeyIt == value.end())
+            if (invalidArrayKeyIt == value->end())
             {
                 /* amazing, we can use an array! Yay! */
                 json_object* jarray = json_object_new_array();
-                for (const auto& [k, v] : value)
+                for (const auto& [k, v] : *value)
                 {
-                    if (json_object* value = v.Write(serialize, tableToRef))
+                    if (json_object* value = v.Write(serialize, nextRef))
                         json_object_array_add(jarray, value);
                     else
                         break;
@@ -707,14 +695,14 @@ json_object* CValue::Write(bool serialize, TableToRefIDMap& tableToRef) const
             {
                 /* must use an object :( */
                 json_object* jobject = json_object_new_object();
-                for (const auto& [k, v] : value)
+                for (const auto& [k, v] : *value)
                 {
                     char keyBuffer[255]; /* TODO: Use a bigger buffer here / use somehow allocate buffer in jsonc */
                     keyBuffer[0] = 0;
                     if (!k.Write(keyBuffer, sizeof(keyBuffer)))
                         break;
 
-                    if (json_object* value = v.Write(serialize, tableToRef))
+                    if (json_object* value = v.Write(serialize, nextRef))
                         json_object_array_add(jobject, value);
                     else
                         break;
@@ -723,9 +711,8 @@ json_object* CValue::Write(bool serialize, TableToRefIDMap& tableToRef) const
         }
         else if constexpr (std::is_same_v<T, TableRef>)
         {
-            dassert(MapContains(tableToRef, value));
             char szTableID[64];
-            std::snprintf(szTableID, sizeof(szTableID), "^T^%lu", (long unsigned)tableToRef[value]);
+            std::snprintf(szTableID, sizeof(szTableID), "^T^%lu", static_cast<long unsigned>(value->GetRef()));
             return json_object_new_string(szTableID);
         }
         else if constexpr (std::is_same_v<T, Nil>)
@@ -896,23 +883,67 @@ bool CValue::EqualTo(const CValue& other, ComparedTablesSet* compared) const
     }, m_value);
 }
 
-
 /* Lua Read/Write */
-void CValues::ReadAll(lua_State* L, int ibegin)
-{
-    size_t n = 0; /* count number of elements on the stack */
-    for (int i = ibegin; lua_type(L, i) != LUA_TNONE; n++, i++);
 
+/*  reads `count` values starting at `idxbegin`.
+ * `idxbegin` is a regular Lua index (might be negative)
+ * pass in -1 as `count` to read all values (beginning at `idxbegin`)*/
+void CValues::Read(lua_State* L, int idxbegin, int count)
+{
+    if (idxbegin < 0)
+        idxbegin = lua_gettop(L) - idxbegin + 1; /* negative to positive index */
+    dassert(lua_type(L, idxbegin) != LUA_TNONE);
+
+    if (count == -1)
+        count = lua_gettop(L); /* read all */
+#ifdef SHARED_TABLES
     CValue::LuaCopiedValuesMap map;
-    for (int i = ibegin; lua_type(L, i) != LUA_TNONE; i++)
-        m_values.emplace_back(L, i, &map);
+    for (int idx = 1; idx < idxbegin + count; idx++)
+    {
+        dassert(lua_type(L, idx) != LUA_TNONE);
+        m_values.emplace_back(L, idx, &map);
+    }
+#else
+    for (int idx = 1; idx < idxbegin + count; idx++)
+    {
+        dassert(lua_type(L, idx) != LUA_TNONE);
+        m_values.emplace_back(L, idx);
+    }
+#endif
 }
 
-void CValues::Push(lua_State* L)
+void CValues::WriteAsTable(lua_State* L) const
 {
-    CValue::TableToRefIDMap map;
+    lua_createtable(L, m_values.size(), 0);
+    LUA_STACK_EXPECT(0);
+
+    int i = 1;
+#ifdef SHARED_TABLES
+    CValue::LuaRefList refs{ L };
     for (const auto& v : m_values)
-        v.Write(L, map);
+    {
+        v.Write(L, refs);
+        lua_rawseti(L, -2, i++);
+    }
+#else
+    for (const auto& v : m_values)
+    {
+        v.Write(L);
+        lua_rawseti(L, -2, i++);
+    }
+#endif    
+}
+
+void CValues::Write(lua_State* L) const
+{
+#ifdef SHARED_TABLES
+    CValue::LuaRefList refs{ L };
+    for (const auto& v : m_values)
+        v.Write(L, refs);
+#else
+    for (const auto& v : m_values)
+        v.Write(L);
+#endif
 }
 
 /* Push methods for different types */
@@ -972,6 +1003,94 @@ CValue& CValues::Push(CBan* value)
 }
 #endif
 
+template<typename Fn, typename TimePoint>
+auto UpdateLuaFnTiming(CLuaMain* lmain, Fn&& fn, TimePoint beginTp)
+{
+    using namespace std::chrono;
+#ifdef MTA_CLIENT
+    using CPerfStatLuaTiming = CClientPerfStatLuaTiming;
+#endif
+    CPerfStatLuaTiming::GetSingleton()->UpdateLuaTiming(
+        lmain,
+        std::forward<Fn>(fn),
+        duration_cast<microseconds>(TimePoint::clock::now() - beginTp).count()
+    );
+}
+
+/* call the function on top of the stack. Caller should clean the Lua stack */
+bool CValues::CallFunctionOnStack(CLuaMain* lmain, CValues* outReturnedValues) const
+{
+    lua_State* const L = lmain->GetVirtualMachine();
+    dassert(lua_type(L, -1) == LUA_TFUNCTION);
+
+    const auto originalTop = lua_gettop(L) - 1; /* -1 for function on stack */
+    Write(L); /* push our values to L's stack */
+    lmain->ResetInstructionCount();
+
+    bool result;
+    switch (lmain->PCall(L, m_values.size(), LUA_MULTRET, 0))
+    {
+    case LUA_ERRRUN:
+    case LUA_ERRMEM:
+    {
+        SString strRes = ConformResourcePath(lua_tostring(L, -1));
+        GetScriptDebugging()->LogPCallError(L, strRes);
+        return false;
+    }
+    default:
+    {
+        if (outReturnedValues)
+            outReturnedValues->Read(L, originalTop, -1); /* store all returned values */
+        return true;
+    }
+    }
+}
+
+/* Code simplification */
+template<typename Fn>
+struct Guard
+{
+    Guard(Fn&& fn) : m_fn(std::forward<Fn>(fn)) {}
+    ~Guard() { m_fn(); }
+    Fn m_fn;
+};
+
+bool CValues::Call(CLuaMain* lmain, const CLuaFunctionRef& fn, CValues* outReturnedValues) const
+{
+    lua_State* const L = lmain->GetVirtualMachine();
+    LUA_CHECKSTACK(L, 1);
+
+    /* does timing and stack cleanup on function return */
+    Guard guard{[=, &fn, begin = std::chrono::high_resolution_clock::now(), top = lua_gettop(L)] {
+        UpdateLuaFnTiming(lmain, lmain->GetFunctionTag(fn.ToInt()), begin);
+        lua_settop(L, top);
+    }};
+
+    lua_getref(L, fn.ToInt()); /* push function on the stack */
+    return CallFunctionOnStack(lmain, outReturnedValues);
+}
+
+bool CValues::CallGlobal(CLuaMain* lmain, const char* fn, CValues* outReturnedValues) const
+{
+    assert(fn);
+
+    lua_State* const L = lmain->GetVirtualMachine();
+    LUA_CHECKSTACK(L, 1);
+
+    /* does timing and stack cleanup on function return */
+    Guard guard{ [=, begin = std::chrono::high_resolution_clock::now(), top = lua_gettop(L)] {
+        UpdateLuaFnTiming(lmain, fn, begin);
+        lua_settop(L, top);
+    }};
+
+    lua_pushstring(L, fn);
+    lua_rawget(L, LUA_GLOBALSINDEX); /* pusn fn on stack */
+
+    if (lua_isfunction(L, -1))
+        return CallFunctionOnStack(lmain, outReturnedValues);
+    return false;
+}
+
 /* BitStream Read/Write */
 bool CValues::Read(NetBitStreamInterface& bitStream, CValue::TableList& tables)
 {
@@ -986,15 +1105,22 @@ bool CValues::Read(NetBitStreamInterface& bitStream, CValue::TableList& tables)
     return true;
 }
 
-bool CValues::Write(NetBitStreamInterface& bitStream, CValue::TableToRefIDMap& tables) const
+bool CValues::Write(NetBitStreamInterface& bitStream, size_t& nextRef) const
 {
     bitStream.WriteCompressed(static_cast<uint32_t>(m_values.size()));
     for (const auto& v : m_values)
     {
-        if (!v.Write(bitStream, &tables))
+        if (!v.Write(bitStream, nextRef))
             return false;
     }
     return true;
+}
+
+/* Wrap a JSON object into a unique ptr for automatic freeing */
+auto WrapJSONObject(json_object* object)
+{
+    const auto Deleter = [](json_object* obj) { json_object_put(obj); };
+    return std::unique_ptr<json_object, decltype(Deleter)>{ object, Deleter };
 }
 
 /* JSON Read/Write */
@@ -1012,8 +1138,8 @@ bool CValues::Read(const char* json)
     }
 
     /* unique_ptr with custom deleter, so nobody forgets freeing */
-    const auto Deleter = [](json_object* obj) { json_object_put(obj); };
-    std::unique_ptr<json_object, decltype(Deleter)> jobj{ json_tokener_parse(json), Deleter };
+
+    auto jobj = WrapJSONObject(json_tokener_parse(json));
     if (!jobj)
         return false;
 
@@ -1045,26 +1171,38 @@ bool CValues::Read(const char* json)
 
 bool CValues::Write(std::string& json, bool serialize, int flags)
 {
-    json_object* jarray = json_object_new_array();
+    auto jarray = WrapJSONObject(json_object_new_array());
     if (!jarray)
         return false;
 
-    CValue::TableToRefIDMap tableToRef;
+#ifdef SHARED_TABLES
+    size_t nextRef = 0;
     for (const auto& value : m_values)
     {
-        if (json_object* vobj = value.Write(serialize, tableToRef))
-            json_object_array_add(jarray, vobj);
+        if (json_object* vobj = value.Write(serialize, nextRef))
+            json_object_array_add(jarray.get(), vobj);
         else
         {
             dassert(0);
             break;
         }
     }
+#else
+    for (const auto& value : m_values)
+    {
+        if (json_object* vobj = value.Write(serialize))
+            json_object_array_add(jarray.get(), vobj);
+        else
+        {
+            dassert(0);
+            break;
+        }
+    }
+#endif
 
     size_t length;
-    json.assign(json_object_to_json_string_length(array, flags, &length), length);
-    json_object_put(array);
-
+    json.assign(json_object_to_json_string_length(jarray.get(), flags, &length), length); /* might throw */
+    /* the wrapped json object is freed automatically */
     return true;
 }
 
