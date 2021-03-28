@@ -42,6 +42,9 @@ typedef union GCObject GCObject;
 */
 #define CommonHeader	GCObject *next; lu_byte tt; lu_byte marked
 
+typedef struct lua_Userdatavalue{
+    LUAI_UINT32 i, r;
+} UserdataValue;
 
 /*
 ** Common header in struct form
@@ -58,11 +61,10 @@ typedef struct GCheader {
 */
 typedef union {
   GCObject *gc;
-  void *p;
+  UserdataValue u;
   lua_Number n;
   int b;
 } Value;
-
 
 /*
 ** Tagged Values
@@ -206,11 +208,8 @@ typedef union TString {
   } tsv;
 } TString;
 
-
 #define getstr(ts)	cast(const char *, (ts) + 1)
 #define svalue(o)       getstr(rawtsvalue(o))
-
-
 
 typedef union Udata {
   L_Umaxalign dummy;  /* ensures maximum alignment for `local' udata */
@@ -218,7 +217,7 @@ typedef union Udata {
     CommonHeader;
     struct Table *metatable;
     struct Table *env;
-    size_t len;
+    UserdataValue;
   } uv;
 } Udata;
 
