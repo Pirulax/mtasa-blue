@@ -280,7 +280,7 @@ void CClientEntity::SetID(ElementID ID)
     }
 }
 
-CLuaArgument* CClientEntity::GetCustomData(const char* szName, bool bInheritData, bool* pbIsSynced)
+CValue* CClientEntity::GetCustomData(const char* szName, bool bInheritData, bool* pbIsSynced)
 {
     assert(szName);
 
@@ -306,159 +306,106 @@ CLuaArgument* CClientEntity::GetCustomData(const char* szName, bool bInheritData
 bool CClientEntity::GetCustomDataString(const char* szName, SString& strOut, bool bInheritData)
 {
     // Grab the custom data variable
-    CLuaArgument* pData = GetCustomData(szName, bInheritData);
-    if (pData)
-    {
-        // Write the content depending on what type it is
-        int iType = pData->GetType();
-        if (iType == LUA_TSTRING)
-        {
-            strOut = pData->GetString();
-        }
-        else if (iType == LUA_TNUMBER)
-        {
-            strOut.Format("%f", pData->GetNumber());
-        }
-        else if (iType == LUA_TBOOLEAN)
-        {
-            strOut.Format("%u", pData->GetBoolean());
-        }
-        else if (iType == LUA_TNIL)
-        {
-            strOut = "";
-        }
+    CValue* pData = GetCustomData(szName, bInheritData);
+    if (!pData)
+        return false;
+   
+    // Write the content depending on what type it is
+    return pData->VisitValue([&strOut](const auto& value) -> bool {
+        using T = std::decay_t<decltype(value)>;
+        if constexpr (std::is_same_v<T, CValue::Number>)
+            strOut.Format("%f", value);
+        else if constexpr (std::is_same_v<T, CValue::String>)
+            strOut = value;
+        else if constexpr (std::is_same_v<T, CValue::Bool>)
+            strOut.Format("%u", (unsigned)value);
+        else if constexpr (std::is_same_v<T, CValue::Nil>)
+            strOut.clear();
         else
-        {
             return false;
-        }
-
         return true;
-    }
-
-    return false;
+    });
 }
 
 bool CClientEntity::GetCustomDataInt(const char* szName, int& iOut, bool bInheritData)
 {
     // Grab the custom data variable
-    CLuaArgument* pData = GetCustomData(szName, bInheritData);
-    if (pData)
-    {
-        // Write the content depending on what type it is
-        int iType = pData->GetType();
-        if (iType == LUA_TSTRING)
-        {
-            iOut = atoi(pData->GetString());
-        }
-        else if (iType == LUA_TNUMBER)
-        {
-            iOut = static_cast<int>(pData->GetNumber());
-        }
-        else if (iType == LUA_TBOOLEAN)
-        {
-            if (pData->GetBoolean())
-            {
-                iOut = 1;
-            }
-            else
-            {
-                iOut = 0;
-            }
-        }
+    CValue* pData = GetCustomData(szName, bInheritData);
+    if (!pData)
+        return false;
+
+    // Write the content depending on what type it is
+    return pData->VisitValue([&iOut](const auto& value) -> bool {
+        using T = std::decay_t<decltype(value)>;
+        if constexpr (std::is_same_v<T, CValue::Number>)
+            iOut = static_cast<int>(value);
+        else if constexpr (std::is_same_v<T, CValue::String>)
+            iOut = atoi(value.c_str());
+        else if constexpr (std::is_same_v<T, CValue::Bool>)
+            iOut = value ? 1 : 0;
         else
-        {
             return false;
-        }
-
         return true;
-    }
-
-    return false;
+    });
 }
 
 bool CClientEntity::GetCustomDataFloat(const char* szName, float& fOut, bool bInheritData)
 {
     // Grab the custom data variable
-    CLuaArgument* pData = GetCustomData(szName, bInheritData);
-    if (pData)
-    {
-        // Write the content depending on what type it is
-        int iType = pData->GetType();
-        if (iType == LUA_TSTRING)
-        {
-            fOut = static_cast<float>(atof(pData->GetString()));
-        }
-        else if (iType == LUA_TNUMBER)
-        {
-            fOut = static_cast<float>(pData->GetNumber());
-        }
+    CValue* pData = GetCustomData(szName, bInheritData);
+    if (!pData)
+        return false;
+
+    // Write the content depending on what type it is
+    return pData->VisitValue([&fOut](const auto& value) -> bool {
+        using T = std::decay_t<decltype(value)>;
+        if constexpr (std::is_same_v<T, CValue::Number>)
+            fOut = static_cast<float>(value);
+        else if constexpr (std::is_same_v<T, CValue::String>)
+            fOut = static_cast<float>(atof(value.c_str()));
         else
-        {
             return false;
-        }
-
         return true;
-    }
-
-    return false;
+    });
 }
 
 bool CClientEntity::GetCustomDataBool(const char* szName, bool& bOut, bool bInheritData)
 {
     // Grab the custom data variable
-    CLuaArgument* pData = GetCustomData(szName, bInheritData);
-    if (pData)
-    {
-        // Write the content depending on what type it is
-        int iType = pData->GetType();
-        if (iType == LUA_TSTRING)
+    CValue* pData = GetCustomData(szName, bInheritData);
+    if (!pData)
+        return false;
+
+    // Write the content depending on what type it is
+    return pData->VisitValue([&bOut](const auto& value) -> bool {
+        using T = std::decay_t<decltype(value)>;
+        if constexpr (std::is_same_v<T, CValue::Number>)
         {
-            const char* szString = pData->GetString();
-            if (strcmp(szString, "true") == 0 || strcmp(szString, "1") == 0)
-            {
-                bOut = true;
-            }
-            else if (strcmp(szString, "false") == 0 || strcmp(szString, "0") == 0)
-            {
+            if (value == 0)
                 bOut = false;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if (iType == LUA_TNUMBER)
-        {
-            int iNumber = static_cast<int>(pData->GetNumber());
-            if (iNumber == 1)
-            {
+            else if (value == 1)
                 bOut = true;
-            }
-            else if (iNumber == 0)
-            {
-                bOut = false;
-            }
             else
-            {
                 return false;
-            }
         }
-        else if (iType == LUA_TBOOLEAN)
+        else if constexpr (std::is_same_v<T, CValue::String>)
         {
-            bOut = pData->GetBoolean();
+            if (value == "true" || value == "1")
+                bOut = true;
+            else if (value == "false" || value == "0")
+                bOut = false;
+            else
+                return false;
         }
+        else if constexpr (std::is_same_v<T, CValue::Bool>)
+            bOut = value;
         else
-        {
             return false;
-        }
-
         return true;
-    }
-
-    return false;
+    });
 }
 
-void CClientEntity::SetCustomData(const char* szName, const CLuaArgument& Variable, bool bSynchronized)
+void CClientEntity::SetCustomData(const char* szName, const CValue& Variable, bool bSynchronized)
 {
     assert(szName);
     if (strlen(szName) > MAX_CUSTOMDATA_NAME_LENGTH)
@@ -469,7 +416,7 @@ void CClientEntity::SetCustomData(const char* szName, const CLuaArgument& Variab
     }
 
     // Grab the old variable
-    CLuaArgument oldVariable;
+    CValue oldVariable;
     SCustomData* pData = m_pCustomData->Get(szName);
     if (pData)
     {
@@ -493,7 +440,7 @@ void CClientEntity::DeleteCustomData(const char* szName)
     SCustomData* pData = m_pCustomData->Get(szName);
     if (pData)
     {
-        CLuaArgument oldVariable;
+        CValue oldVariable;
         oldVariable = pData->Variable;
 
         // Delete the custom data
@@ -503,7 +450,7 @@ void CClientEntity::DeleteCustomData(const char* szName)
         CLuaArguments Arguments;
         Arguments.PushString(szName);
         Arguments.PushArgument(oldVariable);
-        Arguments.PushArgument(CLuaArgument());            // Use nil as the new value to indicate the data has been removed
+        Arguments.PushArgument(CValue());            // Use nil as the new value to indicate the data has been removed
         CallEvent("onClientElementDataChange", Arguments, true);
     }
 }
