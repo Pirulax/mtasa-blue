@@ -42,7 +42,7 @@ typedef union GCObject GCObject;
 */
 #define CommonHeader	GCObject *next; lu_byte tt; lu_byte marked
 
-typedef struct lua_Userdatavalue{
+typedef struct lua_Userdatavalue {
     LUAI_UINT32 i, r;
 } UserdataValue;
 
@@ -91,7 +91,7 @@ typedef struct lua_TValue {
 /* Macros to access values */
 #define ttype(o)	((o)->tt)
 #define gcvalue(o)	check_exp(iscollectable(o), (o)->value.gc)
-#define luvalue(o)	check_exp(ttislightuserdata(o), (o)->value.p)
+#define luvalue(o)	check_exp(ttislightuserdata(o), (o)->value.u)
 #define nvalue(o)	check_exp(ttisnumber(o), (o)->value.n)
 #define rawtsvalue(o)	check_exp(ttisstring(o), &(o)->value.gc->ts)
 #define tsvalue(o)	(&rawtsvalue(o)->tsv)

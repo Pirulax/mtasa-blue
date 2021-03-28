@@ -19,6 +19,7 @@
 */
 
 #include <math.h>
+#include <stdint.h>
 #include <string.h>
 
 #define ltable_c
@@ -52,7 +53,6 @@
 #define hashstr(t,str)  hashpow2(t, (str)->tsv.hash)
 #define hashboolean(t,p)        hashpow2(t, p)
 
-
 /*
 ** for some types, it is better to avoid modulus by power of 2, as
 ** they tend to have many 2 factors.
@@ -68,6 +68,10 @@
 */
 #define numints		cast_int(sizeof(lua_Number)/sizeof(int))
 
+/*
+** number of ints inside a lua_Userdatavalue
+*/
+#define numudints   cast_int(sizeof(UserdataValue)/sizeof(int))
 
 
 #define dummynode		(&dummynode_)
@@ -91,7 +95,18 @@ static Node *hashnum (const Table *t, lua_Number n) {
   return hashmod(t, a[0]);
 }
 
+static Node* hashuvalue(const Table* t, const UserdataValue* v) {
+    /* MTA specific. (https://stackoverflow.com/questions/919612) */
+    uint_least64_t h;
+    uint_least64_t k1 = cast(uint_least64_t, v->i);
+    uint_least64_t k2 = cast(uint_least64_t, v->r);
 
+    unsigned int a[numudints];
+    int i;
+    memcpy(a, &v, sizeof(a));
+    for (i = 1; i < numints; i++) a[0] += a[i];
+    return hashmod(t, a[0]);
+}
 
 /*
 ** returns the `main' position of an element in a table (that is, the index
