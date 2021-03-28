@@ -62,7 +62,6 @@ void LogUnableToPacketize(const char* szMessage)
 
 namespace lua
 {
-
 void CValue::Read(lua_State* L, int idx, LuaCopiedValuesMap& copiedTables)
 {
     switch (lua_type(L, idx))
@@ -86,40 +85,34 @@ void CValue::Read(lua_State* L, int idx, LuaCopiedValuesMap& copiedTables)
         break;
     case LUA_TTABLE:
     {
-        auto DoRead = [L, idx, this](LuaCopiedValuesMap* copiedTables) mutable {
-            if (const auto it = copiedTables->find(lua_topointer(L, idx)); it == copiedTables->end()) /* copied yet? */
+        
+        if (const auto it = copiedTables.find(lua_topointer(L, idx)); it == copiedTables.end()) /* copied yet? */
+        {
+            /* no, so copy and store it */
+            LUA_CHECKSTACK(L, 2);
+
+            lua_pushnil(L); /* first key */
+            if (idx < 0) /* correct the table index (because of the above push) */
+                idx--;
+
+            /* TODO: Preallocate table in a sensible way.. Maybe iter thru all values? */
+            Table& table = m_value.emplace<Table>();
+            // table->SetArrKeysCount(lua_objlen(L, -1)); TODO Somehow make this work... 
+
+            copiedTables[lua_topointer(L, idx)] = table; /* Mark as copied before copying others */
+            while (lua_next(L, idx))
             {
-                /* no, so copy and store it */
-                LUA_CHECKSTACK(L, 2);
+                /* emplace 2 values: key (at index -2) & value at index -1) */
+                table->push_back({ {L, -2, copiedTables}, {L, -1, copiedTables} });
 
-                lua_pushnil(L); /* first key */
-                if (idx < 0) /* correct the table index (because of the above push) */
-                    idx--;
-                /* TODO: Preallocate table to the exact size of the Lua one (hash + array part combined) */
-                Table& table = m_value.emplace<Table>();
-                (*copiedTables)[lua_topointer(L, idx)] = table; /* Mark as copied before copying others */
-                while (lua_next(L, idx))
-                {
-                    /* emplace 2 values: key (at index -2) & value at index -1) */
-                    table->push_back({ {L, -2, copiedTables}, {L, -1, copiedTables} });
-
-                    /* removes 'value'; keeps 'key' for next iteration */
-                    lua_pop(L, 1);
-                }
+                /* removes 'value'; keeps 'key' for next iteration */
+                lua_pop(L, 1);
             }
-            else
-            {
-                /* copied already, just store a ref to it */
-                m_value.emplace<TableRef>(it->second);
-            }
-        };
-
-        if (copiedTables)
-            DoRead(copiedTables);
+        }
         else
         {
-            LuaCopiedValuesMap map;
-            DoRead(&map);
+            /* copied already, just store a ref to it */
+            m_value.emplace<TableRef>(it->second);
         }
 
         break;
@@ -224,7 +217,7 @@ void CValue::Write(lua_State* L, LuaRefList& refs) const
     }, m_value);
 }
 
-bool CValue::Read(NetBitStreamInterface& bitStream, TableList* tables)
+bool CValue::Read(NetBitStreamInterface& bitStream, TableList& tables)
 {
     SLuaTypeSync type;
     if (!bitStream.Read(&type))
@@ -424,8 +417,8 @@ bool CValue::Write(NetBitStreamInterface& bitStream, size_t& lastTableRef) const
             
             WriteType(LUA_TTABLE);
             bitStream.WriteCompressed(static_cast<unsigned int>(value->size() * 2)); /* write the number of all values (as per old behaviour) */
-            if (bitStream.Can(eBitStreamVersion::CValueNArr)) /* todo: add to read as well */
-                bitStream.WriteCompressed(value->GetArrKeysCount());
+            //if (bitStream.Can(eBitStreamVersion::CValueNArr)) /* todo: add to read as well. todo: actually implement this */
+                //bitStream.WriteCompressed(value->GetArrKeysCount());
             value->SetRef(lastTableRef++);
 
             for (const auto& [k, v] : *value)
@@ -453,7 +446,6 @@ bool CValue::Write(NetBitStreamInterface& bitStream, size_t& lastTableRef) const
     }, m_value);
 }
 
-/* used in JSON Read/Write */
 bool CValue::Read(json_object* jobj, TableList& tables)
 {
     switch (json_object_get_type(jobj))
@@ -1099,7 +1091,7 @@ bool CValues::Read(NetBitStreamInterface& bitStream, CValue::TableList& tables)
         return false;
     for (size_t i = 0; i < nargs; i++)
     {
-        if (m_values.emplace_back().Read(bitStream, &tables))
+        if (m_values.emplace_back().Read(bitStream, tables))
             return false;
     }
     return true;
