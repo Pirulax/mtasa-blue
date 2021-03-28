@@ -238,10 +238,10 @@ void CScriptKeyBinds::Call(CScriptKeyBind* pKeyBind)
                 CScriptKeyFunctionBind* pBind = static_cast<CScriptKeyFunctionBind*>(pKeyBind);
                 if (pBind->luaMain && VERIFY_FUNCTION(pBind->m_iLuaFunction))
                 {
-                    CLuaArguments Arguments;
-                    Arguments.PushString(pBind->boundKey->szKey);
-                    Arguments.PushString((pBind->bHitState) ? "down" : "up");
-                    Arguments.PushArguments(pBind->m_Arguments);
+                    CValues Arguments;
+                    Arguments.Push(pBind->boundKey->szKey);
+                    Arguments.Push((pBind->bHitState) ? "down" : "up");
+                    Arguments.Write(pBind->m_Arguments);
                     Arguments.Call(pBind->luaMain, pBind->m_iLuaFunction);
                 }
                 break;
@@ -251,10 +251,10 @@ void CScriptKeyBinds::Call(CScriptKeyBind* pKeyBind)
                 CScriptControlFunctionBind* pBind = static_cast<CScriptControlFunctionBind*>(pKeyBind);
                 if (pBind->luaMain && VERIFY_FUNCTION(pBind->m_iLuaFunction))
                 {
-                    CLuaArguments Arguments;
-                    Arguments.PushString(pBind->boundControl->szControl);
-                    Arguments.PushString((pBind->bHitState) ? "down" : "up");
-                    Arguments.PushArguments(pBind->m_Arguments);
+                    CValues Arguments;
+                    Arguments.Push(pBind->boundControl->szControl);
+                    Arguments.Push((pBind->bHitState) ? "down" : "up");
+                    Arguments.Write(pBind->m_Arguments);
                     Arguments.Call(pBind->luaMain, pBind->m_iLuaFunction);
                 }
                 break;
@@ -328,7 +328,7 @@ bool CScriptKeyBinds::ProcessKey(const char* szKey, bool bHitState, eScriptKeyBi
     return bFound;
 }
 
-bool CScriptKeyBinds::AddKeyFunction(const char* szKey, bool bHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction, CLuaArguments& Arguments)
+bool CScriptKeyBinds::AddKeyFunction(const char* szKey, bool bHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction, CValues& Arguments)
 {
     if (szKey == NULL)
         return false;
@@ -351,7 +351,7 @@ bool CScriptKeyBinds::AddKeyFunction(const char* szKey, bool bHitState, CLuaMain
 }
 
 bool CScriptKeyBinds::AddKeyFunction(const SScriptBindableKey* pKey, bool bHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction,
-                                     CLuaArguments& Arguments)
+                                     CValues& Arguments)
 {
     if (pKey)
     {
@@ -484,7 +484,7 @@ void CScriptKeyBinds::RemoveAllKeys(CLuaMain* pLuaMain)
 }
 
 bool CScriptKeyBinds::AddControlFunction(const char* szControl, bool bHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction,
-                                         CLuaArguments& Arguments)
+                                         CValues& Arguments)
 {
     if (szControl == NULL)
         return false;
@@ -508,7 +508,7 @@ bool CScriptKeyBinds::AddControlFunction(const char* szControl, bool bHitState, 
 }
 
 bool CScriptKeyBinds::AddControlFunction(const SScriptBindableGTAControl* pControl, bool bHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction,
-                                         CLuaArguments& Arguments)
+                                         CValues& Arguments)
 {
     if (pControl)
     {

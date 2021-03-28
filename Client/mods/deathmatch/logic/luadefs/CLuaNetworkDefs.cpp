@@ -38,7 +38,7 @@ int CLuaNetworkDefs::FetchRemote(lua_State* luaVM)
     SHttpRequestOptions httpRequestOptions;
     SString             strQueueName;
     CLuaFunctionRef     iLuaFunction;
-    CLuaArguments       callbackArguments;
+    CValues       callbackArguments;
 
     argStream.ReadString(strURL);
     if (!argStream.NextIsTable())
@@ -150,7 +150,7 @@ int CLuaNetworkDefs::GetRemoteRequests(lua_State* luaVM)
 int CLuaNetworkDefs::GetRemoteRequestInfo(lua_State* luaVM)
 {
     CScriptArgReader argStream(luaVM);
-    CLuaArguments    info, requestedHeaders;
+    CValues    info, requestedHeaders;
     CRemoteCall*     pRemoteCall = nullptr;
     CResource*       pThisResource = g_pClientGame->GetResourceManager()->GetResourceFromLuaState(luaVM);
     int              iPostDataLength = 0;
@@ -168,8 +168,8 @@ int CLuaNetworkDefs::GetRemoteRequestInfo(lua_State* luaVM)
 
         bool bExtendedInfo = (pResource == pThisResource);
 
-        info.PushString("type");
-        info.PushString((pRemoteCall->IsFetch() ? "fetch" : "call"));
+        info.Push("type");
+        info.Push((pRemoteCall->IsFetch() ? "fetch" : "call"));
 
         // remove query_string from url when bExtendedInfo isn't set
         SString sURL = pRemoteCall->GetURL();
@@ -177,69 +177,69 @@ int CLuaNetworkDefs::GetRemoteRequestInfo(lua_State* luaVM)
         if (!bExtendedInfo)
             sURL = sURL.ReplaceI("%3F", "?").Replace("#", "?").SplitLeft("?");
 
-        info.PushString("url");
-        info.PushString(sURL);
+        info.Push("url");
+        info.Push(sURL);
 
-        info.PushString("queue");
-        info.PushString(pRemoteCall->GetQueueName());
+        info.Push("queue");
+        info.Push(pRemoteCall->GetQueueName());
 
-        info.PushString("resource");
+        info.Push("resource");
 
         if (pResource)
-            info.PushResource(pResource);
+            info.Push(pResource);
         else
-            info.PushBoolean(false);
+            info.Push(false);
 
-        info.PushString("start");
-        info.PushNumber(static_cast<double>(pRemoteCall->GetStartTime()));
+        info.Push("start");
+        info.Push(static_cast<double>(pRemoteCall->GetStartTime()));
 
         if (bExtendedInfo)
         {
             if (iPostDataLength == -1 || iPostDataLength > 0)
             {
-                info.PushString("postData");
+                info.Push("postData");
                 const SString& sPostData = pRemoteCall->GetOptions().strPostData;
                 if (iPostDataLength > 0 && iPostDataLength < static_cast<int>(sPostData.length()))
-                    info.PushString(sPostData.SubStr(0, iPostDataLength));
+                    info.Push(sPostData.SubStr(0, iPostDataLength));
                 else
-                    info.PushString(sPostData);
+                    info.Push(sPostData);
             }
 
             // requested headers
             if (bIncludeHeaders)
             {
-                info.PushString("headers");
+                info.Push("headers");
 
                 for (auto const& header : pRemoteCall->GetOptions().requestHeaders)
                 {
-                    requestedHeaders.PushString(header.first);
-                    requestedHeaders.PushString(header.second);
+                    requestedHeaders.Push(header.first);
+                    requestedHeaders.Push(header.second);
                 }
 
-                info.PushTable(&requestedHeaders);
+                info.Push(&requestedHeaders);
             }
         }
 
-        info.PushString("method");
-        info.PushString((pRemoteCall->GetOptions().strRequestMethod.length() >= 1 ? pRemoteCall->GetOptions().strRequestMethod.ToUpper().c_str() : "POST"));
+        info.Push("method");
+        info.Push((pRemoteCall->GetOptions().strRequestMethod.length() >= 1 ? pRemoteCall->GetOptions().strRequestMethod.ToUpper().c_str() : "POST"));
 
-        info.PushString("connectionAttempts");
-        info.PushNumber(pRemoteCall->GetOptions().uiConnectionAttempts);
+        info.Push("connectionAttempts");
+        info.Push(pRemoteCall->GetOptions().uiConnectionAttempts);
 
-        info.PushString("connectionTimeout");
-        info.PushNumber(pRemoteCall->GetOptions().uiConnectTimeoutMs);
+        info.Push("connectionTimeout");
+        info.Push(pRemoteCall->GetOptions().uiConnectTimeoutMs);
 
         // download info
         const SDownloadStatus downloadInfo = pRemoteCall->GetDownloadStatus();
 
-        info.PushString("bytesReceived");
-        info.PushNumber(downloadInfo.uiBytesReceived);
+        info.Push("bytesReceived");
+        info.Push(downloadInfo.uiBytesReceived);
 
-        info.PushString("bytesTotal");
-        info.PushNumber(downloadInfo.uiContentLength);
+        info.Push("bytesTotal");
+        info.Push(downloadInfo.uiContentLength);
 
-        info.PushString("currentAttempt");
-        info.PushNumber(downloadInfo.uiAttemptNumber);
+        info.Push("currentAttempt");
+        info.Push(downloadInfo.uiAttemptNumber);
 
         info.PushAsTable(luaVM);
         return 1;

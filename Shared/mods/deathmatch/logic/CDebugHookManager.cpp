@@ -270,7 +270,7 @@ bool CDebugHookManager::OnPreFunction(lua_CFunction f, lua_State* luaVM, bool bA
     if (!IsNameAllowed(strName, m_PreFunctionHookList, bNameMustBeExplicitlyAllowed))
         return true;
 
-    CLuaArguments NewArguments;
+    CValues NewArguments;
     GetFunctionCallHookArguments(NewArguments, strName, luaVM, bAllowed);
 
     return CallHook(strName, m_PreFunctionHookList, NewArguments, bNameMustBeExplicitlyAllowed);
@@ -301,7 +301,7 @@ void CDebugHookManager::OnPostFunction(lua_CFunction f, lua_State* luaVM)
     if (!IsNameAllowed(strName, m_PostFunctionHookList, bNameMustBeExplicitlyAllowed))
         return;
 
-    CLuaArguments NewArguments;
+    CValues NewArguments;
     GetFunctionCallHookArguments(NewArguments, strName, luaVM, true);
 
     CallHook(strName, m_PostFunctionHookList, NewArguments, bNameMustBeExplicitlyAllowed);
@@ -314,7 +314,7 @@ void CDebugHookManager::OnPostFunction(lua_CFunction f, lua_State* luaVM)
 // Get call hook arguments for OnPre/PostFunction
 //
 ///////////////////////////////////////////////////////////////
-void CDebugHookManager::GetFunctionCallHookArguments(CLuaArguments& NewArguments, const SString& strName, lua_State* luaVM, bool bAllowed)
+void CDebugHookManager::GetFunctionCallHookArguments(CValues& NewArguments, const SString& strName, lua_State* luaVM, bool bAllowed)
 {
     // Get file/line number
     const char* szFilename = "";
@@ -326,18 +326,18 @@ void CDebugHookManager::GetFunctionCallHookArguments(CLuaArguments& NewArguments
     CResource* pSourceResource = pSourceLuaMain ? pSourceLuaMain->GetResource() : NULL;
 
     if (pSourceResource)
-        NewArguments.PushResource(pSourceResource);
+        NewArguments.Push(pSourceResource);
     else
         NewArguments.PushNil();
-    NewArguments.PushString(strName);
-    NewArguments.PushBoolean(bAllowed);
-    NewArguments.PushString(szFilename);
-    NewArguments.PushNumber(iLineNumber);
+    NewArguments.Push(strName);
+    NewArguments.Push(bAllowed);
+    NewArguments.Push(szFilename);
+    NewArguments.Push(iLineNumber);
 
-    CLuaArguments FunctionArguments;
-    FunctionArguments.ReadArguments(luaVM);
+    CValues FunctionArguments;
+    FunctionArguments.ReadAll(luaVM);
     MaybeMaskArgumentValues(strName, FunctionArguments);
-    NewArguments.PushArguments(FunctionArguments);
+    NewArguments.Write(FunctionArguments);
 }
 
 ///////////////////////////////////////////////////////////////
@@ -348,7 +348,7 @@ void CDebugHookManager::GetFunctionCallHookArguments(CLuaArguments& NewArguments
 // Returns false if event should be skipped
 //
 ///////////////////////////////////////////////////////////////
-bool CDebugHookManager::OnPreEvent(const char* szName, const CLuaArguments& Arguments, CElement* pSource, CPlayer* pCaller)
+bool CDebugHookManager::OnPreEvent(const char* szName, const CValues& Arguments, CElement* pSource, CPlayer* pCaller)
 {
     if (m_PreEventHookList.empty())
         return true;
@@ -357,7 +357,7 @@ bool CDebugHookManager::OnPreEvent(const char* szName, const CLuaArguments& Argu
     if (!IsNameAllowed(szName, m_PreEventHookList))
         return true;
 
-    CLuaArguments NewArguments;
+    CValues NewArguments;
     GetEventCallHookArguments(NewArguments, szName, Arguments, pSource, pCaller);
 
     return CallHook(szName, m_PreEventHookList, NewArguments);
@@ -370,7 +370,7 @@ bool CDebugHookManager::OnPreEvent(const char* szName, const CLuaArguments& Argu
 // Called after a Lua event is triggered
 //
 ///////////////////////////////////////////////////////////////
-void CDebugHookManager::OnPostEvent(const char* szName, const CLuaArguments& Arguments, CElement* pSource, CPlayer* pCaller)
+void CDebugHookManager::OnPostEvent(const char* szName, const CValues& Arguments, CElement* pSource, CPlayer* pCaller)
 {
     if (m_PostEventHookList.empty())
         return;
@@ -379,7 +379,7 @@ void CDebugHookManager::OnPostEvent(const char* szName, const CLuaArguments& Arg
     if (!IsNameAllowed(szName, m_PostEventHookList))
         return;
 
-    CLuaArguments NewArguments;
+    CValues NewArguments;
     GetEventCallHookArguments(NewArguments, szName, Arguments, pSource, pCaller);
 
     CallHook(szName, m_PostEventHookList, NewArguments);
@@ -392,7 +392,7 @@ void CDebugHookManager::OnPostEvent(const char* szName, const CLuaArguments& Arg
 // Get call hook arguments for OnPre/PostEvent
 //
 ///////////////////////////////////////////////////////////////
-void CDebugHookManager::GetEventCallHookArguments(CLuaArguments& NewArguments, const SString& strName, const CLuaArguments& Arguments, CElement* pSource, CPlayer* pCaller)
+void CDebugHookManager::GetEventCallHookArguments(CValues& NewArguments, const SString& strName, const CValues& Arguments, CElement* pSource, CPlayer* pCaller)
 {
     CLuaMain*  pSourceLuaMain = g_pGame->GetScriptDebugging()->GetTopLuaMain();
     CResource* pSourceResource = pSourceLuaMain ? pSourceLuaMain->GetResource() : NULL;
@@ -406,15 +406,15 @@ void CDebugHookManager::GetEventCallHookArguments(CLuaArguments& NewArguments, c
         GetDebugInfo(luaVM, debugInfo, szFilename, iLineNumber);
 
     if (pSourceResource)
-        NewArguments.PushResource(pSourceResource);
+        NewArguments.Push(pSourceResource);
     else
         NewArguments.PushNil();
-    NewArguments.PushString(strName);
-    NewArguments.PushElement(pSource);
-    NewArguments.PushElement(pCaller);
-    NewArguments.PushString(szFilename);
-    NewArguments.PushNumber(iLineNumber);
-    NewArguments.PushArguments(Arguments);
+    NewArguments.Push(strName);
+    NewArguments.Push(pSource);
+    NewArguments.Push(pCaller);
+    NewArguments.Push(szFilename);
+    NewArguments.Push(iLineNumber);
+    NewArguments.Write(Arguments);
 }
 
 ///////////////////////////////////////////////////////////////
@@ -425,7 +425,7 @@ void CDebugHookManager::GetEventCallHookArguments(CLuaArguments& NewArguments, c
 // Returns false if function call should be skipped
 //
 ///////////////////////////////////////////////////////////////
-bool CDebugHookManager::OnPreEventFunction(const char* szName, const CLuaArguments& Arguments, CElement* pSource, CPlayer* pCaller, CMapEvent* pMapEvent)
+bool CDebugHookManager::OnPreEventFunction(const char* szName, const CValues& Arguments, CElement* pSource, CPlayer* pCaller, CMapEvent* pMapEvent)
 {
     if (m_PreEventFunctionHookList.empty())
         return true;
@@ -434,7 +434,7 @@ bool CDebugHookManager::OnPreEventFunction(const char* szName, const CLuaArgumen
     if (!IsNameAllowed(szName, m_PreEventFunctionHookList))
         return true;
 
-    CLuaArguments NewArguments;
+    CValues NewArguments;
     GetEventFunctionCallHookArguments(NewArguments, szName, Arguments, pSource, pCaller, pMapEvent);
 
     return CallHook(szName, m_PreEventFunctionHookList, NewArguments);
@@ -447,7 +447,7 @@ bool CDebugHookManager::OnPreEventFunction(const char* szName, const CLuaArgumen
 // Called after a Lua event function is called
 //
 ///////////////////////////////////////////////////////////////
-void CDebugHookManager::OnPostEventFunction(const char* szName, const CLuaArguments& Arguments, CElement* pSource, CPlayer* pCaller, CMapEvent* pMapEvent)
+void CDebugHookManager::OnPostEventFunction(const char* szName, const CValues& Arguments, CElement* pSource, CPlayer* pCaller, CMapEvent* pMapEvent)
 {
     if (m_PostEventFunctionHookList.empty())
         return;
@@ -456,7 +456,7 @@ void CDebugHookManager::OnPostEventFunction(const char* szName, const CLuaArgume
     if (!IsNameAllowed(szName, m_PostEventFunctionHookList))
         return;
 
-    CLuaArguments NewArguments;
+    CValues NewArguments;
     GetEventFunctionCallHookArguments(NewArguments, szName, Arguments, pSource, pCaller, pMapEvent);
 
     CallHook(szName, m_PostEventFunctionHookList, NewArguments);
@@ -469,7 +469,7 @@ void CDebugHookManager::OnPostEventFunction(const char* szName, const CLuaArgume
 // Get call hook arguments for OnPre/PostEventFunction
 //
 ///////////////////////////////////////////////////////////////
-void CDebugHookManager::GetEventFunctionCallHookArguments(CLuaArguments& NewArguments, const SString& strName, const CLuaArguments& Arguments, CElement* pSource, CPlayer* pCaller, CMapEvent* pMapEvent)
+void CDebugHookManager::GetEventFunctionCallHookArguments(CValues& NewArguments, const SString& strName, const CValues& Arguments, CElement* pSource, CPlayer* pCaller, CMapEvent* pMapEvent)
 {
     CLuaMain*  pEventLuaMain = g_pGame->GetScriptDebugging()->GetTopLuaMain();
     CResource* pEventResource = pEventLuaMain ? pEventLuaMain->GetResource() : NULL;
@@ -492,25 +492,25 @@ void CDebugHookManager::GetEventFunctionCallHookArguments(CLuaArguments& NewArgu
 
     // resource eventResource, string eventName, element eventSource, element eventClient, string eventFilename, int eventLineNumber,
     if (pEventResource)
-        NewArguments.PushResource(pEventResource);
+        NewArguments.Push(pEventResource);
     else
         NewArguments.PushNil();
 
-    NewArguments.PushString(strName);
-    NewArguments.PushElement(pSource);
-    NewArguments.PushElement(pCaller);
-    NewArguments.PushString(szEventFilename);
-    NewArguments.PushNumber(iEventLineNumber);
+    NewArguments.Push(strName);
+    NewArguments.Push(pSource);
+    NewArguments.Push(pCaller);
+    NewArguments.Push(szEventFilename);
+    NewArguments.Push(iEventLineNumber);
 
     // resource functionResource, string functionFilename, int functionLineNumber, ...args
     if (pFunctionResource)
-        NewArguments.PushResource(pFunctionResource);
+        NewArguments.Push(pFunctionResource);
     else
         NewArguments.PushNil();
 
-    NewArguments.PushString(szFunctionFilename);
-    NewArguments.PushNumber(iFunctionLineNumber);
-    NewArguments.PushArguments(Arguments);
+    NewArguments.Push(szFunctionFilename);
+    NewArguments.Push(iFunctionLineNumber);
+    NewArguments.Write(Arguments);
 }
 
 ///////////////////////////////////////////////////////////////
@@ -554,7 +554,7 @@ bool CDebugHookManager::MustNameBeExplicitlyAllowed(const SString& strName)
 // Mask security sensitive argument values
 //
 ///////////////////////////////////////////////////////////////
-void CDebugHookManager::MaybeMaskArgumentValues(const SString& strFunctionName, CLuaArguments& FunctionArguments)
+void CDebugHookManager::MaybeMaskArgumentValues(const SString& strFunctionName, CValues& FunctionArguments)
 {
     auto* pMaskArgumentList = MapFind(m_MaskArgumentsMap, strFunctionName);
     if (pMaskArgumentList)
@@ -563,13 +563,13 @@ void CDebugHookManager::MaybeMaskArgumentValues(const SString& strFunctionName, 
         {
             if (maskArgument.argType == EArgType::Password)
             {
-                CLuaArgument* pArgument = FunctionArguments[maskArgument.index];
+                CValue* pArgument = FunctionArguments[maskArgument.index];
                 if (pArgument && !pArgument->GetString().empty())
                     pArgument->ReadString("***");
             }
             else if (maskArgument.argType == EArgType::Url)
             {
-                CLuaArgument* pArgument = FunctionArguments[maskArgument.index];
+                CValue* pArgument = FunctionArguments[maskArgument.index];
                 if (pArgument)
                 {
                     // Remove query portion of URL
@@ -593,7 +593,7 @@ void CDebugHookManager::MaybeMaskArgumentValues(const SString& strFunctionName, 
 // Return false if function/event should be skipped
 //
 ///////////////////////////////////////////////////////////////
-bool CDebugHookManager::CallHook(const char* szName, const std::vector<SDebugHookCallInfo>& eventHookList, const CLuaArguments& Arguments,
+bool CDebugHookManager::CallHook(const char* szName, const std::vector<SDebugHookCallInfo>& eventHookList, const CValues& Arguments,
                                  bool bNameMustBeExplicitlyAllowed)
 {
     static bool bRecurse = false;
@@ -619,37 +619,37 @@ bool CDebugHookManager::CallHook(const char* szName, const std::vector<SDebugHoo
 
         // Save script MTA globals in case hook messes with them
         lua_getglobal(pState, "source");
-        CLuaArgument OldSource(pState, -1);
+        CValue OldSource(pState, -1);
         lua_pop(pState, 1);
 
         lua_getglobal(pState, "this");
-        CLuaArgument OldThis(pState, -1);
+        CValue OldThis(pState, -1);
         lua_pop(pState, 1);
 
         lua_getglobal(pState, "sourceResource");
-        CLuaArgument OldResource(pState, -1);
+        CValue OldResource(pState, -1);
         lua_pop(pState, 1);
 
         lua_getglobal(pState, "sourceResourceRoot");
-        CLuaArgument OldResourceRoot(pState, -1);
+        CValue OldResourceRoot(pState, -1);
         lua_pop(pState, 1);
 
         lua_getglobal(pState, "eventName");
-        CLuaArgument OldEventName(pState, -1);
+        CValue OldEventName(pState, -1);
         lua_pop(pState, 1);
 
         lua_getglobal(pState, "client");
-        CLuaArgument OldClient(pState, -1);
+        CValue OldClient(pState, -1);
         lua_pop(pState, 1);
 
-        CLuaArguments returnValues;
+        CValues returnValues;
         Arguments.Call(info.pLuaMain, info.functionRef, &returnValues);
         // Note: info could be invalid now
 
         // Check for skip option
         if (returnValues.Count())
         {
-            CLuaArgument* returnedValue = *returnValues.IterBegin();
+            CValue* returnedValue = *returnValues.IterBegin();
             if (returnedValue->GetType() == LUA_TSTRING)
             {
                 if (returnedValue->GetString() == "skip")

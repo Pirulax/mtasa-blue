@@ -120,7 +120,7 @@ void CMapEventManager::DeleteAll()
     m_bHasEvents = !m_EventsMap.empty();
 }
 
-bool CMapEventManager::Call(const char* szName, const CLuaArguments& Arguments, class CClientEntity* pSource, class CClientEntity* pThis)
+bool CMapEventManager::Call(const char* szName, const CValues& Arguments, class CClientEntity* pSource, class CClientEntity* pThis)
 {
     // Check if no events
     if (!m_bHasEvents)
@@ -189,23 +189,23 @@ bool CMapEventManager::Call(const char* szName, const CLuaArguments& Arguments, 
 
                     // Store the current values of the globals
                     lua_getglobal(pState, "source");
-                    CLuaArgument OldSource(pState, -1);
+                    CValue OldSource(pState, -1);
                     lua_pop(pState, 1);
 
                     lua_getglobal(pState, "this");
-                    CLuaArgument OldThis(pState, -1);
+                    CValue OldThis(pState, -1);
                     lua_pop(pState, 1);
 
                     lua_getglobal(pState, "sourceResource");
-                    CLuaArgument OldResource(pState, -1);
+                    CValue OldResource(pState, -1);
                     lua_pop(pState, 1);
 
                     lua_getglobal(pState, "sourceResourceRoot");
-                    CLuaArgument OldResourceRoot(pState, -1);
+                    CValue OldResourceRoot(pState, -1);
                     lua_pop(pState, 1);
 
                     lua_getglobal(pState, "eventName");
-                    CLuaArgument OldEventName(pState, -1);
+                    CValue OldEventName(pState, -1);
                     lua_pop(pState, 1);
 
                     // Set the "source", "this", "sourceResource" and the "sourceResourceRoot" globals on that VM

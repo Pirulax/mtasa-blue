@@ -26,13 +26,13 @@ private:
     long long           m_iStartTime;
     SString             m_strURL;
     SString             m_strQueueName;
-    CLuaArguments       m_FetchArguments;
+    CValues       m_FetchArguments;
     SHttpRequestOptions m_options;
     EDownloadModeType   m_downloadMode = EDownloadModeType::NONE;
     SDownloadStatus     m_lastDownloadStatus;
 
 public:
-    CRemoteCall(const char* szURL, CLuaArguments* fetchArguments, CLuaMain* luaMain, const CLuaFunctionRef& iFunction, const SString& strQueueName,
+    CRemoteCall(const char* szURL, CValues* fetchArguments, CLuaMain* luaMain, const CLuaFunctionRef& iFunction, const SString& strQueueName,
                 const SHttpRequestOptions& options);
     ~CRemoteCall();
 
@@ -48,7 +48,7 @@ public:
     const SString&             GetQueueName() { return m_strQueueName; }
     bool                       IsFetch() { return m_bIsFetch; }
     bool                       IsLegacy() { return m_options.bIsLegacy; }
-    const CLuaArguments&       GetFetchArguments() { return m_FetchArguments; }
+    const CValues&       GetFetchArguments() { return m_FetchArguments; }
     const SHttpRequestOptions& GetOptions() { return m_options; }
 };
 
@@ -67,7 +67,7 @@ public:
     CRemoteCalls();
     ~CRemoteCalls();
 
-    CRemoteCall* Call(const char* szURL, CLuaArguments* fetchArguments, CLuaMain* luaMain, const CLuaFunctionRef& iFunction, const SString& strQueueName,
+    CRemoteCall* Call(const char* szURL, CValues* fetchArguments, CLuaMain* luaMain, const CLuaFunctionRef& iFunction, const SString& strQueueName,
                       const SHttpRequestOptions& options);
 
     void              OnLuaMainDestroy(CLuaMain* luaMain);

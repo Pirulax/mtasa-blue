@@ -83,19 +83,19 @@ int CLuaResourceDefs::Call(lua_State* luaVM)
                 lua_State* targetLuaVM = pResource->GetVM()->GetVM();
 
                 // Read out the vargs
-                CLuaArguments args;
-                args.ReadArguments(luaVM, 3);
-                CLuaArguments returns;
+                CValues args;
+                args.ReadAll(luaVM, 3);
+                CValues returns;
 
                 LUA_CHECKSTACK(targetLuaVM, 1);            // Ensure some room
 
                 // Lets grab the original hidden variables so we can restore them later
                 lua_getglobal(targetLuaVM, "sourceResource");
-                CLuaArgument OldResource(luaVM, -1);
+                CValue OldResource(luaVM, -1);
                 lua_pop(targetLuaVM, 1);
 
                 lua_getglobal(targetLuaVM, "sourceResourceRoot");
-                CLuaArgument OldResourceRoot(luaVM, -1);
+                CValue OldResourceRoot(luaVM, -1);
                 lua_pop(targetLuaVM, 1);
 
                 // Set the new values for the current sourceResource, and sourceResourceRoot
@@ -109,7 +109,7 @@ int CLuaResourceDefs::Call(lua_State* luaVM)
                 if (pResource->CallExportedFunction(strFunctionName, args, returns, *pThisResource))
                 {
                     // Push return arguments
-                    returns.PushArguments(luaVM);
+                    returns.Write(luaVM);
                     // Restore the old variables
                     OldResource.Push(targetLuaVM);
                     lua_setglobal(targetLuaVM, "sourceResource");
@@ -498,15 +498,15 @@ int CLuaResourceDefs::Load(lua_State* luaVM)
         // Call supplied function to get all the bits
         // Should apply some limit here?
         SString       strInput;
-        CLuaArguments callbackArguments;
+        CValues callbackArguments;
         CLuaMain*     pLuaMain = m_pLuaManager->GetVirtualMachine(luaVM);
         while (pLuaMain)
         {
-            CLuaArguments returnValues;
+            CValues returnValues;
             callbackArguments.Call(pLuaMain, iLuaFunction, &returnValues);
             if (returnValues.Count())
             {
-                CLuaArgument* returnedValue = *returnValues.IterBegin();
+                CValue* returnedValue = *returnValues.IterBegin();
                 int           iType = returnedValue->GetType();
                 if (iType == LUA_TNIL)
                     break;

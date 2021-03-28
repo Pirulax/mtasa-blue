@@ -22,7 +22,7 @@ class CLuaTimer;
 class CLuaTimer
 {
 public:
-    CLuaTimer(const CLuaFunctionRef& iLuaFunction, const CLuaArguments& Arguments);
+    CLuaTimer(const CLuaFunctionRef& iLuaFunction, const CValues& Arguments);
     ~CLuaTimer();
 
     void RemoveScriptID();
@@ -46,7 +46,7 @@ public:
 
 private:
     CLuaFunctionRef m_iLuaFunction;
-    CLuaArguments   m_Arguments;
+    CValues   m_Arguments;
     CTickCount      m_llStartTime;
     CTickCount      m_llDelay;
     unsigned int    m_uiRepeats;

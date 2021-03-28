@@ -13,7 +13,7 @@
 #include "CPedRPCs.h"
 #include "net/SyncStructures.h"
 
-class CLuaArguments;
+class CValues;
 
 void CPedRPCs::LoadFunctions()
 {

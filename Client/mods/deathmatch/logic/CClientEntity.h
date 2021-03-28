@@ -84,8 +84,8 @@ class CClientColShape;
 class CClientPed;
 class CCustomData;
 class CElementGroup;
-class CLuaArgument;
-class CLuaArguments;
+class CValue;
+class CValues;
 class CLuaMain;
 class CMapEventManager;
 typedef CFastList<CClientEntity*> CChildListType;
@@ -198,12 +198,12 @@ public:
     void      SetID(ElementID ID);
 
     CCustomData*  GetCustomDataPointer() { return m_pCustomData; }
-    CLuaArgument* GetCustomData(const char* szName, bool bInheritData, bool* pbIsSynced = nullptr);
+    CValue* GetCustomData(const char* szName, bool bInheritData, bool* pbIsSynced = nullptr);
     bool          GetCustomDataString(const char* szKey, SString& strOut, bool bInheritData);
     bool          GetCustomDataFloat(const char* szKey, float& fOut, bool bInheritData);
     bool          GetCustomDataInt(const char* szKey, int& iOut, bool bInheritData);
     bool          GetCustomDataBool(const char* szKey, bool& bOut, bool bInheritData);
-    void          SetCustomData(const char* szName, const CLuaArgument& Variable, bool bSynchronized = true);
+    void          SetCustomData(const char* szName, const CValue& Variable, bool bSynchronized = true);
     void          DeleteCustomData(const char* szName);
 
     virtual bool GetMatrix(CMatrix& matrix) const;
@@ -244,9 +244,9 @@ public:
 
     bool AddEvent(CLuaMain* pLuaMain, const char* szName, const CLuaFunctionRef& iLuaFunction, bool bPropagated, EEventPriorityType eventPriority,
                   float fPriorityMod);
-    bool CallEvent(const char* szName, const CLuaArguments& Arguments, bool bCallOnChildren);
-    void CallEventNoParent(const char* szName, const CLuaArguments& Arguments, CClientEntity* pSource);
-    void CallParentEvent(const char* szName, const CLuaArguments& Arguments, CClientEntity* pSource);
+    bool CallEvent(const char* szName, const CValues& Arguments, bool bCallOnChildren);
+    void CallEventNoParent(const char* szName, const CValues& Arguments, CClientEntity* pSource);
+    void CallParentEvent(const char* szName, const CValues& Arguments, CClientEntity* pSource);
     bool DeleteEvent(CLuaMain* pLuaMain, const char* szName, const CLuaFunctionRef& iLuaFunction);
     void DeleteEvents(CLuaMain* pLuaMain, bool bRecursive);
     void DeleteAllEvents();

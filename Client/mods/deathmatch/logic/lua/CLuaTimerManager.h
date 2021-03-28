@@ -31,7 +31,7 @@ public:
 
     CLuaTimer* GetTimerFromScriptID(unsigned int uiScriptID);
 
-    CLuaTimer*    AddTimer(const CLuaFunctionRef& iLuaFunction, CTickCount llTimeDelay, unsigned int uiRepeats, const CLuaArguments& Arguments);
+    CLuaTimer*    AddTimer(const CLuaFunctionRef& iLuaFunction, CTickCount llTimeDelay, unsigned int uiRepeats, const CValues& Arguments);
     void          RemoveTimer(CLuaTimer* pLuaTimer);
     void          RemoveAllTimers();
     unsigned long GetTimerCount() const { return m_TimerList.size(); }

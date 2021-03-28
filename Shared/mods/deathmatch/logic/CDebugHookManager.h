@@ -53,23 +53,23 @@ public:
 
     bool OnPreFunction(lua_CFunction f, lua_State* luaVM, bool bAllowed);
     void OnPostFunction(lua_CFunction f, lua_State* luaVM);
-    bool OnPreEvent(const char* szName, const CLuaArguments& Arguments, CElement* pSource, CPlayer* pCaller);
-    void OnPostEvent(const char* szName, const CLuaArguments& Arguments, CElement* pSource, CPlayer* pCaller);
-    bool OnPreEventFunction(const char* szName, const CLuaArguments& Arguments, CElement* pSource, CPlayer* pCaller, CMapEvent* pMapEvent);
-    void OnPostEventFunction(const char* szName, const CLuaArguments& Arguments, CElement* pSource, CPlayer* pCaller, CMapEvent* pMapEvent);
+    bool OnPreEvent(const char* szName, const CValues& Arguments, CElement* pSource, CPlayer* pCaller);
+    void OnPostEvent(const char* szName, const CValues& Arguments, CElement* pSource, CPlayer* pCaller);
+    bool OnPreEventFunction(const char* szName, const CValues& Arguments, CElement* pSource, CPlayer* pCaller, CMapEvent* pMapEvent);
+    void OnPostEventFunction(const char* szName, const CValues& Arguments, CElement* pSource, CPlayer* pCaller, CMapEvent* pMapEvent);
     bool HasPostFunctionHooks() const { return !m_PostFunctionHookList.empty() || m_uiPostFunctionOverride; }
 
 protected:
-    void GetFunctionCallHookArguments(CLuaArguments& NewArguments, const SString& strName, lua_State* luaVM, bool bAllowed);
-    void GetEventFunctionCallHookArguments(CLuaArguments& NewArguments, const SString& strName, const CLuaArguments& Arguments, CElement* pSource, CPlayer* pCaller, CMapEvent* pMapEvent);
-    void GetEventCallHookArguments(CLuaArguments& NewArguments, const SString& strName, const CLuaArguments& Arguments, CElement* pSource, CPlayer* pCaller);
+    void GetFunctionCallHookArguments(CValues& NewArguments, const SString& strName, lua_State* luaVM, bool bAllowed);
+    void GetEventFunctionCallHookArguments(CValues& NewArguments, const SString& strName, const CValues& Arguments, CElement* pSource, CPlayer* pCaller, CMapEvent* pMapEvent);
+    void GetEventCallHookArguments(CValues& NewArguments, const SString& strName, const CValues& Arguments, CElement* pSource, CPlayer* pCaller);
 
     std::vector<SDebugHookCallInfo>& GetHookInfoListForType(EDebugHookType hookType);
-    bool                             CallHook(const char* szName, const std::vector<SDebugHookCallInfo>& eventHookList, const CLuaArguments& Arguments,
+    bool                             CallHook(const char* szName, const std::vector<SDebugHookCallInfo>& eventHookList, const CValues& Arguments,
                                               bool bNameMustBeExplicitlyAllowed = false);
     bool IsNameAllowed(const char* szName, const std::vector<SDebugHookCallInfo>& eventHookList, bool bNameMustBeExplicitlyAllowed = false);
     bool MustNameBeExplicitlyAllowed(const SString& strName);
-    void MaybeMaskArgumentValues(const SString& strFunctionName, CLuaArguments& FunctionArguments);
+    void MaybeMaskArgumentValues(const SString& strFunctionName, CValues& FunctionArguments);
 
     uint                                  m_uiPostFunctionOverride;
     std::vector<SDebugHookCallInfo>       m_PreEventHookList;

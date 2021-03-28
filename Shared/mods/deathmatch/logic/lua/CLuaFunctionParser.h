@@ -8,7 +8,7 @@
  *****************************************************************************/
 #pragma once
 
-class CLuaArgument;
+class CValue;
 
 #include <optional>
 #include <variant>
@@ -59,7 +59,7 @@ struct CLuaFunctionParserBase
             using param_t = typename is_specialization<T, std::optional>::param_t;
             return TypeToName<param_t>();
         }
-        else if constexpr (std::is_same_v<T, CLuaArgument>)
+        else if constexpr (std::is_same_v<T, CValue>)
             return "value";
         else if constexpr (is_2specialization<T, std::vector>::value)
             return "table";
@@ -204,7 +204,7 @@ struct CLuaFunctionParserBase
             return iArgument == LUA_TSTRING;
 
         // CLuaArgument can hold any value
-        if constexpr (std::is_same_v<T, CLuaArgument>)
+        if constexpr (std::is_same_v<T, CValue>)
             return iArgument != LUA_TNONE;
 
         // All color classes are read as a single tocolor number
@@ -643,9 +643,9 @@ struct CLuaFunctionParserBase
         }
         else if constexpr (std::is_same_v<T, SColor>)
             return static_cast<unsigned long>(lua::PopPrimitive<int64_t>(L, index));
-        else if constexpr (std::is_same_v<T, CLuaArgument>)
+        else if constexpr (std::is_same_v<T, CValue>)
         {
-            CLuaArgument argument;
+            CValue argument;
             argument.Read(L, index++);
             return argument;
         }

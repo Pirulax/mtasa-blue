@@ -83,7 +83,7 @@ void CClientStreamElement::InternalStreamOut()
             }
         }
 
-        CLuaArguments Arguments;
+        CValues Arguments;
         CallEvent("onClientElementStreamOut", Arguments, true);
     }
 }
@@ -98,7 +98,7 @@ void CClientStreamElement::NotifyCreate()
     m_bStreamedIn = true;
     m_bAttemptingToStreamIn = false;
 
-    CLuaArguments Arguments;
+    CValues Arguments;
     CallEvent("onClientElementStreamIn", Arguments, true);
 }
 

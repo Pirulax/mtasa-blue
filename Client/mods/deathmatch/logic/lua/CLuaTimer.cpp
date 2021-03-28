@@ -11,7 +11,7 @@
 
 #include <StdInc.h>
 
-CLuaTimer::CLuaTimer(const CLuaFunctionRef& iLuaFunction, const CLuaArguments& Arguments)
+CLuaTimer::CLuaTimer(const CLuaFunctionRef& iLuaFunction, const CValues& Arguments)
 {
     m_uiScriptID = CIdArray::PopUniqueId(this, EIdClass::TIMER);
     m_uiRepeats = 1;
@@ -43,7 +43,7 @@ void CLuaTimer::ExecuteTimer(CLuaMain* pLuaMain)
 
         // Store the current values of the globals
         lua_getglobal(pState, "sourceTimer");
-        CLuaArgument OldSource(pState, -1);
+        CValue OldSource(pState, -1);
         lua_pop(pState, 1);
 
         // Set the "sourceTimer" global

@@ -19,13 +19,12 @@ extern "C"
 #include "json.h"
 
 class CClientEntity;
-class CLuaArguments;
+class CValues;
 
 #define LUA_TTABLEREF 9
 #define LUA_TSTRING_LONG 10
 
-namespace lua
-{
+
 
 // Represents a Lua value
 class CValue
@@ -80,9 +79,9 @@ public:
     using  Number = lua_Number;
     using  UserData = size_t; // UserData is just an int value to either CElementIDs or CIdArray
     using  Bool = bool;
+    using  TableRef = std::shared_ptr<const TableValue>;
 
 private:
-    using TableRef = std::shared_ptr<const TableValue>;
     // If `Table` is the value then we're the owner.
     // If it's a reference we aren't, but the lifetime will be the same, since we're immutable
     using Value = std::variant<String, Number, Bool, UserData, TableRef, Table, Nil, None>;
@@ -186,6 +185,12 @@ public:
 
     char* Write(char* buffer, size_t buffsize) const;
 
+    template<typename Visitor>
+    auto VisitValue(Visitor visitor)
+    {
+        return std::visit(visitor, m_value);
+    }
+
 private:
     CValue(struct json_object* jobj, TableList& tables) { bool s = Read(jobj, tables); dassert(s); }
 
@@ -215,8 +220,8 @@ public:
     }
     bool Write(NetBitStreamInterface& bitStream) const
     {
-        CValue::TableToRefIDMap map;
-        return Write(bitStream, map);
+        size_t nextRef = 0;
+        return Write(bitStream, nextRef);
     }
 
     /* JSON */
@@ -268,6 +273,7 @@ public:
     auto end() { return m_values.end(); }
     auto end() const { return m_values.end(); }
 
+
 private:
 
     static constexpr size_t LUA_REF_TABLE_INDEX = 0;
@@ -287,6 +293,4 @@ private:
      * memory usage.
      */
     std::list<CValue> m_values;
-};
-
 };

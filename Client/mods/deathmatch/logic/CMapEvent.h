@@ -27,7 +27,7 @@ public:
     bool            ShouldAllowAspectRatioAdjustment() { return m_bAllowAspectRatioAdjustment; }
     bool            ShouldForceAspectRatioAdjustment() { return m_bForceAspectRatioAdjustment; }
 
-    void Call(const class CLuaArguments& Arguments);
+    void Call(const class CValues& Arguments);
     bool IsHigherPriorityThan(const CMapEvent* pOther);
 
 private:

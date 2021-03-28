@@ -32,7 +32,7 @@ SCustomData* CCustomData::Get(const char* szName)
     return NULL;
 }
 
-void CCustomData::Set(const char* szName, const CLuaArgument& Variable, bool bSynchronized)
+void CCustomData::Set(const char* szName, const CValue& Variable, bool bSynchronized)
 {
     assert(szName);
 

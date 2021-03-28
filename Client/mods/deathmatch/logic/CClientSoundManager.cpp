@@ -108,8 +108,8 @@ void CClientSoundManager::DoPulse()
         if (pSound->IsFinished())
         {
             // call onClientSoundStopped
-            CLuaArguments Arguments;
-            Arguments.PushString("finished");            // Reason
+            CValues Arguments;
+            Arguments.Push("finished");            // Reason
             pSound->CallEvent("onClientSoundStopped", Arguments, false);
             g_pClientGame->GetElementDeleter()->Delete(pSound);
         }

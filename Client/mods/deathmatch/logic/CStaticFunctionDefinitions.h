@@ -27,9 +27,9 @@ public:
     static bool AddEventHandler(CLuaMain& LuaMain, const char* szName, CClientEntity& Entity, const CLuaFunctionRef& iLuaFunction, bool bPropagated,
                                 EEventPriorityType eventPriority, float fPriorityMod);
     static bool RemoveEventHandler(CLuaMain& LuaMain, const char* szName, CClientEntity& Entity, const CLuaFunctionRef& iLuaFunction);
-    static bool TriggerEvent(const char* szName, CClientEntity& Entity, const CLuaArguments& Arguments, bool& bWasCancelled);
-    static bool TriggerServerEvent(const char* szName, CClientEntity& CallWithEntity, CLuaArguments& Arguments);
-    static bool TriggerLatentServerEvent(const char* szName, CClientEntity& CallWithEntity, CLuaArguments& Arguments, int bandwidth, CLuaMain* pLuaMain,
+    static bool TriggerEvent(const char* szName, CClientEntity& Entity, const CValues& Arguments, bool& bWasCancelled);
+    static bool TriggerServerEvent(const char* szName, CClientEntity& CallWithEntity, CValues& Arguments);
+    static bool TriggerLatentServerEvent(const char* szName, CClientEntity& CallWithEntity, CValues& Arguments, int bandwidth, CLuaMain* pLuaMain,
                                          ushort usResourceNetId);
     static bool CancelEvent(bool bCancel);
     static bool WasEventCancelled();
@@ -82,7 +82,7 @@ public:
     static CClientDummy* CreateElement(CResource& Resource, const char* szTypeName, const char* szID);
     static bool          DestroyElement(CClientEntity& Entity);
     static bool          SetElementID(CClientEntity& Entity, const char* szID);
-    static bool          SetElementData(CClientEntity& Entity, const char* szName, CLuaArgument& Variable, bool bSynchronize);
+    static bool          SetElementData(CClientEntity& Entity, const char* szName, CValue& Variable, bool bSynchronize);
     static bool          RemoveElementData(CClientEntity& Entity, const char* szName);
     static bool          SetElementMatrix(CClientEntity& Entity, const CMatrix& matrix);
     static bool          SetElementPosition(CClientEntity& Entity, const CVector& vecPosition, bool bWarp = true);
@@ -527,7 +527,7 @@ public:
     {
         static_cast<CGUIGridList*>(GUIElement.GetCGUIElement())->SetItemText(iRow, iColumn, szText, bNumber, bSection, bFast);
     };
-    static void        GUIGridListSetItemData(CClientGUIElement& GUIElement, int iRow, int iColumn, CLuaArgument* Variable);
+    static void        GUIGridListSetItemData(CClientGUIElement& GUIElement, int iRow, int iColumn, CValue* Variable);
     static void        GUIItemDataDestroyCallback(void* m_data);
     static void        GUIGridListSetSelectionMode(CClientEntity& Element, unsigned int uiMode);
     static inline void GUIGridListSetSelectedItem(CClientGUIElement& GUIElement, int iRow, int iColumn, bool bReset)
@@ -641,7 +641,7 @@ public:
     static bool ResetSurfaceInfo(short sSurfaceID);
 
     // Input functions
-    static bool BindKey(const char* szKey, const char* szHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction, CLuaArguments& Arguments);
+    static bool BindKey(const char* szKey, const char* szHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction, CValues& Arguments);
     static bool BindKey(const char* szKey, const char* szHitState, const char* szCommandName, const char* szArguments, const char* szResource);
     static bool UnbindKey(const char* szKey, CLuaMain* pLuaMain, const char* szHitState = 0, const CLuaFunctionRef& iLuaFunction = CLuaFunctionRef());
     static bool UnbindKey(const char* szKey, const char* szHitState, const char* szCommandName, const char* szResource);

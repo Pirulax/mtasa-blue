@@ -28,7 +28,7 @@ public:
     bool HasEvents() const { return m_bHasEvents; }
     void GetHandles(CLuaMain* pLuaMain, const char* szName, lua_State* luaVM);
 
-    bool Call(const char* szName, const CLuaArguments& Arguments, class CClientEntity* pSource, class CClientEntity* pThis);
+    bool Call(const char* szName, const CValues& Arguments, class CClientEntity* pSource, class CClientEntity* pThis);
 
 private:
     void TakeOutTheTrash();

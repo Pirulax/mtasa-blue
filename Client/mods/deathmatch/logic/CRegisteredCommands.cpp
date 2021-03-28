@@ -191,8 +191,8 @@ void CRegisteredCommands::CallCommandHandler(CLuaMain* pLuaMain, const CLuaFunct
     assert(pLuaMain);
     assert(szKey);
 
-    CLuaArguments Arguments;
-    Arguments.PushString(szKey);
+    CValues Arguments;
+    Arguments.Push(szKey);
 
     if (szArguments)
     {
@@ -203,7 +203,7 @@ void CRegisteredCommands::CallCommandHandler(CLuaMain* pLuaMain, const CLuaFunct
         arg = strtok(szTempArguments, " ");
         while (arg)
         {
-            Arguments.PushString(arg);
+            Arguments.Push(arg);
             arg = strtok(NULL, " ");
         }
         delete[] szTempArguments;

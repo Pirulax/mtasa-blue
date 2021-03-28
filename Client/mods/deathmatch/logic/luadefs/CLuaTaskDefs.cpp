@@ -104,7 +104,7 @@ int CLuaTaskDefs::getTaskParameter(lua_State* luaVM)
             argStream.ReadString(strKey);
 
             // Grab the parameter
-            CLuaArgument* pValue = Task.GetParameter(strKey);
+            CValue* pValue = Task.GetParameter(strKey);
             if (pValue)
             {
                 // Return it

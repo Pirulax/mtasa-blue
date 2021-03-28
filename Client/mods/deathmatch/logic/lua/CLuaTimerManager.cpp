@@ -127,7 +127,7 @@ CLuaTimer* CLuaTimerManager::GetTimerFromScriptID(uint uiScriptID)
     return pLuaTimer;
 }
 
-CLuaTimer* CLuaTimerManager::AddTimer(const CLuaFunctionRef& iLuaFunction, CTickCount llTimeDelay, unsigned int uiRepeats, const CLuaArguments& Arguments)
+CLuaTimer* CLuaTimerManager::AddTimer(const CLuaFunctionRef& iLuaFunction, CTickCount llTimeDelay, unsigned int uiRepeats, const CValues& Arguments)
 {
     // Check for the minimum interval
     if (llTimeDelay.ToLongLong() < LUA_TIMER_MIN_INTERVAL)

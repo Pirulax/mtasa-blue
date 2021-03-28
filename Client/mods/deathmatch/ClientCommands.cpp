@@ -61,16 +61,16 @@ bool COMMAND_Executed(const char* szCommand, const char* szArguments, bool bHand
 
         if (pLocalPlayer)
         {
-            CLuaArguments Arguments;
+            CValues Arguments;
 
             // Censor input for /login command
             if (!stricmp(szCommandBufferPointer, "login"))
             {
-                Arguments.PushString(SString("%s ***", szCommandBufferPointer));
+                Arguments.Push(SString("%s ***", szCommandBufferPointer));
             }
             else
             {
-                Arguments.PushString(strClumpedCommand);
+                Arguments.Push(strClumpedCommand);
             }
 
             pLocalPlayer->CallEvent("onClientConsole", Arguments, true);

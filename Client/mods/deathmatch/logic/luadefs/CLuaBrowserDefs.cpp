@@ -199,17 +199,17 @@ int CLuaBrowserDefs::RequestBrowserDomains(lua_State* luaVM)
                 if (!pLuaMain)
                     return;
 
-                CLuaArguments arguments;
-                arguments.PushBoolean(bAllow);
+                CValues arguments;
+                arguments.Push(bAllow);
 
-                CLuaArguments LuaTable;
+                CValues LuaTable;
                 int           i = 0;
                 for (const auto& domain : domains)
                 {
-                    LuaTable.PushNumber(++i);
-                    LuaTable.PushString(domain);
+                    LuaTable.Push(++i);
+                    LuaTable.Push(domain);
                 }
-                arguments.PushTable(&LuaTable);
+                arguments.Push(&LuaTable);
                 arguments.Call(pLuaMain, callbackFunction);
             }
         };
@@ -715,10 +715,10 @@ int CLuaBrowserDefs::GetBrowserSource(lua_State* luaVM)
                 */
                 if (VERIFY_FUNCTION(callbackFunction))
                 {
-                    CLuaArguments arguments;
+                    CValues arguments;
                     // TODO: Use SCharStringRef/direct string access instead of copying strings around
-                    arguments.PushString(code);
-                    arguments.PushElement(pWebBrowser);
+                    arguments.Push(code);
+                    arguments.Push(pWebBrowser);
                     arguments.Call(pLuaMain, callbackFunction);
                 }
             });
@@ -1022,27 +1022,27 @@ int CLuaBrowserDefs::SetBrowserAjaxHandler(lua_State* luaVM)
                     // Make sure the function is valid
                     if (VERIFY_FUNCTION(callbackFunction))
                     {
-                        CLuaArguments arguments;
-                        CLuaArguments getArguments;
-                        CLuaArguments postArguments;
+                        CValues arguments;
+                        CValues getArguments;
+                        CValues postArguments;
 
                         for (auto&& param : vecGet)
-                            getArguments.PushString(param);
+                            getArguments.Push(param);
 
                         for (auto&& param : vecPost)
-                            postArguments.PushString(param);
+                            postArguments.Push(param);
 
-                        arguments.PushTable(&getArguments);
-                        arguments.PushTable(&postArguments);
+                        arguments.Push(&getArguments);
+                        arguments.Push(&postArguments);
 
-                        CLuaArguments result;
+                        CValues result;
 
                         arguments.Call(pLuaMain, callbackFunction, &result);
 
                         if (result.Count() == 0)
                             return "";
 
-                        CLuaArgument* returnedValue = *result.IterBegin();
+                        CValue* returnedValue = *result.IterBegin();
                         if (returnedValue->GetType() == LUA_TSTRING)
                             return returnedValue->GetString();
                         else

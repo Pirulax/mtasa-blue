@@ -408,9 +408,9 @@ void CClientMarker::Callback_OnCollision(CClientColShape& Shape, CClientEntity& 
     if (IS_PLAYER(&Entity))
     {
         // Call the marker hit event
-        CLuaArguments Arguments;
-        Arguments.PushElement(&Entity);                                              // player that hit it
-        Arguments.PushBoolean((GetDimension() == Entity.GetDimension()));            // matching dimension?
+        CValues Arguments;
+        Arguments.Push(&Entity);                                              // player that hit it
+        Arguments.Push((GetDimension() == Entity.GetDimension()));            // matching dimension?
         CallEvent("onClientMarkerHit", Arguments, true);
     }
 }
@@ -420,9 +420,9 @@ void CClientMarker::Callback_OnLeave(CClientColShape& Shape, CClientEntity& Enti
     if (IS_PLAYER(&Entity))
     {
         // Call the marker hit event
-        CLuaArguments Arguments;
-        Arguments.PushElement(&Entity);                                              // player that hit it
-        Arguments.PushBoolean((GetDimension() == Entity.GetDimension()));            // matching dimension?
+        CValues Arguments;
+        Arguments.Push(&Entity);                                              // player that hit it
+        Arguments.Push((GetDimension() == Entity.GetDimension()));            // matching dimension?
         CallEvent("onClientMarkerLeave", Arguments, true);
     }
 }

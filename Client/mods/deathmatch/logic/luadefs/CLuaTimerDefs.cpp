@@ -49,7 +49,7 @@ int CLuaTimerDefs::SetTimer(lua_State* luaVM)
     CLuaFunctionRef iLuaFunction;
     double          dTimeInterval;
     uint            uiTimesToExecute;
-    CLuaArguments   Arguments;
+    CValues   Arguments;
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadFunction(iLuaFunction);

@@ -136,27 +136,27 @@ int CLuaUtilDefs::GetCTime(lua_State* luaVM)
         return 1;
     }
 
-    CLuaArguments ret;
-    ret.PushString("second");
-    ret.PushNumber(time->tm_sec);
-    ret.PushString("minute");
-    ret.PushNumber(time->tm_min);
-    ret.PushString("hour");
-    ret.PushNumber(time->tm_hour);
-    ret.PushString("monthday");
-    ret.PushNumber(time->tm_mday);
-    ret.PushString("month");
-    ret.PushNumber(time->tm_mon);
-    ret.PushString("year");
-    ret.PushNumber(time->tm_year);
-    ret.PushString("weekday");
-    ret.PushNumber(time->tm_wday);
-    ret.PushString("yearday");
-    ret.PushNumber(time->tm_yday);
-    ret.PushString("isdst");
-    ret.PushNumber(time->tm_isdst);
-    ret.PushString("timestamp");
-    ret.PushNumber((double)timer);
+    CValues ret;
+    ret.Push("second");
+    ret.Push(time->tm_sec);
+    ret.Push("minute");
+    ret.Push(time->tm_min);
+    ret.Push("hour");
+    ret.Push(time->tm_hour);
+    ret.Push("monthday");
+    ret.Push(time->tm_mday);
+    ret.Push("month");
+    ret.Push(time->tm_mon);
+    ret.Push("year");
+    ret.Push(time->tm_year);
+    ret.Push("weekday");
+    ret.Push(time->tm_wday);
+    ret.Push("yearday");
+    ret.Push(time->tm_yday);
+    ret.Push("isdst");
+    ret.Push(time->tm_isdst);
+    ret.Push("timestamp");
+    ret.Push((double)timer);
 
     ret.PushAsTable(luaVM);
 
@@ -422,8 +422,8 @@ int CLuaUtilDefs::toJSON(lua_State* luaVM)
     {
         int jsonFlags = 0;
         // Read the argument
-        CLuaArguments JSON;
-        JSON.ReadArgument(luaVM, 1);
+        CValues JSON;
+        JSON.Read(luaVM, 1);
         argStream.Skip(1);
 
         bool bCompact;
@@ -439,7 +439,7 @@ int CLuaUtilDefs::toJSON(lua_State* luaVM)
         {
             // Convert it to a JSON string
             std::string strJSON;
-            if (JSON.WriteToJSONString(strJSON, false, jsonFlags))
+            if (JSON.Write(strJSON, false, jsonFlags))
             {
                 // Return the JSON string
                 lua_pushstring(luaVM, strJSON.c_str());
@@ -467,11 +467,11 @@ int CLuaUtilDefs::fromJSON(lua_State* luaVM)
     if (!argStream.HasErrors())
     {
         // Read it into lua arguments
-        CLuaArguments Converted;
-        if (Converted.ReadFromJSONString(strJson))
+        CValues Converted;
+        if (Converted.Read(strJson))
         {
             // Return it as data
-            Converted.PushArguments(luaVM);
+            Converted.Write(luaVM);
             return Converted.Count();
         }
     }

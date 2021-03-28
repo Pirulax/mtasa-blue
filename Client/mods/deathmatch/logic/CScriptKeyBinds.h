@@ -54,7 +54,7 @@ class CScriptFunctionBind
 {
 public:
     CLuaFunctionRef m_iLuaFunction;
-    CLuaArguments   m_Arguments;
+    CValues   m_Arguments;
 };
 
 class CScriptKeyFunctionBind : public CScriptKeyBindWithState, public CScriptFunctionBind
@@ -89,8 +89,8 @@ public:
     std::list<CScriptKeyBind*>::iterator IterEnd() { return m_List.end(); }
 
     // Key-function bind funcs
-    bool AddKeyFunction(const char* szKey, bool bHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction, CLuaArguments& Arguments);
-    bool AddKeyFunction(const SScriptBindableKey* pKey, bool bHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction, CLuaArguments& Arguments);
+    bool AddKeyFunction(const char* szKey, bool bHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction, CValues& Arguments);
+    bool AddKeyFunction(const SScriptBindableKey* pKey, bool bHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction, CValues& Arguments);
     bool RemoveKeyFunction(const char* szKey, CLuaMain* pLuaMain, bool bCheckHitState = false, bool bHitState = true,
                            const CLuaFunctionRef& iLuaFunction = CLuaFunctionRef());
     bool RemoveKeyFunction(const SScriptBindableKey* pKey, CLuaMain* pLuaMain, bool bCheckHitState = false, bool bHitState = true,
@@ -101,9 +101,9 @@ public:
                            const CLuaFunctionRef& iLuaFunction = CLuaFunctionRef());
 
     // Control-function bind funcs
-    bool AddControlFunction(const char* szControl, bool bHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction, CLuaArguments& Arguments);
+    bool AddControlFunction(const char* szControl, bool bHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction, CValues& Arguments);
     bool AddControlFunction(const SScriptBindableGTAControl* pControl, bool bHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction,
-                            CLuaArguments& Arguments);
+                            CValues& Arguments);
     bool RemoveControlFunction(const char* szControl, CLuaMain* pLuaMain, bool bCheckHitState = false, bool bHitState = true,
                                const CLuaFunctionRef& iLuaFunction = CLuaFunctionRef());
     bool RemoveControlFunction(const SScriptBindableGTAControl* pControl, CLuaMain* pLuaMain, bool bCheckHitState = false, bool bHitState = true,

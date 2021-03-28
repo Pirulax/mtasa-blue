@@ -32,7 +32,7 @@ CMapEvent::~CMapEvent()
 {
 }
 
-void CMapEvent::Call(const CLuaArguments& Arguments)
+void CMapEvent::Call(const CValues& Arguments)
 {
     if (m_pMain)
     {

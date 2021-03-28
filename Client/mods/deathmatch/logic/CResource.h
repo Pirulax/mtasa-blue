@@ -63,7 +63,7 @@ public:
     void           AddToElementGroup(CClientEntity* pElement);
 
     void AddExportedFunction(const SString& name) { m_exportedFunctions.insert(name); }
-    bool CallExportedFunction(const SString& name, CLuaArguments& args, CLuaArguments& returns, CResource& caller);
+    bool CallExportedFunction(const SString& name, CValues& args, CValues& returns, CResource& caller);
 
     class CClientEntity* GetResourceEntity() { return m_pResourceEntity; }
     void                 SetResourceEntity(CClientEntity* pEntity) { m_pResourceEntity = pEntity; }

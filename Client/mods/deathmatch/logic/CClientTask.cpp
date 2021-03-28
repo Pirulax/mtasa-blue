@@ -160,7 +160,7 @@ bool CClientTask::ReadParameters(lua_State* luaVM, int iTableIndex, bool bClear)
     {
         // Get the key and value
         const char*  szKey = lua_tostring(luaVM, -2);
-        CLuaArgument Value;
+        CValue Value;
         Value.Read(luaVM, -1);
 
         // Got both a key and a value?
@@ -302,7 +302,7 @@ bool CClientTask::WriteParameters(lua_State* luaVM, int iTableIndex)
 
     // Push the values to it.
     list<std::string>::iterator  iterKey = m_Keys.begin();
-    list<CLuaArgument>::iterator iterValue = m_Values.begin();
+    list<CValue>::iterator iterValue = m_Values.begin();
     while (iterKey != m_Keys.end())
     {
         // Add the entries to it
@@ -365,10 +365,10 @@ bool CClientTask::IsElementIn(CClientEntity* pElement)
     return false;
 }
 
-void CClientTask::SetParameter(const char* szKey, const CLuaArgument& Value)
+void CClientTask::SetParameter(const char* szKey, const CValue& Value)
 {
     // Grab the value
-    CLuaArgument* pValue = GetParameter(szKey);
+    CValue* pValue = GetParameter(szKey);
 
     // Does it exist? Change it
     if (pValue)
@@ -383,7 +383,7 @@ void CClientTask::SetParameter(const char* szKey, const CLuaArgument& Value)
     }
 }
 
-void CClientTask::SetParameters(const std::list<std::string>& Keys, const std::list<CLuaArgument>& Values)
+void CClientTask::SetParameters(const std::list<std::string>& Keys, const std::list<CValue>& Values)
 {
     // Replace the lists
     m_Keys = Keys;
@@ -400,11 +400,11 @@ void CClientTask::ClearParameters()
     m_Values.clear();
 }
 
-CLuaArgument* CClientTask::GetParameter(const char* szKey)
+CValue* CClientTask::GetParameter(const char* szKey)
 {
     // Loop through all the keys
     std::list<std::string>::iterator  iterKeys = m_Keys.begin();
-    std::list<CLuaArgument>::iterator iterValues = m_Values.begin();
+    std::list<CValue>::iterator iterValues = m_Values.begin();
     while (iterKeys != m_Keys.end())
     {
         // Matching key? Return it.
@@ -425,7 +425,7 @@ CLuaArgument* CClientTask::GetParameter(const char* szKey)
 bool CClientTask::GetParameterBool(const char* szKey, bool& Bool)
 {
     // Grab the parameter and check its type
-    CLuaArgument* pArgument = GetParameter(szKey);
+    CValue* pArgument = GetParameter(szKey);
     if (pArgument && pArgument->GetType() == LUA_TBOOLEAN)
     {
         // Return the bool
@@ -440,7 +440,7 @@ bool CClientTask::GetParameterBool(const char* szKey, bool& Bool)
 bool CClientTask::GetParameterNumber(const char* szKey, float& Number)
 {
     // Grab the parameter and check its type
-    CLuaArgument* pArgument = GetParameter(szKey);
+    CValue* pArgument = GetParameter(szKey);
     if (pArgument && pArgument->GetType() == LUA_TNUMBER)
     {
         // Return the number
@@ -455,7 +455,7 @@ bool CClientTask::GetParameterNumber(const char* szKey, float& Number)
 CPed* CClientTask::GetParameterPed(const char* szKey)
 {
     // Grab the parameter, is it userdata?
-    CLuaArgument* pArgument = GetParameter(szKey);
+    CValue* pArgument = GetParameter(szKey);
     if (pArgument && pArgument->GetType() == LUA_TUSERDATA)
     {
         // Grab the player and verify it
@@ -474,7 +474,7 @@ CPed* CClientTask::GetParameterPed(const char* szKey)
 const char* CClientTask::GetParameterString(const char* szKey)
 {
     // Grab the parameter and check its type
-    CLuaArgument* pArgument = GetParameter(szKey);
+    CValue* pArgument = GetParameter(szKey);
     if (pArgument && pArgument->GetType() == LUA_TSTRING)
     {
         // Return the string
@@ -488,7 +488,7 @@ const char* CClientTask::GetParameterString(const char* szKey)
 CVehicle* CClientTask::GetParameterVehicle(const char* szKey)
 {
     // Grab the parameter, is it userdata?
-    CLuaArgument* pArgument = GetParameter(szKey);
+    CValue* pArgument = GetParameter(szKey);
     if (pArgument && pArgument->GetType() == LUA_TUSERDATA)
     {
         // Grab the player and verify it

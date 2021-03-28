@@ -201,26 +201,26 @@ void CScriptDebugging::LogString(const char* szPrePend, const SLuaDebugInfo& lua
         m_bTriggeringMessageEvent = true;
 
         // Prepare onDebugMessage
-        CLuaArguments Arguments;
-        Arguments.PushString(szMessage);
-        Arguments.PushNumber(uiMinimumDebugLevel);
+        CValues Arguments;
+        Arguments.Push(szMessage);
+        Arguments.Push(uiMinimumDebugLevel);
 
         // Push the file name (if any)
         if (!luaDebugInfo.strFile.empty())
-            Arguments.PushString(luaDebugInfo.strFile);
+            Arguments.Push(luaDebugInfo.strFile);
         else
             Arguments.PushNil();
 
         // Push the line (if any)
         if (luaDebugInfo.iLine != INVALID_LINE_NUMBER)
-            Arguments.PushNumber(luaDebugInfo.iLine);
+            Arguments.Push(luaDebugInfo.iLine);
         else
             Arguments.PushNil();
 
         // Push the colors
-        Arguments.PushNumber(ucRed);
-        Arguments.PushNumber(ucGreen);
-        Arguments.PushNumber(ucBlue);
+        Arguments.Push(ucRed);
+        Arguments.Push(ucGreen);
+        Arguments.Push(ucBlue);
 
         // Call on(Client)DebugMessage
 #ifdef MTA_CLIENT

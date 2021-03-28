@@ -737,8 +737,8 @@ void CClientGame::DoPulsePreHUDRender(bool bDidUnminimize, bool bDidRecreateRend
     // If appropriate, call onClientRestore
     if (bDidUnminimize)
     {
-        CLuaArguments Arguments;
-        Arguments.PushBoolean(bDidRecreateRenderTargets);
+        CValues Arguments;
+        Arguments.Push(bDidRecreateRenderTargets);
         m_pRootEntity->CallEvent("onClientRestore", Arguments, false);
         m_bWasMinimized = false;
 
@@ -749,7 +749,7 @@ void CClientGame::DoPulsePreHUDRender(bool bDidUnminimize, bool bDidRecreateRend
     }
 
     // Call onClientHUDRender LUA event
-    CLuaArguments Arguments;
+    CValues Arguments;
     m_pRootEntity->CallEvent("onClientHUDRender", Arguments, false);
 
     // Disallow scripted dxSetRenderTarget for old scripts
@@ -1131,7 +1131,7 @@ void CClientGame::DoPulses()
         g_pCore->GetGraphics()->GetRenderItemManager()->EnableSetRenderTargetOldVer(true);
 
         // Call onClientRender LUA event
-        CLuaArguments Arguments;
+        CValues Arguments;
         m_pRootEntity->CallEvent("onClientRender", Arguments, false);
 
         // Disallow scripted dxSetRenderTarget for old scripts
@@ -1608,11 +1608,11 @@ void CClientGame::UpdatePlayerTarget()
         m_pNetAPI->RPC(PLAYER_TARGET, bitStream.pBitStream);
 
         // Call our onClientPlayerTarget event
-        CLuaArguments Arguments;
+        CValues Arguments;
         if (m_pTargetedEntity)
-            Arguments.PushElement(m_pTargetedEntity);
+            Arguments.Push(m_pTargetedEntity);
         else
-            Arguments.PushBoolean(false);
+            Arguments.Push(false);
         m_pLocalPlayer->CallEvent("onClientPlayerTarget", Arguments, true);
     }
 }
@@ -1623,9 +1623,9 @@ void CClientGame::UpdatePlayerWeapons()
     eWeaponSlot currentSlot = m_pLocalPlayer->GetCurrentWeaponSlot();
     if (currentSlot != m_lastWeaponSlot)
     {
-        CLuaArguments Arguments;
-        Arguments.PushNumber(m_lastWeaponSlot);
-        Arguments.PushNumber(currentSlot);
+        CValues Arguments;
+        Arguments.Push(m_lastWeaponSlot);
+        Arguments.Push(currentSlot);
         bool bCancelled = !m_pLocalPlayer->CallEvent("onClientPlayerWeaponSwitch", Arguments, true);
 
         if (bCancelled)
@@ -1825,8 +1825,8 @@ void CClientGame::UpdateFireKey()
 
                                 // Change the state back to false so this press doesn't do anything else
                                 pControl->bState = false;
-                                CLuaArguments Arguments;
-                                Arguments.PushElement(pTargetPed);
+                                CValues Arguments;
+                                Arguments.Push(pTargetPed);
                                 if (m_pLocalPlayer->CallEvent("onClientPlayerStealthKill", Arguments, false))
                                 {
                                     if (pTargetPed->IsLocalEntity())
@@ -1863,8 +1863,8 @@ void CClientGame::UpdateStunts()
     if (ulLastCarTwoWheelCounter == 0 && ulTemp != 0)
     {
         // Call our stunt event
-        CLuaArguments Arguments;
-        Arguments.PushString("2wheeler");
+        CValues Arguments;
+        Arguments.Push("2wheeler");
         m_pLocalPlayer->CallEvent("onClientPlayerStuntStart", Arguments, true);
     }
     // Did we finish a stunt?
@@ -1873,10 +1873,10 @@ void CClientGame::UpdateStunts()
         float fDistance = g_pGame->GetPlayerInfo()->GetCarTwoWheelDist();
 
         // Call our stunt event
-        CLuaArguments Arguments;
-        Arguments.PushString("2wheeler");
-        Arguments.PushNumber(ulLastCarTwoWheelCounter);
-        Arguments.PushNumber(fDistance);
+        CValues Arguments;
+        Arguments.Push("2wheeler");
+        Arguments.Push(ulLastCarTwoWheelCounter);
+        Arguments.Push(fDistance);
         m_pLocalPlayer->CallEvent("onClientPlayerStuntFinish", Arguments, true);
     }
     ulLastCarTwoWheelCounter = ulTemp;
@@ -1890,8 +1890,8 @@ void CClientGame::UpdateStunts()
     if (ulLastBikeRearWheelCounter == 0 && ulTemp != 0)
     {
         // Call our stunt event
-        CLuaArguments Arguments;
-        Arguments.PushString("wheelie");
+        CValues Arguments;
+        Arguments.Push("wheelie");
         m_pLocalPlayer->CallEvent("onClientPlayerStuntStart", Arguments, true);
     }
     // Did we finish a stunt?
@@ -1900,10 +1900,10 @@ void CClientGame::UpdateStunts()
         float fDistance = g_pGame->GetPlayerInfo()->GetBikeRearWheelDist();
 
         // Call our stunt event
-        CLuaArguments Arguments;
-        Arguments.PushString("wheelie");
-        Arguments.PushNumber(ulLastBikeRearWheelCounter);
-        Arguments.PushNumber(fDistance);
+        CValues Arguments;
+        Arguments.Push("wheelie");
+        Arguments.Push(ulLastBikeRearWheelCounter);
+        Arguments.Push(fDistance);
         m_pLocalPlayer->CallEvent("onClientPlayerStuntFinish", Arguments, true);
     }
     ulLastBikeRearWheelCounter = ulTemp;
@@ -1917,8 +1917,8 @@ void CClientGame::UpdateStunts()
     if (ulLastBikeFrontWheelCounter == 0 && ulTemp != 0)
     {
         // Call our stunt event
-        CLuaArguments Arguments;
-        Arguments.PushString("stoppie");
+        CValues Arguments;
+        Arguments.Push("stoppie");
         m_pLocalPlayer->CallEvent("onClientPlayerStuntStart", Arguments, true);
     }
     // Did we finish a stunt?
@@ -1927,10 +1927,10 @@ void CClientGame::UpdateStunts()
         float fDistance = g_pGame->GetPlayerInfo()->GetBikeFrontWheelDist();
 
         // Call our stunt event
-        CLuaArguments Arguments;
-        Arguments.PushString("stoppie");
-        Arguments.PushNumber(ulLastBikeFrontWheelCounter);
-        Arguments.PushNumber(fDistance);
+        CValues Arguments;
+        Arguments.Push("stoppie");
+        Arguments.Push(ulLastBikeFrontWheelCounter);
+        Arguments.Push(fDistance);
         m_pLocalPlayer->CallEvent("onClientPlayerStuntFinish", Arguments, true);
     }
     ulLastBikeFrontWheelCounter = ulTemp;
@@ -2048,9 +2048,9 @@ bool CClientGame::KeyStrokeHandler(const SString& strKey, bool bState, bool bIsC
         {
             bool bAllow = true;
             // Call our key-stroke event
-            CLuaArguments Arguments;
-            Arguments.PushString(strKey);
-            Arguments.PushBoolean(bState);
+            CValues Arguments;
+            Arguments.Push(strKey);
+            Arguments.Push(bState);
             bAllow = m_pRootEntity->CallEvent("onClientKey", Arguments, false);
             if (bState == true)
             {
@@ -2100,8 +2100,8 @@ bool CClientGame::CharacterKeyHandler(WPARAM wChar)
             SString strANSI = UTF16ToMbUTF8(wUNICODE);
 
             // Call our character event
-            CLuaArguments Arguments;
-            Arguments.PushString(strANSI);
+            CValues Arguments;
+            Arguments.Push(strANSI);
             m_pRootEntity->CallEvent("onClientCharacter", Arguments, false);
         }
     }
@@ -2294,18 +2294,18 @@ bool CClientGame::ProcessMessageForCursorEvents(HWND hwnd, UINT uMsg, WPARAM wPa
                             vecCollision.fZ = 0;
 
                         // Call the event for the client
-                        CLuaArguments Arguments;
-                        Arguments.PushString(szButton);
-                        Arguments.PushString(szState);
-                        Arguments.PushNumber(vecCursorPosition.fX);
-                        Arguments.PushNumber(vecCursorPosition.fY);
-                        Arguments.PushNumber(vecCollision.fX);
-                        Arguments.PushNumber(vecCollision.fY);
-                        Arguments.PushNumber(vecCollision.fZ);
+                        CValues Arguments;
+                        Arguments.Push(szButton);
+                        Arguments.Push(szState);
+                        Arguments.Push(vecCursorPosition.fX);
+                        Arguments.Push(vecCursorPosition.fY);
+                        Arguments.Push(vecCollision.fX);
+                        Arguments.Push(vecCollision.fY);
+                        Arguments.Push(vecCollision.fZ);
                         if (pCollisionEntity)
-                            Arguments.PushElement(pCollisionEntity);
+                            Arguments.Push(pCollisionEntity);
                         else
-                            Arguments.PushBoolean(false);
+                            Arguments.Push(false);
                         m_pRootEntity->CallEvent("onClientClick", Arguments, false);
 
                         // Send the button, cursor position, 3d position and the entity collided with
@@ -2339,17 +2339,17 @@ bool CClientGame::ProcessMessageForCursorEvents(HWND hwnd, UINT uMsg, WPARAM wPa
                             if ((GetTickCount32() - m_ulLastClickTick) < DOUBLECLICK_TIMEOUT && vecDelta.Length() <= DOUBLECLICK_MOVE_THRESHOLD)
                             {
                                 // Call the event for the client
-                                CLuaArguments DoubleClickArguments;
-                                DoubleClickArguments.PushString(szButton);
-                                DoubleClickArguments.PushNumber(vecCursorPosition.fX);
-                                DoubleClickArguments.PushNumber(vecCursorPosition.fY);
-                                DoubleClickArguments.PushNumber(vecCollision.fX);
-                                DoubleClickArguments.PushNumber(vecCollision.fY);
-                                DoubleClickArguments.PushNumber(vecCollision.fZ);
+                                CValues DoubleClickArguments;
+                                DoubleClickArguments.Push(szButton);
+                                DoubleClickArguments.Push(vecCursorPosition.fX);
+                                DoubleClickArguments.Push(vecCursorPosition.fY);
+                                DoubleClickArguments.Push(vecCollision.fX);
+                                DoubleClickArguments.Push(vecCollision.fY);
+                                DoubleClickArguments.Push(vecCollision.fZ);
                                 if (pCollisionEntity)
-                                    DoubleClickArguments.PushElement(pCollisionEntity);
+                                    DoubleClickArguments.Push(pCollisionEntity);
                                 else
-                                    DoubleClickArguments.PushBoolean(false);
+                                    DoubleClickArguments.Push(false);
                                 m_pRootEntity->CallEvent("onClientDoubleClick", DoubleClickArguments, false);
                             }
 
@@ -2380,14 +2380,14 @@ bool CClientGame::ProcessMessageForCursorEvents(HWND hwnd, UINT uMsg, WPARAM wPa
                 g_pCore->GetGraphics()->CalcWorldCoors(&vecScreen, &vecTarget);
 
                 // Call the onClientCursorMove event
-                CLuaArguments Arguments;
-                Arguments.PushNumber((double)vecCursorPosition.fX);
-                Arguments.PushNumber((double)vecCursorPosition.fY);
-                Arguments.PushNumber((double)iX);
-                Arguments.PushNumber((double)iY);
-                Arguments.PushNumber((double)vecTarget.fX);
-                Arguments.PushNumber((double)vecTarget.fY);
-                Arguments.PushNumber((double)vecTarget.fZ);
+                CValues Arguments;
+                Arguments.Push((double)vecCursorPosition.fX);
+                Arguments.Push((double)vecCursorPosition.fY);
+                Arguments.Push((double)iX);
+                Arguments.Push((double)iY);
+                Arguments.Push((double)vecTarget.fX);
+                Arguments.Push((double)vecTarget.fY);
+                Arguments.Push((double)vecTarget.fZ);
                 m_pRootEntity->CallEvent("onClientCursorMove", Arguments, false);
             }
             break;
@@ -3220,8 +3220,8 @@ void CClientGame::QuitPlayer(CClientPlayer* pPlayer, eQuitReason Reason)
 #endif
 
     // Call our onClientPlayerQuit event
-    CLuaArguments Arguments;
-    Arguments.PushString(szReason);
+    CValues Arguments;
+    Arguments.Push(szReason);
     pPlayer->CallEvent("onClientPlayerQuit", Arguments, true);
 
     // Detach the camera from this player if we're watching them
@@ -3345,8 +3345,8 @@ void CClientGame::SetupGlobalLuaEvents()
             return;
 
         // Call event now
-        CLuaArguments args;
-        args.PushString(clipboardText);
+        CValues args;
+        args.Push(clipboardText);
         m_pRootEntity->CallEvent("onClientPaste", args, false);
     });
 }
@@ -3650,8 +3650,8 @@ void CClientGame::ProjectileInitiateHandler(CClientProjectile* pProjectile)
     pProjectile->SetParent(m_pRootEntity);
 
     // Call our creation event
-    CLuaArguments Arguments;
-    Arguments.PushElement(pProjectile->GetCreator());
+    CValues Arguments;
+    Arguments.Push(pProjectile->GetCreator());
     pProjectile->CallEvent("onClientProjectileCreation", Arguments, true);
 }
 
@@ -3679,14 +3679,14 @@ void CClientGame::PostWorldProcessHandler()
     m_uiFrameCount++;
 
     // Call onClientPreRender LUA event
-    CLuaArguments Arguments;
-    Arguments.PushNumber(dTimeSlice);
+    CValues Arguments;
+    Arguments.Push(dTimeSlice);
     m_pRootEntity->CallEvent("onClientPreRender", Arguments, false);
 }
 
 void CClientGame::PostWorldProcessPedsAfterPreRenderHandler()
 {
-    CLuaArguments Arguments;
+    CValues Arguments;
     m_pRootEntity->CallEvent("onClientPedsProcessed", Arguments, false);
 }
 
@@ -3699,7 +3699,7 @@ void CClientGame::IdleHandler()
         {
             m_bWasMinimized = true;
             // Call onClientMinimize LUA event
-            CLuaArguments Arguments;
+            CValues Arguments;
             m_pRootEntity->CallEvent("onClientMinimize", Arguments, false);
 
             bool bMuteAll = g_pCore->GetCVars()->GetValue<bool>("mute_master_when_minimized");
@@ -3729,8 +3729,8 @@ bool CClientGame::ChokingHandler(unsigned char ucWeaponType)
 {
     if (!m_pLocalPlayer)
         return true;
-    CLuaArguments Arguments;
-    Arguments.PushNumber(ucWeaponType);
+    CValues Arguments;
+    Arguments.Push(ucWeaponType);
     return m_pLocalPlayer->CallEvent("onClientPlayerChoke", Arguments, true);
 }
 
@@ -4193,14 +4193,14 @@ bool CClientGame::ApplyPedDamageFromGame(eWeaponType weaponUsed, float fDamage, 
         g_ucApplyDamageLastHitZone = hitZone;
         g_pApplyDamageLastDamagedPed = pDamagedPed;
 
-        CLuaArguments Arguments;
+        CValues Arguments;
         if (pInflictingEntity)
-            Arguments.PushElement(pInflictingEntity);
+            Arguments.Push(pInflictingEntity);
         else
-            Arguments.PushBoolean(false);
-        Arguments.PushNumber(static_cast<unsigned char>(weaponUsed));
-        Arguments.PushNumber(static_cast<unsigned char>(hitZone));
-        Arguments.PushNumber(fDamage);
+            Arguments.Push(false);
+        Arguments.Push(static_cast<unsigned char>(weaponUsed));
+        Arguments.Push(static_cast<unsigned char>(hitZone));
+        Arguments.Push(fDamage);
 
         // Call our event
         if ((IS_PLAYER(pDamagedPed) && !pDamagedPed->CallEvent("onClientPlayerDamage", Arguments, true)) ||
@@ -4367,10 +4367,10 @@ void CClientGame::DeathHandler(CPed* pKilledPedSA, unsigned char ucDeathReason, 
     pKilledPed->SetHealth(0.0f);
 
     // Call Lua
-    CLuaArguments Arguments;
-    Arguments.PushBoolean(false);
-    Arguments.PushNumber(ucDeathReason);
-    Arguments.PushNumber(ucBodyPart);
+    CValues Arguments;
+    Arguments.Push(false);
+    Arguments.Push(ucDeathReason);
+    Arguments.Push(ucBodyPart);
 
     pKilledPed->CallEvent("onClientPedWasted", Arguments, true);
 
@@ -4396,25 +4396,25 @@ bool CClientGame::VehicleCollisionHandler(CVehicleSAInterface*& pCollidingVehicl
             CClientVehicle* pClientVehicle = static_cast<CClientVehicle*>(pVehicleClientEntity);
             CClientEntity*  pCollidedWithClientEntity = pPools->GetClientEntity((DWORD*)pCollidedWith);
 
-            CLuaArguments Arguments;
+            CValues Arguments;
             if (pCollidedWithClientEntity)
             {
-                Arguments.PushElement(pCollidedWithClientEntity);
+                Arguments.Push(pCollidedWithClientEntity);
             }
             else
             {
                 Arguments.PushNil();
             }
-            Arguments.PushNumber(fDamageImpulseMag);
-            Arguments.PushNumber(usPieceType);
-            Arguments.PushNumber(vecCollisionPos.fX);
-            Arguments.PushNumber(vecCollisionPos.fY);
-            Arguments.PushNumber(vecCollisionPos.fZ);
-            Arguments.PushNumber(vecCollisionVelocity.fX);
-            Arguments.PushNumber(vecCollisionVelocity.fY);
-            Arguments.PushNumber(vecCollisionVelocity.fZ);
-            Arguments.PushNumber(fCollidingDamageImpulseMag);
-            Arguments.PushNumber(iModelIndex);
+            Arguments.Push(fDamageImpulseMag);
+            Arguments.Push(usPieceType);
+            Arguments.Push(vecCollisionPos.fX);
+            Arguments.Push(vecCollisionPos.fY);
+            Arguments.Push(vecCollisionPos.fZ);
+            Arguments.Push(vecCollisionVelocity.fX);
+            Arguments.Push(vecCollisionVelocity.fY);
+            Arguments.Push(vecCollisionVelocity.fZ);
+            Arguments.Push(fCollidingDamageImpulseMag);
+            Arguments.Push(iModelIndex);
 
             pVehicleClientEntity->CallEvent("onClientVehicleCollision", Arguments, true);
 
@@ -4503,11 +4503,11 @@ bool CClientGame::HeliKillHandler(CVehicleSAInterface* pHeliInterface, CEntitySA
                         return false;
                 }
 
-                CLuaArguments Arguments;
+                CValues Arguments;
                 if (pClientHeli)
                 {
                     // Push our heli
-                    Arguments.PushElement(pClientHeli);
+                    Arguments.Push(pClientHeli);
                 }
                 else
                 {
@@ -4558,21 +4558,21 @@ bool CClientGame::VehicleDamageHandler(CEntitySAInterface* pVehicleInterface, fl
 
         // Compose arguments
         // attacker, weapon, loss, damagepos, tyreIdx
-        CLuaArguments Arguments;
+        CValues Arguments;
         if (pClientAttacker)
-            Arguments.PushElement(pClientAttacker);
+            Arguments.Push(pClientAttacker);
         else
             Arguments.PushNil();
         if (weaponType != WEAPONTYPE_INVALID)
-            Arguments.PushNumber(weaponType);
+            Arguments.Push(weaponType);
         else
             Arguments.PushNil();
-        Arguments.PushNumber(fLoss);
-        Arguments.PushNumber(vecDamagePos.fX);
-        Arguments.PushNumber(vecDamagePos.fY);
-        Arguments.PushNumber(vecDamagePos.fZ);
+        Arguments.Push(fLoss);
+        Arguments.Push(vecDamagePos.fX);
+        Arguments.Push(vecDamagePos.fY);
+        Arguments.Push(vecDamagePos.fZ);
         if (ucTyre != UCHAR_INVALID_INDEX)
-            Arguments.PushNumber(ucTyre);
+            Arguments.Push(ucTyre);
         else
             Arguments.PushNil();
 
@@ -4598,12 +4598,12 @@ bool CClientGame::ObjectDamageHandler(CObjectSAInterface* pObjectInterface, floa
             {
                 return true;
             }
-            CLuaArguments Arguments;
-            Arguments.PushNumber(fLoss);
+            CValues Arguments;
+            Arguments.Push(fLoss);
 
             CClientEntity* pClientAttacker = pPools->GetClientEntity((DWORD*)pAttackerInterface);
             if (pClientAttacker)
-                Arguments.PushElement(pClientAttacker);
+                Arguments.Push(pClientAttacker);
             else
                 Arguments.PushNil();
 
@@ -4633,11 +4633,11 @@ bool CClientGame::ObjectBreakHandler(CObjectSAInterface* pObjectInterface, CEnti
             // Apply to MTA's "internal storage", too
             pClientObject->SetHealth(0.0f);
 
-            CLuaArguments Arguments;
+            CValues Arguments;
 
             CClientEntity* pClientAttacker = pPools->GetClientEntity((DWORD*)pAttackerInterface);
             if (pClientAttacker)
-                Arguments.PushElement(pClientAttacker);
+                Arguments.Push(pClientAttacker);
             else
                 Arguments.PushNil();
 
@@ -4655,7 +4655,7 @@ bool CClientGame::WaterCannonHitHandler(CVehicleSAInterface* pCannonVehicle, CPe
         SClientEntity<CVehicleSA>* pVehicleEntity = pPools->GetVehicle((DWORD*)pCannonVehicle);
         if (pVehicleEntity)
         {
-            CLuaArguments Arguments;
+            CValues Arguments;
 
             CClientVehicle* pCannonClientVehicle = reinterpret_cast<CClientVehicle*>(pVehicleEntity->pClientEntity);
             if (!pCannonClientVehicle)
@@ -4670,7 +4670,7 @@ bool CClientGame::WaterCannonHitHandler(CVehicleSAInterface* pCannonVehicle, CPe
                 pClientPed = reinterpret_cast<CClientPed*>(pPedEntity->pClientEntity);
                 if (pClientPed)
                 {
-                    Arguments.PushElement(pClientPed);
+                    Arguments.Push(pClientPed);
                 }
             }
             else
@@ -4950,15 +4950,15 @@ void CClientGame::PostWeaponFire()
                 }
 
                 // Call our lua event
-                CLuaArguments Arguments;
-                Arguments.PushNumber((double)pWeapon->GetType());
-                Arguments.PushNumber((double)pWeapon->GetAmmoTotal());
-                Arguments.PushNumber((double)pWeapon->GetAmmoInClip());
-                Arguments.PushNumber((double)vecCollision.fX);
-                Arguments.PushNumber((double)vecCollision.fY);
-                Arguments.PushNumber((double)vecCollision.fZ);
+                CValues Arguments;
+                Arguments.Push((double)pWeapon->GetType());
+                Arguments.Push((double)pWeapon->GetAmmoTotal());
+                Arguments.Push((double)pWeapon->GetAmmoInClip());
+                Arguments.Push((double)vecCollision.fX);
+                Arguments.Push((double)vecCollision.fY);
+                Arguments.Push((double)vecCollision.fZ);
                 if (pCollisionEntity)
-                    Arguments.PushElement(pCollisionEntity);
+                    Arguments.Push(pCollisionEntity);
                 else
                     Arguments.PushNil();
 
@@ -4966,9 +4966,9 @@ void CClientGame::PostWeaponFire()
                 {
                     CVector vecOrigin;
                     pPed->GetShotData(&vecOrigin);
-                    Arguments.PushNumber((double)vecOrigin.fX);
-                    Arguments.PushNumber((double)vecOrigin.fY);
-                    Arguments.PushNumber((double)vecOrigin.fZ);
+                    Arguments.Push((double)vecOrigin.fX);
+                    Arguments.Push((double)vecOrigin.fY);
+                    Arguments.Push((double)vecOrigin.fZ);
                     pPed->CallEvent("onClientPlayerWeaponFire", Arguments, true);
                 }
                 else
@@ -5438,20 +5438,20 @@ void CClientGame::DoWastedCheck(ElementID damagerID, unsigned char ucWeapon, uns
 
             // Call the onClientPlayerWasted event
             CClientEntity* pKiller = (damagerID != INVALID_ELEMENT_ID) ? CElementIDs::GetElement(damagerID) : NULL;
-            CLuaArguments  Arguments;
+            CValues  Arguments;
             if (pKiller)
-                Arguments.PushElement(pKiller);
+                Arguments.Push(pKiller);
             else
-                Arguments.PushBoolean(false);
+                Arguments.Push(false);
             if (ucWeapon != 0xFF)
-                Arguments.PushNumber(ucWeapon);
+                Arguments.Push(ucWeapon);
             else
-                Arguments.PushBoolean(false);
+                Arguments.Push(false);
             if (ucBodyPiece != 0xFF)
-                Arguments.PushNumber(ucBodyPiece);
+                Arguments.Push(ucBodyPiece);
             else
-                Arguments.PushBoolean(false);
-            Arguments.PushBoolean(false);
+                Arguments.Push(false);
+            Arguments.Push(false);
             m_pLocalPlayer->CallEvent("onClientPlayerWasted", Arguments, true);
 
             // Write some death info
@@ -5518,11 +5518,11 @@ bool CClientGame::OnMouseClick(CGUIMouseEventArgs Args)
 
     if (szButton)
     {
-        CLuaArguments Arguments;
-        Arguments.PushString(szButton);
-        Arguments.PushString(szState);
-        Arguments.PushNumber(Args.position.fX);
-        Arguments.PushNumber(Args.position.fY);
+        CValues Arguments;
+        Arguments.Push(szButton);
+        Arguments.Push(szState);
+        Arguments.Push(Args.position.fX);
+        Arguments.Push(Args.position.fY);
 
         CClientGUIElement* pGUIElement = CGUI_GET_CCLIENTGUIELEMENT(Args.pWindow);
         if (GetGUIManager()->Exists(pGUIElement))
@@ -5559,11 +5559,11 @@ bool CClientGame::OnMouseDoubleClick(CGUIMouseEventArgs Args)
 
     if (szButton)
     {
-        CLuaArguments Arguments;
-        Arguments.PushString(szButton);
-        Arguments.PushString(szState);
-        Arguments.PushNumber(Args.position.fX);
-        Arguments.PushNumber(Args.position.fY);
+        CValues Arguments;
+        Arguments.Push(szButton);
+        Arguments.Push(szState);
+        Arguments.Push(Args.position.fX);
+        Arguments.Push(Args.position.fY);
 
         CClientGUIElement* pGUIElement = CGUI_GET_CCLIENTGUIELEMENT(Args.pWindow);
         if (GetGUIManager()->Exists(pGUIElement))
@@ -5596,10 +5596,10 @@ bool CClientGame::OnMouseButtonDown(CGUIMouseEventArgs Args)
 
     if (szButton)
     {
-        CLuaArguments Arguments;
-        Arguments.PushString(szButton);
-        Arguments.PushNumber(Args.position.fX);
-        Arguments.PushNumber(Args.position.fY);
+        CValues Arguments;
+        Arguments.Push(szButton);
+        Arguments.Push(Args.position.fX);
+        Arguments.Push(Args.position.fY);
 
         CClientGUIElement* pGUIElement = CGUI_GET_CCLIENTGUIELEMENT(Args.pWindow);
         if (GetGUIManager()->Exists(pGUIElement))
@@ -5632,10 +5632,10 @@ bool CClientGame::OnMouseButtonUp(CGUIMouseEventArgs Args)
 
     if (szButton)
     {
-        CLuaArguments Arguments;
-        Arguments.PushString(szButton);
-        Arguments.PushNumber(Args.position.fX);
-        Arguments.PushNumber(Args.position.fY);
+        CValues Arguments;
+        Arguments.Push(szButton);
+        Arguments.Push(Args.position.fX);
+        Arguments.Push(Args.position.fY);
 
         CClientGUIElement* pGUIElement = CGUI_GET_CCLIENTGUIELEMENT(Args.pWindow);
         if (GetGUIManager()->Exists(pGUIElement))
@@ -5652,9 +5652,9 @@ bool CClientGame::OnMouseMove(CGUIMouseEventArgs Args)
     if (!Args.pWindow)
         return false;
 
-    CLuaArguments Arguments;
-    Arguments.PushNumber(Args.position.fX);
-    Arguments.PushNumber(Args.position.fY);
+    CValues Arguments;
+    Arguments.Push(Args.position.fX);
+    Arguments.Push(Args.position.fY);
 
     CClientGUIElement* pGUIElement = CGUI_GET_CCLIENTGUIELEMENT(Args.pWindow);
     if (GetGUIManager()->Exists(pGUIElement))
@@ -5668,14 +5668,14 @@ bool CClientGame::OnMouseEnter(CGUIMouseEventArgs Args)
     if (!Args.pWindow)
         return false;
 
-    CLuaArguments Arguments;
-    Arguments.PushNumber(Args.position.fX);
-    Arguments.PushNumber(Args.position.fY);
+    CValues Arguments;
+    Arguments.Push(Args.position.fX);
+    Arguments.Push(Args.position.fY);
     if (Args.pSwitchedWindow)
     {
         CClientGUIElement* pGUISwitchedElement = CGUI_GET_CCLIENTGUIELEMENT(Args.pSwitchedWindow);
         if (GetGUIManager()->Exists(pGUISwitchedElement))
-            Arguments.PushElement(pGUISwitchedElement);
+            Arguments.Push(pGUISwitchedElement);
     }
 
     CClientGUIElement* pGUIElement = CGUI_GET_CCLIENTGUIELEMENT(Args.pWindow);
@@ -5690,14 +5690,14 @@ bool CClientGame::OnMouseLeave(CGUIMouseEventArgs Args)
     if (!Args.pWindow)
         return false;
 
-    CLuaArguments Arguments;
-    Arguments.PushNumber(Args.position.fX);
-    Arguments.PushNumber(Args.position.fY);
+    CValues Arguments;
+    Arguments.Push(Args.position.fX);
+    Arguments.Push(Args.position.fY);
     if (Args.pSwitchedWindow)
     {
         CClientGUIElement* pGUISwitchedElement = CGUI_GET_CCLIENTGUIELEMENT(Args.pSwitchedWindow);
         if (GetGUIManager()->Exists(pGUISwitchedElement))
-            Arguments.PushElement(pGUISwitchedElement);
+            Arguments.Push(pGUISwitchedElement);
     }
 
     CClientGUIElement* pGUIElement = CGUI_GET_CCLIENTGUIELEMENT(Args.pWindow);
@@ -5712,8 +5712,8 @@ bool CClientGame::OnMouseWheel(CGUIMouseEventArgs Args)
     if (!Args.pWindow)
         return false;
 
-    CLuaArguments Arguments;
-    Arguments.PushNumber(Args.wheelChange);
+    CValues Arguments;
+    Arguments.Push(Args.wheelChange);
 
     CClientGUIElement* pGUIElement = CGUI_GET_CCLIENTGUIELEMENT(Args.pWindow);
     if (GetGUIManager()->Exists(pGUIElement))
@@ -5727,7 +5727,7 @@ bool CClientGame::OnMove(CGUIElement* pElement)
     if (!pElement)
         return false;
 
-    CLuaArguments Arguments;
+    CValues Arguments;
 
     CClientGUIElement* pGUIElement = CGUI_GET_CCLIENTGUIELEMENT(pElement);
     if (pGUIElement && GetGUIManager()->Exists(pGUIElement))
@@ -5741,7 +5741,7 @@ bool CClientGame::OnSize(CGUIElement* pElement)
     if (!pElement)
         return false;
 
-    CLuaArguments Arguments;
+    CValues Arguments;
 
     CClientGUIElement* pGUIElement = CGUI_GET_CCLIENTGUIELEMENT(pElement);
     if (GetGUIManager()->Exists(pGUIElement))
@@ -5755,7 +5755,7 @@ bool CClientGame::OnFocusGain(CGUIFocusEventArgs Args)
     if (!Args.pActivatedWindow)
         return false;
 
-    CLuaArguments Arguments;
+    CValues Arguments;
 
     CClientGUIElement* pActivatedGUIElement = CGUI_GET_CCLIENTGUIELEMENT(Args.pActivatedWindow);
 
@@ -5777,7 +5777,7 @@ bool CClientGame::OnFocusLoss(CGUIFocusEventArgs Args)
     if (!Args.pDeactivatedWindow)
         return false;
 
-    CLuaArguments Arguments;
+    CValues Arguments;
 
     if (Args.pActivatedWindow)
     {
@@ -6189,12 +6189,12 @@ bool CClientGame::WorldSoundHandler(const SWorldSoundEvent& event)
         CClientEntity* pEntity = pPools->GetClientEntity((DWORD*)event.pGameEntity);
         if (pEntity)
         {
-            CLuaArguments Arguments;
-            Arguments.PushNumber(event.uiGroup);
-            Arguments.PushNumber(event.uiIndex);
-            Arguments.PushNumber(event.vecPosition.fX);
-            Arguments.PushNumber(event.vecPosition.fY);
-            Arguments.PushNumber(event.vecPosition.fZ);
+            CValues Arguments;
+            Arguments.Push(event.uiGroup);
+            Arguments.Push(event.uiIndex);
+            Arguments.Push(event.vecPosition.fX);
+            Arguments.Push(event.vecPosition.fY);
+            Arguments.Push(event.vecPosition.fZ);
             return pEntity->CallEvent("onClientWorldSound", Arguments, true);
         }
     }
@@ -6443,16 +6443,16 @@ void CClientGame::SetFileCacheRoot()
 
 bool CClientGame::TriggerBrowserRequestResultEvent(const std::unordered_set<SString>& newPages)
 {
-    CLuaArguments Arguments;
-    CLuaArguments LuaTable;
+    CValues Arguments;
+    CValues LuaTable;
     int           i = 0;
 
     for (auto& domain : newPages)
     {
-        LuaTable.PushNumber(++i);
-        LuaTable.PushString(domain);
+        LuaTable.Push(++i);
+        LuaTable.Push(domain);
     }
-    Arguments.PushTable(&LuaTable);
+    Arguments.Push(&LuaTable);
 
     return GetRootEntity()->CallEvent("onClientBrowserWhitelistChange", Arguments, false);
 }
@@ -6622,12 +6622,12 @@ void CClientGame::InsertRunNamedAnimTaskToMap(class CTaskSimpleRunNamedAnimSAInt
 
 void CClientGame::PedStepHandler(CPedSAInterface* pPedSA, bool bFoot)
 {
-    CLuaArguments Arguments;
+    CValues Arguments;
     CPools*       pPools = g_pGame->GetPools();
     CClientPed*   pClientPed = DynamicCast<CClientPed>(pPools->GetClientEntity((DWORD*)pPedSA));
     if (pClientPed)
     {
-        Arguments.PushBoolean(bFoot);
+        Arguments.Push(bFoot);
         pClientPed->CallEvent("onClientPedStep", Arguments, true);
     }
 }
@@ -6649,19 +6649,19 @@ void CClientGame::VehicleWeaponHitHandler(SVehicleWeaponHitEvent& event)
 
     CClientEntity* pEntity = event.pHitGameEntity ? pPools->GetClientEntity((DWORD*)event.pHitGameEntity) : nullptr;
 
-    CLuaArguments arguments;
-    arguments.PushNumber(static_cast<int>(event.weaponType));
+    CValues arguments;
+    arguments.Push(static_cast<int>(event.weaponType));
 
     if (pEntity)
-        arguments.PushElement(pEntity);
+        arguments.Push(pEntity);
     else
-        arguments.PushBoolean(false);
+        arguments.Push(false);
 
-    arguments.PushNumber(event.vecPosition.fX);
-    arguments.PushNumber(event.vecPosition.fY);
-    arguments.PushNumber(event.vecPosition.fZ);
-    arguments.PushNumber(event.iModel);
-    arguments.PushNumber(event.iColSurface);
+    arguments.Push(event.vecPosition.fX);
+    arguments.Push(event.vecPosition.fY);
+    arguments.Push(event.vecPosition.fZ);
+    arguments.Push(event.iModel);
+    arguments.Push(event.iColSurface);
     pVehicle->CallEvent("onClientVehicleWeaponHit", arguments, false);
 }
 

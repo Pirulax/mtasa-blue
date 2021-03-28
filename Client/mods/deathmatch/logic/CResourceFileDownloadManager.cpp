@@ -84,11 +84,11 @@ void CResourceFileDownloadManager::UpdatePendingDownloads()
             BeginResourceFileDownload(pResourceFile, 0);
 
             // Call Lua event 'onClientResourceFileDownload'
-            CLuaArguments arguments;
-            arguments.PushResource(pResourceFile->GetResource());
-            arguments.PushString(pResourceFile->GetShortName());
-            arguments.PushNumber(pResourceFile->GetDownloadSize());
-            arguments.PushString("queued");
+            CValues arguments;
+            arguments.Push(pResourceFile->GetResource());
+            arguments.Push(pResourceFile->GetShortName());
+            arguments.Push(pResourceFile->GetDownloadSize());
+            arguments.Push("queued");
 
             CClientEntity* resourceEntity = pResourceFile->GetResource()->GetResourceEntity();
             resourceEntity->CallEvent("onClientResourceFileDownload", arguments, false);
@@ -152,9 +152,9 @@ void CResourceFileDownloadManager::DoPulse()
     GetTransferBox()->DoPulse();
 
     // Call Lua event 'onClientTransferBoxProgressChange'
-    CLuaArguments arguments;
-    arguments.PushNumber(uiDownloadedSizeTotal);
-    arguments.PushNumber(GetTransferBox()->GetDownloadTotalSize());
+    CValues arguments;
+    arguments.Push(uiDownloadedSizeTotal);
+    arguments.Push(GetTransferBox()->GetDownloadTotalSize());
 
     g_pClientGame->GetRootEntity()->CallEvent("onClientTransferBoxProgressChange", arguments, false);
 
@@ -168,8 +168,8 @@ void CResourceFileDownloadManager::DoPulse()
             GetTransferBox()->Hide();
 
             // Call Lua event 'onClientTransferBoxVisibilityChange'
-            CLuaArguments arguments;
-            arguments.PushBoolean(false);
+            CValues arguments;
+            arguments.Push(false);
 
             g_pClientGame->GetRootEntity()->CallEvent("onClientTransferBoxVisibilityChange", arguments, false);
         }
@@ -200,8 +200,8 @@ void CResourceFileDownloadManager::AddDownloadSize(int iSize)
         }
 
         // Call Lua event 'onClientTransferBoxVisibilityChange'
-        CLuaArguments arguments;
-        arguments.PushBoolean(true);
+        CValues arguments;
+        arguments.Push(true);
 
         g_pClientGame->GetRootEntity()->CallEvent("onClientTransferBoxVisibilityChange", arguments, false);
     }
@@ -299,11 +299,11 @@ void CResourceFileDownloadManager::DownloadFinished(const SHttpDownloadResult& r
     CDownloadableResource* pResourceFile = *iter;
 
     // Call Lua event 'onClientResourceFileDownload'
-    CLuaArguments arguments;
-    arguments.PushResource(pResourceFile->GetResource());
-    arguments.PushString(pResourceFile->GetShortName());
-    arguments.PushNumber(pResourceFile->GetDownloadSize());
-    arguments.PushString(result.bSuccess ? "finished" : "failed");
+    CValues arguments;
+    arguments.Push(pResourceFile->GetResource());
+    arguments.Push(pResourceFile->GetShortName());
+    arguments.Push(pResourceFile->GetDownloadSize());
+    arguments.Push(result.bSuccess ? "finished" : "failed");
 
     CClientEntity* resourceEntity = pResourceFile->GetResource()->GetResourceEntity();
     resourceEntity->CallEvent("onClientResourceFileDownload", arguments, false);

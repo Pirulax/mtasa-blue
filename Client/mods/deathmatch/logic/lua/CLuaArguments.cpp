@@ -20,18 +20,18 @@ using namespace std;
 
 extern CClientGame* g_pClientGame;
 
-CLuaArguments::CLuaArguments(NetBitStreamInterface& bitStream, std::vector<CLuaArguments*>* pKnownTables)
+CValues::CValues(NetBitStreamInterface& bitStream, std::vector<CValues*>* pKnownTables)
 {
-    ReadFromBitStream(bitStream, pKnownTables);
+    Read(bitStream, pKnownTables);
 }
 
-CLuaArguments::CLuaArguments(const CLuaArguments& Arguments, CFastHashMap<CLuaArguments*, CLuaArguments*>* pKnownTables)
+CValues::CValues(const CValues& Arguments, CFastHashMap<CValues*, CValues*>* pKnownTables)
 {
     // Copy all the arguments
     CopyRecursive(Arguments, pKnownTables);
 }
 
-CLuaArgument* CLuaArguments::operator[](const unsigned int uiPosition) const
+CValue* CValues::operator[](const unsigned int uiPosition) const
 {
     if (uiPosition < m_Arguments.size())
         return m_Arguments.at(uiPosition);
@@ -39,7 +39,7 @@ CLuaArgument* CLuaArguments::operator[](const unsigned int uiPosition) const
 }
 
 // Slow if used with a constructor as it does a copy twice
-const CLuaArguments& CLuaArguments::operator=(const CLuaArguments& Arguments)
+const CValues& CValues::operator=(const CValues& Arguments)
 {
     CopyRecursive(Arguments);
 
@@ -47,7 +47,7 @@ const CLuaArguments& CLuaArguments::operator=(const CLuaArguments& Arguments)
     return Arguments;
 }
 
-void CLuaArguments::CopyRecursive(const CLuaArguments& Arguments, CFastHashMap<CLuaArguments*, CLuaArguments*>* pKnownTables)
+void CValues::CopyRecursive(const CValues& Arguments, CFastHashMap<CValues*, CValues*>* pKnownTables)
 {
     // Clear our previous list if any
     DeleteArguments();
@@ -55,17 +55,17 @@ void CLuaArguments::CopyRecursive(const CLuaArguments& Arguments, CFastHashMap<C
     bool bKnownTablesCreated = false;
     if (!pKnownTables)
     {
-        pKnownTables = new CFastHashMap<CLuaArguments*, CLuaArguments*>();
+        pKnownTables = new CFastHashMap<CValues*, CValues*>();
         bKnownTablesCreated = true;
     }
 
-    pKnownTables->insert(std::make_pair((CLuaArguments*)&Arguments, (CLuaArguments*)this));
+    pKnownTables->insert(std::make_pair((CValues*)&Arguments, (CValues*)this));
 
     // Copy all the arguments
-    vector<CLuaArgument*>::const_iterator iter = Arguments.m_Arguments.begin();
+    vector<CValue*>::const_iterator iter = Arguments.m_Arguments.begin();
     for (; iter != Arguments.m_Arguments.end(); iter++)
     {
-        CLuaArgument* pArgument = new CLuaArgument(**iter, pKnownTables);
+        CValue* pArgument = new CValue(**iter, pKnownTables);
         m_Arguments.push_back(pArgument);
     }
 
@@ -73,30 +73,30 @@ void CLuaArguments::CopyRecursive(const CLuaArguments& Arguments, CFastHashMap<C
         delete pKnownTables;
 }
 
-void CLuaArguments::ReadArguments(lua_State* luaVM, signed int uiIndexBegin)
+void CValues::ReadAll(lua_State* luaVM, signed int uiIndexBegin)
 {
     // Delete the previous arguments if any
     DeleteArguments();
 
-    CFastHashMap<const void*, CLuaArguments*> knownTables;
+    CFastHashMap<const void*, CValues*> knownTables;
 
     // Start reading arguments until there are none left
     while (lua_type(luaVM, uiIndexBegin) != LUA_TNONE)
     {
         // Create an argument, let it read out the argument and add it to our vector
-        CLuaArgument* pArgument = new CLuaArgument(luaVM, uiIndexBegin++, &knownTables);
+        CValue* pArgument = new CValue(luaVM, uiIndexBegin++, &knownTables);
         m_Arguments.push_back(pArgument);
 
         knownTables.clear();
     }
 }
 
-void CLuaArguments::ReadTable(lua_State* luaVM, int iIndexBegin, CFastHashMap<const void*, CLuaArguments*>* pKnownTables)
+void CValues::ReadTable(lua_State* luaVM, int iIndexBegin, CFastHashMap<const void*, CValues*>* pKnownTables)
 {
     bool bKnownTablesCreated = false;
     if (!pKnownTables)
     {
-        pKnownTables = new CFastHashMap<const void*, CLuaArguments*>();
+        pKnownTables = new CFastHashMap<const void*, CValues*>();
         bKnownTablesCreated = true;
     }
 
@@ -113,10 +113,10 @@ void CLuaArguments::ReadTable(lua_State* luaVM, int iIndexBegin, CFastHashMap<co
     while (lua_next(luaVM, iIndexBegin) != 0)
     {
         /* uses 'key' (at index -2) and 'value' (at index -1) */
-        CLuaArgument* pArgument = new CLuaArgument(luaVM, -2, pKnownTables);
+        CValue* pArgument = new CValue(luaVM, -2, pKnownTables);
         m_Arguments.push_back(pArgument);            // push the key first
 
-        pArgument = new CLuaArgument(luaVM, -1, pKnownTables);
+        pArgument = new CValue(luaVM, -1, pKnownTables);
         m_Arguments.push_back(pArgument);            // then the value
 
         /* removes 'value'; keeps 'key' for next iteration */
@@ -127,23 +127,23 @@ void CLuaArguments::ReadTable(lua_State* luaVM, int iIndexBegin, CFastHashMap<co
         delete pKnownTables;
 }
 
-void CLuaArguments::ReadArgument(lua_State* luaVM, int iIndex)
+void CValues::Read(lua_State* luaVM, int iIndex)
 {
-    CLuaArgument* pArgument = new CLuaArgument(luaVM, iIndex);
+    CValue* pArgument = new CValue(luaVM, iIndex);
     m_Arguments.push_back(pArgument);
 }
 
-void CLuaArguments::PushArguments(lua_State* luaVM) const
+void CValues::Write(lua_State* luaVM) const
 {
     // Push all our arguments
-    vector<CLuaArgument*>::const_iterator iter = m_Arguments.begin();
+    vector<CValue*>::const_iterator iter = m_Arguments.begin();
     for (; iter != m_Arguments.end(); iter++)
     {
         (*iter)->Push(luaVM);
     }
 }
 
-void CLuaArguments::PushAsTable(lua_State* luaVM, CFastHashMap<CLuaArguments*, int>* pKnownTables) const
+void CValues::PushAsTable(lua_State* luaVM, CFastHashMap<CValues*, int>* pKnownTables) const
 {
     // Ensure there is enough space on the Lua stack
     LUA_CHECKSTACK(luaVM, 4);
@@ -151,7 +151,7 @@ void CLuaArguments::PushAsTable(lua_State* luaVM, CFastHashMap<CLuaArguments*, i
     bool bKnownTablesCreated = false;
     if (!pKnownTables)
     {
-        pKnownTables = new CFastHashMap<CLuaArguments*, int>();
+        pKnownTables = new CFastHashMap<CValues*, int>();
         bKnownTablesCreated = true;
 
         lua_newtable(luaVM);
@@ -169,9 +169,9 @@ void CLuaArguments::PushAsTable(lua_State* luaVM, CFastHashMap<CLuaArguments*, i
     lua_pushvalue(luaVM, -3);
     lua_settable(luaVM, -3);
     lua_pop(luaVM, 1);
-    pKnownTables->insert(std::make_pair((CLuaArguments*)this, size));
+    pKnownTables->insert(std::make_pair((CValues*)this, size));
 
-    vector<CLuaArgument*>::const_iterator iter = m_Arguments.begin();
+    vector<CValue*>::const_iterator iter = m_Arguments.begin();
     for (; iter != m_Arguments.end() && (iter + 1) != m_Arguments.end(); iter++)
     {
         (*iter)->Push(luaVM, pKnownTables);            // index
@@ -189,17 +189,17 @@ void CLuaArguments::PushAsTable(lua_State* luaVM, CFastHashMap<CLuaArguments*, i
     }
 }
 
-void CLuaArguments::PushArguments(const CLuaArguments& Arguments)
+void CValues::Write(const CValues& Arguments)
 {
-    vector<CLuaArgument*>::const_iterator iter = Arguments.IterBegin();
+    vector<CValue*>::const_iterator iter = Arguments.IterBegin();
     for (; iter != Arguments.IterEnd(); iter++)
     {
-        CLuaArgument* pArgument = new CLuaArgument(**iter);
+        CValue* pArgument = new CValue(**iter);
         m_Arguments.push_back(pArgument);
     }
 }
 
-bool CLuaArguments::Call(CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction, CLuaArguments* returnValues) const
+bool CValues::Call(CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction, CValues* returnValues) const
 {
     assert(pLuaMain);
     TIMEUS startTime = GetTimeUs();
@@ -212,7 +212,7 @@ bool CLuaArguments::Call(CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction
     lua_getref(luaVM, iLuaFunction.ToInt());
 
     // Push our arguments onto the stack
-    PushArguments(luaVM);
+    Write(luaVM);
 
     // Call the function with our arguments
     pLuaMain->ResetInstructionCount();
@@ -237,7 +237,7 @@ bool CLuaArguments::Call(CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction
         {
             for (int i = -iReturns; i <= -1; i++)
             {
-                returnValues->ReadArgument(luaVM, i);
+                returnValues->Read(luaVM, i);
             }
         }
 
@@ -250,7 +250,7 @@ bool CLuaArguments::Call(CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction
     return true;
 }
 
-bool CLuaArguments::CallGlobal(CLuaMain* pLuaMain, const char* szFunction, CLuaArguments* returnValues) const
+bool CValues::CallGlobal(CLuaMain* pLuaMain, const char* szFunction, CValues* returnValues) const
 {
     assert(pLuaMain);
     assert(szFunction);
@@ -275,7 +275,7 @@ bool CLuaArguments::CallGlobal(CLuaMain* pLuaMain, const char* szFunction, CLuaA
     }
 
     // Push our arguments onto the stack
-    PushArguments(luaVM);
+    Write(luaVM);
 
     // Reset function call timer (checks long-running functions)
     pLuaMain->ResetInstructionCount();
@@ -301,7 +301,7 @@ bool CLuaArguments::CallGlobal(CLuaMain* pLuaMain, const char* szFunction, CLuaA
         {
             for (int i = -iReturns; i <= -1; i++)
             {
-                returnValues->ReadArgument(luaVM, i);
+                returnValues->Read(luaVM, i);
             }
         }
 
@@ -314,73 +314,73 @@ bool CLuaArguments::CallGlobal(CLuaMain* pLuaMain, const char* szFunction, CLuaA
     return true;
 }
 
-CLuaArgument* CLuaArguments::PushNil()
+CValue* CValues::PushNil()
 {
-    CLuaArgument* pArgument = new CLuaArgument;
+    CValue* pArgument = new CValue;
     m_Arguments.push_back(pArgument);
     return pArgument;
 }
 
-CLuaArgument* CLuaArguments::PushBoolean(bool bBool)
+CValue* CValues::Push(bool bBool)
 {
-    CLuaArgument* pArgument = new CLuaArgument();
+    CValue* pArgument = new CValue();
     pArgument->ReadBool(bBool);
     m_Arguments.push_back(pArgument);
     return pArgument;
 }
 
-CLuaArgument* CLuaArguments::PushNumber(double dNumber)
+CValue* CValues::Push(double dNumber)
 {
-    CLuaArgument* pArgument = new CLuaArgument();
+    CValue* pArgument = new CValue();
     pArgument->ReadNumber(dNumber);
     m_Arguments.push_back(pArgument);
     return pArgument;
 }
 
-CLuaArgument* CLuaArguments::PushString(const std::string& strString)
+CValue* CValues::Push(const std::string& strString)
 {
-    CLuaArgument* pArgument = new CLuaArgument();
+    CValue* pArgument = new CValue();
     pArgument->ReadString(strString);
     m_Arguments.push_back(pArgument);
     return pArgument;
 }
 
-CLuaArgument* CLuaArguments::PushResource(CResource* pResource)
+CValue* CValues::Push(CResource* pResource)
 {
-    CLuaArgument* pArgument = new CLuaArgument;
+    CValue* pArgument = new CValue;
     pArgument->ReadScriptID(pResource->GetScriptID());
     m_Arguments.push_back(pArgument);
     return pArgument;
 }
 
-CLuaArgument* CLuaArguments::PushElement(CClientEntity* pElement)
+CValue* CValues::Push(CClientEntity* pElement)
 {
-    CLuaArgument* pArgument = new CLuaArgument;
+    CValue* pArgument = new CValue;
     pArgument->ReadElement(pElement);
     m_Arguments.push_back(pArgument);
     return pArgument;
 }
 
-CLuaArgument* CLuaArguments::PushArgument(const CLuaArgument& Argument)
+CValue* CValues::Push(const CValue& Argument)
 {
-    CLuaArgument* pArgument = new CLuaArgument(Argument);
+    CValue* pArgument = new CValue(Argument);
     m_Arguments.push_back(pArgument);
     return pArgument;
 }
 
-CLuaArgument* CLuaArguments::PushTable(CLuaArguments* table)
+CValue* CValues::Push(CValues* table)
 {
-    CLuaArgument* pArgument = new CLuaArgument();
+    CValue* pArgument = new CValue();
     pArgument->ReadTable(table);
     m_Arguments.push_back(pArgument);
     return pArgument;
 }
 
 // Gets rid of all the arguments in the list
-void CLuaArguments::DeleteArguments()
+void CValues::DeleteArguments()
 {
     // Delete each item
-    vector<CLuaArgument*>::iterator iter = m_Arguments.begin();
+    vector<CValue*>::iterator iter = m_Arguments.begin();
     for (; iter != m_Arguments.end(); iter++)
     {
         delete *iter;
@@ -391,21 +391,21 @@ void CLuaArguments::DeleteArguments()
 }
 
 // Gets rid of the last argument in the list
-void CLuaArguments::Pop()
+void CValues::Pop()
 {
     // Delete the last element
-    CLuaArgument* item = m_Arguments.back();
+    CValue* item = m_Arguments.back();
     delete item;
 
     // Pop it out of the vector
     m_Arguments.pop_back();
 }
 
-void CLuaArguments::ValidateTableKeys()
+void CValues::ValidateTableKeys()
 {
     // Iterate over m_Arguments as pairs
     // If first is LUA_TNIL, then remove pair
-    vector<CLuaArgument*>::iterator iter = m_Arguments.begin();
+    vector<CValue*>::iterator iter = m_Arguments.begin();
     for (; iter != m_Arguments.end();)
     {
         // Check first in pair
@@ -437,12 +437,12 @@ void CLuaArguments::ValidateTableKeys()
     }
 }
 
-bool CLuaArguments::ReadFromBitStream(NetBitStreamInterface& bitStream, std::vector<CLuaArguments*>* pKnownTables)
+bool CValues::Read(NetBitStreamInterface& bitStream, std::vector<CValues*>* pKnownTables)
 {
     bool bKnownTablesCreated = false;
     if (!pKnownTables)
     {
-        pKnownTables = new std::vector<CLuaArguments*>();
+        pKnownTables = new std::vector<CValues*>();
         bKnownTablesCreated = true;
     }
 
@@ -452,7 +452,7 @@ bool CLuaArguments::ReadFromBitStream(NetBitStreamInterface& bitStream, std::vec
         pKnownTables->push_back(this);
         for (unsigned int ui = 0; ui < uiNumArgs; ++ui)
         {
-            CLuaArgument* pArgument = new CLuaArgument(bitStream, pKnownTables);
+            CValue* pArgument = new CValue(bitStream, pKnownTables);
             m_Arguments.push_back(pArgument);
         }
     }
@@ -463,24 +463,24 @@ bool CLuaArguments::ReadFromBitStream(NetBitStreamInterface& bitStream, std::vec
     return true;
 }
 
-bool CLuaArguments::WriteToBitStream(NetBitStreamInterface& bitStream, CFastHashMap<CLuaArguments*, unsigned long>* pKnownTables) const
+bool CValues::Write(NetBitStreamInterface& bitStream, CFastHashMap<CValues*, unsigned long>* pKnownTables) const
 {
     bool bKnownTablesCreated = false;
     if (!pKnownTables)
     {
-        pKnownTables = new CFastHashMap<CLuaArguments*, unsigned long>();
+        pKnownTables = new CFastHashMap<CValues*, unsigned long>();
         bKnownTablesCreated = true;
     }
 
     bool bSuccess = true;
-    pKnownTables->insert(make_pair((CLuaArguments*)this, pKnownTables->size()));
+    pKnownTables->insert(make_pair((CValues*)this, pKnownTables->size()));
     bitStream.WriteCompressed(static_cast<unsigned int>(m_Arguments.size()));
 
-    vector<CLuaArgument*>::const_iterator iter = m_Arguments.begin();
+    vector<CValue*>::const_iterator iter = m_Arguments.begin();
     for (; iter != m_Arguments.end(); iter++)
     {
-        CLuaArgument* pArgument = *iter;
-        if (!pArgument->WriteToBitStream(bitStream, pKnownTables))
+        CValue* pArgument = *iter;
+        if (!pArgument->Write(bitStream, pKnownTables))
         {
             bSuccess = false;
         }
@@ -492,7 +492,7 @@ bool CLuaArguments::WriteToBitStream(NetBitStreamInterface& bitStream, CFastHash
     return bSuccess;
 }
 
-bool CLuaArguments::WriteToJSONString(std::string& strJSON, bool bSerialize, int flags)
+bool CValues::Write(std::string& strJSON, bool bSerialize, int flags)
 {
     json_object* my_array = WriteToJSONArray(bSerialize);
     if (my_array)
@@ -504,13 +504,13 @@ bool CLuaArguments::WriteToJSONString(std::string& strJSON, bool bSerialize, int
     return false;
 }
 
-json_object* CLuaArguments::WriteToJSONArray(bool bSerialize)
+json_object* CValues::WriteToJSONArray(bool bSerialize)
 {
     json_object*                          my_array = json_object_new_array();
-    vector<CLuaArgument*>::const_iterator iter = m_Arguments.begin();
+    vector<CValue*>::const_iterator iter = m_Arguments.begin();
     for (; iter != m_Arguments.end(); iter++)
     {
-        CLuaArgument* pArgument = *iter;
+        CValue* pArgument = *iter;
         json_object*  object = pArgument->WriteToJSONObject(bSerialize);
         if (object)
         {
@@ -524,12 +524,12 @@ json_object* CLuaArguments::WriteToJSONArray(bool bSerialize)
     return my_array;
 }
 
-json_object* CLuaArguments::WriteTableToJSONObject(bool bSerialize, CFastHashMap<CLuaArguments*, unsigned long>* pKnownTables)
+json_object* CValues::WriteTableToJSONObject(bool bSerialize, CFastHashMap<CValues*, unsigned long>* pKnownTables)
 {
     bool bKnownTablesCreated = false;
     if (!pKnownTables)
     {
-        pKnownTables = new CFastHashMap<CLuaArguments*, unsigned long>();
+        pKnownTables = new CFastHashMap<CValues*, unsigned long>();
         bKnownTablesCreated = true;
     }
 
@@ -537,10 +537,10 @@ json_object* CLuaArguments::WriteTableToJSONObject(bool bSerialize, CFastHashMap
 
     bool                                  bIsArray = true;
     unsigned int                          iArrayPos = 1;            // lua arrays are 1 based
-    vector<CLuaArgument*>::const_iterator iter = m_Arguments.begin();
+    vector<CValue*>::const_iterator iter = m_Arguments.begin();
     for (; iter != m_Arguments.end(); iter += 2)
     {
-        CLuaArgument* pArgument = *iter;
+        CValue* pArgument = *iter;
         if (pArgument->GetType() == LUA_TNUMBER)
         {
             double       num = pArgument->GetNumber();
@@ -570,11 +570,11 @@ json_object* CLuaArguments::WriteTableToJSONObject(bool bSerialize, CFastHashMap
     if (bIsArray)
     {
         json_object*                          my_array = json_object_new_array();
-        vector<CLuaArgument*>::const_iterator iter = m_Arguments.begin();
+        vector<CValue*>::const_iterator iter = m_Arguments.begin();
         for (; iter != m_Arguments.end(); iter++)
         {
             iter++;            // skip the key values
-            CLuaArgument* pArgument = *iter;
+            CValue* pArgument = *iter;
             json_object*  object = pArgument->WriteToJSONObject(bSerialize, pKnownTables);
             if (object)
             {
@@ -597,7 +597,7 @@ json_object* CLuaArguments::WriteTableToJSONObject(bool bSerialize, CFastHashMap
         {
             char szKey[255];
             szKey[0] = '\0';
-            CLuaArgument* pArgument = *iter;
+            CValue* pArgument = *iter;
             if (!pArgument->WriteToString(szKey, 255))            // index
                 break;
             iter++;
@@ -619,7 +619,7 @@ json_object* CLuaArguments::WriteTableToJSONObject(bool bSerialize, CFastHashMap
     }
 }
 
-bool CLuaArguments::ReadFromJSONString(const char* szJSON)
+bool CValues::Read(const char* szJSON)
 {
     // Fast isJSON check: Check first non-white space character is '[' or '{'
     for (const char* ptr = szJSON; true;)
@@ -639,12 +639,12 @@ bool CLuaArguments::ReadFromJSONString(const char* szJSON)
         {
             bool bSuccess = true;
 
-            std::vector<CLuaArguments*> knownTables;
+            std::vector<CValues*> knownTables;
 
             for (uint i = 0; i < json_object_array_length(object); i++)
             {
                 json_object*  arrayObject = json_object_array_get_idx(object, i);
-                CLuaArgument* pArgument = new CLuaArgument();
+                CValue* pArgument = new CValue();
                 bSuccess = pArgument->ReadFromJSONObject(arrayObject, &knownTables);
                 m_Arguments.push_back(pArgument);            // then the value
                 if (!bSuccess)
@@ -655,8 +655,8 @@ bool CLuaArguments::ReadFromJSONString(const char* szJSON)
         }
         else if (json_object_get_type(object) == json_type_object)
         {
-            std::vector<CLuaArguments*> knownTables;
-            CLuaArgument*               pArgument = new CLuaArgument();
+            std::vector<CValues*> knownTables;
+            CValue*               pArgument = new CValue();
             bool                        bSuccess = pArgument->ReadFromJSONObject(object, &knownTables);
             m_Arguments.push_back(pArgument);            // value
             json_object_put(object);
@@ -672,7 +672,7 @@ bool CLuaArguments::ReadFromJSONString(const char* szJSON)
     return false;
 }
 
-bool CLuaArguments::ReadFromJSONObject(json_object* object, std::vector<CLuaArguments*>* pKnownTables)
+bool CValues::ReadFromJSONObject(json_object* object, std::vector<CValues*>* pKnownTables)
 {
     if (object)
     {
@@ -681,7 +681,7 @@ bool CLuaArguments::ReadFromJSONObject(json_object* object, std::vector<CLuaArgu
             bool bKnownTablesCreated = false;
             if (!pKnownTables)
             {
-                pKnownTables = new std::vector<CLuaArguments*>();
+                pKnownTables = new std::vector<CValues*>();
                 bKnownTablesCreated = true;
             }
 
@@ -690,10 +690,10 @@ bool CLuaArguments::ReadFromJSONObject(json_object* object, std::vector<CLuaArgu
             bool bSuccess = true;
             json_object_object_foreach(object, key, val)
             {
-                CLuaArgument* pArgument = new CLuaArgument();
+                CValue* pArgument = new CValue();
                 pArgument->ReadString(key);
                 m_Arguments.push_back(pArgument);            // push the key first
-                pArgument = new CLuaArgument();
+                pArgument = new CValue();
                 bSuccess = pArgument->ReadFromJSONObject(val, pKnownTables);            // then the value
                 m_Arguments.push_back(pArgument);
                 if (!bSuccess)
@@ -710,7 +710,7 @@ bool CLuaArguments::ReadFromJSONObject(json_object* object, std::vector<CLuaArgu
     return false;
 }
 
-bool CLuaArguments::ReadFromJSONArray(json_object* object, std::vector<CLuaArguments*>* pKnownTables)
+bool CValues::ReadFromJSONArray(json_object* object, std::vector<CValues*>* pKnownTables)
 {
     if (object)
     {
@@ -719,7 +719,7 @@ bool CLuaArguments::ReadFromJSONArray(json_object* object, std::vector<CLuaArgum
             bool bKnownTablesCreated = false;
             if (!pKnownTables)
             {
-                pKnownTables = new std::vector<CLuaArguments*>();
+                pKnownTables = new std::vector<CValues*>();
                 bKnownTablesCreated = true;
             }
 
@@ -729,11 +729,11 @@ bool CLuaArguments::ReadFromJSONArray(json_object* object, std::vector<CLuaArgum
             for (uint i = 0; i < json_object_array_length(object); i++)
             {
                 json_object*  arrayObject = json_object_array_get_idx(object, i);
-                CLuaArgument* pArgument = new CLuaArgument();
+                CValue* pArgument = new CValue();
                 pArgument->ReadNumber(i + 1);            // push the key
                 m_Arguments.push_back(pArgument);
 
-                pArgument = new CLuaArgument();
+                pArgument = new CValue();
                 bSuccess = pArgument->ReadFromJSONObject(arrayObject, pKnownTables);
                 m_Arguments.push_back(pArgument);            // then the valoue
                 if (!bSuccess)

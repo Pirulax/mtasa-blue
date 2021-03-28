@@ -62,7 +62,7 @@ namespace lua
         lua_pushlstring(L, value.data(), value.length());
     }
 
-    inline void Push(lua_State* L, const CLuaArgument& arg)
+    inline void Push(lua_State* L, const CValue& arg)
     {
         if (arg.GetType() == LUA_TNONE)
         {
@@ -75,7 +75,7 @@ namespace lua
         arg.Push(L);
     }
 
-    inline void Push(lua_State* L, const CLuaArguments& args)
+    inline void Push(lua_State* L, const CValues& args)
     {
         args.PushAsTable(L);
     }

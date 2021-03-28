@@ -411,20 +411,20 @@ void CClientWeapon::FireInstantHit(CVector vecOrigin, CVector vecTarget, bool bS
 
         // Execute our weapon fire event
         CClientEntity* pClientEntity = pColEntity ? pPools->GetClientEntity((DWORD*)pColEntity->GetInterface()) : nullptr;
-        CLuaArguments  Arguments;
+        CValues  Arguments;
         if (pClientEntity)
-            Arguments.PushElement(pClientEntity);            // entity that got hit
+            Arguments.Push(pClientEntity);            // entity that got hit
         else
             Arguments.PushNil();                                               // Probably a building.
-        Arguments.PushNumber(pColPoint->GetPosition().fX);                     // pos x
-        Arguments.PushNumber(pColPoint->GetPosition().fY);                     // pos y
-        Arguments.PushNumber(pColPoint->GetPosition().fZ);                     // pos z
-        Arguments.PushNumber(pColPoint->GetNormal().fX);                       // Normal x
-        Arguments.PushNumber(pColPoint->GetNormal().fY);                       // Normal y
-        Arguments.PushNumber(pColPoint->GetNormal().fZ);                       // Normal z
-        Arguments.PushNumber(pColPoint->GetSurfaceTypeB());                    // Surface type "B"
-        Arguments.PushNumber(pColPoint->GetLightingForTimeOfDay());            // Lighting
-        Arguments.PushNumber(pColPoint->GetPieceTypeB());                      // Piece
+        Arguments.Push(pColPoint->GetPosition().fX);                     // pos x
+        Arguments.Push(pColPoint->GetPosition().fY);                     // pos y
+        Arguments.Push(pColPoint->GetPosition().fZ);                     // pos z
+        Arguments.Push(pColPoint->GetNormal().fX);                       // Normal x
+        Arguments.Push(pColPoint->GetNormal().fY);                       // Normal y
+        Arguments.Push(pColPoint->GetNormal().fZ);                       // Normal z
+        Arguments.Push(pColPoint->GetSurfaceTypeB());                    // Surface type "B"
+        Arguments.Push(pColPoint->GetLightingForTimeOfDay());            // Lighting
+        Arguments.Push(pColPoint->GetPieceTypeB());                      // Piece
         if (!CallEvent("onClientWeaponFire", Arguments, true))
         {
             if (pColPoint)

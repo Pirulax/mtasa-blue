@@ -89,11 +89,11 @@ bool CClientExplosionManager::Hook_ExplosionCreation(CEntity* pGameExplodingEnti
 
     if (pResponsible->IsLocalEntity() || (bHasModel && CClientObjectManager::IsBreakableModel(usModel)))
     {
-        CLuaArguments Arguments;
-        Arguments.PushNumber(vecPosition.fX);
-        Arguments.PushNumber(vecPosition.fY);
-        Arguments.PushNumber(vecPosition.fZ);
-        Arguments.PushNumber(explosionWeaponType);
+        CValues Arguments;
+        Arguments.Push(vecPosition.fX);
+        Arguments.Push(vecPosition.fY);
+        Arguments.Push(vecPosition.fZ);
+        Arguments.Push(explosionWeaponType);
         const bool bAllowExplosion = pResponsible->CallEvent("onClientExplosion", Arguments, true);
         return bAllowExplosion;
     }

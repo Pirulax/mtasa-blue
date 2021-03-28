@@ -181,8 +181,8 @@ int CLuaAudioDefs::PlaySound(lua_State* luaVM)
                     if (pSound)
                     {
                         // call onClientSoundStarted
-                        CLuaArguments Arguments;
-                        Arguments.PushString("play");            // Reason
+                        CValues Arguments;
+                        Arguments.Push("play");            // Reason
                         pSound->CallEvent("onClientSoundStarted", Arguments, false);
 
                         lua_pushelement(luaVM, pSound);
@@ -241,8 +241,8 @@ int CLuaAudioDefs::PlaySound3D(lua_State* luaVM)
                     if (pSound)
                     {
                         // call onClientSoundStarted
-                        CLuaArguments Arguments;
-                        Arguments.PushString("play");            // Reason
+                        CValues Arguments;
+                        Arguments.Push("play");            // Reason
                         pSound->CallEvent("onClientSoundStarted", Arguments, false);
 
                         lua_pushelement(luaVM, pSound);

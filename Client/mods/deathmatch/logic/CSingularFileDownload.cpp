@@ -63,16 +63,16 @@ void CSingularFileDownload::CallFinished(bool bSuccess)
     if (!m_bBeingDeleted && m_pResource)
     {
         // Call the onClientbFileDownloadComplete event
-        CLuaArguments Arguments;
-        Arguments.PushString(GetShortName());            // file name
-        Arguments.PushBoolean(bSuccess);                 // Completed successfully?
+        CValues Arguments;
+        Arguments.Push(GetShortName());            // file name
+        Arguments.Push(bSuccess);                 // Completed successfully?
         if (m_pRequestResource)
         {
-            Arguments.PushResource(m_pRequestResource);  // Resource that called downloadFile
+            Arguments.Push(m_pRequestResource);  // Resource that called downloadFile
         }
         else
         {
-            Arguments.PushBoolean(false);                 // or false
+            Arguments.Push(false);                 // or false
         }
 
         m_pResource->GetResourceEntity()->CallEvent("onClientFileDownloadComplete", Arguments, false);

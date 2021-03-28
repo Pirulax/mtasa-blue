@@ -18,7 +18,7 @@ class CClientEntity;
 class CClientManager;
 class CClientPed;
 class CElementArray;
-class CLuaArgument;
+class CValue;
 class CPed;
 class CTask;
 class CVehicle;
@@ -50,12 +50,12 @@ public:
     const std::list<ElementID>& GetElements() { return m_Elements; };
 
     const std::list<std::string>&  GetKeys() { return m_Keys; };
-    const std::list<CLuaArgument>& GetValues() { return m_Values; };
-    void                           SetParameter(const char* szKey, const CLuaArgument& Value);
-    void                           SetParameters(const std::list<std::string>& Keys, const std::list<CLuaArgument>& Values);
+    const std::list<CValue>& GetValues() { return m_Values; };
+    void                           SetParameter(const char* szKey, const CValue& Value);
+    void                           SetParameters(const std::list<std::string>& Keys, const std::list<CValue>& Values);
     void                           ClearParameters();
 
-    CLuaArgument* GetParameter(const char* szKey);
+    CValue* GetParameter(const char* szKey);
     bool          GetParameterBool(const char* szKey, bool& Bool);
     bool          GetParameterNumber(const char* szKey, float& Number);
     CPed*         GetParameterPed(const char* szKey);
@@ -74,7 +74,7 @@ private:
 
     std::list<ElementID>    m_Elements;
     std::list<std::string>  m_Keys;
-    std::list<CLuaArgument> m_Values;
+    std::list<CValue> m_Values;
 
     static unsigned long m_ulLastUniqueIdentifier;
 };

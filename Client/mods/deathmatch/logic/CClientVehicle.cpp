@@ -2519,8 +2519,8 @@ void CClientVehicle::StreamedInPulse()
             bool bActivated = (m_pVehicle->GetNitroLevel() < 0);
             if (m_bNitroActivated != bActivated)
             {
-                CLuaArguments Arguments;
-                Arguments.PushBoolean(bActivated);
+                CValues Arguments;
+                Arguments.Push(bActivated);
                 this->CallEvent("onClientVehicleNitroStateChange", Arguments, false);
             }
 

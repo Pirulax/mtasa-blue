@@ -176,7 +176,7 @@ int CLuaFunctionDefs::TriggerEvent(lua_State* luaVM)
     //  bool triggerEvent ( string eventName, element baseElement, [ var argument1, ... ] )
     SString        strName;
     CClientEntity* pEntity;
-    CLuaArguments  Arguments;
+    CValues  Arguments;
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadString(strName);
@@ -206,7 +206,7 @@ int CLuaFunctionDefs::TriggerServerEvent(lua_State* luaVM)
     //  bool triggerServerEvent ( string event, element theElement, [arguments...] )
     SString        strName;
     CClientEntity* pCallWithEntity;
-    CLuaArguments  Arguments;
+    CValues  Arguments;
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadString(strName);
@@ -228,7 +228,7 @@ int CLuaFunctionDefs::TriggerServerEvent(lua_State* luaVM)
                 // Show a warning for clientside elements in the argument chain
                 for (uint i = 0; i < Arguments.Count(); ++i)
                 {
-                    CLuaArgument* pArgument = Arguments[i];
+                    CValue* pArgument = Arguments[i];
 
                     if (!pArgument)
                         continue;
@@ -295,7 +295,7 @@ int CLuaFunctionDefs::TriggerLatentServerEvent(lua_State* luaVM)
     int            iBandwidth;
     bool           bPersist;
     CClientEntity* pCallWithEntity;
-    CLuaArguments  Arguments;
+    CValues  Arguments;
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadString(strName);

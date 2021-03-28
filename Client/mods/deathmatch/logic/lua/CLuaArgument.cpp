@@ -60,8 +60,7 @@ void LogUnableToPacketize(const char* szMessage)
         GetScriptDebugging()->LogWarning(NULL, "Unknown: %s\n", szMessage);
 }
 
-namespace lua
-{
+
 void CValue::Read(lua_State* L, int idx, LuaCopiedValuesMap& copiedTables)
 {
     switch (lua_type(L, idx))
@@ -1190,5 +1189,4 @@ bool CValues::Write(std::string& json, bool serialize, int flags)
     return true;
 }
 
-}
 

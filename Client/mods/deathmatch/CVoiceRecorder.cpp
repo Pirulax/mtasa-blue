@@ -205,7 +205,7 @@ void CVoiceRecorder::SetPTTState(bool bState)
             if (g_pClientGame->GetLocalPlayer())
             {
                 m_Mutex.unlock();
-                CLuaArguments Arguments;
+                CValues Arguments;
                 bool          bEventTriggered = g_pClientGame->GetLocalPlayer()->CallEvent("onClientPlayerVoiceStart", Arguments, true);
 
                 if (!bEventTriggered)
@@ -228,7 +228,7 @@ void CVoiceRecorder::SetPTTState(bool bState)
             if (g_pClientGame->GetLocalPlayer())
             {
                 m_Mutex.unlock();
-                CLuaArguments Arguments;
+                CValues Arguments;
                 g_pClientGame->GetLocalPlayer()->CallEvent("onClientPlayerVoiceStop", Arguments, true);
                 return;
             }

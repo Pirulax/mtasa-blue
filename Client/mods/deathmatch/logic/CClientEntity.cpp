@@ -427,10 +427,10 @@ void CClientEntity::SetCustomData(const char* szName, const CValue& Variable, bo
     m_pCustomData->Set(szName, Variable, bSynchronized);
 
     // Trigger the onClientElementDataChange event on us
-    CLuaArguments Arguments;
-    Arguments.PushString(szName);
-    Arguments.PushArgument(oldVariable);
-    Arguments.PushArgument(Variable);
+    CValues Arguments;
+    Arguments.Push(szName);
+    Arguments.Push(oldVariable);
+    Arguments.Push(Variable);
     CallEvent("onClientElementDataChange", Arguments, true);
 }
 
@@ -447,10 +447,10 @@ void CClientEntity::DeleteCustomData(const char* szName)
         m_pCustomData->Delete(szName);
 
         // Trigger the onClientElementDataChange event on us
-        CLuaArguments Arguments;
-        Arguments.PushString(szName);
-        Arguments.PushArgument(oldVariable);
-        Arguments.PushArgument(CValue());            // Use nil as the new value to indicate the data has been removed
+        CValues Arguments;
+        Arguments.Push(szName);
+        Arguments.Push(oldVariable);
+        Arguments.Push(CValue());            // Use nil as the new value to indicate the data has been removed
         CallEvent("onClientElementDataChange", Arguments, true);
     }
 }
@@ -548,9 +548,9 @@ void CClientEntity::SetDimension(unsigned short usDimension)
     unsigned int usOldDimension = m_usDimension;
     m_usDimension = usDimension;
 
-    CLuaArguments Arguments;
-    Arguments.PushNumber(usOldDimension);
-    Arguments.PushNumber(usDimension);
+    CValues Arguments;
+    Arguments.Push(usOldDimension);
+    Arguments.Push(usDimension);
     CallEvent("onClientElementDimensionChange", Arguments, true);
 }
 
@@ -677,7 +677,7 @@ bool CClientEntity::AddEvent(CLuaMain* pLuaMain, const char* szName, const CLuaF
     return m_pEventManager->Add(pLuaMain, szName, iLuaFunction, bPropagated, eventPriority, fPriorityMod);
 }
 
-bool CClientEntity::CallEvent(const char* szName, const CLuaArguments& Arguments, bool bCallOnChildren)
+bool CClientEntity::CallEvent(const char* szName, const CValues& Arguments, bool bCallOnChildren)
 {
     if (!g_pClientGame->GetDebugHookManager()->OnPreEvent(szName, Arguments, this, NULL))
         return false;
@@ -714,7 +714,7 @@ bool CClientEntity::CallEvent(const char* szName, const CLuaArguments& Arguments
     return (!pEvents->WasEventCancelled());
 }
 
-void CClientEntity::CallEventNoParent(const char* szName, const CLuaArguments& Arguments, CClientEntity* pSource)
+void CClientEntity::CallEventNoParent(const char* szName, const CValues& Arguments, CClientEntity* pSource)
 {
     // Call it on us if this isn't the same class it was raised on
     // TODO not sure why the null check is necessary (eAi)
@@ -745,7 +745,7 @@ void CClientEntity::CallEventNoParent(const char* szName, const CLuaArguments& A
     }
 }
 
-void CClientEntity::CallParentEvent(const char* szName, const CLuaArguments& Arguments, CClientEntity* pSource)
+void CClientEntity::CallParentEvent(const char* szName, const CValues& Arguments, CClientEntity* pSource)
 {
     // Call the event on us
     if (m_pEventManager && m_pEventManager->HasEvents())
@@ -1254,9 +1254,9 @@ void CClientEntity::SetInterior(unsigned char ucInterior)
     unsigned char ucOldInterior = m_ucInterior;
     m_ucInterior = ucInterior;
 
-    CLuaArguments Arguments;
-    Arguments.PushNumber(ucOldInterior);
-    Arguments.PushNumber(ucInterior);
+    CValues Arguments;
+    Arguments.Push(ucOldInterior);
+    Arguments.Push(ucInterior);
     CallEvent("onClientElementInteriorChange", Arguments, true);
 }
 

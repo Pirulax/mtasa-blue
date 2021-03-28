@@ -453,7 +453,7 @@ void CPacketHandler::Packet_ServerJoined(NetBitStreamInterface& bitStream)
     g_pClientGame->GetNetAPI()->RPC(INITIAL_DATA_STREAM);
 
     // Call the onClientPlayerJoin event for ourselves
-    CLuaArguments Arguments;
+    CValues Arguments;
     g_pClientGame->m_pLocalPlayer->CallEvent("onClientPlayerJoin", Arguments, true);
 
     g_pCore->UpdateRecentlyPlayed();
@@ -990,7 +990,7 @@ void CPacketHandler::Packet_PlayerList(NetBitStreamInterface& bitStream)
         if (bJustJoined)
         {
             // Call the onClientPlayerJoin event
-            CLuaArguments Arguments;
+            CValues Arguments;
             pPlayer->CallEvent("onClientPlayerJoin", Arguments, true);
         }
     }
@@ -1126,11 +1126,11 @@ void CPacketHandler::Packet_PlayerSpawn(NetBitStreamInterface& bitStream)
         }
 
         // Call the onClientPlayerSpawn lua event
-        CLuaArguments Arguments;
+        CValues Arguments;
         if (pTeam)
-            Arguments.PushElement(pTeam);
+            Arguments.Push(pTeam);
         else
-            Arguments.PushBoolean(false);
+            Arguments.Push(false);
         pPlayer->CallEvent("onClientPlayerSpawn", Arguments, true);
     }
 }
@@ -1190,20 +1190,20 @@ void CPacketHandler::Packet_PlayerWasted(NetBitStreamInterface& bitStream)
             if (pPed->IsLocalPlayer() == false || bAlreadyDeadOnNetwork == false)
             {
                 // Call the onClientPlayerWasted event
-                CLuaArguments Arguments;
+                CValues Arguments;
                 if (pKiller)
-                    Arguments.PushElement(pKiller);
+                    Arguments.Push(pKiller);
                 else
-                    Arguments.PushBoolean(false);
+                    Arguments.Push(false);
                 if (weapon.data.ucWeaponType != 0xFF)
-                    Arguments.PushNumber(weapon.data.ucWeaponType);
+                    Arguments.Push(weapon.data.ucWeaponType);
                 else
-                    Arguments.PushBoolean(false);
+                    Arguments.Push(false);
                 if (bodyPart.data.uiBodypart != 0xFF)
-                    Arguments.PushNumber(bodyPart.data.uiBodypart);
+                    Arguments.Push(bodyPart.data.uiBodypart);
                 else
-                    Arguments.PushBoolean(false);
-                Arguments.PushBoolean(bStealth);
+                    Arguments.Push(false);
+                Arguments.Push(bStealth);
                 if (IS_PLAYER(pPed))
                     pPed->CallEvent("onClientPlayerWasted", Arguments, true);
                 else
@@ -1305,15 +1305,15 @@ void CPacketHandler::Packet_PlayerChangeNick(NetBitStreamInterface& bitStream)
      * Call the lua function callback 'onClientPlayerChangeNick'
      * to notify client scripts.
      */
-    CLuaArguments Arguments;
+    CValues Arguments;
     if (szOldNickCopy)
     {
-        Arguments.PushString(szOldNickCopy);
-        Arguments.PushString(szNewNick);
+        Arguments.Push(szOldNickCopy);
+        Arguments.Push(szNewNick);
     }
     else
     {
-        Arguments.PushBoolean(false);
+        Arguments.Push(false);
     }
     pPlayer->CallEvent("onClientPlayerChangeNick", Arguments, true);
 
@@ -1376,11 +1376,11 @@ void CPacketHandler::Packet_ChatEcho(NetBitStreamInterface& bitStream)
                 CClientEntity* pEntity = pClient ? pClient : pRootEntity;
 
                 // Call an event
-                CLuaArguments Arguments;
-                Arguments.PushString(szMessage);
-                Arguments.PushNumber(ucRed);
-                Arguments.PushNumber(ucGreen);
-                Arguments.PushNumber(ucBlue);
+                CValues Arguments;
+                Arguments.Push(szMessage);
+                Arguments.Push(ucRed);
+                Arguments.Push(ucGreen);
+                Arguments.Push(ucBlue);
                 bool bCancelled = !pEntity->CallEvent("onClientChatMessage", Arguments, pEntity != pRootEntity);
                 if (!bCancelled)
                 {
@@ -1570,7 +1570,7 @@ void CPacketHandler::Packet_VehicleSpawn(NetBitStreamInterface& bitStream)
         pVehicle->AttachTo(NULL);
 
         // Call the onClientVehicleRespawn event
-        CLuaArguments Arguments;
+        CValues Arguments;
         pVehicle->CallEvent("onClientVehicleRespawn", Arguments, true);
     }
 }
@@ -1687,10 +1687,10 @@ void CPacketHandler::Packet_Vehicle_InOut(NetBitStreamInterface& bitStream)
                         else
                         {
                             // Call the onClientVehicleStartEnter event for remote players and peds we dont sync
-                            CLuaArguments Arguments;
-                            Arguments.PushElement(pPed);             // player / ped
-                            Arguments.PushNumber(ucSeat);            // seat
-                            Arguments.PushNumber(ucDoor);            // Door
+                            CValues Arguments;
+                            Arguments.Push(pPed);             // player / ped
+                            Arguments.Push(ucSeat);            // seat
+                            Arguments.Push(ucDoor);            // Door
                             pVehicle->CallEvent("onClientVehicleStartEnter", Arguments, true);
                         }
 
@@ -1724,18 +1724,18 @@ void CPacketHandler::Packet_Vehicle_InOut(NetBitStreamInterface& bitStream)
                         }
 
                         // Call the onClientPlayerEnterVehicle/onClientPedEnterVehicle event
-                        CLuaArguments Arguments;
-                        Arguments.PushElement(pVehicle);            // vehicle
-                        Arguments.PushNumber(ucSeat);               // seat
+                        CValues Arguments;
+                        Arguments.Push(pVehicle);            // vehicle
+                        Arguments.Push(ucSeat);               // seat
                         if (IS_PLAYER(pPed))
                             pPed->CallEvent("onClientPlayerVehicleEnter", Arguments, true);
                         else
                             pPed->CallEvent("onClientPedVehicleEnter", Arguments, true);
 
                         // Call the onClientVehicleEnter event
-                        CLuaArguments Arguments2;
-                        Arguments2.PushElement(pPed);             // player / ped
-                        Arguments2.PushNumber(ucSeat);            // seat
+                        CValues Arguments2;
+                        Arguments2.Push(pPed);             // player / ped
+                        Arguments2.Push(ucSeat);            // seat
                         pVehicle->CallEvent("onClientVehicleEnter", Arguments2, true);
                         break;
                     }
@@ -1799,10 +1799,10 @@ void CPacketHandler::Packet_Vehicle_InOut(NetBitStreamInterface& bitStream)
                         // Remember that this ped is working on leaving a vehicle
                         pPed->SetVehicleInOutState(VEHICLE_INOUT_GETTING_OUT);
 
-                        CLuaArguments Arguments;
-                        Arguments.PushElement(pPed);             // player / ped
-                        Arguments.PushNumber(ucSeat);            // seat
-                        Arguments.PushNumber(ucDoor);            // door being used
+                        CValues Arguments;
+                        Arguments.Push(pPed);             // player / ped
+                        Arguments.Push(ucSeat);            // seat
+                        Arguments.Push(ucDoor);            // door being used
                         pVehicle->CallEvent("onClientVehicleStartExit", Arguments, true);
                         break;
                     }
@@ -1824,20 +1824,20 @@ void CPacketHandler::Packet_Vehicle_InOut(NetBitStreamInterface& bitStream)
                         pPed->SetVehicleInOutState(VEHICLE_INOUT_NONE);
 
                         // Call the onClientPlayerExitVehicle/onClientPedExitVehicle event
-                        CLuaArguments Arguments;
-                        Arguments.PushElement(pVehicle);            // vehicle
-                        Arguments.PushNumber(ucSeat);               // seat
-                        Arguments.PushBoolean(false);               // jacker
+                        CValues Arguments;
+                        Arguments.Push(pVehicle);            // vehicle
+                        Arguments.Push(ucSeat);               // seat
+                        Arguments.Push(false);               // jacker
                         if (IS_PLAYER(pPed))
                             pPed->CallEvent("onClientPlayerVehicleExit", Arguments, true);
                         else
                             pPed->CallEvent("onClientPedVehicleExit", Arguments, true);
 
                         // Call the onClientVehicleExit event
-                        CLuaArguments Arguments2;
-                        Arguments2.PushElement(pPed);             // player / ped
-                        Arguments2.PushNumber(ucSeat);            // seat
-                        Arguments2.PushBoolean(false);            // jacker
+                        CValues Arguments2;
+                        Arguments2.Push(pPed);             // player / ped
+                        Arguments2.Push(ucSeat);            // seat
+                        Arguments2.Push(false);            // jacker
                         pVehicle->CallEvent("onClientVehicleExit", Arguments2, true);
                         break;
                     }
@@ -1871,20 +1871,20 @@ void CPacketHandler::Packet_Vehicle_InOut(NetBitStreamInterface& bitStream)
                         if (ucSeat == 0)
                             pVehicle->RemoveTargetPosition();
 
-                        CLuaArguments Arguments;
-                        Arguments.PushElement(pVehicle);            // vehicle
-                        Arguments.PushNumber(ucSeat);               // seat
-                        Arguments.PushBoolean(false);               // jacker
+                        CValues Arguments;
+                        Arguments.Push(pVehicle);            // vehicle
+                        Arguments.Push(ucSeat);               // seat
+                        Arguments.Push(false);               // jacker
                         if (IS_PLAYER(pPed))
                             pPed->CallEvent("onClientPlayerVehicleExit", Arguments, true);
                         else
                             pPed->CallEvent("onClientPedVehicleExit", Arguments, true);
 
                         // Call the onClientVehicleExit event
-                        CLuaArguments Arguments2;
-                        Arguments2.PushElement(pPed);             // player / ped
-                        Arguments2.PushNumber(ucSeat);            // seat
-                        Arguments2.PushBoolean(false);            // jacker
+                        CValues Arguments2;
+                        Arguments2.Push(pPed);             // player / ped
+                        Arguments2.Push(ucSeat);            // seat
+                        Arguments2.Push(false);            // jacker
                         pVehicle->CallEvent("onClientVehicleExit", Arguments2, true);
                         break;
                     }
@@ -1908,10 +1908,10 @@ void CPacketHandler::Packet_Vehicle_InOut(NetBitStreamInterface& bitStream)
                         {
                             // Call the onClientVehicleStartEnter event for remote players and peds we don't sync
                             // Local player / Syncing player triggers it himself before sending packet in CClientPed
-                            CLuaArguments Arguments;
-                            Arguments.PushElement(pPed);             // player / ped
-                            Arguments.PushNumber(ucSeat);            // seat
-                            Arguments.PushNumber(ucDoor);            // Door
+                            CValues Arguments;
+                            Arguments.Push(pPed);             // player / ped
+                            Arguments.Push(ucSeat);            // seat
+                            Arguments.Push(ucDoor);            // Door
                             pVehicle->CallEvent("onClientVehicleStartEnter", Arguments, true);
                         }
 
@@ -1934,10 +1934,10 @@ void CPacketHandler::Packet_Vehicle_InOut(NetBitStreamInterface& bitStream)
                         // Remember that this player is working on leaving a vehicle
                         pPed->SetVehicleInOutState(VEHICLE_INOUT_JACKING);
 
-                        CLuaArguments Arguments2;
-                        Arguments2.PushElement(pJacked);            // player / ped
-                        Arguments2.PushNumber(ucSeat);              // seat
-                        Arguments2.PushNumber(ucDoor);              // door
+                        CValues Arguments2;
+                        Arguments2.Push(pJacked);            // player / ped
+                        Arguments2.Push(ucSeat);              // seat
+                        Arguments2.Push(ucDoor);              // door
                         pVehicle->CallEvent("onClientVehicleStartExit", Arguments2, true);
                         break;
                     }
@@ -2001,28 +2001,28 @@ void CPacketHandler::Packet_Vehicle_InOut(NetBitStreamInterface& bitStream)
                                 }
 
                                 // Call the onClientVehicleStartEnter event
-                                CLuaArguments Arguments;
-                                Arguments.PushElement(pInsidePed);            // player / ped
-                                Arguments.PushNumber(ucSeat);                 // seat
+                                CValues Arguments;
+                                Arguments.Push(pInsidePed);            // player / ped
+                                Arguments.Push(ucSeat);                 // seat
                                 pVehicle->CallEvent("onClientVehicleEnter", Arguments, true);
 
-                                CLuaArguments Arguments2;
-                                Arguments2.PushElement(pOutsidePed);            // player / ped
-                                Arguments2.PushNumber(ucSeat);                  // seat
+                                CValues Arguments2;
+                                Arguments2.Push(pOutsidePed);            // player / ped
+                                Arguments2.Push(ucSeat);                  // seat
                                 pVehicle->CallEvent("onClientVehicleExit", Arguments2, true);
 
-                                CLuaArguments Arguments3;
-                                Arguments3.PushElement(pVehicle);              // vehicle
-                                Arguments3.PushNumber(ucSeat);                 // seat
-                                Arguments3.PushElement(pInsidePed);            // jacker
+                                CValues Arguments3;
+                                Arguments3.Push(pVehicle);              // vehicle
+                                Arguments3.Push(ucSeat);                 // seat
+                                Arguments3.Push(pInsidePed);            // jacker
                                 if (IS_PLAYER(pOutsidePed))
                                     pOutsidePed->CallEvent("onClientPlayerVehicleExit", Arguments3, true);
                                 else
                                     pOutsidePed->CallEvent("onClientPedVehicleExit", Arguments3, true);
 
-                                CLuaArguments Arguments4;
-                                Arguments4.PushElement(pVehicle);            // vehicle
-                                Arguments4.PushNumber(ucSeat);               // seat
+                                CValues Arguments4;
+                                Arguments4.Push(pVehicle);            // vehicle
+                                Arguments4.Push(ucSeat);               // seat
                                 if (IS_PLAYER(pInsidePed))
                                     pInsidePed->CallEvent("onClientPlayerVehicleEnter", Arguments4, true);
                                 else
@@ -2110,8 +2110,8 @@ void CPacketHandler::Packet_VehicleTrailer(NetBitStreamInterface& bitStream)
                 pVehicle->SetTowedVehicle(pTrailer);
 
                 // Call the onClientTrailerAttach
-                CLuaArguments Arguments;
-                Arguments.PushElement(pVehicle);
+                CValues Arguments;
+                Arguments.Push(pVehicle);
                 pTrailer->CallEvent("onClientTrailerAttach", Arguments, true);
             }
             else
@@ -2122,8 +2122,8 @@ void CPacketHandler::Packet_VehicleTrailer(NetBitStreamInterface& bitStream)
                 pVehicle->SetTowedVehicle(NULL);
 
                 // Call the onClientTrailerDetach
-                CLuaArguments Arguments;
-                Arguments.PushElement(pVehicle);
+                CValues Arguments;
+                Arguments.Push(pVehicle);
                 pTrailer->CallEvent("onClientTrailerDetach", Arguments, true);
             }
         }
@@ -2603,9 +2603,9 @@ void CPacketHandler::Packet_PlayerNetworkStatus(NetBitStreamInterface& bitStream
 
     if (bitStream.Read(ucType) && bitStream.Read(uiTicks))
     {
-        CLuaArguments Arguments;
-        Arguments.PushNumber(ucType);             // 0-interruption began  1-interruption end
-        Arguments.PushNumber(uiTicks);            // Ticks since interruption start
+        CValues Arguments;
+        Arguments.Push(ucType);             // 0-interruption began  1-interruption end
+        Arguments.Push(uiTicks);            // Ticks since interruption start
         CClientPlayer* pLocalPlayer = g_pClientGame->m_pPlayerManager->GetLocalPlayer();
         if (pLocalPlayer)
         {
@@ -2792,8 +2792,8 @@ retry:
                         SString strName;
                         bitStream.ReadStringCharacters(strName, ucNameLength);
 
-                        CLuaArgument Argument;
-                        Argument.ReadFromBitStream(bitStream);
+                        CValue Argument;
+                        Argument.Read(bitStream);
 
                         pCustomData->Set(strName, Argument);
                     }
@@ -4478,11 +4478,11 @@ void CPacketHandler::Packet_ExplosionSync(NetBitStreamInterface& bitStream)
     // Hop the event if we have already cancelled earlier.
     if (bCancelExplosion == false)
     {
-        CLuaArguments Arguments;
-        Arguments.PushNumber(position.data.vecPosition.fX);
-        Arguments.PushNumber(position.data.vecPosition.fY);
-        Arguments.PushNumber(position.data.vecPosition.fZ);
-        Arguments.PushNumber(Type);
+        CValues Arguments;
+        Arguments.Push(position.data.vecPosition.fX);
+        Arguments.Push(position.data.vecPosition.fY);
+        Arguments.Push(position.data.vecPosition.fZ);
+        Arguments.Push(Type);
         if (pCreator)
         {
             bCancelExplosion = !pCreator->CallEvent("onClientExplosion", Arguments, true);
@@ -4508,7 +4508,7 @@ void CPacketHandler::Packet_ExplosionSync(NetBitStreamInterface& bitStream)
                 pExplodingVehicle->Blow(false);
 
                 // Call onClientVehicleExplode
-                CLuaArguments Arguments;
+                CValues Arguments;
                 pExplodingVehicle->CallEvent("onClientVehicleExplode", Arguments, true);
 
                 if (!bCancelExplosion)
@@ -4804,7 +4804,7 @@ void CPacketHandler::Packet_LuaEvent(NetBitStreamInterface& bitStream)
             szName[usNameLength] = 0;
 
             // Read out the arguments aswell
-            CLuaArguments Arguments(bitStream);
+            CValues Arguments(bitStream);
 
             // Grab the event. Does it exist and is it remotly triggerable?
             SEvent* pEvent = g_pClientGame->m_Events.Get(szName);
@@ -5445,8 +5445,8 @@ SString CPacketHandler::EntityAddDebugRead(NetBitStreamInterface& bitStream)
                     SString strName;
                     bitStream.ReadStringCharacters(strName, ucNameLength);
 
-                    CLuaArgument Argument;
-                    Argument.ReadFromBitStream(bitStream);
+                    CValue Argument;
+                    Argument.Read(bitStream);
 
                     // pCustomData->Set ( strName, Argument, NULL );
                 }

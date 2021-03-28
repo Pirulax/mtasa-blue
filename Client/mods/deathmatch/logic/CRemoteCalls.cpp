@@ -25,7 +25,7 @@ CRemoteCalls::~CRemoteCalls()
     m_calls.clear();
 }
 
-CRemoteCall* CRemoteCalls::Call(const char* szURL, CLuaArguments* fetchArguments, CLuaMain* luaMain, const CLuaFunctionRef& iFunction,
+CRemoteCall* CRemoteCalls::Call(const char* szURL, CValues* fetchArguments, CLuaMain* luaMain, const CLuaFunctionRef& iFunction,
                                const SString& strQueueName,
                         const SHttpRequestOptions& options)
 {
@@ -127,7 +127,7 @@ void CRemoteCalls::ProcessQueuedFiles()
 
 ////////////////////////////////////////////////////////////////////////////////
 // Fetch version
-CRemoteCall::CRemoteCall(const char* szURL, CLuaArguments* fetchArguments, CLuaMain* luaMain, const CLuaFunctionRef& iFunction, const SString& strQueueName,
+CRemoteCall::CRemoteCall(const char* szURL, CValues* fetchArguments, CLuaMain* luaMain, const CLuaFunctionRef& iFunction, const SString& strQueueName,
                          const SHttpRequestOptions& options)
     : m_FetchArguments(*fetchArguments)
 {
@@ -170,39 +170,39 @@ void CRemoteCall::DownloadFinishedCallback(const SHttpDownloadResult& result)
     pCall->m_lastDownloadStatus.uiBytesReceived = result.dataSize;
     pCall->m_downloadMode = EDownloadModeType::NONE;
 
-    CLuaArguments arguments;
+    CValues arguments;
     if (pCall->IsLegacy())
     {
         if (result.bSuccess)
         {
             if (pCall->IsFetch())
             {
-                arguments.PushString(std::string(result.pData, result.dataSize));
-                arguments.PushNumber(0);
+                arguments.Push(std::string(result.pData, result.dataSize));
+                arguments.Push(0);
             }
             else
-                arguments.ReadFromJSONString(result.pData);
+                arguments.Read(result.pData);
         }
         else
         {
-            arguments.PushString("ERROR");
-            arguments.PushNumber(result.iErrorCode);
+            arguments.Push("ERROR");
+            arguments.Push(result.iErrorCode);
         }
     }
     else
     {
         // Append response body
-        arguments.PushString(std::string(result.pData, result.dataSize));
+        arguments.Push(std::string(result.pData, result.dataSize));
 
         // Append info table
-        CLuaArguments info;
-        info.PushString("success");
-        info.PushBoolean(result.iErrorCode >= 200 && result.iErrorCode <= 299);
-        info.PushString("statusCode");
-        info.PushNumber(result.iErrorCode);
+        CValues info;
+        info.Push("success");
+        info.Push(result.iErrorCode >= 200 && result.iErrorCode <= 299);
+        info.Push("statusCode");
+        info.Push(result.iErrorCode);
 
         // Headers as a subtable
-        CLuaArguments        headers;
+        CValues        headers;
         std::vector<SString> headerLineList;
         SStringX(result.szHeaders).Split("\n", headerLineList);
         for (const SString& strLine : headerLineList)
@@ -210,20 +210,20 @@ void CRemoteCall::DownloadFinishedCallback(const SHttpDownloadResult& result)
             SString strKey, strValue;
             if (strLine.Split(": ", &strKey, &strValue))
             {
-                headers.PushString(strKey);
-                headers.PushString(strValue);
+                headers.Push(strKey);
+                headers.Push(strValue);
             }
         }
-        info.PushString("headers");
-        info.PushTable(&headers);
+        info.Push("headers");
+        info.Push(&headers);
 
-        arguments.PushTable(&info);
+        arguments.Push(&info);
     }
 
     // Append stored arguments
     if (pCall->IsFetch())
         for (uint i = 0; i < pCall->GetFetchArguments().Count(); i++)
-            arguments.PushArgument(*(pCall->GetFetchArguments()[i]));
+            arguments.Push(*(pCall->GetFetchArguments()[i]));
 
     if (pCall->m_VM)
         arguments.Call(pCall->m_VM, pCall->m_iFunction);

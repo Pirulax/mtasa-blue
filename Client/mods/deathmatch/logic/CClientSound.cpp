@@ -68,7 +68,7 @@ void CClientSound::DistanceStreamIn()
             m_pSoundManager->OnDistanceStreamIn(this);
 
             // Call Stream In event
-            CLuaArguments Arguments;
+            CValues Arguments;
             CallEvent("onClientElementStreamIn", Arguments, true);
         }
     }
@@ -89,7 +89,7 @@ void CClientSound::DistanceStreamOut()
         Destroy();
 
         // Call Stream Out event
-        CLuaArguments Arguments;
+        CValues Arguments;
         CallEvent("onClientElementStreamOut", Arguments, true);
     }
 }
@@ -459,15 +459,15 @@ void CClientSound::SetPaused(bool bPaused)
         if (bPaused)
         {
             // call onClientSoundStopped
-            CLuaArguments Arguments;
-            Arguments.PushString("paused");            // Reason
+            CValues Arguments;
+            Arguments.Push("paused");            // Reason
             this->CallEvent("onClientSoundStopped", Arguments, false);
         }
         else
         {
             // call onClientSoundStarted
-            CLuaArguments Arguments;
-            Arguments.PushString("resumed");            // Reason
+            CValues Arguments;
+            Arguments.Push("resumed");            // Reason
             this->CallEvent("onClientSoundStarted", Arguments, false);
         }
     }
@@ -683,8 +683,8 @@ void CClientSound::Process3D(const CVector& vecPlayerPosition, const CVector& ve
                 {
                     if (Create())
                     {
-                        CLuaArguments Arguments;
-                        Arguments.PushString("enabled");            // Reason
+                        CValues Arguments;
+                        Arguments.Push("enabled");            // Reason
                         CallEvent("onClientSoundStarted", Arguments, false);
                     }
                 }
@@ -693,8 +693,8 @@ void CClientSound::Process3D(const CVector& vecPlayerPosition, const CVector& ve
         else if (m_pAudio)
         {
             Destroy();
-            CLuaArguments Arguments;
-            Arguments.PushString("disabled");            // Reason
+            CValues Arguments;
+            Arguments.Push("disabled");            // Reason
             CallEvent("onClientSoundStopped", Arguments, false);
         }
     }
@@ -712,34 +712,34 @@ void CClientSound::Process3D(const CVector& vecPlayerPosition, const CVector& ve
     {
         if (eventInfo.type == SOUND_EVENT_FINISHED_DOWNLOAD)
         {
-            CLuaArguments Arguments;
-            Arguments.PushNumber(eventInfo.dNumber);
+            CValues Arguments;
+            Arguments.Push(eventInfo.dNumber);
             CallEvent("onClientSoundFinishedDownload", Arguments, true);
             OutputDebugLine(SString("[ClientSound] onClientSoundFinishedDownload %f", eventInfo.dNumber));
         }
         else if (eventInfo.type == SOUND_EVENT_CHANGED_META)
         {
-            CLuaArguments Arguments;
-            Arguments.PushString(eventInfo.strString);
+            CValues Arguments;
+            Arguments.Push(eventInfo.strString);
             CallEvent("onClientSoundChangedMeta", Arguments, true);
             OutputDebugLine(SString("[ClientSound] onClientSoundChangedMeta %s", *eventInfo.strString));
         }
         else if (eventInfo.type == SOUND_EVENT_STREAM_RESULT)
         {
             // Call onClientSoundStream LUA event
-            CLuaArguments Arguments;
-            Arguments.PushBoolean(eventInfo.bBool);
-            Arguments.PushNumber(eventInfo.dNumber);
-            Arguments.PushString(eventInfo.strString);
-            Arguments.PushString(eventInfo.strError);
+            CValues Arguments;
+            Arguments.Push(eventInfo.bBool);
+            Arguments.Push(eventInfo.dNumber);
+            Arguments.Push(eventInfo.strString);
+            Arguments.Push(eventInfo.strError);
             CallEvent("onClientSoundStream", Arguments, true);
             OutputDebugLine(
                 SString("[ClientSound] onClientSoundStream %d %f %s %s", eventInfo.bBool, eventInfo.dNumber, *eventInfo.strString, *eventInfo.strError));
         }
         else if (eventInfo.type == SOUND_EVENT_BEAT)
         {
-            CLuaArguments Arguments;
-            Arguments.PushNumber(eventInfo.dNumber);
+            CValues Arguments;
+            Arguments.Push(eventInfo.dNumber);
             CallEvent("onClientSoundBeat", Arguments, true);
         }
     }

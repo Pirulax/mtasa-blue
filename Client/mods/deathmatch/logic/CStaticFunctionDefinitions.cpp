@@ -129,7 +129,7 @@ bool CStaticFunctionDefinitions::RemoveEventHandler(CLuaMain& LuaMain, const cha
     return false;
 }
 
-bool CStaticFunctionDefinitions::TriggerEvent(const char* szName, CClientEntity& Entity, const CLuaArguments& Arguments, bool& bWasCancelled)
+bool CStaticFunctionDefinitions::TriggerEvent(const char* szName, CClientEntity& Entity, const CValues& Arguments, bool& bWasCancelled)
 {
     // There is such event?
     if (m_pEvents->Exists(szName))
@@ -143,7 +143,7 @@ bool CStaticFunctionDefinitions::TriggerEvent(const char* szName, CClientEntity&
     return false;
 }
 
-bool CStaticFunctionDefinitions::TriggerServerEvent(const char* szName, CClientEntity& CallWithEntity, CLuaArguments& Arguments)
+bool CStaticFunctionDefinitions::TriggerServerEvent(const char* szName, CClientEntity& CallWithEntity, CValues& Arguments)
 {
     assert(szName);
 
@@ -157,7 +157,7 @@ bool CStaticFunctionDefinitions::TriggerServerEvent(const char* szName, CClientE
         pBitStream->WriteCompressed(usNameLength);
         pBitStream->Write(szName, usNameLength);
         pBitStream->Write(CallWithEntity.GetID());
-        if (!Arguments.WriteToBitStream(*pBitStream))
+        if (!Arguments.Write(*pBitStream))
         {
             g_pNet->DeallocateNetBitStream(pBitStream);
             return false;
@@ -171,7 +171,7 @@ bool CStaticFunctionDefinitions::TriggerServerEvent(const char* szName, CClientE
     return false;
 }
 
-bool CStaticFunctionDefinitions::TriggerLatentServerEvent(const char* szName, CClientEntity& CallWithEntity, CLuaArguments& Arguments, int iBandwidth,
+bool CStaticFunctionDefinitions::TriggerLatentServerEvent(const char* szName, CClientEntity& CallWithEntity, CValues& Arguments, int iBandwidth,
                                                           CLuaMain* pLuaMain, ushort usResourceNetId)
 {
     assert(szName);
@@ -186,7 +186,7 @@ bool CStaticFunctionDefinitions::TriggerLatentServerEvent(const char* szName, CC
         pBitStream->WriteCompressed(usNameLength);
         pBitStream->Write(szName, usNameLength);
         pBitStream->Write(CallWithEntity.GetID());
-        if (!Arguments.WriteToBitStream(*pBitStream))
+        if (!Arguments.Write(*pBitStream))
         {
             g_pNet->DeallocateNetBitStream(pBitStream);
             return false;
@@ -243,11 +243,11 @@ bool CStaticFunctionDefinitions::OutputChatBox(const char* szText, unsigned char
 {
     if (strlen(szText) <= MAX_OUTPUTCHATBOX_LENGTH)
     {
-        CLuaArguments Arguments;
-        Arguments.PushString(szText);
-        Arguments.PushNumber(ucRed);
-        Arguments.PushNumber(ucGreen);
-        Arguments.PushNumber(ucBlue);
+        CValues Arguments;
+        Arguments.Push(szText);
+        Arguments.Push(ucRed);
+        Arguments.Push(ucGreen);
+        Arguments.Push(ucBlue);
 
         bool bCancelled = !g_pClientGame->GetRootEntity()->CallEvent("onClientChatMessage", Arguments, false);
         if (!bCancelled)
@@ -975,13 +975,13 @@ bool CStaticFunctionDefinitions::SetElementID(CClientEntity& Entity, const char*
     return false;
 }
 
-bool CStaticFunctionDefinitions::SetElementData(CClientEntity& Entity, const char* szName, CLuaArgument& Variable, bool bSynchronize)
+bool CStaticFunctionDefinitions::SetElementData(CClientEntity& Entity, const char* szName, CValue& Variable, bool bSynchronize)
 {
     assert(szName);
     assert(strlen(szName) <= MAX_CUSTOMDATA_NAME_LENGTH);
 
     bool          bIsSynced;
-    CLuaArgument* pCurrentVariable = Entity.GetCustomData(szName, false, &bIsSynced);
+    CValue* pCurrentVariable = Entity.GetCustomData(szName, false, &bIsSynced);
     if (!pCurrentVariable || Variable != *pCurrentVariable || bIsSynced != bSynchronize)
     {
         if (bSynchronize && !Entity.IsLocalEntity())
@@ -992,7 +992,7 @@ bool CStaticFunctionDefinitions::SetElementData(CClientEntity& Entity, const cha
             unsigned short usNameLength = static_cast<unsigned short>(strlen(szName));
             pBitStream->WriteCompressed(usNameLength);
             pBitStream->Write(szName, usNameLength);
-            Variable.WriteToBitStream(*pBitStream);
+            Variable.Write(*pBitStream);
 
             // Send the packet and deallocate
             g_pNet->SendPacket(PACKET_ID_CUSTOM_DATA, pBitStream, PACKET_PRIORITY_HIGH, PACKET_RELIABILITY_RELIABLE_ORDERED);
@@ -1457,9 +1457,9 @@ bool CStaticFunctionDefinitions::SetElementModel(CClientEntity& Entity, unsigned
             if (!Ped.SetModel(usModel))
                 return false;
 
-            CLuaArguments Arguments;
-            Arguments.PushNumber(usCurrentModel);
-            Arguments.PushNumber(usModel);
+            CValues Arguments;
+            Arguments.Push(usCurrentModel);
+            Arguments.Push(usModel);
             Ped.CallEvent("onClientElementModelChange", Arguments, true);
             break;
         }
@@ -1476,9 +1476,9 @@ bool CStaticFunctionDefinitions::SetElementModel(CClientEntity& Entity, unsigned
 
             Vehicle.SetModelBlocking(usModel, 255, 255);
 
-            CLuaArguments Arguments;
-            Arguments.PushNumber(usCurrentModel);
-            Arguments.PushNumber(usModel);
+            CValues Arguments;
+            Arguments.Push(usCurrentModel);
+            Arguments.Push(usModel);
             Vehicle.CallEvent("onClientElementModelChange", Arguments, true);
             break;
         }
@@ -1496,9 +1496,9 @@ bool CStaticFunctionDefinitions::SetElementModel(CClientEntity& Entity, unsigned
 
             Object.SetModel(usModel);
 
-            CLuaArguments Arguments;
-            Arguments.PushNumber(usCurrentModel);
-            Arguments.PushNumber(usModel);
+            CValues Arguments;
+            Arguments.Push(usCurrentModel);
+            Arguments.Push(usModel);
             Object.CallEvent("onClientElementModelChange", Arguments, true);
             break;
         }
@@ -1515,9 +1515,9 @@ bool CStaticFunctionDefinitions::SetElementModel(CClientEntity& Entity, unsigned
 
             Projectile.SetModel(usModel);
 
-            CLuaArguments Arguments;
-            Arguments.PushNumber(usCurrentModel);
-            Arguments.PushNumber(usModel);
+            CValues Arguments;
+            Arguments.Push(usCurrentModel);
+            Arguments.Push(usModel);
             Projectile.CallEvent("onClientElementModelChange", Arguments, true);
             break;
         }
@@ -2048,20 +2048,20 @@ bool CStaticFunctionDefinitions::KillPed(CClientEntity& Entity, CClientEntity* p
     // magic numbers 0, 15 found from CPlayerWastedPacket
 
     // Tell our scripts the ped has died
-    CLuaArguments Arguments;
+    CValues Arguments;
     if (pKiller)
-        Arguments.PushElement(pKiller);
+        Arguments.Push(pKiller);
     else
-        Arguments.PushBoolean(false);
+        Arguments.Push(false);
     if (ucKillerWeapon != 0xFF)
-        Arguments.PushNumber(ucKillerWeapon);
+        Arguments.Push(ucKillerWeapon);
     else
-        Arguments.PushBoolean(false);
+        Arguments.Push(false);
     if (ucBodyPart != 0xFF)
-        Arguments.PushNumber(ucBodyPart);
+        Arguments.Push(ucBodyPart);
     else
-        Arguments.PushBoolean(false);
-    Arguments.PushBoolean(bStealth);
+        Arguments.Push(false);
+    Arguments.Push(bStealth);
 
     pPed.CallEvent("onClientPedWasted", Arguments, false);
     pPed.RemoveAllWeapons();
@@ -6076,10 +6076,10 @@ void CStaticFunctionDefinitions::GUIGridListClear(CClientEntity& Entity)
     }
 }
 
-void CStaticFunctionDefinitions::GUIGridListSetItemData(CClientGUIElement& GUIElement, int iRow, int iColumn, CLuaArgument* Variable)
+void CStaticFunctionDefinitions::GUIGridListSetItemData(CClientGUIElement& GUIElement, int iRow, int iColumn, CValue* Variable)
 {
     // Delete any old data we might have
-    CLuaArgument* pVariable = reinterpret_cast<CLuaArgument*>(static_cast<CGUIGridList*>(GUIElement.GetCGUIElement())->GetItemData(iRow, iColumn));
+    CValue* pVariable = reinterpret_cast<CValue*>(static_cast<CGUIGridList*>(GUIElement.GetCGUIElement())->GetItemData(iRow, iColumn));
     if (pVariable)
         delete pVariable;
 
@@ -6089,7 +6089,7 @@ void CStaticFunctionDefinitions::GUIGridListSetItemData(CClientGUIElement& GUIEl
 
 void CStaticFunctionDefinitions::GUIItemDataDestroyCallback(void* data)
 {
-    delete (CLuaArgument*)(data);
+    delete (CValue*)(data);
 }
 
 void CStaticFunctionDefinitions::GUIGridListSetSelectionMode(CClientEntity& Entity, unsigned int uiMode)
@@ -6823,7 +6823,7 @@ bool CStaticFunctionDefinitions::GetFPSLimit(int& iLimit)
 }
 
 bool CStaticFunctionDefinitions::BindKey(const char* szKey, const char* szHitState, CLuaMain* pLuaMain, const CLuaFunctionRef& iLuaFunction,
-                                         CLuaArguments& Arguments)
+                                         CValues& Arguments)
 {
     assert(szKey);
     assert(szHitState);
@@ -7837,8 +7837,8 @@ CClientSound* CStaticFunctionDefinitions::PlaySound3D(CResource* pResource, cons
 bool CStaticFunctionDefinitions::StopSound(CClientSound& Sound)
 {
     // call onClientSoundStopped
-    CLuaArguments Arguments;
-    Arguments.PushString("destroyed");            // Reason
+    CValues Arguments;
+    Arguments.Push("destroyed");            // Reason
     Sound.CallEvent("onClientSoundStopped", Arguments, false);
     g_pClientGame->GetElementDeleter()->Delete(&Sound);
     return true;
@@ -9759,18 +9759,18 @@ bool CStaticFunctionDefinitions::WarpPedIntoVehicle(CClientPed* pPed, CClientVeh
     pVehicle->CalcAndUpdateTyresCanBurstFlag();
 
     // Call the onClientPlayerEnterVehicle event
-    CLuaArguments Arguments;
-    Arguments.PushElement(pVehicle);            // vehicle
-    Arguments.PushNumber(uiSeat);               // seat
+    CValues Arguments;
+    Arguments.Push(pVehicle);            // vehicle
+    Arguments.Push(uiSeat);               // seat
     if (IS_PLAYER(pPed))
         pPed->CallEvent("onClientPlayerVehicleEnter", Arguments, true);
     else
         pPed->CallEvent("onClientPedVehicleEnter", Arguments, true);
 
     // Call the onClientVehicleEnter event
-    CLuaArguments Arguments2;
-    Arguments2.PushElement(pPed);             // player / ped
-    Arguments2.PushNumber(uiSeat);            // seat
+    CValues Arguments2;
+    Arguments2.Push(pPed);             // player / ped
+    Arguments2.Push(uiSeat);            // seat
     pVehicle->CallEvent("onClientVehicleEnter", Arguments2, true);
 
     return true;
@@ -9812,19 +9812,19 @@ bool CStaticFunctionDefinitions::RemovePedFromVehicle(CClientPed* pPed)
         }
 
         // Call onClientPlayerVehicleExit
-        CLuaArguments Arguments;
-        Arguments.PushElement(pVehicle);            // vehicle
-        Arguments.PushNumber(uiSeat);               // seat
-        Arguments.PushBoolean(false);               // jacker
+        CValues Arguments;
+        Arguments.Push(pVehicle);            // vehicle
+        Arguments.Push(uiSeat);               // seat
+        Arguments.Push(false);               // jacker
         if (IS_PLAYER(pPed))
             pPed->CallEvent("onClientPlayerVehicleExit", Arguments, true);
         else
             pPed->CallEvent("onClientPedVehicleExit", Arguments, true);
 
         // Call onClientVehicleExit
-        CLuaArguments Arguments2;
-        Arguments2.PushElement(pPed);             // player / ped
-        Arguments2.PushNumber(uiSeat);            // seat
+        CValues Arguments2;
+        Arguments2.Push(pPed);             // player / ped
+        Arguments2.Push(uiSeat);            // seat
         pVehicle->CallEvent("onClientVehicleExit", Arguments2, true);
         return true;
     }

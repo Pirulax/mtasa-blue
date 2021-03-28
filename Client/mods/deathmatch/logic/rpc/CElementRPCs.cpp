@@ -96,8 +96,8 @@ void CElementRPCs::SetElementData(CClientEntity* pSource, NetBitStreamInterface&
             return;
         }
         SString      strName;
-        CLuaArgument Argument;
-        if (bitStream.ReadStringCharacters(strName, usNameLength) && Argument.ReadFromBitStream(bitStream))
+        CValue Argument;
+        if (bitStream.ReadStringCharacters(strName, usNameLength) && Argument.Read(bitStream))
         {
             pSource->SetCustomData(strName, Argument);
         }
@@ -452,9 +452,9 @@ void CElementRPCs::SetElementModel(CClientEntity* pSource, NetBitStreamInterface
             {
                 if (pPed->SetModel(usModel))
                 {
-                    CLuaArguments Arguments;
-                    Arguments.PushNumber(usCurrentModel);
-                    Arguments.PushNumber(usModel);
+                    CValues Arguments;
+                    Arguments.Push(usCurrentModel);
+                    Arguments.Push(usModel);
                     pPed->CallEvent("onClientElementModelChange", Arguments, true);
                 }
             }
@@ -478,9 +478,9 @@ void CElementRPCs::SetElementModel(CClientEntity* pSource, NetBitStreamInterface
             {
                 pVehicle->SetModelBlocking(usModel, ucVariant, ucVariant2);
 
-                CLuaArguments Arguments;
-                Arguments.PushNumber(usCurrentModel);
-                Arguments.PushNumber(usModel);
+                CValues Arguments;
+                Arguments.Push(usCurrentModel);
+                Arguments.Push(usModel);
                 pVehicle->CallEvent("onClientElementModelChange", Arguments, true);
             }
 
@@ -496,9 +496,9 @@ void CElementRPCs::SetElementModel(CClientEntity* pSource, NetBitStreamInterface
             if (usCurrentModel != usModel)
             {
                 pObject->SetModel(usModel);
-                CLuaArguments Arguments;
-                Arguments.PushNumber(usCurrentModel);
-                Arguments.PushNumber(usModel);
+                CValues Arguments;
+                Arguments.Push(usCurrentModel);
+                Arguments.Push(usModel);
                 pObject->CallEvent("onClientElementModelChange", Arguments, true);
             }
 

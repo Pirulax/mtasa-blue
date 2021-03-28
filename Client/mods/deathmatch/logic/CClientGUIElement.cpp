@@ -115,13 +115,13 @@ void CClientGUIElement::SetEvents(const char* szFunc1, const char* szFunc2)
 
 bool CClientGUIElement::_CallbackEvent1(CGUIElement* pCGUIElement)
 {
-    CLuaArguments Arg;
+    CValues Arg;
     if (pCGUIElement)
     {
         CClientGUIElement* pElement = m_pGUIManager->Get(pCGUIElement);
         if (pElement)
         {
-            Arg.PushElement(pElement);
+            Arg.Push(pElement);
             pElement->CallEvent(_strCallbackFunc1, Arg, true);
             return true;
         }
@@ -131,13 +131,13 @@ bool CClientGUIElement::_CallbackEvent1(CGUIElement* pCGUIElement)
 
 bool CClientGUIElement::_CallbackEvent2(CGUIElement* pCGUIElement)
 {
-    CLuaArguments Arg;
+    CValues Arg;
     if (pCGUIElement)
     {
         CClientGUIElement* pElement = m_pGUIManager->Get(pCGUIElement);
         if (pElement)
         {
-            Arg.PushElement(pElement);
+            Arg.Push(pElement);
             pElement->CallEvent(_strCallbackFunc2, Arg, true);
             return true;
         }

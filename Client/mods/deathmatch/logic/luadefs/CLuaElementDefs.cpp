@@ -1714,7 +1714,7 @@ int CLuaElementDefs::SetElementData(lua_State* luaVM)
     //  bool setElementData ( element theElement, string key, var value, [bool synchronize = true] )
     CClientEntity* pEntity;
     SString        strKey;
-    CLuaArgument   value;
+    CValue   value;
     bool           bSynchronize;
 
     CScriptArgReader argStream(luaVM);

@@ -143,15 +143,15 @@ int CLuaCryptDefs::PasswordHash(lua_State* luaVM)
                                 CLuaMain* pLuaMain = m_pLuaManager->GetVirtualMachine(luaFunctionRef.GetLuaVM());
                                 if (pLuaMain)
                                 {
-                                    CLuaArguments arguments;
+                                    CValues arguments;
 
                                     if (hash.empty())
                                     {
                                         m_pScriptDebugging->LogCustom(pLuaMain->GetVM(), "Invalid value for field 'salt'");
-                                        arguments.PushBoolean(false);
+                                        arguments.Push(false);
                                     }
                                     else
-                                        arguments.PushString(hash);
+                                        arguments.Push(hash);
 
                                     arguments.Call(pLuaMain, luaFunctionRef);
                                 }
@@ -231,8 +231,8 @@ int CLuaCryptDefs::PasswordVerify(lua_State* luaVM)
                             CLuaMain* pLuaMain = m_pLuaManager->GetVirtualMachine(luaFunctionRef.GetLuaVM());
                             if (pLuaMain)
                             {
-                                CLuaArguments arguments;
-                                arguments.PushBoolean(correct);
+                                CValues arguments;
+                                arguments.Push(correct);
                                 arguments.Call(pLuaMain, luaFunctionRef);
                             }
                         });
@@ -301,8 +301,8 @@ int CLuaCryptDefs::EncodeString(lua_State* luaVM)
                                 CLuaMain* pLuaMain = m_pLuaManager->GetVirtualMachine(luaFunctionRef.GetLuaVM());
                                 if (pLuaMain)
                                 {
-                                    CLuaArguments arguments;
-                                    arguments.PushString(result);
+                                    CValues arguments;
+                                    arguments.Push(result);
                                     arguments.Call(pLuaMain, luaFunctionRef);
                                 }
                             });
@@ -380,8 +380,8 @@ int CLuaCryptDefs::DecodeString(lua_State* luaVM)
                                 CLuaMain* pLuaMain = m_pLuaManager->GetVirtualMachine(luaFunctionRef.GetLuaVM());
                                 if (pLuaMain)
                                 {
-                                    CLuaArguments arguments;
-                                    arguments.PushString(result);
+                                    CValues arguments;
+                                    arguments.Push(result);
                                     arguments.Call(pLuaMain, luaFunctionRef);
                                 }
                             });

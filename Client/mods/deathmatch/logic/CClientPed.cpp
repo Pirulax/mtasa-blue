@@ -4688,8 +4688,8 @@ bool CClientPed::SetCurrentRadioChannel(unsigned char ucChannel)
     {
         if (m_ucRadioChannel != ucChannel)
         {
-            CLuaArguments Arguments;
-            Arguments.PushNumber(ucChannel);
+            CValues Arguments;
+            Arguments.Push(ucChannel);
             if (!CallEvent("onClientPlayerRadioSwitch", Arguments, true))
             {
                 // if we cancel the radio channel setting at 12 then when they go through previous it will get to 0, then the next time it is used set to 13 in
@@ -4950,11 +4950,11 @@ void CClientPed::DestroySatchelCharges(bool bBlow, bool bDestroy)
             if (bBlow)
             {
                 pProjectile->GetPosition(vecPosition);
-                CLuaArguments Arguments;
-                Arguments.PushNumber(vecPosition.fX);
-                Arguments.PushNumber(vecPosition.fY);
-                Arguments.PushNumber(vecPosition.fZ);
-                Arguments.PushNumber(EXP_TYPE_GRENADE);
+                CValues Arguments;
+                Arguments.Push(vecPosition.fX);
+                Arguments.Push(vecPosition.fY);
+                Arguments.Push(vecPosition.fZ);
+                Arguments.Push(EXP_TYPE_GRENADE);
                 bool bCancelExplosion = !CallEvent("onClientExplosion", Arguments, true);
 
                 if (!bCancelExplosion)
@@ -6555,10 +6555,10 @@ bool CClientPed::EnterVehicle(CClientVehicle* pVehicle, bool bPassenger)
 
     // Call the onClientVehicleStartEnter event for the ped
     // Check if it is cancelled before sending packet
-    CLuaArguments Arguments;
-    Arguments.PushElement(this);             // player / ped
-    Arguments.PushNumber(uiSeat);            // seat
-    Arguments.PushNumber(uiDoor);            // door
+    CValues Arguments;
+    Arguments.Push(this);             // player / ped
+    Arguments.Push(uiSeat);            // seat
+    Arguments.Push(uiDoor);            // door
 
     if (!pVehicle->CallEvent("onClientVehicleStartEnter", Arguments, true))
     {

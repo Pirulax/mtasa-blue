@@ -149,14 +149,14 @@ void CClientColManager::HandleHitDetectionResult(bool bHit, CClientColShape* pSh
             if (pShape->GetAutoCallEvent())
             {
                 // Call the event
-                CLuaArguments Arguments;
-                Arguments.PushElement(pEntity);
-                Arguments.PushBoolean((pShape->GetDimension() == pEntity->GetDimension()));
+                CValues Arguments;
+                Arguments.Push(pEntity);
+                Arguments.Push((pShape->GetDimension() == pEntity->GetDimension()));
                 pShape->CallEvent("onClientColShapeHit", Arguments, true);
 
-                CLuaArguments Arguments2;
-                Arguments2.PushElement(pShape);
-                Arguments2.PushBoolean((pShape->GetDimension() == pEntity->GetDimension()));
+                CValues Arguments2;
+                Arguments2.Push(pShape);
+                Arguments2.Push((pShape->GetDimension() == pEntity->GetDimension()));
                 pEntity->CallEvent("onClientElementColShapeHit", Arguments2, true);
             }
 
@@ -174,14 +174,14 @@ void CClientColManager::HandleHitDetectionResult(bool bHit, CClientColShape* pSh
             pEntity->RemoveCollision(pShape);
 
             // Call the event
-            CLuaArguments Arguments;
-            Arguments.PushElement(pEntity);
-            Arguments.PushBoolean((pShape->GetDimension() == pEntity->GetDimension()));
+            CValues Arguments;
+            Arguments.Push(pEntity);
+            Arguments.Push((pShape->GetDimension() == pEntity->GetDimension()));
             pShape->CallEvent("onClientColShapeLeave", Arguments, true);
 
-            CLuaArguments Arguments2;
-            Arguments2.PushElement(pShape);
-            Arguments2.PushBoolean((pShape->GetDimension() == pEntity->GetDimension()));
+            CValues Arguments2;
+            Arguments2.Push(pShape);
+            Arguments2.Push((pShape->GetDimension() == pEntity->GetDimension()));
             pEntity->CallEvent("onClientElementColShapeLeave", Arguments2, true);
 
             pShape->CallLeaveCallback(*pEntity);

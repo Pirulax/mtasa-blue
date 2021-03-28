@@ -176,7 +176,7 @@ int CLuaFunctionDefs::BindKey(lua_State* luaVM)
             {
                 // bindKey ( string key, string keyState, function handlerFunction,  [ var arguments, ... ] )
                 CLuaFunctionRef iLuaFunction;
-                CLuaArguments   Arguments;
+                CValues   Arguments;
                 argStream.ReadFunction(iLuaFunction);
                 argStream.ReadLuaArguments(Arguments);
                 argStream.ReadFunctionComplete();

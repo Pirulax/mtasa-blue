@@ -200,7 +200,7 @@ CDownloadableResource* CResource::AddConfigFile(const char* szFileName, uint uiD
     return pConfig;
 }
 
-bool CResource::CallExportedFunction(const SString& name, CLuaArguments& args, CLuaArguments& returns, CResource& caller)
+bool CResource::CallExportedFunction(const SString& name, CValues& args, CValues& returns, CResource& caller)
 {
     if (m_exportedFunctions.find(name) != m_exportedFunctions.end())
         return args.CallGlobal(m_pLuaVM, name.c_str(), &returns);
@@ -321,8 +321,8 @@ void CResource::Load()
     if (m_pResourceEntity)
     {
         // Call the Lua "onClientResourceStart" event
-        CLuaArguments Arguments;
-        Arguments.PushResource(this);
+        CValues Arguments;
+        Arguments.Push(this);
         m_pResourceEntity->CallEvent("onClientResourceStart", Arguments, true);
     }
     else
@@ -333,8 +333,8 @@ void CResource::Stop()
 {
     m_bStarting = false;
     m_bStopping = true;
-    CLuaArguments Arguments;
-    Arguments.PushResource(this);
+    CValues Arguments;
+    Arguments.Push(this);
     m_pResourceEntity->CallEvent("onClientResourceStop", Arguments, true);
 }
 

@@ -2339,7 +2339,7 @@ int CLuaGUIDefs::GUIGridListAddRow(lua_State* luaVM)
     //  int guiGridListAddRow ( element gridList )
     //  int guiGridListAddRow ( element gridList, int/string itemText1, int/string itemText2 ... )
     CClientGUIElement* guiGridlist;
-    CLuaArguments      Arguments;
+    CValues      Arguments;
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadUserData<CGUIGridList>(guiGridlist);
@@ -2354,10 +2354,10 @@ int CLuaGUIDefs::GUIGridListAddRow(lua_State* luaVM)
         {
             // Vector containing our string arguments.  We add a bool to store whether it was originally a number.
             std::vector<std::pair<SString, bool> >     m_items;
-            std::vector<CLuaArgument*>::const_iterator it = Arguments.IterBegin();
+            std::vector<CValue*>::const_iterator it = Arguments.IterBegin();
             for (it; it != Arguments.IterEnd(); it++)
             {
-                CLuaArgument* pArgument = *it;
+                CValue* pArgument = *it;
                 SString       strItemText;
                 bool          bNumber = false;
 
@@ -2404,7 +2404,7 @@ int CLuaGUIDefs::GUIGridListInsertRowAfter(lua_State* luaVM)
     //  int guiGridListInsertRowAfter ( element gridList, int rowIndex, int/string itemText1, int/string itemText2 ... )
     CClientGUIElement* guiGridlist;
     int                rowIndex;
-    CLuaArguments      Arguments;
+    CValues      Arguments;
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadUserData<CGUIGridList>(guiGridlist);
@@ -2420,10 +2420,10 @@ int CLuaGUIDefs::GUIGridListInsertRowAfter(lua_State* luaVM)
         {
             // Vector containing our string arguments.  We add a bool to store whether it was originally a number.
             std::vector<std::pair<SString, bool> >     m_items;
-            std::vector<CLuaArgument*>::const_iterator it = Arguments.IterBegin();
+            std::vector<CValue*>::const_iterator it = Arguments.IterBegin();
             for (it; it != Arguments.IterEnd(); it++)
             {
-                CLuaArgument* pArgument = *it;
+                CValue* pArgument = *it;
                 SString       strItemText;
                 bool          bNumber = false;
 
@@ -2739,7 +2739,7 @@ int CLuaGUIDefs::GUIGridListGetItemData(lua_State* luaVM)
     if (!argStream.HasErrors())
     {
         void*         pData = static_cast<CGUIGridList*>(guiGridlist->GetCGUIElement())->GetItemData(rowIndex, columnIndex);
-        CLuaArgument* pVariable = reinterpret_cast<CLuaArgument*>(pData);
+        CValue* pVariable = reinterpret_cast<CValue*>(pData);
         if (pVariable)
             pVariable->Push(luaVM);
         else
@@ -2866,7 +2866,7 @@ int CLuaGUIDefs::GUIGridListSetItemData(lua_State* luaVM)
     CClientGUIElement* guiGridlist;
     int                rowIndex;
     int                columnIndex;
-    CLuaArgument       data;
+    CValue       data;
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadUserData<CGUIGridList>(guiGridlist);
@@ -2876,7 +2876,7 @@ int CLuaGUIDefs::GUIGridListSetItemData(lua_State* luaVM)
 
     if (!argStream.HasErrors())
     {
-        CLuaArgument* pData = new CLuaArgument(data);
+        CValue* pData = new CValue(data);
         CStaticFunctionDefinitions::GUIGridListSetItemData(*guiGridlist, rowIndex, columnIndex, pData);
         lua_pushboolean(luaVM, true);
         return 1;
