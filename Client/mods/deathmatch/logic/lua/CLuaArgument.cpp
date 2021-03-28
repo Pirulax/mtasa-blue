@@ -299,25 +299,17 @@ bool CValue::Read(NetBitStreamInterface& bitStream, TableList& tables)
     {
         Table& table = m_value.emplace<Table>();
 
-        auto DoRead = [&bitStream, this](TableList* tables) mutable {
-            if (unsigned int nvals; bitStream.ReadCompressed(nvals))
-            {
-                Table& table = m_value.emplace<Table>();
-                table->reserve(nvals);
-                tables->emplace_back(table);
-                dassert(nvals % 2 == 0); /* number of all elements must be even because a pair is 2 values */
-                for (size_t i = 0; i < nvals; i += 2) /* originally it read k and v in separate iterations, thus i += 2 since we read both / iteration */
-                    table->push_back({ { bitStream, tables }, { bitStream, tables } }); /* Read k and v at the same time */
-            }
-        };
-
-        if (tables)
-            DoRead(tables);
-        else
+     
+        if (unsigned int nvals; bitStream.ReadCompressed(nvals))
         {
-            TableList list;
-            DoRead(&list);
+            Table& table = m_value.emplace<Table>();
+            table->reserve(nvals);
+            tables.emplace_back(table);
+            dassert(nvals % 2 == 0); /* number of all elements must be even because a pair is 2 values */
+            for (size_t i = 0; i < nvals; i += 2) /* originally it read k and v in separate iterations, thus i += 2 since we read both / iteration */
+                table->push_back({ { bitStream, tables }, { bitStream, tables } }); /* Read k and v at the same time */
         }
+
 
         /* TODO: ValidateTableKeys() */
 
@@ -326,15 +318,15 @@ bool CValue::Read(NetBitStreamInterface& bitStream, TableList& tables)
     case LUA_TTABLEREF:
     {
         /*
-         * Wargning: If you were to use `Read` this might fail as
+         * Wargning: If we were to use `Read` this might fail as
          * type sizes may not be the same across compilers.
          *Eg.: gcc x64(server) vs msvc x86 (client)
          */
         if (unsigned long refid; bitStream.ReadCompressed(refid))
         {
-            if (!tables || refid >= tables->size())
+            if (refid >= tables.size())
                 return false;
-            m_value.emplace<TableRef>((*tables)[refid]);
+            m_value.emplace<TableRef>(tables[refid]);
         }
         else
             return false;
