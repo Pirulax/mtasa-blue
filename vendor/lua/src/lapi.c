@@ -412,7 +412,7 @@ LUA_API void *lua_touserdata (lua_State *L, int idx) {
   StkId o = index2adr(L, idx);
   switch (ttype(o)) {
     case LUA_TUSERDATA: return (rawuvalue(o) + 1);
-    case LUA_TLIGHTUSERDATA: return pvalue(o);
+    case LUA_TLIGHTUSERDATA: return luvalue(o);
     default: return NULL;
   }
 }
