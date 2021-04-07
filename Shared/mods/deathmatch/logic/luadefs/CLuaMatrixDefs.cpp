@@ -10,6 +10,7 @@
  *****************************************************************************/
 
 #include "StdInc.h"
+#include <mimalloc.h>
 
 void CLuaMatrixDefs::AddClass(lua_State* luaVM)
 {
@@ -124,7 +125,10 @@ int CLuaMatrixDefs::Destroy(lua_State* luaVM)
 
     if (!argStream.HasErrors())
     {
-        delete pMatrix;
+        mi_stl_allocator<CLuaMatrix> alloc{};
+        alloc.destroy(pMatrix);
+        alloc.deallocate(pMatrix, 1);
+
         lua_addtotalbytes(luaVM, -LUA_GC_EXTRA_BYTES);
         lua_pushboolean(luaVM, true);
         return 1;

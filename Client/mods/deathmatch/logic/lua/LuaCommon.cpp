@@ -13,6 +13,8 @@
 
 // Temporary until we change these funcs:
 #include "../luadefs/CLuaDefs.h"
+#include <mimalloc.h>
+
 // End of temporary
 
 // Prevent the warning issued when doing unsigned short -> void*
@@ -164,30 +166,37 @@ void lua_pushobject(lua_State* luaVM, const char* szClass, void* pObject, bool b
     lua_setmetatable(luaVM, -2);            // element
 }
 
+template<typename T, typename... Args>
+T* AllocAndConstruct(Args&&... args)
+{
+    mi_stl_allocator<T> alloc{};
+    return new(alloc.allocate(1)) T(std::forward<Args>(args)...);
+}
+
 void lua_pushvector(lua_State* luaVM, const CVector4D& vector)
 {
-    CLuaVector4D* pVector = new CLuaVector4D(vector);
+    auto* pVector = AllocAndConstruct<CLuaVector4D>(vector);
     lua_pushobject(luaVM, "Vector4", (void*)reinterpret_cast<unsigned int*>(pVector->GetScriptID()), true);
     lua_addtotalbytes(luaVM, LUA_GC_EXTRA_BYTES);
 }
 
 void lua_pushvector(lua_State* luaVM, const CVector& vector)
 {
-    CLuaVector3D* pVector = new CLuaVector3D(vector);
+    auto* pVector = AllocAndConstruct<CLuaVector3D>(vector);
     lua_pushobject(luaVM, "Vector3", (void*)reinterpret_cast<unsigned int*>(pVector->GetScriptID()), true);
     lua_addtotalbytes(luaVM, LUA_GC_EXTRA_BYTES);
 }
 
 void lua_pushvector(lua_State* luaVM, const CVector2D& vector)
 {
-    CLuaVector2D* pVector = new CLuaVector2D(vector);
+    auto* pVector = AllocAndConstruct<CLuaVector2D>(vector);
     lua_pushobject(luaVM, "Vector2", (void*)reinterpret_cast<unsigned int*>(pVector->GetScriptID()), true);
     lua_addtotalbytes(luaVM, LUA_GC_EXTRA_BYTES);
 }
 
 void lua_pushmatrix(lua_State* luaVM, const CMatrix& matrix)
 {
-    CLuaMatrix* pMatrix = new CLuaMatrix(matrix);
+    auto* pMatrix = AllocAndConstruct<CLuaMatrix>(matrix);
     lua_pushobject(luaVM, "Matrix", (void*)reinterpret_cast<unsigned int*>(pMatrix->GetScriptID()), true);
     lua_addtotalbytes(luaVM, LUA_GC_EXTRA_BYTES);
 }

@@ -10,6 +10,7 @@
  *****************************************************************************/
 
 #include "StdInc.h"
+#include <mimalloc.h>
 
 void CLuaVector4Defs::AddClass(lua_State* luaVM)
 {
@@ -190,7 +191,10 @@ int CLuaVector4Defs::Destroy(lua_State* luaVM)
 
     if (!argStream.HasErrors())
     {
-        delete pVector;
+        mi_stl_allocator<CLuaVector4D> alloc{};
+        alloc.destroy(pVector);
+        alloc.deallocate(pVector, 1);
+
         lua_addtotalbytes(luaVM, -LUA_GC_EXTRA_BYTES);
         lua_pushboolean(luaVM, true);
         return 1;
