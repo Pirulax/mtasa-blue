@@ -14,6 +14,7 @@ project "Deathmatch"
 		includedirs {
 			"../../../Shared/sdk",
 			"../../sdk",
+			"../../../vendor/mimalloc-2.0.1/include",
 			"../../../vendor/bochs",
 			"../../../vendor/pme",
 			"../../../vendor/zip",
@@ -34,7 +35,7 @@ project "Deathmatch"
 
 	defines { "SDK_WITH_BCRYPT" }
 	links {
-		"Lua_Server", "sqlite", "ehs", "cryptopp", "pme", "pcre", "json-c", "zip", "zlib", "blowfish_bcrypt",
+		"Lua_Server", "sqlite", "ehs", "cryptopp", "pme", "pcre", "json-c", "zip", "zlib", "blowfish_bcrypt", "MiMalloc",
 	}
 
 	vpaths {

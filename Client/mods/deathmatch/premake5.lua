@@ -9,7 +9,16 @@ project "Client Deathmatch"
 
 	defines { "LUA_USE_APICHECK", "SDK_WITH_BCRYPT" }
 	links {
-		"Lua_Client", "pcre", "json-c", "ws2_32", "portaudio", "zlib", "cryptopp", "libspeex", "blowfish_bcrypt",
+		"Lua_Client", 
+		"pcre", 
+		"json-c", 
+		"ws2_32", 
+		"portaudio", 
+		"zlib", 
+		"cryptopp", 
+		"libspeex", 
+		"blowfish_bcrypt", 
+		"MiMalloc",
 		"../../../vendor/bass/lib/bass",
 		"../../../vendor/bass/lib/bass_fx",
 		"../../../vendor/bass/lib/bassmix",
@@ -28,6 +37,7 @@ project "Client Deathmatch"
 
 	filter {}
 		includedirs {
+			"../../../vendor/mimalloc-2.0.1/include",
 			"../../../Shared/sdk",
 			".",
 			"./logic",

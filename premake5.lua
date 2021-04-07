@@ -137,6 +137,7 @@ workspace "MTASA"
 		include "vendor/pthreads"
 		include "vendor/libspeex"
 		include "vendor/detours"
+		include "vendor/mimalloc-2.0.1"
 	end
 
 	filter {}
@@ -167,3 +168,4 @@ workspace "MTASA"
 		include "vendor/unrar"
 		include "vendor/zip"
 		include "vendor/zlib"
+		include "vendor/mimalloc-2.0.1"
