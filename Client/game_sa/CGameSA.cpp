@@ -516,6 +516,7 @@ eGameVersion CGameSA::GetGameVersion()
     return m_eGameVersion;
 }
 
+#pragma optimize("g", off)
 eGameVersion CGameSA::FindGameVersion()
 {
     unsigned char ucA = *reinterpret_cast<unsigned char*>(0x748ADD);
@@ -539,6 +540,7 @@ eGameVersion CGameSA::FindGameVersion()
 
     return m_eGameVersion;
 }
+#pragma optimize("g", on)
 
 float CGameSA::GetFPS()
 {
