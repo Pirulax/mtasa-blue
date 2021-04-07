@@ -12,6 +12,7 @@
 #include "StdInc.h"
 #define DECLARE_PROFILER_SECTION_CLuaMain
 #include "profiler/SharedUtil.Profiler.h"
+#include <LuaNewStateMiMalloc.h>
 
 using std::list;
 
@@ -143,8 +144,10 @@ void CLuaMain::InitVM()
     assert(!m_luaVM);
 
     // Create a new VM
-    m_luaVM = lua_open(this);
+    m_luaVM = LuaNewStateMiMalloc(this);
     m_pLuaManager->OnLuaMainOpenVM(this, m_luaVM);
+
+    lua_atpanic(m_luaVM, &LuaPanic);
 
     // Set the instruction count hook
     lua_sethook(m_luaVM, InstructionCountHook, LUA_MASKCOUNT, HOOK_INSTRUCTION_COUNT);
