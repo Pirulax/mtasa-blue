@@ -22,6 +22,12 @@ project "Client Deathmatch"
 		["*"] = "premake5.lua"
 	}
 
+	filter { "system:windows", "configurations:Release", "options:pgo-genprofile" }
+		linkoptions { "/GENPROFILE" }
+
+	filter { "system:windows", "configurations:Release", "options:pgo-useprofile" }
+		linkoptions { "/USEPROFILE" }
+
 	filter "system:windows"
 		includedirs { "../../../vendor/sparsehash/src/windows" }
 		linkoptions { "/SAFESEH:NO" }

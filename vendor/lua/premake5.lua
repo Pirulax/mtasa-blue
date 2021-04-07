@@ -26,6 +26,12 @@ project "Lua_Server"
 	filter {"system:windows", "platforms:x64"}
 		targetdir(buildpath("server/x64"))
 
+	filter { "system:windows", "configurations:Release", "options:pgo-genprofile" }
+		linkoptions { "/GENPROFILE" }
+
+	filter { "system:windows", "configurations:Release", "options:pgo-useprofile" }
+		linkoptions { "/USEPROFILE" }
+
 
 if os.target() == "windows" then
 	project "Lua_Client"
@@ -50,6 +56,12 @@ if os.target() == "windows" then
 			"LUA_USE_APICHECK",
 			"LUA_BUILD_AS_DLL"
 		}
+
+		filter { "system:windows", "configurations:Release", "options:pgo-genprofile" }
+			linkoptions { "/GENPROFILE" }
+
+		filter { "system:windows", "configurations:Release", "options:pgo-useprofile" }
+			linkoptions { "/USEPROFILE" }
 
         filter "platforms:x64"
             flags { "ExcludeFromBuild" } 

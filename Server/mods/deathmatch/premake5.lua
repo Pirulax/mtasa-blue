@@ -60,6 +60,12 @@ project "Deathmatch"
 		buildoptions { "-Zm130" }
 		links { "ws2_32", "pthread" }
 
+	filter { "system:windows", "configurations:Release", "options:pgo-genprofile" }
+		linkoptions { "/GENPROFILE" }
+
+	filter { "system:windows", "configurations:Release", "options:pgo-useprofile" }
+		linkoptions { "/USEPROFILE" }
+
 	filter "system:not windows"
 		buildoptions { "-Wno-narrowing" } -- We should fix the warnings at some point
 		buildoptions { "-pthread" }
