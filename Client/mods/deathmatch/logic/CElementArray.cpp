@@ -20,18 +20,17 @@ void CElementIDs::Initialize()
     memset(&m_Elements[0], 0, sizeof(m_Elements));
 }
 
+void CElementIDs::Deinitialize()
+{
+    m_ClientStack = {};
+}
+
 CClientEntity* CElementIDs::GetElement(ElementID ID)
 {
     if (ID < MAX_SERVER_ELEMENTS + MAX_CLIENT_ELEMENTS)
     {
         return m_Elements[ID.Value()];
     }
-
-    /*
-    #ifdef MTA_DEBUG
-        assert ( 0 );
-    #endif
-    */
     return NULL;
 }
 

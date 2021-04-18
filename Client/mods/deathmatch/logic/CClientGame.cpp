@@ -345,6 +345,9 @@ CClientGame::CClientGame(bool bLocalPlay) : m_ServerInfo(new CServerInfo())
 
 CClientGame::~CClientGame()
 {
+    CIdArray::Deinitialize();
+    CElementIDs::Deinitialize();
+
     m_bBeingDeleted = true;
     // Stop all explosions. Unfortunately this doesn't fix the crash
     // if a vehicle is destroyed while it explodes.

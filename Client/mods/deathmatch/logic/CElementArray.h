@@ -18,6 +18,7 @@ class CElementIDs
 {
 public:
     static void Initialize();
+    static void Deinitialize();
 
     static CClientEntity* GetElement(ElementID ID);
     static void           SetElement(ElementID ID, CClientEntity* pEntity);

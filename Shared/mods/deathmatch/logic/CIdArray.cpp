@@ -40,6 +40,14 @@ void CIdArray::Initialize()
     }
 }
 
+void CIdArray::Deinitialize()
+{
+    m_bInitialized = false;
+    m_uiCapacity = 0;
+    m_IDStack = {};
+    m_Elements = {};
+}
+
 //
 // Add object to the list and get a new id for it
 //

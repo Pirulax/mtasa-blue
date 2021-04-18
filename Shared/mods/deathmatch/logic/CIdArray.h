@@ -68,6 +68,7 @@ class CIdArray
 {
 public:
     static void Initialize();
+    static void Deinitialize();
 
     static SArrayId PopUniqueId(void* pObject, EIdClassType idClass);
     static void     PushUniqueId(void* pObject, EIdClassType idClass, SArrayId id);
@@ -75,7 +76,6 @@ public:
     static void* FindEntry(SArrayId id, EIdClassType idClass);
     static uint  GetCapacity();
     static uint  GetUnusedAmount();
-
 private:
     static void ExpandBy(uint uiAmount);
 
