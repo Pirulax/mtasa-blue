@@ -11,6 +11,8 @@
 
 #pragma once
 
+#include <net/rpc_enums.h>
+
 class CRPCFunctions;
 
 #define DECLARE_RPC(a) static void a ( class NetBitStreamInterface& bitStream );
@@ -65,9 +67,6 @@ protected:
     static class CClientGame*     m_pClientGame;
 
 protected:
-    // Include the RPC functions enum
-    #include "net/rpc_enums.h"
-
     static SFixedArray<SRPCHandler, NUM_RPC_FUNCS>        m_RPCHandlers;
     static SFixedArray<SElementRPCHandler, NUM_RPC_FUNCS> m_ElementRPCHandlers;
 };
