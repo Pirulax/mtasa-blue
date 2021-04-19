@@ -11,6 +11,7 @@
 #pragma once
 
 #include <cmath>
+#include <limits>
 #include "SharedUtil.Misc.h"
 
 namespace SharedUtil
@@ -105,29 +106,29 @@ namespace SharedUtil
 
     /*
      * Compress a given number into a possibly smaller datatype
-     * might be lossy, as it might be rounded to an int.
+     * might be lossy, as it might round the value to int.
      * Calls `visitor` with the "value" type
      */
-    template<typename Visitor>
-    inline void CompressArithmetic(double value, Visitor visitor)
+    template<typename Fn>
+    inline void CompressArithmetic(double value, Fn fn)
     {
         if (value > -0x1000000 && value < 0x1000000) /* float or int */
         {
             /* float more accurate in this range than int
              * but check if we can use int, as it's better for compressing
              */
-            if (int iValue{ static_cast<int>(value) }; iValue == value)
-                visitor(iValue);
+            if (int iValue = static_cast<int>(value); iValue == value)
+                fn(iValue);
             else
-                visitor(static_cast<float>(value));
+                fn(static_cast<float>(value));
         }
-        else if (value >= -0x7FFFFFFF && value <= 0x7FFFFFFF) /* int */
+        else if (value >= std::numeric_limits<int>::min() && value <= std::numeric_limits<int>::max()) /* int */
         {
-            visistor(static_cast<int>(value));
+            fn(Round(value));
         }
         else /* double */
         {
-            visitor(std::floor(dValue + 0.5)); /* rounded for consistency with previous range */
+            fn(std::floor(value + 0.5)); /* rounded for consistency with previous range */
         }
     }
 
