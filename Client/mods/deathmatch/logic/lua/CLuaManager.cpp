@@ -10,6 +10,7 @@
  *****************************************************************************/
 
 #include "StdInc.h"
+#include <luadefs/CLuaUnitTestDefs.h>
 #include "../luadefs/CLuaFireDefs.h"
 #include "../luadefs/CLuaClientDefs.h"
 
@@ -246,6 +247,7 @@ void CLuaManager::LoadCFunctions()
         CLuaCFunctions::AddFunction(name, func);
 
     // Luadef definitions
+    CLuaUnitTestDefs::LoadFunctions();
     CLuaAudioDefs::LoadFunctions();
     CLuaBlipDefs::LoadFunctions();
     CLuaBrowserDefs::LoadFunctions();
