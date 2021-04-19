@@ -2,7 +2,7 @@
 #include "CValues.h"
 #include <lua/CLuaStackChecker.h>
 
-auto GetGame()
+static auto GetGame()
 {
 #ifdef MTA_CLIENT
     return g_pClientGame;
@@ -11,7 +11,7 @@ auto GetGame()
 #endif
 }
 
-auto GetScriptDebugging()
+static auto GetScriptDebugging()
 {
     return GetGame()->GetScriptDebugging();
 }
@@ -28,7 +28,9 @@ void CValues::Read(lua_State* L, int idxbegin, int count)
 {
     if (idxbegin < 0)
         idxbegin = lua_gettop(L) - idxbegin + 1; /* negative to positive index */
-    dassert(lua_type(L, idxbegin) != LUA_TNONE);
+
+    if (lua_type(L, idxbegin) == LUA_TNONE) /* nothing to read */
+        throw std::logic_error{ "Nothing to read from Lua stack" };
 
     if (count == -1)
         count = lua_gettop(L) - idxbegin + 1; /* read all beginning at `idxbegin` */
@@ -66,53 +68,53 @@ CValue& CValues::Push(CClientEntity* value)
 CValue& CValues::Push(CElement* value)
 #endif
 {
-    return Push(CValue::UserData{ value->GetID().Value() });
+    return Push(static_cast<CValue::UserData>(value->GetID().Value()));
 }
 
 CValue& CValues::Push(CLuaTimer* value)
 {
-    return Push(CValue::UserData{ value->GetScriptID() });
+    return Push(static_cast<CValue::UserData>(value->GetScriptID()));
 }
 
 CValue& CValues::Push(CResource* value)
 {
-    return Push(CValue::UserData{ value->GetScriptID() });
+    return Push(static_cast<CValue::UserData>(value->GetScriptID()));
 }
 
 #ifndef MTA_CLIENT
 CValue& CValues::Push(CDbJobData* value)
 {
-    return Push(CValue::UserData{ value->GetId() });
+    return Push(static_cast<CValue::UserData>(value->GetId()));
 }
 
 CValue& CValues::Push(CTextItem* value)
 {
-    return Push(CValue::UserData{ value->GetScriptID() });
+    return Push(static_cast<CValue::UserData>(value->GetScriptID()));
 }
 
 CValue& CValues::Push(CTextDisplay* value)
 {
-    return Push(CValue::UserData{ value->GetScriptID() });
+    return Push(static_cast<CValue::UserData>(value->GetScriptID()));
 }
 
 CValue& CValues::Push(CAccount* value)
 {
-    return Push(CValue::UserData{ value->GetScriptID() });
+    return Push(static_cast<CValue::UserData>(value->GetScriptID()));
 }
 
 CValue& CValues::Push(CAccessControlListGroup* value)
 {
-    return Push(CValue::UserData{ value->GetScriptID() });
+    return Push(static_cast<CValue::UserData>(value->GetScriptID()));
 }
 
 CValue& CValues::Push(CAccessControlList* value)
 {
-    return Push(CValue::UserData{ value->GetScriptID() });
+    return Push(static_cast<CValue::UserData>(value->GetScriptID()));
 }
 
 CValue& CValues::Push(CBan* value)
 {
-    return Push(CValue::UserData{ value->GetScriptID() });
+    return Push(static_cast<CValue::UserData>(value->GetScriptID()));
 }
 #endif
 
@@ -126,9 +128,11 @@ auto UpdateLuaFnTiming(CLuaMain* lmain, Fn&& fn, TimePoint beginTp)
     CPerfStatLuaTiming::GetSingleton()->UpdateLuaTiming(
         lmain,
         std::forward<Fn>(fn),
-        duration_cast<microseconds>(TimePoint::clock::now() - beginTp).count()
+        static_cast<TIMEUS>(duration_cast<microseconds>(TimePoint::clock::now() - beginTp).count())
     );
 }
+
+/* TODO: Move this call stuff to CLuaFunctionRef or something */
 
 /* call the function on top of the stack. Caller should clean the Lua stack */
 bool CValues::CallFunctionOnStack(CLuaMain* lmain, CValues* outReturnedValues) const
@@ -140,7 +144,6 @@ bool CValues::CallFunctionOnStack(CLuaMain* lmain, CValues* outReturnedValues) c
     Write(L); /* push our values to L's stack */
     lmain->ResetInstructionCount();
 
-    bool result;
     switch (lmain->PCall(L, m_values.size(), LUA_MULTRET, 0))
     {
     case LUA_ERRRUN:
@@ -207,17 +210,26 @@ bool CValues::CallGlobal(CLuaMain* lmain, const char* fn, CValues* outReturnedVa
 void CValues::Read(NetBitStreamInterface& bitStream)
 {
     uint32_t nargs;
-    if (bitStream.ReadCompressed(nargs))
+    if (!bitStream.ReadCompressed(nargs))
         throw std::runtime_error{ "Protocol error" };
+
+    CValue::ReferencedTables tables;
+    tables.emplace_back(); /* Emplace empty ref as placeholder for backwards compatibility */
+
     for (size_t i = 0; i < nargs; i++)
-        m_values.push_back(bitStream);
+    {
+        /* Have to construct it this was, because vector can't access the constructor */
+        /* It will be move constructed anyways, so no worries */
+        m_values.push_back({ bitStream, tables });
+    }
 }
 
 void CValues::Write(NetBitStreamInterface& bitStream) const
 {
+    size_t nextRef = 1; /* (start from 1) for backwards compatibility*/
     bitStream.WriteCompressed(static_cast<uint32_t>(m_values.size()));
     for (const auto& v : m_values)
-        v.Write(bitStream);
+        v.Write(bitStream, nextRef);
 }
 
 /* Wrap a JSON object into a unique ptr for automatic freeing */
@@ -254,11 +266,13 @@ void CValues::Read(const char* json)
         
         size_t len = json_object_array_length(jobj.get());
         for (size_t i = 0; i < len; i++)
-            m_values.push_back(json_object_array_get_idx(jobj.get(), i));
+            m_values.emplace_back(json_object_array_get_idx(jobj.get(), i));
+        break;
     }
     case json_type_object:
     {
         m_values.emplace_back(jobj.get());
+        break;
     }
     default:
         throw std::runtime_error{ "Failed to read JSON. Top-most value should be an array or object." };
@@ -271,6 +285,7 @@ void CValues::Write(std::string& json, bool serialize, int flags)
     if (!jarray)
         throw std::runtime_error{ "Failed to create array (probably out of memory)" };
 
+    size_t nextRef = 1; // Start at 1 as per old behaviour `this` is counted as a variable as well
     for (const auto& value : m_values)
     {
         if (json_object* vobj = value.Write(serialize))
@@ -280,7 +295,8 @@ void CValues::Write(std::string& json, bool serialize, int flags)
     }
 
     size_t length;
-    json.assign(json_object_to_json_string_length(jarray.get(), flags, &length), length); /* might throw */
+    const char* str = json_object_to_json_string_length(jarray.get(), flags, &length);
+    json.assign(str, length); /* might throw (Please don't get rid of `str` as argument eval order isn't guaranteed)*/
     /* the wrapped json object is freed automatically */
 }
 };

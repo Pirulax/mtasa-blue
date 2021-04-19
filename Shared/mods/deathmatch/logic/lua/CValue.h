@@ -4,11 +4,17 @@ extern "C"
 {
     #include "lua.h"
 }
+#include "RefList.h"
 #include <net/bitstream.h>
 #include <string>
+#include <variant>
+#include <memory>
 #include <utility>
-
 #include "json.h"
+#include <SharedUtil.FastHashMap.h>
+
+struct lua_State;
+struct json_object;
 
 #ifdef MTA_CLIENT
 class CClientEntity;
@@ -22,7 +28,6 @@ class CLuaArguments;
 
 namespace lua
 {
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * *\
  * Class representing a Lua value.                 *
  * Once constructed their value can not be changed *
@@ -31,8 +36,23 @@ class CValue
 {
     friend class CValues;
 public:
-    struct None {};
-    using  Nil = std::nullptr_t;
+    struct UnableToPacketizeError : public std::runtime_error
+    {
+        using runtime_error::runtime_error;
+        UnableToPacketizeError() :
+            runtime_error("Unable to packetize")
+        {
+        }
+
+        ~UnableToPacketizeError() {}
+    };
+public:
+    using None = std::monostate;
+    using Nil = std::nullptr_t;
+    using String = std::string;
+    using Number = lua_Number;
+    using UserData = size_t; // UserData is just an index to either CElementIDs or CIdArray
+    using Bool = bool;
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
      * TODO: This isn't correct anymore, as I switched to using shared_ptr   *
@@ -67,19 +87,16 @@ public:
         //uint32_t narr = 0; 
     };
 
-    using String = std::string;
-    using Number = lua_Number;
-    using UserData = size_t; // UserData is just an index to either CElementIDs or CIdArray
-    using Bool = bool;
 private:
-    friend class Table;
+    friend Table; // Let this class use our hidden ctors
 
-    // As stated above, once it's value is set it shouldn't be modified.
     using OwnedTable = std::shared_ptr<Table>; 
     using TableRef = std::shared_ptr<const Table>;
+    using WeakTableRef = TableRef::weak_type;
     static_assert(!std::is_same_v<OwnedTable, TableRef>); // ...otherwise code won't work as expected.
 
-    using Value = std::variant<String, Number, Bool, UserData, TableRef, OwnedTable, Nil, None>;
+    // None has to be the first value, to make the variant have None value by default
+    using Value = std::variant<None, String, Number, Bool, UserData, TableRef, OwnedTable, Nil>;
 public:
     // Used for bitstream read/write.
     // When a table is read for the first time it's assigned a reference.
@@ -94,61 +111,31 @@ public:
     // v - the copied table
     // It is used to eliminate copied of the same table (Thus saving memory)
     // Also, this way original references remain valid (Since table's aren't copied in Lua)
-    using CopiedValuesMap = CFastHashMap<TableRef, TableRef>;
+    using CopiedValuesMap = CFastHashMap<TableRef::element_type*, TableRef>;
 
     // Same as above, but used when reading values from Lua.
     // k - pointer to table obtained with lua_topointer
     // v - copied table
     using LuaCopiedValuesMap = CFastHashMap<const void*, TableRef>;
 
-    // Used when writing table value to Lua
-    struct LuaRefList
-    {
-        LuaRefList(lua_State* L) : m_lua(L)
-        {
-            m_refs.reserve(16383); // This is most of the time a temp array, so lets make sure we wont reallocate a lot
-        }
-
-        ~LuaRefList()
-        {
-            for (int ref : m_refs)
-                lua_unref(m_lua, ref);
-        }
-
-        [[nodiscard]] int Add()
-        {
-            lua_pushvalue(m_lua, -1); // luaL_ref pops the value
-            return m_refs.emplace_back(luaL_ref(m_lua, LUA_REGISTRYINDEX));
-        }
-
-        void Get(size_t ref)
-        {
-            lua_getref(m_lua, ref);
-        }
-
-        int operator[](size_t i) const { return m_refs[i]; }
-
-        std::vector<int> m_refs;
-        lua_State* m_lua;
-    };
 
     CValue() = default;
 
-    // Construct by value. Userdata isn't here, as nobody would use it.
-    CValue(String value) : m_value(std::move(value)) {}
-    CValue(Number value) : m_value(value) {}
-    CValue(bool value) : m_value(value) {}
-    CValue(Nil) : m_value(Nil{}) {}
+    explicit CValue(UserData value) : m_value(value) {} // Should only be used in CValues. Has to be declared public as STL containers can't use it otherwise
+    explicit CValue(std::string_view view) : m_value(String{ view }) {}
+    explicit CValue(String value) : m_value(std::move(value)) {}
+    explicit CValue(Number value) : m_value(value) {}
+    explicit CValue(bool value) : m_value(value) {}
+    explicit CValue(Nil) : m_value(Nil{}) {}
 
     // Sadly these wrappers are inevitable...
     CValue(const CValue& other)
     {
-        
         CopiedValuesMap map;
         CValue value{ other, map };
         swap(*this, value);
     }
-    CValue(CValue&& other) :
+    CValue(CValue&& other) noexcept :
         CValue()
     {
         swap(*this, other);
@@ -158,29 +145,25 @@ public:
         CValue()
     {
         ReferencedTables tbls;
-        CValue value{ bitStream, tbls };
+        CValue value(bitStream, tbls);
         swap(*this, value);
     }
     CValue(lua_State* L, int idx) :
         CValue()
     {
         LuaCopiedValuesMap map;
-        CValue value{ L, idx, map };
+        CValue value(L, idx, map);
         swap(*this, value);
     }
-    CValue(struct json_object* jobj) :
+    CValue(json_object* jobj) :
         CValue()
     {
-        CopiedValuesMap map;
-        CValue value{ jobj, map };
+        ReferencedTables map;
+        CValue value(jobj, map);
         swap(*this, value);
     }
 
-    void Write(lua_State* L) const
-    {
-        LuaRefList refs{ L };
-        return Write(L, refs);
-    }
+    void Write(lua_State* L) const;
 
     void Write(NetBitStreamInterface& bitStream) const
     {
@@ -189,7 +172,7 @@ public:
     }
 
     /* used by CValues only */
-    struct json_object* Write(bool serialize) const
+    json_object* Write(bool serialize) const
     {
         size_t nextRef = 0;
         return Write(serialize, nextRef);
@@ -239,20 +222,23 @@ public:
 
     friend void swap(CValue& lhs, CValue& rhs)
     {
+        if (&lhs == &rhs)
+            return;
+
         using std::swap;
         swap(lhs.m_value, rhs.m_value);
     }
 private:
-    CValue(const CValue& other, CopiedValuesMap& map);
+    CValue(const CValue& other, CopiedValuesMap& map) {} // TODO
 
     CValue(lua_State* L, int idx, LuaCopiedValuesMap& copiedTables);
-    void Write(lua_State* L, LuaRefList& tables) const;
+    void Write(lua_State* L, RefList& tables) const;
 
     CValue(NetBitStreamInterface& bitStream, ReferencedTables& tables);
     void Write(NetBitStreamInterface& bitStream, size_t& nextRef) const;
 
-    CValue(struct json_object* jobj, ReferencedTables& tables);
-    struct json_object* Write(bool serialize, size_t& nextRef) const;
+    CValue(json_object* jobj, ReferencedTables& tables);
+    json_object* Write(bool serialize, size_t& nextRef) const;
 
     /* Internal usage only */
     void ToJSONKey(char* buffer, size_t buffsize) const;

@@ -1,5 +1,6 @@
 #include <StdInc.h>
 #include <charconv>
+#include <type_traits>
 #undef snprintf
 
 #include <lua/LuaBasic.h>
@@ -62,8 +63,7 @@ CValue::CValue(lua_State* L, int idx, LuaCopiedValuesMap& copiedTables)
         m_value.emplace<UserData>(reinterpret_cast<UserData>(lua_touserdata(L, idx)));
         break;
     case LUA_TTABLE:
-    {
-        
+    {      
         if (const auto it = copiedTables.find(lua_topointer(L, idx)); it == copiedTables.end()) /* copied yet? */
         {
             /* no, so copy and store it */
@@ -74,14 +74,15 @@ CValue::CValue(lua_State* L, int idx, LuaCopiedValuesMap& copiedTables)
                 idx--;
 
             /* TODO: Preallocate table in a sensible way.. Maybe iter thru all values? */
-            OwnedTable table = m_value.emplace<OwnedTable>(std::make_shared<Table>());
+            auto& table = m_value.emplace<OwnedTable>(std::make_shared<Table>());
             // table->SetArrKeysCount(lua_objlen(L, -1)); TODO Somehow make this work... 
 
             copiedTables[lua_topointer(L, idx)] = table; /* Mark as copied before copying others */
             while (lua_next(L, idx))
             {
-                /* emplace 2 values: key (at index -2) & value at index -1) */
-                table->push_back({ {L, -2, copiedTables}, {L, -1, copiedTables} });
+                CValue k = { L, -2, copiedTables };
+                CValue v = { L, -1, copiedTables };
+                table->emplace_back(std::move(k), std::move(v));
 
                 /* removes 'value'; keeps 'key' for next iteration */
                 lua_pop(L, 1);
@@ -107,14 +108,14 @@ CValue::CValue(lua_State* L, int idx, LuaCopiedValuesMap& copiedTables)
     }
 }
 
-void CValue::Write(lua_State* L, LuaRefList& refs) const
+void CValue::Write(lua_State* L, RefList& refs) const
 {
     std::visit([&, this](const auto& value) {
         using T = std::decay_t<decltype(value)>;
 
         LUA_CHECKSTACK(L, 1);
 
-        if constexpr (std::is_same_v<T, Table>)
+        if constexpr (std::is_same_v<T, OwnedTable>)
         {        
             /*
             * TL;DR; Calculate the array and hash part size for Lua, this way
@@ -175,7 +176,8 @@ void CValue::Write(lua_State* L, LuaRefList& refs) const
             //const int nrec = static_cast<int>(value->size() - i + 1);
             //lua_createtable(L, value->GetArrKeysCount(), value->GetRecKeysCount());
             lua_newtable(L);
-            value->SetRef(refs.Add());
+            if (value.use_count() > 1)
+                value->SetRef(refs.Create(true));
 
             for (const auto& [k, v] : *value)
             {
@@ -189,9 +191,13 @@ void CValue::Write(lua_State* L, LuaRefList& refs) const
             refs.Get(value->GetRef());
             dassert(lua_type(L, -1) == LUA_TTABLE);
         }
-        else if constexpr (std::is_same_v<T, None>) /* can't push None */
+        else if constexpr (std::is_same_v<T, None>)
         {
-            throw std::invalid_argument{ "Can't push None" };
+            /* Can't push none. Do nothing. Maybe do a warning here? */
+        }
+        else if constexpr (std::is_same_v<T, UserData>)
+        {
+            lua_pushuserdata(L, reinterpret_cast<void*>(value));
         }
         else
         {
@@ -200,11 +206,16 @@ void CValue::Write(lua_State* L, LuaRefList& refs) const
     }, m_value);
 }
 
+void CValue::Write(lua_State* L) const
+{
+    RefList refs{ L };
+    return Write(L, refs);
+}
+
 CValue::CValue(NetBitStreamInterface& bitStream, ReferencedTables& tables)
 {
     SLuaTypeSync type;
-    if (!bitStream.Read(&type))
-        return;
+    bitStream.Read(&type);
 
     switch (type.data.ucType)
     {
@@ -214,32 +225,31 @@ CValue::CValue(NetBitStreamInterface& bitStream, ReferencedTables& tables)
         {
             if (bitStream.ReadBit())
             {
-                if (double v; bitStream.Read(v))
-                    m_value.emplace<Number>(v);
-                else
-                    throw std::runtime_error{ "Failed to read bit" };
+                static_assert(std::is_same_v<double, Number>);
+                Number& v = m_value.emplace<Number>();
+                bitStream.Read(v);
             }
             else
             {
-                if (float v; bitStream.Read(v))
-                    m_value.emplace<Number>(RoundFromFloatSource(v));
-                else
-                    throw std::runtime_error{ "Failed to read bit" };
+                float v;
+                bitStream.Read(v);
+                m_value = static_cast<Number>(v);
             }
         }
         else
         {
-            if (int v; bitStream.ReadCompressed(v))
-                m_value.emplace<Number>(v);
-            else
-                throw std::runtime_error{ "Failed to read bit" };
+            int v;
+            bitStream.Read(v);
+            m_value = static_cast<Number>(v);
         }
         break;
     }
     case LUA_TSTRING:
     {
         String& value = m_value.emplace<String>();
-        if (unsigned short length; bitStream.ReadCompressed(length) && length)
+        unsigned short length;
+        bitStream.ReadCompressed(length);
+        if (length) /* check if empty */
         {
             if (!bitStream.CanReadNumberOfBytes(length))
                 throw std::runtime_error{ "Can't read specified number of bytes" };
@@ -253,7 +263,9 @@ CValue::CValue(NetBitStreamInterface& bitStream, ReferencedTables& tables)
     {
         // Nearly identical to above, but with `uint` length header + aligned read
         String& value = m_value.emplace<String>();
-        if (unsigned int length; bitStream.ReadCompressed(length) && length)
+        unsigned int length;
+        bitStream.ReadCompressed(length);
+        if (length) /* check if empty */
         {
             if (!bitStream.CanReadNumberOfBytes(length))
                 throw std::runtime_error{ "Can't read specified number of bytes" };
@@ -267,56 +279,50 @@ CValue::CValue(NetBitStreamInterface& bitStream, ReferencedTables& tables)
     }
     case LUA_TBOOLEAN:
     {
-        if (bool v; bitStream.ReadBit(v))
-            m_value.emplace<Bool>(v);
+        bitStream.ReadBit(m_value.emplace<Bool>());
         break;
     }
     case LUA_TUSERDATA:
     case LUA_TLIGHTUSERDATA:
     {
-        if (ElementID v; bitStream.Read(v))
-            m_value.emplace<UserData>(v.Value());
+        ElementID id;
+        bitStream.Read(id);
+        m_value = static_cast<UserData>(id.Value());
         break;
     }
     case LUA_TTABLE:
     {
         if (unsigned int nvals; bitStream.ReadCompressed(nvals))
         {
-            auto table = m_value.emplace<OwnedTable>(std::make_shared<Table>());
+            auto& table = m_value.emplace<OwnedTable>(std::make_shared<Table>());
             table->reserve(nvals);
             tables.emplace_back(table);
-            dassert(nvals % 2 == 0); /* number of all elements must be even because a pair is 2 values */
-            for (size_t i = 0; i < nvals; i += 2) /* originally it read k and v in separate iterations, thus i += 2 since we read both / iteration */
+
+            /* number of all elements must be even because a pair is 2 values */
+            /* (Old CLuaArguments used to sture tables in a flat vector) */
+            dassert(nvals % 2 == 0);
+
+            /* originally it read k and v in separate iterations, thus nval / 2 since we read both / iteration */
+            for (size_t i = 0; i < nvals / 2; i++)
             {
-                // function argument evaluation order is unspecified
                 CValue k = { bitStream, tables };
                 CValue v = { bitStream, tables };
-                table->emplace_back(std::move(k), std::move(v));
+
+                /* Possible if either value is a userdata that isn't available on our side. */
+                /* Have to read out both values, otherwise stream read pointer will be corrupted. */
+                if (!k.Holds<Nil>() && !v.Holds<Nil>())
+                    table->emplace_back(std::move(k), std::move(v));
             }
         }
         else
-            throw std::runtime_error{ "Failed to read nvals" };
-
-
-        /* TODO: ValidateTableKeys() */
-
+            throw UnableToReadFromBitStreamError{"table size"};
         break;
     }
     case LUA_TTABLEREF:
     {
-        /*
-         * Wargning: If we were to use `Read` this might fail as
-         * type sizes may not be the same across compilers.
-         *Eg.: gcc x64(server) vs msvc x86 (client)
-         */
-        if (unsigned long refid; bitStream.ReadCompressed(refid))
-        {
-            if (refid >= tables.size())
-                throw std::runtime_error{ "Invalid tableref" };
-            m_value.emplace<TableRef>(tables[refid]);
-        }
-        else
-            throw std::runtime_error{ "Failed to read table ref" };
+        uint refid;
+        bitStream.ReadCompressed(refid);
+        m_value.emplace<TableRef>(tables.at(refid));
         break;
     }
     case LUA_TNIL:
@@ -329,9 +335,9 @@ CValue::CValue(NetBitStreamInterface& bitStream, ReferencedTables& tables)
     }
 }
 
-void CValue::Write(NetBitStreamInterface& bitStream, size_t& lastTableRef) const
+void CValue::Write(NetBitStreamInterface& bitStream, size_t& nextTableRef) const
 {
-    std::visit([&, this](auto& value) {
+    std::visit([&, this](const auto& value) {
         using T = std::decay_t<decltype(value)>;
 
        const auto WriteType = [&bitStream](auto type) {
@@ -345,18 +351,15 @@ void CValue::Write(NetBitStreamInterface& bitStream, size_t& lastTableRef) const
            WriteType(LUA_TNUMBER);
            CompressArithmetic(value, [&bitStream, this](auto compressedValue) {
                using CT = decltype(compressedValue);
+               bitStream.WriteBit(std::is_floating_point_v<CT>); /* is floating point  */
                if constexpr (std::is_same_v<CT, int>)
-               {
-                   bitStream.WriteBit(false); /* is floating point  */
                    bitStream.WriteCompressed(compressedValue);
-               }
-               else constexpr (std::is_floating_point_v<CT>)
+               else
                {
-                   bitStream.WriteBit(true); /* is floating point */
                    bitStream.WriteBit(std::is_same_v<CT, double>); /* is double */
                    bitStream.Write(compressedValue);
                }
-            });
+               });
        }
        else if constexpr (std::is_same_v<T, String>)
        {
@@ -389,22 +392,26 @@ void CValue::Write(NetBitStreamInterface& bitStream, size_t& lastTableRef) const
                WriteType(LUA_TUSERDATA);
                bitStream.Write(id);
            }
-           else /* might happen if userdata is refernced in lua, but element is destroyed? */
+           else
+           {
+               /* might happen if userdata is refernced in Lua, but element is destroyed. */
+               /* it also happens if the userdata isn't an element (Vectors, Timers, XML Nodes, etc..) */
                WriteType(LUA_TNIL); /* write a nil though so other side won't get out of sync */
+           }
        }
-       else if constexpr (std::is_same_v<T, Table>)
+       else if constexpr (std::is_same_v<T, OwnedTable>)
        {
 
            WriteType(LUA_TTABLE);
            bitStream.WriteCompressed(static_cast<unsigned int>(value->size() * 2)); /* write the number of all values (as per old behaviour) */
            //if (bitStream.Can(eBitStreamVersion::CValueNArr)) /* todo: add to read as well. todo: actually implement this */
                //bitStream.WriteCompressed(value->GetArrKeysCount());
-           value->SetRef(lastTableRef++);
+           value->SetRef(nextTableRef++);
 
            for (const auto& [k, v] : *value)
            {
-               k.Write(bitStream, lastTableRef);
-               v.Write(bitStream, lastTableRef);
+               k.Write(bitStream, nextTableRef);
+               v.Write(bitStream, nextTableRef);
            }
        }
        else if constexpr (std::is_same_v<T, TableRef>)
@@ -417,7 +424,7 @@ void CValue::Write(NetBitStreamInterface& bitStream, size_t& lastTableRef) const
            WriteType(LUA_TNIL);
        }
        else
-           throw std::runtime_error{ "Protocol error" };
+           throw UnableToPacketizeError{};
     }, m_value);
 }
 
@@ -435,7 +442,7 @@ CValue::CValue(json_object* jobj, ReferencedTables& tables)
     {
         std::string_view value{
             json_object_get_string(jobj),
-            json_object_get_string_len(jobj)
+            static_cast<size_t>(json_object_get_string_len(jobj))
         };
         if (!IsSpecialStringInJSON(value))
         {
@@ -463,6 +470,7 @@ CValue::CValue(json_object* jobj, ReferencedTables& tables)
                 {
                     throw std::runtime_error{ "Invalid table reference in JSON string" }; // TODO: std::format append value
                 }
+                break;
             }
             case 'R': /* resource */
             {
@@ -495,28 +503,31 @@ CValue::CValue(json_object* jobj, ReferencedTables& tables)
     }
     case json_type_array:
     {
-        OwnedTable table = m_value.emplace<OwnedTable>(std::make_shared<Table>());
+        auto& table = m_value.emplace<OwnedTable>(std::make_shared<Table>());
 
         tables.emplace_back(table);
+        table->SetRef(tables.size() - 1);
         size_t len = json_object_array_length(jobj);
         table->reserve(len);
         for (size_t i = 0; i < len; i++)
         {
-            table->push_back({
-                { static_cast<Number>(i) }, /* key */
-                { json_object_array_get_idx(jobj, i), tables } /* value */
-            });
+            CValue k{ static_cast<Number>(i + 1) }; // Lua indices start at 1
+            CValue v{ json_object_array_get_idx(jobj, i), tables };
+            table->emplace_back(std::move(k), std::move(v));
         }
         break;
     }
     case json_type_object:
     {
-        OwnedTable table = m_value.emplace<OwnedTable>(std::make_shared<Table>());
-        tables.emplace_back(&table);
+        auto& table = m_value.emplace<OwnedTable>(std::make_shared<Table>());
+        tables.emplace_back(table);
+        table->SetRef(tables.size() - 1);
         table->reserve(json_object_object_length(jobj));
-        json_object_object_foreach(jobj, k, v)
+        json_object_object_foreach(jobj, objk, objv)
         {
-            table->push_back({ { k }, { v, tables }});
+            CValue k{ String{objk} };
+            CValue v{ objv, tables };
+            table->emplace_back(std::move(k), std::move(v));
         }
         break;
     }
@@ -598,21 +609,21 @@ json_object* CValue::Write(bool serialize, size_t& nextRef) const
                     throw std::runtime_error{ "Couldn't convert userdata argument to JSON, only valid resources can be included for this function." };
             }
         }
-        else if constexpr (std::is_same_v<T, Table>)
+        else if constexpr (std::is_same_v<T, OwnedTable>)
         {
             /* check if consequent keys are exactly 1 apart. If they're we can use a JSON array. */
-            const auto invalidArrayKeyIt = std::find_if(value->begin(), value->end(), [expected = Number(0)](const auto& kv) mutable {
-                std::visit([&, this](auto& value) {
+            const auto invalidArrayKeyIt = std::find_if(value->begin(), value->end(), [last = Number{ 0 }](const auto& kv) mutable {
+                return std::visit([&](const auto& value) {
                     if constexpr (std::is_same_v<std::decay_t<decltype(value)>, Number>)
                     {
                         if (last + 1 != value) /* there should be exactly 1 between the two indices */
                             return true;
                         last++;
-                        dassert(std::trunc(value) != value); /* check is it really numeric, if not we fucked up something */
+                        dassert(std::trunc(value) == value); /* check is it really numeric, if not we ~~f~~ducked up something */
                         return false;
                     }
                     return true; /* non-numeric key */
-                }, kv.first);
+                }, kv.first.m_value);
             });
 
             /* Set ref before written */
@@ -627,7 +638,7 @@ json_object* CValue::Write(bool serialize, size_t& nextRef) const
                     if (json_object* value = v.Write(serialize, nextRef))
                         json_object_array_add(jarray, value);
                     else
-                        break;
+                        throw std::runtime_error{ "Failed to serialize value. Possibly out of memory." };
                 }
                 return jarray;
             }
@@ -637,15 +648,16 @@ json_object* CValue::Write(bool serialize, size_t& nextRef) const
                 json_object* jobject = json_object_new_object();
                 for (const auto& [k, v] : *value)
                 {
-                    char keyBuffer[255]; /* TODO: Use a bigger buffer here / use somehow allocate buffer in jsonc */
-                    keyBuffer[0] = 0;
-                    k.ToJSONKey(keyBuffer, sizeof(keyBuffer));
+                    char key[255]; /* TODO: Maybe? Use a bigger buffer here / use somehow allocate buffer in jsonc */
+                    key[0] = 0;
+                    k.ToJSONKey(key, sizeof(key));
 
                     if (json_object* value = v.Write(serialize, nextRef))
-                        json_object_array_add(jobject, value);
+                        json_object_object_add(jobject, key, value);
                     else
-                        throw std::runtime_error{ "Failed to serialize value. Probably out of memory." };
+                        throw std::runtime_error{ "Failed to serialize value. Possibly out of memory." };
                 }
+                return jobject;
             }
         }
         else if constexpr (std::is_same_v<T, TableRef>)
@@ -723,7 +735,7 @@ void CValue::ToJSONKey(char* buffer, size_t buffsize) const
         {
             std::snprintf(buffer, buffsize, "0");
         }
-        else if constexpr (std::is_same_v<T, Table> || std::is_same_v<T, TableRef>)
+        else if constexpr (std::is_same_v<T, OwnedTable> || std::is_same_v<T, TableRef>)
         {
             throw std::runtime_error{"Cannot convert table to string (do not use tables as keys in tables if you want to send them over http/JSON)."};
         }
@@ -742,7 +754,7 @@ bool CValue::FlatCompare(const CValue& other) const
         using T = std::decay_t<decltype(value)>;
 
         const T& otherValue = std::get<T>(other.m_value);
-        if constexpr (std::is_same_v<T, Table>)
+        if constexpr (std::is_same_v<T, OwnedTable>)
         {
             /* Lua uses hash and array part to make a table.
              * Sadly we can't just use std::equal over the 2 table to compare them as

@@ -2,6 +2,8 @@
 
 #include "CValue.h"
 // Represents multiple values. Eg.: function arguments
+
+class CLuaFunctionRef;
 namespace lua
 {
 class CValues
@@ -51,9 +53,7 @@ public:
 
     /* Handles everything else (hopefully) */
     template<typename... Ts>
-    CValue& Push(Ts&&... ts) { return m_values.emplace(std::forward<Ts>(ts)...); }
-
-    CValue& PushNil() { return Push(nullptr); } /* life quality function */
+    CValue& Push(Ts&&... ts) { return m_values.emplace_back(std::forward<Ts>(ts)...); }
 
     /* Lua function calling */
     bool Call(class CLuaMain* lmain, const CLuaFunctionRef& fn, CValues* outReturnedValues = nullptr) const;
