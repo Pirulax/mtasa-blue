@@ -1787,24 +1787,24 @@ void CCore::ApplyFrameRateLimit(uint uiOverrideRate)
 //
 void CCore::ApplyQueuedFrameRateLimit()
 {
-    if (m_bQueuedFrameRateValid)
-    {
-        m_bQueuedFrameRateValid = false;
-        // Calc required time in ms between frames
-        const double dTargetTimeToUse = 1000.0 / m_uiQueuedFrameRate;
+    //if (m_bQueuedFrameRateValid)
+    //{
+    //    m_bQueuedFrameRateValid = false;
+    //    // Calc required time in ms between frames
+    //    const double dTargetTimeToUse = 1000.0 / m_uiQueuedFrameRate;
 
-        while (true)
-        {
-            // See if we need to wait
-            double dSpare = dTargetTimeToUse - m_FrameRateTimer.Get();
-            if (dSpare <= 0.0)
-                break;
-            if (dSpare >= 2.0)
-                Sleep(1);
-        }
-        m_FrameRateTimer.Reset();
-        TIMING_GRAPH("Limiter");
-    }
+    //    while (true)
+    //    {
+    //        // See if we need to wait
+    //        double dSpare = dTargetTimeToUse - m_FrameRateTimer.Get();
+    //        if (dSpare <= 0.0)
+    //            break;
+    //        if (dSpare >= 2.0)
+    //            Sleep(1);
+    //    }
+    //    m_FrameRateTimer.Reset();
+    //    TIMING_GRAPH("Limiter");
+    //}
 }
 
 //
