@@ -34,9 +34,6 @@ project "MiMalloc"
   
     buildoptions { "/Zc:__cplusplus" }
 
---[[     filter "configurations:Release"
-        defines { 'CMAKE_BUILD_TYPE="Release"' }
-
-    filter "configurations:Debug"
-        defines { 'CMAKE_BUILD_TYPE="Debug"' } ]]
+    filter "configurations:Release"
+        defines { "NDEBUG" }
 
