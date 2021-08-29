@@ -87,8 +87,8 @@ workspace "MTASA"
 		linkoptions "/PDB:\"Symbols\\$(ProjectName).pdb\""
 
 	filter "system:windows"
-		toolset "v142"
-		staticruntime "On"
+		toolset "v143"
+		--staticruntime "On"
 		defines { "WIN32", "_WIN32", "_WIN32_WINNT=0x601", "_MSC_PLATFORM_TOOLSET=$(PlatformToolsetVersion)" }
 		buildoptions { "/Zc:__cplusplus" }
 		includedirs {
@@ -108,6 +108,8 @@ workspace "MTASA"
 
 	-- Only build the client on Windows
 	if os.target() == "windows" then
+		staticruntime "Off" -- Mimalloc needs dynamic CRT
+
 		group "Client"
 		include "Client/ceflauncher"
 		include "Client/ceflauncher_DLL"
@@ -137,6 +139,9 @@ workspace "MTASA"
 		include "vendor/pthreads"
 		include "vendor/libspeex"
 		include "vendor/detours"
+		include "vendor/mimalloc"
+
+		staticruntime "On" -- server needs it like this
 	end
 
 	filter {}

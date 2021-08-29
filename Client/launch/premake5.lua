@@ -29,7 +29,7 @@ project "Client Launcher"
 	}
 
 	filter "system:windows"
-		staticruntime "On"
+		--staticruntime "On"
 		files {
 			"NEU/GDFImp.gdf.xml",
 			"GDFImp.rc",
