@@ -22,6 +22,15 @@ std::uint32_t EngineStreamingGetUsedMemory()
     return g_pGame->GetStreaming()->GetMemoryUsed();
 }
 
+bool EngineStreamingSetMemorySize(size_t sizeMB) {
+    g_pCore->SetCustomStreamingMemory(sizeMB);
+    return true;
+}
+
+size_t EngineStreamingGetMemorySize() {
+    return g_pCore->GetStreamingMemory();
+}
+
 void CLuaEngineDefs::LoadFunctions()
 {
     constexpr static const std::pair<const char*, lua_CFunction> functions[]{
@@ -63,6 +72,8 @@ void CLuaEngineDefs::LoadFunctions()
         {"engineRestreamWorld", ArgumentParser<EngineRestreamWorld>},
         {"engineStreamingFreeUpMemory", ArgumentParser<EngineStreamingFreeUpMemory>},
         {"engineStreamingGetUsedMemory", ArgumentParser<EngineStreamingGetUsedMemory>},
+        {"engineStreamingSetMemorySize", ArgumentParser<EngineStreamingSetMemorySize>},
+        {"engineStreamingGetMemorySize", ArgumentParser<EngineStreamingGetMemorySize>},
 
         // CLuaCFunctions::AddFunction ( "engineReplaceMatchingAtomics", EngineReplaceMatchingAtomics );
         // CLuaCFunctions::AddFunction ( "engineReplaceWheelAtomics", EngineReplaceWheelAtomics );
