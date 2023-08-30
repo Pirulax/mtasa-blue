@@ -68,7 +68,8 @@ public:
     // This can be useful if you only want to compare lengths.
     float LengthSquared() const { return (fX * fX) + (fY * fY) + (fZ * fZ); }
 
-    float DotProduct(const CVector* param) const { return fX * param->fX + fY * param->fY + fZ * param->fZ; }
+    float Dot(const CVector& o) const { return o.fX * fX + o.fY * fY + o.fZ * fZ; }
+    float DotProduct(const CVector* param) const { return Dot(*param); }
 
     void CrossProduct(const CVector* param)
     {

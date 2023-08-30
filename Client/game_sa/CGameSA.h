@@ -19,6 +19,7 @@
 class CAnimBlendClumpDataSAInterface;
 class CObjectGroupPhysicalPropertiesSA;
 class CTaskManagementSystemSA;
+class CCollision;
 
 extern unsigned int OBJECTDYNAMICINFO_MAX;            // default: 160
 
@@ -305,6 +306,7 @@ private:
     CPointLights*                   m_pPointLights;
     CColStore*                      m_collisionStore;
     CObjectGroupPhysicalProperties* m_pObjectGroupPhysicalProperties;
+    CCollision*                     m_pCollision;
 
     CPad*                     m_pPad;
     CAERadioTrackManager*     m_pCAERadioTrackManager;

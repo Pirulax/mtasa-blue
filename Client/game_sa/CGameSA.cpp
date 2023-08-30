@@ -11,6 +11,7 @@
 
 #include "StdInc.h"
 #define ALLOC_STATS_MODULE_NAME "game_sa"
+#include "CCollisionSA.h"
 #include "SharedUtil.hpp"
 #include "SharedUtil.MemAccess.hpp"
 #include "C3DMarkersSA.h"
@@ -158,6 +159,7 @@ CGameSA::CGameSA()
     m_pWeaponStatsManager = new CWeaponStatManagerSA();
     m_pPointLights = new CPointLightsSA();
     m_collisionStore = new CColStoreSA();
+    m_pCollision = new CCollisionSA();
 
     // Normal weapon types (WEAPONSKILL_STD)
     for (int i = 0; i < NUM_WeaponInfosStdSkill; i++)

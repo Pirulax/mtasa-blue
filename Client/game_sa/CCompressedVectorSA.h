@@ -11,13 +11,9 @@
 
 #pragma once
 
-#pragma pack(push)
-#pragma pack(1)
-typedef struct
+typedef struct // Size: 6 bytes
 {
     short x;
     short y;
     short z;
 } CCompressedVectorSA;
-
-#pragma pack(pop)

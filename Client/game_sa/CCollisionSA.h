@@ -12,8 +12,27 @@
 #pragma once
 
 #include "game/CCollision.h"
+#include "CCompressedVectorSA.h"
+#include "CColModelSA.h"
 
-class CCollisionSA : CCollision {
+class CCollisionSA : public CCollision {
 public:
+    CCollisionSA();
+
     bool TestLineSphere(const CColLineSA& line, const CColSphereSA& sphere) const override;
+
+private:
+    static bool TestSphereTriangle_AVX2(
+        const CColSphereSA& sphere,
+        const CCompressedVectorSA* verts,
+        const CColTriangleSA& tri,
+        const CColTrianglePlaneSA& plane
+    );
+    static bool TestSphereTriangle_Vanilla(
+        const CColSphereSA& sphere,
+        const CCompressedVectorSA* verts,
+        const CColTriangleSA& tri,
+        const CColTrianglePlaneSA& plane
+    );
+    void InstallHook_TestSphereTriangle();
 };

@@ -17,6 +17,8 @@ project "Game SA"
 		["*"] = "premake5.lua"
 	}
 
+	vectorextensions "avx"
+
 	filter "system:windows"
 		includedirs { "../../vendor/sparsehash/src/windows" }
 
