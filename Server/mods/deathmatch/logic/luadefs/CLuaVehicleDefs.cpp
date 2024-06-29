@@ -10,6 +10,12 @@
  *****************************************************************************/
 
 #include "StdInc.h"
+#include "CLuaVehicleDefs.h"
+#include "CVehicleNames.h"
+#include "CTrainTrack.h"
+#include "CStaticFunctionDefinitions.h"
+#include "CScriptArgReader.h"
+#include "packets/CElementRPCPacket.h"
 
 void CLuaVehicleDefs::LoadFunctions()
 {
@@ -88,6 +94,9 @@ void CLuaVehicleDefs::LoadFunctions()
         {"setVehicleRespawnRotation", SetVehicleRespawnRotation},
         {"getVehicleRespawnPosition", GetVehicleRespawnPosition},
         {"getVehicleRespawnRotation", GetVehicleRespawnRotation},
+        {"isVehicleRespawnable", ArgumentParser<IsVehicleRespawnable>},
+        {"getVehicleRespawnDelay", ArgumentParser<GetVehicleRespawnDelay>},
+        {"getVehicleIdleRespawnDelay", ArgumentParser<GetVehicleIdleRespawnDelay>},
         {"respawnVehicle", RespawnVehicle},
         {"resetVehicleExplosionTime", ResetVehicleExplosionTime},
         {"resetVehicleIdleTime", ResetVehicleIdleTime},
@@ -164,7 +173,7 @@ void CLuaVehicleDefs::AddClass(lua_State* luaVM)
     lua_classfunction(luaVM, "getSirens", "getVehicleSirens");
     lua_classfunction(luaVM, "getDirection", "getTrainDirection");
     lua_classfunction(luaVM, "getTrainSpeed", "getTrainSpeed");
-    //lua_classfunction(luaVM, "getTrack", "getTrainTrack");
+    // lua_classfunction(luaVM, "getTrack", "getTrainTrack");
     lua_classfunction(luaVM, "getTrainPosition", "getTrainPosition");
     lua_classfunction(luaVM, "getHeadLightColor", "getVehicleHeadLightColor");
     lua_classfunction(luaVM, "getColor", "getVehicleColor");
@@ -195,6 +204,9 @@ void CLuaVehicleDefs::AddClass(lua_State* luaVM)
     lua_classfunction(luaVM, "getHandling", "getVehicleHandling");
     lua_classfunction(luaVM, "getRespawnPosition", "getVehicleRespawnPosition");
     lua_classfunction(luaVM, "getRespawnRotation", "getVehicleRespawnRotation");
+    lua_classfunction(luaVM, "isRespawnable", "isVehicleRespawnable");
+    lua_classfunction(luaVM, "getRespawnDelay", "getVehicleRespawnDelay");
+    lua_classfunction(luaVM, "getIdleRespawnDelay", "getVehicleIdleRespawnDelay");
 
     lua_classfunction(luaVM, "setColor", "setVehicleColor");
     lua_classfunction(luaVM, "setDamageProof", "setVehicleDamageProof");
@@ -226,7 +238,7 @@ void CLuaVehicleDefs::AddClass(lua_State* luaVM)
     lua_classfunction(luaVM, "setDerailable", "setTrainDerailable");
     lua_classfunction(luaVM, "setDerailed", "setTrainDerailed");
     lua_classfunction(luaVM, "setDirection", "setTrainDirection");
-    //lua_classfunction(luaVM, "setTrack", "setTrainTrack");
+    // lua_classfunction(luaVM, "setTrack", "setTrainTrack");
     lua_classfunction(luaVM, "setTrainPosition", "setTrainPosition");
     lua_classfunction(luaVM, "setTrainSpeed", "setTrainSpeed");            // Reduce confusion
 
@@ -237,7 +249,7 @@ void CLuaVehicleDefs::AddClass(lua_State* luaVM)
     lua_classvariable(luaVM, "blown", "blowVehicle", "isVehicleBlown");
     lua_classvariable(luaVM, "direction", "setTrainDirection", "getTrainDirection");
     lua_classvariable(luaVM, "trainSpeed", "setTrainSpeed", "getTrainSpeed");
-    //lua_classvariable(luaVM, "track", "setTrainTrack", "getTrainTrack");
+    // lua_classvariable(luaVM, "track", "setTrainTrack", "getTrainTrack");
     lua_classvariable(luaVM, "trainPosition", "setTrainPosition", "getTrainPosition");
     lua_classvariable(luaVM, "taxiLightOn", "setVehicleTaxiLightOn", "isVehicleTaxiLightOn");
     lua_classvariable(luaVM, "fuelTankExplodable", "setVehicleFuelTankExplodable", "isVehicleFuelTankExplodable");
@@ -258,10 +270,13 @@ void CLuaVehicleDefs::AddClass(lua_State* luaVM)
     lua_classvariable(luaVM, "turretPosition", "setVehicleTurretPosition", "getVehicleTurretPosition");
     lua_classvariable(luaVM, "turnVelocity", "setVehicleTurnVelocity", "getVehicleTurnVelocity", SetVehicleTurnVelocity, OOP_GetVehicleTurnVelocity);
     lua_classvariable(luaVM, "overrideLights", "setVehicleOverrideLights", "getVehicleOverrideLights");
-    lua_classvariable(luaVM, "idleRespawnDelay", "setVehicleIdleRespawnDelay", NULL);
-    lua_classvariable(luaVM, "respawnDelay", "setVehicleRespawnDelay", NULL);
-    lua_classvariable(luaVM, "respawnPosition", "setVehicleRespawnPosition", "getVehicleRespawnPosition", SetVehicleRespawnPosition, OOP_GetVehicleRespawnPosition);
-    lua_classvariable(luaVM, "respawnRotation", "setVehicleRespawnRotation", "getVehicleRespawnRotation", SetVehicleRespawnRotation, OOP_GetVehicleRespawnRotation);
+    lua_classvariable(luaVM, "idleRespawnDelay", "setVehicleIdleRespawnDelay", "getVehicleIdleRespawnDelay");
+    lua_classvariable(luaVM, "respawnable", "toggleVehicleRespawn", "isVehicleRespawnable");
+    lua_classvariable(luaVM, "respawnDelay", "setVehicleRespawnDelay", "getVehicleRespawnDelay");
+    lua_classvariable(luaVM, "respawnPosition", "setVehicleRespawnPosition", "getVehicleRespawnPosition", SetVehicleRespawnPosition,
+                      OOP_GetVehicleRespawnPosition);
+    lua_classvariable(luaVM, "respawnRotation", "setVehicleRespawnRotation", "getVehicleRespawnRotation", SetVehicleRespawnRotation,
+                      OOP_GetVehicleRespawnRotation);
     lua_classvariable(luaVM, "onGround", NULL, "isVehicleOnGround");
     lua_classvariable(luaVM, "name", NULL, "getVehicleName");
     lua_classvariable(luaVM, "vehicleType", NULL, "getVehicleType");
@@ -282,6 +297,7 @@ int CLuaVehicleDefs::CreateVehicle(lua_State* luaVM)
     SString strNumberPlate;
     uchar   ucVariant;
     uchar   ucVariant2;
+    bool    bSynced;
 
     CScriptArgReader argStream(luaVM);
     argStream.ReadNumber(usModel);
@@ -295,6 +311,7 @@ int CLuaVehicleDefs::CreateVehicle(lua_State* luaVM)
     }
     argStream.ReadNumber(ucVariant, 254);
     argStream.ReadNumber(ucVariant2, 254);
+    argStream.ReadBool(bSynced, true);
 
     if (!argStream.HasErrors())
     {
@@ -308,7 +325,7 @@ int CLuaVehicleDefs::CreateVehicle(lua_State* luaVM)
                 {
                     // Create the vehicle and return its handle
                     CVehicle* pVehicle =
-                        CStaticFunctionDefinitions::CreateVehicle(pResource, usModel, vecPosition, vecRotation, strNumberPlate, ucVariant, ucVariant2);
+                        CStaticFunctionDefinitions::CreateVehicle(pResource, usModel, vecPosition, vecRotation, strNumberPlate, ucVariant, ucVariant2, bSynced);
                     if (pVehicle)
                     {
                         CElementGroup* pGroup = pResource->GetElementGroup();
@@ -1729,7 +1746,7 @@ int CLuaVehicleDefs::FixVehicle(lua_State* luaVM)
 
 bool CLuaVehicleDefs::IsVehicleBlown(CVehicle* vehicle)
 {
-    return vehicle->GetIsBlown();
+    return vehicle->IsBlown();
 }
 
 int CLuaVehicleDefs::GetVehicleHeadLightColor(lua_State* luaVM)
@@ -2339,6 +2356,21 @@ int CLuaVehicleDefs::SetVehicleRespawnRotation(lua_State* luaVM)
 
     lua_pushboolean(luaVM, false);
     return 1;
+}
+
+bool CLuaVehicleDefs::IsVehicleRespawnable(CVehicle* vehicle) noexcept
+{
+    return vehicle->GetRespawnEnabled();
+}
+
+uint32_t CLuaVehicleDefs::GetVehicleRespawnDelay(CVehicle* vehicle) noexcept
+{
+    return vehicle->GetBlowRespawnInterval();
+}
+
+uint32_t CLuaVehicleDefs::GetVehicleIdleRespawnDelay(CVehicle* vehicle) noexcept
+{
+    return vehicle->GetIdleRespawnInterval();
 }
 
 int CLuaVehicleDefs::SetVehicleIdleRespawnDelay(lua_State* luaVM)

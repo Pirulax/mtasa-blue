@@ -10,6 +10,10 @@
  *****************************************************************************/
 
 #include "StdInc.h"
+#include "CAccount.h"
+#include "CAccountManager.h"
+#include "CIdArray.h"
+#include "CClient.h"
 
 CAccount::CAccount(CAccountManager* pManager, EAccountType accountType, const std::string& strName, const std::string& strPassword, int iUserID,
                    const std::string& strIP, const std::string& strSerial, const SString& strHttpPassAppend)
@@ -122,24 +126,24 @@ std::shared_ptr<CLuaArgument> CAccount::GetData(const std::string& strKey)
     {
         switch (pData->GetType())
         {
-        case LUA_TBOOLEAN:
-            pResult->ReadBool(strcmp(pData->GetStrValue().c_str(), "true") == 0);
-            break;
+            case LUA_TBOOLEAN:
+                pResult->ReadBool(strcmp(pData->GetStrValue().c_str(), "true") == 0);
+                break;
 
-        case LUA_TNUMBER:
-            pResult->ReadNumber(strtod(pData->GetStrValue().c_str(), NULL));
-            break;
+            case LUA_TNUMBER:
+                pResult->ReadNumber(strtod(pData->GetStrValue().c_str(), NULL));
+                break;
 
-        case LUA_TNIL:
-            break;
+            case LUA_TNIL:
+                break;
 
-        case LUA_TSTRING:
-            pResult->ReadString(pData->GetStrValue());
-            break;
+            case LUA_TSTRING:
+                pResult->ReadString(pData->GetStrValue());
+                break;
 
-        default:
-            dassert(0); // It never should hit this, if so, something corrupted
-            break;
+            default:
+                dassert(0);            // It never should hit this, if so, something corrupted
+                break;
         }
     }
     else
@@ -206,7 +210,7 @@ void CAccount::EnsureLoadedSerialUsage()
     }
 }
 
-bool CAccount::HasLoadedSerialUsage()
+bool CAccount::HasLoadedSerialUsage() const
 {
     return m_bLoadedSerialUsage;
 }
@@ -234,11 +238,7 @@ CAccount::SSerialUsage* CAccount::GetSerialUsage(const SString& strSerial)
 bool CAccount::IsSerialAuthorized(const SString& strSerial)
 {
     SSerialUsage* pInfo = GetSerialUsage(strSerial);
-    if (pInfo)
-    {
-        return pInfo->IsAuthorized();
-    }
-    return false;
+    return pInfo ? pInfo->IsAuthorized() : false;
 }
 
 //
@@ -261,17 +261,13 @@ bool CAccount::IsIpAuthorized(const SString& strIp)
 bool CAccount::AuthorizeSerial(const SString& strSerial, const SString& strWho)
 {
     SSerialUsage* pInfo = GetSerialUsage(strSerial);
-    if (pInfo)
-    {
-        if (!pInfo->IsAuthorized())
-        {
-            pInfo->tAuthDate = time(nullptr);
-            pInfo->strAuthWho = strWho;
-            m_pManager->MarkAsChanged(this);
-            return true;
-        }
-    }
-    return false;
+    if (!pInfo || pInfo->IsAuthorized())
+        return false;
+
+    pInfo->tAuthDate = time(nullptr);
+    pInfo->strAuthWho = strWho;
+    m_pManager->MarkAsChanged(this);
+    return true;
 }
 
 //
@@ -316,29 +312,28 @@ void CAccount::RemoveUnauthorizedSerials()
 bool CAccount::AddSerialForAuthorization(const SString& strSerial, const SString& strIp)
 {
     SSerialUsage* pInfo = GetSerialUsage(strSerial);
-    if (!pInfo)
+    if (pInfo)
+        return false;
+
+    // Only one new serial at a time, so remove all other unauthorized serials for this account
+    RemoveUnauthorizedSerials();
+
+    SSerialUsage info;
+    info.strSerial = strSerial;
+    info.strAddedIp = strIp;
+    info.tAddedDate = time(nullptr);
+    info.tAuthDate = 0;
+    info.tLastLoginDate = 0;
+    info.tLastLoginHttpDate = 0;
+
+    // First one doesn't require authorization
+    if (m_SerialUsageList.size() == 0)
     {
-        // Only one new serial at a time, so remove all other unauthorized serials for this account
-        RemoveUnauthorizedSerials();
-
-        SSerialUsage info;
-        info.strSerial = strSerial;
-        info.strAddedIp = strIp;
-        info.tAddedDate = time(nullptr);
-        info.tAuthDate = 0;
-        info.tLastLoginDate = 0;
-        info.tLastLoginHttpDate = 0;
-
-        // First one doesn't require authorization
-        if (m_SerialUsageList.size() == 0)
-        {
-            info.tAuthDate = time(nullptr);
-        }
-        m_SerialUsageList.push_back(info);
-        m_pManager->MarkAsChanged(this);
-        return true;
+        info.tAuthDate = time(nullptr);
     }
-    return false;
+    m_SerialUsageList.push_back(info);
+    m_pManager->MarkAsChanged(this);
+    return true;
 }
 
 //
@@ -368,10 +363,10 @@ void CAccount::OnLoginHttpSuccess(const SString& strIp)
     EnsureLoadedSerialUsage();
     for (auto& info : m_SerialUsageList)
     {
-        if (info.strLastLoginIp == strIp && info.IsAuthorized())
-        {
-            info.tLastLoginHttpDate = time(nullptr);
-            m_pManager->MarkAsChanged(this);
-        }
+        if (info.strLastLoginIp != strIp || !info.IsAuthorized())
+            continue;
+
+        info.tLastLoginHttpDate = time(nullptr);
+        m_pManager->MarkAsChanged(this);
     }
 }

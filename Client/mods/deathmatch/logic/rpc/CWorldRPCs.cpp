@@ -10,6 +10,14 @@
  *****************************************************************************/
 
 #include <StdInc.h>
+#include <game/CSettings.h>
+#include <game/CWeaponStat.h>
+#include <game/CWeather.h>
+#include <game/CGarages.h>
+#include <game/CGarage.h>
+#include <game/CClock.h>
+#include <game/CWeaponStatManager.h>
+#include <game/CBuildingRemoval.h>
 #include "CWorldRPCs.h"
 
 void CWorldRPCs::LoadFunctions()
@@ -62,7 +70,7 @@ void CWorldRPCs::LoadFunctions()
     AddHandler(SET_MOON_SIZE, SetMoonSize, "SetMoonSize");
     AddHandler(RESET_MOON_SIZE, ResetMoonSize, "ResetMoonSize");
 
-    AddHandler(SET_DISCORD_JOIN_PARAMETERS, SetDiscordJoinParams, "SetDiscordJoinParams");
+    AddHandler(SET_WORLD_SPECIAL_PROPERTY, SetWorldSpecialPropertyEnabled, "SetWorldSpecialPropertyEnabled");
 }
 
 void CWorldRPCs::SetTime(NetBitStreamInterface& bitStream)
@@ -180,6 +188,7 @@ void CWorldRPCs::SetBlurLevel(NetBitStreamInterface& bitStream)
     unsigned char ucLevel;
     if (bitStream.Read(ucLevel))
     {
+        g_pGame->GetSettings()->SetBlurControlledByScript(true);
         g_pGame->SetBlurLevel(ucLevel);
     }
 }
@@ -574,7 +583,7 @@ void CWorldRPCs::RemoveWorldModel(NetBitStreamInterface& bitStream)
         {
             bitStream.Read(cInterior);
         }
-        g_pGame->GetWorld()->RemoveBuilding(usModel, fRadius, fX, fY, fZ, cInterior);
+        g_pGame->GetBuildingRemoval()->RemoveBuilding(usModel, fRadius, fX, fY, fZ, cInterior);
     }
 }
 
@@ -589,13 +598,13 @@ void CWorldRPCs::RestoreWorldModel(NetBitStreamInterface& bitStream)
         {
             bitStream.Read(cInterior);
         }
-        g_pGame->GetWorld()->RestoreBuilding(usModel, fRadius, fX, fY, fZ, cInterior);
+        g_pGame->GetBuildingRemoval()->RestoreBuilding(usModel, fRadius, fX, fY, fZ, cInterior);
     }
 }
 
 void CWorldRPCs::RestoreAllWorldModels(NetBitStreamInterface& bitStream)
 {
-    g_pGame->GetWorld()->ClearRemovedBuildingLists();
+    g_pGame->GetBuildingRemoval()->ClearRemovedBuildingLists();
 }
 
 void CWorldRPCs::SetSyncIntervals(NetBitStreamInterface& bitStream)
@@ -625,16 +634,12 @@ void CWorldRPCs::ResetMoonSize(NetBitStreamInterface& bitStream)
     g_pMultiplayer->ResetMoonSize();
 }
 
-void CWorldRPCs::SetDiscordJoinParams(NetBitStreamInterface& bitStream)
+void CWorldRPCs::SetWorldSpecialPropertyEnabled(NetBitStreamInterface& bitStream)
 {
-    SString strKey, strPartyId;
-    uint    uiPartySize, uiPartyMax;
-
-    if (bitStream.ReadString<uchar>(strKey) && bitStream.ReadString<uchar>(strPartyId) && bitStream.Read(uiPartySize) && bitStream.Read(uiPartyMax))
+    uchar property;
+    bool  isEnabled;
+    if (bitStream.Read(property) && bitStream.ReadBit(isEnabled))
     {
-        if (strKey.length() > 64 || strPartyId.length() > 64 || uiPartySize > uiPartyMax || strKey.find(' ') != SString::npos || strPartyId.find(' ') != SString::npos)
-            return;
-
-        g_pCore->GetDiscordManager()->SetJoinParameters(strKey, strPartyId, uiPartySize, uiPartyMax, [](EDiscordRes res) {});
+        g_pClientGame->SetWorldSpecialProperty((WorldSpecialProperty)property, isEnabled);
     }
 }

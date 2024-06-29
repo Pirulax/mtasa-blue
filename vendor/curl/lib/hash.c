@@ -5,7 +5,7 @@
  *                            | (__| |_| |  _ <| |___
  *                             \___|\___/|_| \_\_____|
  *
- * Copyright (C) 1998 - 2020, Daniel Stenberg, <daniel@haxx.se>, et al.
+ * Copyright (C) Daniel Stenberg, <daniel@haxx.se>, et al.
  *
  * This software is licensed as described in the file COPYING, which
  * you should have received as part of this distribution. The terms
@@ -17,6 +17,8 @@
  *
  * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
  * KIND, either express or implied.
+ *
+ * SPDX-License-Identifier: curl
  *
  ***************************************************************************/
 
@@ -53,32 +55,25 @@ hash_element_dtor(void *user, void *element)
  * @unittest: 1602
  * @unittest: 1603
  */
-int
+void
 Curl_hash_init(struct Curl_hash *h,
-               int slots,
+               size_t slots,
                hash_function hfunc,
                comp_function comparator,
                Curl_hash_dtor dtor)
 {
-  if(!slots || !hfunc || !comparator ||!dtor) {
-    return 1; /* failure */
-  }
+  DEBUGASSERT(h);
+  DEBUGASSERT(slots);
+  DEBUGASSERT(hfunc);
+  DEBUGASSERT(comparator);
+  DEBUGASSERT(dtor);
 
+  h->table = NULL;
   h->hash_func = hfunc;
   h->comp_func = comparator;
   h->dtor = dtor;
   h->size = 0;
   h->slots = slots;
-
-  h->table = malloc(slots * sizeof(struct Curl_llist));
-  if(h->table) {
-    int i;
-    for(i = 0; i < slots; ++i)
-      Curl_llist_init(&h->table[i], (Curl_llist_dtor) hash_element_dtor);
-    return 0; /* fine */
-  }
-  h->slots = 0;
-  return 1; /* failure */
 }
 
 static struct Curl_hash_element *
@@ -98,8 +93,9 @@ mk_hash_element(const void *key, size_t key_len, const void *p)
 
 #define FETCH_LIST(x,y,z) &x->table[x->hash_func(y, z, x->slots)]
 
-/* Insert the data in the hash. If there already was a match in the hash,
- * that data is replaced.
+/* Insert the data in the hash. If there already was a match in the hash, that
+ * data is replaced. This function also "lazily" allocates the table if
+ * needed, as it isn't done in the _init function (anymore).
  *
  * @unittest: 1305
  * @unittest: 1602
@@ -110,7 +106,20 @@ Curl_hash_add(struct Curl_hash *h, void *key, size_t key_len, void *p)
 {
   struct Curl_hash_element  *he;
   struct Curl_llist_element *le;
-  struct Curl_llist *l = FETCH_LIST(h, key, key_len);
+  struct Curl_llist *l;
+
+  DEBUGASSERT(h);
+  DEBUGASSERT(h->slots);
+  if(!h->table) {
+    size_t i;
+    h->table = malloc(h->slots * sizeof(struct Curl_llist));
+    if(!h->table)
+      return NULL; /* OOM */
+    for(i = 0; i < h->slots; ++i)
+      Curl_llist_init(&h->table[i], hash_element_dtor);
+  }
+
+  l = FETCH_LIST(h, key, key_len);
 
   for(le = l->head; le; le = le->next) {
     he = (struct Curl_hash_element *) le->ptr;
@@ -123,7 +132,7 @@ Curl_hash_add(struct Curl_hash *h, void *key, size_t key_len, void *p)
 
   he = mk_hash_element(key, key_len, p);
   if(he) {
-    Curl_llist_insert_next(l, l->tail, he, &he->list);
+    Curl_llist_append(l, he, &he->list);
     ++h->size;
     return p; /* return the new entry */
   }
@@ -139,14 +148,20 @@ Curl_hash_add(struct Curl_hash *h, void *key, size_t key_len, void *p)
 int Curl_hash_delete(struct Curl_hash *h, void *key, size_t key_len)
 {
   struct Curl_llist_element *le;
-  struct Curl_llist *l = FETCH_LIST(h, key, key_len);
+  struct Curl_llist *l;
 
-  for(le = l->head; le; le = le->next) {
-    struct Curl_hash_element *he = le->ptr;
-    if(h->comp_func(he->key, he->key_len, key, key_len)) {
-      Curl_llist_remove(l, le, (void *) h);
-      --h->size;
-      return 0;
+  DEBUGASSERT(h);
+  DEBUGASSERT(h->slots);
+  if(h->table) {
+    l = FETCH_LIST(h, key, key_len);
+
+    for(le = l->head; le; le = le->next) {
+      struct Curl_hash_element *he = le->ptr;
+      if(h->comp_func(he->key, he->key_len, key, key_len)) {
+        Curl_llist_remove(l, le, (void *) h);
+        --h->size;
+        return 0;
+      }
     }
   }
   return 1;
@@ -162,7 +177,9 @@ Curl_hash_pick(struct Curl_hash *h, void *key, size_t key_len)
   struct Curl_llist_element *le;
   struct Curl_llist *l;
 
-  if(h) {
+  DEBUGASSERT(h);
+  if(h->table) {
+    DEBUGASSERT(h->slots);
     l = FETCH_LIST(h, key, key_len);
     for(le = l->head; le; le = le->next) {
       struct Curl_hash_element *he = le->ptr;
@@ -175,25 +192,6 @@ Curl_hash_pick(struct Curl_hash *h, void *key, size_t key_len)
   return NULL;
 }
 
-#if defined(DEBUGBUILD) && defined(AGGRESSIVE_TEST)
-void
-Curl_hash_apply(Curl_hash *h, void *user,
-                void (*cb)(void *user, void *ptr))
-{
-  struct Curl_llist_element  *le;
-  int                  i;
-
-  for(i = 0; i < h->slots; ++i) {
-    for(le = (h->table[i])->head;
-        le;
-        le = le->next) {
-      Curl_hash_element *el = le->ptr;
-      cb(user, el->ptr);
-    }
-  }
-}
-#endif
-
 /* Destroys all the entries in the given hash and resets its attributes,
  * prepping the given hash for [static|dynamic] deallocation.
  *
@@ -204,13 +202,13 @@ Curl_hash_apply(Curl_hash *h, void *user,
 void
 Curl_hash_destroy(struct Curl_hash *h)
 {
-  int i;
-
-  for(i = 0; i < h->slots; ++i) {
-    Curl_llist_destroy(&h->table[i], (void *) h);
+  if(h->table) {
+    size_t i;
+    for(i = 0; i < h->slots; ++i) {
+      Curl_llist_destroy(&h->table[i], (void *) h);
+    }
+    Curl_safefree(h->table);
   }
-
-  Curl_safefree(h->table);
   h->size = 0;
   h->slots = 0;
 }
@@ -233,9 +231,9 @@ Curl_hash_clean_with_criterium(struct Curl_hash *h, void *user,
   struct Curl_llist_element *le;
   struct Curl_llist_element *lnext;
   struct Curl_llist *list;
-  int i;
+  size_t i;
 
-  if(!h)
+  if(!h || !h->table)
     return;
 
   for(i = 0; i < h->slots; ++i) {
@@ -245,7 +243,7 @@ Curl_hash_clean_with_criterium(struct Curl_hash *h, void *user,
       struct Curl_hash_element *he = le->ptr;
       lnext = le->next;
       /* ask the callback function if we shall remove this entry or not */
-      if(comp == NULL || comp(user, he->ptr)) {
+      if(!comp || comp(user, he->ptr)) {
         Curl_llist_remove(list, le, (void *) h);
         --h->size; /* one less entry in the hash now */
       }
@@ -290,13 +288,16 @@ Curl_hash_next_element(struct Curl_hash_iterator *iter)
 {
   struct Curl_hash *h = iter->hash;
 
+  if(!h->table)
+    return NULL; /* empty hash, nothing to return */
+
   /* Get the next element in the current list, if any */
   if(iter->current_element)
     iter->current_element = iter->current_element->next;
 
   /* If we have reached the end of the list, find the next one */
   if(!iter->current_element) {
-    int i;
+    size_t i;
     for(i = iter->slot_index; i < h->slots; i++) {
       if(h->table[i].head) {
         iter->current_element = h->table[i].head;
@@ -310,7 +311,6 @@ Curl_hash_next_element(struct Curl_hash_iterator *iter)
     struct Curl_hash_element *he = iter->current_element->ptr;
     return he;
   }
-  iter->current_element = NULL;
   return NULL;
 }
 
@@ -320,7 +320,7 @@ void Curl_hash_print(struct Curl_hash *h,
 {
   struct Curl_hash_iterator iter;
   struct Curl_hash_element *he;
-  int last_index = -1;
+  size_t last_index = ~0;
 
   if(!h)
     return;
@@ -333,7 +333,7 @@ void Curl_hash_print(struct Curl_hash *h,
   while(he) {
     if(iter.slot_index != last_index) {
       fprintf(stderr, "index %d:", iter.slot_index);
-      if(last_index >= 0) {
+      if(last_index != ~0) {
         fprintf(stderr, "\n");
       }
       last_index = iter.slot_index;
@@ -349,3 +349,25 @@ void Curl_hash_print(struct Curl_hash *h,
   fprintf(stderr, "\n");
 }
 #endif
+
+void Curl_hash_offt_init(struct Curl_hash *h,
+                         size_t slots,
+                         Curl_hash_dtor dtor)
+{
+  Curl_hash_init(h, slots, Curl_hash_str, Curl_str_key_compare, dtor);
+}
+
+void *Curl_hash_offt_set(struct Curl_hash *h, curl_off_t id, void *elem)
+{
+  return Curl_hash_add(h, &id, sizeof(id), elem);
+}
+
+int Curl_hash_offt_remove(struct Curl_hash *h, curl_off_t id)
+{
+  return Curl_hash_delete(h, &id, sizeof(id));
+}
+
+void *Curl_hash_offt_get(struct Curl_hash *h, curl_off_t id)
+{
+  return Curl_hash_pick(h, &id, sizeof(id));
+}

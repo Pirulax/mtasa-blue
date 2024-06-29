@@ -136,6 +136,13 @@ struct SSirenInfo
     SFixedArray<SSirenBeaconInfo, 8> m_tSirenInfo;
 };
 
+enum class VehicleBlowState : unsigned char
+{
+    INTACT,
+    AWAITING_EXPLOSION_SYNC,
+    BLOWN,
+};
+
 class CTrainTrack;
 
 class CVehicle final : public CElement
@@ -187,7 +194,7 @@ public:
     void           SetTurnSpeed(const CVector& vecTurnSpeed) { m_vecTurnSpeed = vecTurnSpeed; };
 
     float GetHealth() { return m_fHealth; };
-    void  SetHealth(float fHealth) { m_fHealth = fHealth; };
+    void  SetHealth(float fHealth);
     float GetLastSyncedHealth() { return m_fLastSyncedHealthHealth; };
     void  SetLastSyncedHealth(float fHealth) { m_fLastSyncedHealthHealth = fHealth; };
 
@@ -314,16 +321,18 @@ public:
     void           SetRespawnRotationDegrees(const CVector& vecRotation) { m_vecRespawnRotationDegrees = vecRotation; };
     float          GetRespawnHealth() { return m_fRespawnHealth; };
     void           SetRespawnHealth(float fHealth) { m_fRespawnHealth = fHealth; };
-    bool           GetRespawnEnabled() { return m_bRespawnEnabled; }
+    bool           GetRespawnEnabled() const noexcept { return m_bRespawnEnabled; }
     void           SetRespawnEnabled(bool bEnabled);
+    std::uint32_t  GetBlowRespawnInterval() const noexcept { return m_ulBlowRespawnInterval; }
     void           SetBlowRespawnInterval(unsigned long ulTime) { m_ulBlowRespawnInterval = ulTime; }
+    std::uint32_t  GetIdleRespawnInterval() const noexcept { return m_ulIdleRespawnInterval; }
     void           SetIdleRespawnInterval(unsigned long ulTime) { m_ulIdleRespawnInterval = ulTime; }
 
     void SpawnAt(const CVector& vecPosition, const CVector& vecRotation);
     void Respawn();
 
-    void                  GenerateHandlingData();
-    CHandlingEntry*       GetHandlingData() { return m_pHandlingEntry; };
+    void            GenerateHandlingData();
+    CHandlingEntry* GetHandlingData() { return m_pHandlingEntry; };
 
     uint GetTimeSinceLastPush() { return (uint)(CTickCount::Now(true) - m_LastPushedTime).ToLongLong(); }
     void ResetLastPushTime() { m_LastPushedTime = CTickCount::Now(true); }
@@ -337,9 +346,14 @@ public:
 
     void ResetDoors();
     void ResetDoorsWheelsPanelsLights();
-    void SetIsBlown(bool bBlown);
-    bool GetIsBlown() const noexcept { return m_llBlowTime.ToLongLong() != 0; }
+
     bool IsBlowTimerFinished();
+    void ResetExplosionTimer();
+
+    bool             IsBlown() const noexcept { return m_blowState != VehicleBlowState::INTACT; }
+    void             SetBlowState(VehicleBlowState state);
+    VehicleBlowState GetBlowState() const noexcept { return m_blowState; }
+
     void StopIdleTimer();
     void RestartIdleTimer();
     bool IsIdleTimerRunning();
@@ -368,6 +382,8 @@ private:
     float          m_fLastSyncedHealthHealth;
     CTickCount     m_llBlowTime;
     CTickCount     m_llIdleTime;
+
+    VehicleBlowState m_blowState = VehicleBlowState::INTACT;
 
     unsigned char m_ucMaxPassengersOverride;
 

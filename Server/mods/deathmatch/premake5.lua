@@ -17,10 +17,10 @@ project "Deathmatch"
 			"../../../vendor/bochs",
 			"../../../vendor/pme",
 			"../../../vendor/zip",
+			"../../../vendor/glob/include",
 			"../../../vendor/zlib",
 			"../../../vendor/pcre",
 			"../../../vendor/json-c",
-			"../../../vendor/bob_withers",
 			"../../../vendor/lua/src",
 			"../../../Shared/gta",
 			"../../../Shared/mods/deathmatch/logic",
@@ -34,7 +34,7 @@ project "Deathmatch"
 
 	defines { "SDK_WITH_BCRYPT" }
 	links {
-		"Lua_Server", "sqlite", "ehs", "cryptopp", "pme", "pcre", "json-c", "zip", "zlib", "blowfish_bcrypt",
+		"Lua_Server", "sqlite", "ehs", "cryptopp", "pme", "pcre", "json-c", "zip", "glob", "zlib", "blowfish_bcrypt",
 	}
 
 	vpaths {
@@ -70,3 +70,9 @@ project "Deathmatch"
 
 	filter "platforms:x64"
 		targetdir(buildpath("server/x64"))
+
+	filter "platforms:arm"
+		targetdir(buildpath("server/arm"))
+
+	filter "platforms:arm64"
+		targetdir(buildpath("server/arm64"))

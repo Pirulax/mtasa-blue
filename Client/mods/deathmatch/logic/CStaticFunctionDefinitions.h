@@ -40,7 +40,6 @@ public:
     // Output funcs
     static bool OutputConsole(const char* szText);
     static bool OutputChatBox(const char* szText, unsigned char ucRed, unsigned char ucGreen, unsigned char ucBlue, bool bColorCoded);
-    static bool ShowChat(bool bShow);
     static bool SetClipboard(SString& strText);
     static bool SetWindowFlashing(bool flash, uint count);
     static bool ClearChatBox();
@@ -228,7 +227,7 @@ public:
 
     // Vehicle set functions
     static bool FixVehicle(CClientEntity& Entity);
-    static bool BlowVehicle(CClientEntity& Entity);
+    static bool BlowVehicle(CClientEntity& Entity, std::optional<bool> withExplosion);
     static bool SetVehicleColor(CClientEntity& Entity, const CVehicleColor& color);
     static bool SetVehicleLandingGearDown(CClientEntity& Entity, bool bLandingGearDown);
     static bool SetVehicleLocked(CClientEntity& Entity, bool bLocked);
@@ -562,15 +561,16 @@ public:
     static bool GetTime(unsigned char& ucHour, unsigned char& ucMin);
     static bool ProcessLineOfSight(const CVector& vecStart, const CVector& vecEnd, bool& bCollision, CColPoint** pColPoint, CClientEntity** pColEntity,
                                    const SLineOfSightFlags& flags = SLineOfSightFlags(), CEntity* pIgnoredEntity = NULL,
-                                   SLineOfSightBuildingResult* pBuildingResult = NULL);
+                                   SLineOfSightBuildingResult* pBuildingResult = NULL, SProcessLineOfSightMaterialInfoResult* outMatInfo = nullptr);
     static bool IsLineOfSightClear(const CVector& vecStart, const CVector& vecEnd, bool& bIsClear, const SLineOfSightFlags& flags = SLineOfSightFlags(),
                                    CEntity* pIgnoredEntity = NULL);
     static bool TestLineAgainstWater(CVector& vecStart, CVector& vecEnd, CVector& vecCollision);
     static CClientWater* CreateWater(CResource& resource, CVector* pV1, CVector* pV2, CVector* pV3, CVector* pV4, bool bShallow);
-    static bool          GetWaterLevel(CVector& vecPosition, float& fLevel, bool bCheckWaves, CVector& vecUnknown);
+    static bool          GetWaterLevel(CVector& vecPosition, float& fLevel, bool ignoreDistanceToWaterThreshold, CVector& vecUnknown);
     static bool          GetWaterLevel(CClientWater* pWater, float& fLevel);
     static bool          GetWaterVertexPosition(CClientWater* pWater, int iVertexIndex, CVector& vecPosition);
-    static bool          SetWorldWaterLevel(float fLevel, void* pChangeSource, bool bIncludeWorldNonSeaLevel, bool bIncludeWorldSeaLevel, bool bIncludeOutsideWorldLevel);
+    static bool          SetWorldWaterLevel(float fLevel, void* pChangeSource, bool bIncludeWorldNonSeaLevel, bool bIncludeWorldSeaLevel,
+                                            bool bIncludeOutsideWorldLevel);
     static bool          SetPositionWaterLevel(const CVector& vecPosition, float fLevel, void* pChangeSource);
     static bool          SetAllElementWaterLevel(float fLevel, void* pChangeSource);
     static bool          ResetWorldWaterLevel();
@@ -589,7 +589,6 @@ public:
     static bool          GetGaragePosition(unsigned char ucGarageID, CVector& vecPosition);
     static bool          GetGarageSize(unsigned char ucGarageID, float& fHeight, float& fWidth, float& fDepth);
     static bool          GetGarageBoundingBox(unsigned char ucGarageID, float& fLeft, float& fRight, float& fFront, float& fBack);
-    static bool          IsWorldSpecialPropertyEnabled(const char* szPropName);
     static bool          SetCloudsEnabled(bool bEnabled);
     static bool          GetCloudsEnabled();
     static bool          GetTrafficLightState(unsigned char& ucState);
@@ -617,7 +616,6 @@ public:
     static bool SetWaveHeight(float fHeight);
     static bool SetMinuteDuration(unsigned long ulDelay);
     static bool SetGarageOpen(unsigned char ucGarageID, bool bIsOpen);
-    static bool SetWorldSpecialPropertyEnabled(const char* szPropName, bool bEnabled);
     static bool SetBlurLevel(unsigned char ucLevel);
     static bool SetJetpackMaxHeight(float fHeight);
     static bool SetTrafficLightState(unsigned char ucState);
@@ -731,11 +729,13 @@ public:
     static bool           FxAddWaterSplash(CVector& vecPosition);
     static bool           FxAddBulletSplash(CVector& vecPosition);
     static bool           FxAddFootSplash(CVector& vecPosition);
+    static bool           FxCreateParticle(eFxParticleSystems eFxParticle, CVector& vecPosition, CVector& vecDirection, float fR, float fG, float fB, float fA, bool bRandomizeColors, std::uint32_t iCount, float fBrightness, float fSize, bool bRandomizeSizes, float fLife);
     static CClientEffect* CreateEffect(CResource& Resource, const SString& strFxName, const CVector& vecPosition, bool bSoundEnable);
 
     // Sound funcs
     static CClientSound* PlaySound(CResource* pResource, const SString& strSound, bool bIsURL, bool bIsRawData, bool bLoop, bool bThrottle);
-    static CClientSound* PlaySound3D(CResource* pResource, const SString& strSound, bool bIsURL, bool bIsRawData, const CVector& vecPosition, bool bLoop, bool bThrottle);
+    static CClientSound* PlaySound3D(CResource* pResource, const SString& strSound, bool bIsURL, bool bIsRawData, const CVector& vecPosition, bool bLoop,
+                                     bool bThrottle);
     static bool          StopSound(CClientSound& Sound);
     static bool          SetSoundPosition(CClientSound& Sound, double dPosition);
     static bool          GetSoundPosition(CClientSound& Sound, double& dPosition);

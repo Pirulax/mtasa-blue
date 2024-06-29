@@ -13,6 +13,7 @@
 #include <luadefs/CLuaUnitTestDefs.h>
 #include "../luadefs/CLuaFireDefs.h"
 #include "../luadefs/CLuaClientDefs.h"
+#include "../luadefs/CLuaVectorGraphicDefs.h"
 
 using std::list;
 
@@ -171,8 +172,6 @@ void CLuaManager::LoadCFunctions()
         // Output funcs
         {"outputConsole", CLuaFunctionDefs::OutputConsole},
         {"outputChatBox", CLuaFunctionDefs::OutputChatBox},
-        {"showChat", CLuaFunctionDefs::ShowChat},
-        {"isChatVisible", CLuaFunctionDefs::IsChatVisible},
         {"outputDebugString", CLuaFunctionDefs::OutputClientDebugString},
         {"setClipboard", CLuaFunctionDefs::SetClipboard},
         {"setWindowFlashing", CLuaFunctionDefs::SetWindowFlashing},
@@ -275,10 +274,13 @@ void CLuaManager::LoadCFunctions()
     CLuaTaskDefs::LoadFunctions();
     CLuaTeamDefs::LoadFunctions();
     CLuaTimerDefs::LoadFunctions();
+    CLuaVectorGraphicDefs::LoadFunctions();
     CLuaVehicleDefs::LoadFunctions();
     CLuaWaterDefs::LoadFunctions();
     CLuaWeaponDefs::LoadFunctions();
     CLuaWorldDefs::LoadFunctions();
     CLuaXMLDefs::LoadFunctions();
     CLuaClientDefs::LoadFunctions();
+    CLuaDiscordDefs::LoadFunctions();
+    CLuaBuildingDefs::LoadFunctions();
 }

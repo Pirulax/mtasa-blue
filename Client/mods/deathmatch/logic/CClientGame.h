@@ -1,4 +1,5 @@
 /*****************************************************************************
+/*****************************************************************************
  *
  *  PROJECT:     Multi Theft Auto v1.0
  *  LICENSE:     See LICENSE in the top level directory
@@ -37,7 +38,6 @@
 #include "CResourceManager.h"
 #include "CScriptKeyBinds.h"
 #include "CElementDeleter.h"
-#include "CFoo.h"
 #include "CRegisteredCommands.h"
 #include "CClientGUIElement.h"
 #include "CLocalServer.h"
@@ -45,8 +45,8 @@
 #include "CSingularFileDownloadManager.h"
 #include "CObjectRespawner.h"
 
-#define HeliKill_List_Clear_Rate 500
-#define MIN_PUSH_ANTISPAM_RATE 1500
+#define HeliKill_List_Clear_Rate        500
+#define MIN_PUSH_ANTISPAM_RATE          1500
 #define INVALID_DOWNLOAD_PRIORITY_GROUP (INT_MIN)
 
 class CClientModelCacheManager;
@@ -193,6 +193,7 @@ public:
         GLITCH_KICKOUTOFVEHICLE_ONMODELREPLACE,
         NUM_GLITCHES
     };
+
     class CStoredWeaponSlot
     {
     public:
@@ -229,7 +230,7 @@ public:
     CClientGame(bool bLocalPlay = false);
     ~CClientGame();
 
-    bool StartGame(const char* szNick, const char* szPassword, eServerType Type = SERVER_TYPE_NORMAL, const char* szSecret = nullptr);
+    bool StartGame(const char* szNick, const char* szPassword, eServerType Type = SERVER_TYPE_NORMAL);
     bool StartLocalGame(eServerType Type, const char* szPassword = NULL);
     void SetupLocalGame(eServerType Type);
     // bool                                    StartGame                       ( void );
@@ -254,6 +255,8 @@ public:
     void StartPlayback();
     void EnablePacketRecorder(const char* szFilename);
     void InitVoice(bool bEnabled, unsigned int uiServerSampleRate, unsigned char ucQuality, unsigned int uiBitrate);
+
+    bool IsWindowFocused() const { return m_bFocused; }
 
     // Accessors
 
@@ -309,18 +312,17 @@ public:
 
     // Status toggles
     void ShowNetstat(int iCmd);
-    void ShowEaeg(bool bShow);
     void ShowFPS(bool bShow) { m_bShowFPS = bShow; };
 
-    #if defined (MTA_DEBUG) || defined (MTA_BETA)
+#if defined(MTA_DEBUG) || defined(MTA_BETA)
     void ShowSyncingInfo(bool bShow) { m_bShowSyncingInfo = bShow; };
-    #endif
+#endif
 
 #ifdef MTA_WEPSYNCDBG
     void ShowWepdata(const char* szNick);
 #endif
 
-    #ifdef MTA_DEBUG
+#ifdef MTA_DEBUG
     void ShowWepdata(const char* szNick);
     void ShowTasks(const char* szNick);
     void ShowPlayer(const char* szNick);
@@ -329,7 +331,7 @@ public:
     void SetDoPaintballs(bool bDoPaintballs) { m_bDoPaintballs = bDoPaintballs; }
     void ShowInterpolation(bool bShow) { m_bShowInterpolation = bShow; }
     bool IsShowingInterpolation() const { return m_bShowInterpolation; }
-    #endif
+#endif
 
     CEntity*       GetTargetedGameEntity() { return m_pTargetedGameEntity; }
     CClientEntity* GetTargetedEntity() { return m_pTargetedEntity; }
@@ -397,6 +399,9 @@ public:
     bool SetGlitchEnabled(unsigned char cGlitch, bool bEnabled);
     bool IsGlitchEnabled(unsigned char cGlitch);
 
+    bool SetWorldSpecialProperty(WorldSpecialProperty property, bool isEnabled);
+    bool IsWorldSpecialProperty(WorldSpecialProperty property);
+
     bool SetCloudsEnabled(bool bEnabled);
     bool GetCloudsEnabled();
 
@@ -436,9 +441,10 @@ public:
 
     bool TriggerBrowserRequestResultEvent(const std::unordered_set<SString>& newPages);
     void RestreamModel(unsigned short usModel);
-    void RestreamWorld();
+    void RestreamWorld(bool removeBigBuildings);
+    void ReinitMarkers();
 
-    void TriggerDiscordJoin(SString strSecret);
+    void OnWindowFocusChange(bool state);
 
 private:
     // CGUI Callbacks
@@ -469,17 +475,17 @@ private:
 
     void DrawFPS();
 
-    #ifdef MTA_DEBUG
+#ifdef MTA_DEBUG
     void DrawTasks(CClientPlayer* pPlayer);
     void DrawPlayerDetails(CClientPlayer* pPlayer);
     void UpdateMimics();
     void DoPaintballs();
     void DrawWeaponsyncData(CClientPlayer* pPlayer);
-    #endif
+#endif
 
-    #ifdef MTA_WEPSYNCDBG
+#ifdef MTA_WEPSYNCDBG
     void DrawWeaponsyncData(CClientPlayer* pPlayer);
-    #endif
+#endif
 
     void DownloadSingularResourceFiles();
 
@@ -503,6 +509,7 @@ private:
     static void                              StaticPostWorldProcessHandler();
     static void                              StaticPostWorldProcessPedsAfterPreRenderHandler();
     static void                              StaticPreFxRenderHandler();
+    static void                              StaticPostColorFilterRenderHandler();
     static void                              StaticPreHudRenderHandler();
     static void                              StaticCAnimBlendAssocDestructorHandler(CAnimBlendAssociationSAInterface* pThis);
     static CAnimBlendAssociationSAInterface* StaticAddAnimationHandler(RpClump* pClump, AssocGroupId animGroup, AnimationId animID);
@@ -537,6 +544,7 @@ private:
     static void StaticVehicleWeaponHitHandler(SVehicleWeaponHitEvent& event);
 
     static AnimationId StaticDrivebyAnimationHandler(AnimationId animGroup, AssocGroupId animId);
+    static void        StaticAudioZoneRadioSwitchHandler(DWORD dwStationID);
 
     bool                              DamageHandler(CPed* pDamagePed, CEventDamage* pEvent);
     void                              DeathHandler(CPed* pKilledPed, unsigned char ucDeathReason, unsigned char ucBodyPart);
@@ -576,6 +584,7 @@ private:
     bool        WorldSoundHandler(const SWorldSoundEvent& event);
     void        TaskSimpleBeHitHandler(CPedSAInterface* pPedAttacker, ePedPieceTypes hitBodyPart, int hitBodySide, int weaponId);
     AnimationId DrivebyAnimationHandler(AnimationId animGroup, AssocGroupId animId);
+    void        AudioZoneRadioSwitchHandler(DWORD dwStationID);
 
     static bool StaticProcessMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
     bool        ProcessMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -772,6 +781,7 @@ private:
     bool m_bBeingDeleted;            // To enable speedy disconnect
 
     bool m_bWasMinimized;
+    bool m_bFocused;
 
     // Cache for speeding up collision processing
 public:
@@ -781,11 +791,11 @@ private:
     std::map<CEntitySAInterface*, CClientEntity*> m_CachedCollisionMap;
     bool                                          m_BuiltCollisionMapThisFrame;
 
-    #if defined (MTA_DEBUG) || defined (MTA_BETA)
+#if defined(MTA_DEBUG) || defined(MTA_BETA)
     bool m_bShowSyncingInfo;
-    #endif
+#endif
 
-    #ifdef MTA_DEBUG
+#ifdef MTA_DEBUG
     CClientPlayer*            m_pShowPlayerTasks;
     CClientPlayer*            m_pShowPlayer;
     std::list<CClientPlayer*> m_Mimics;
@@ -797,15 +807,10 @@ private:
     CVector                   m_vecLastMimicRot;
     bool                      m_bDoPaintballs;
     bool                      m_bShowInterpolation;
-    #endif
+#endif
     bool m_bDevelopmentMode;
     bool m_bShowCollision;
     bool m_bShowSound;
-
-    // Debug class. Empty in release.
-public:
-    CFoo m_Foo;
-    void UpdateDiscordState(); // If netc allows this function not to be here it would be better
 
 private:
     CEvents                                     m_Events;
@@ -839,6 +844,8 @@ private:
     AnimAssociations_type                                m_mapOfCustomAnimationAssociations;
     // Key is the task and value is the CClientPed*
     RunNamedAnimTask_type m_mapOfRunNamedAnimTasks;
+    
+    long long m_timeLastDiscordStateUpdate;
 };
 
 extern CClientGame* g_pClientGame;
